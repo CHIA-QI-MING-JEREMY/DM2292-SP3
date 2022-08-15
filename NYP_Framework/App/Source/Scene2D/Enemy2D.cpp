@@ -177,6 +177,8 @@ bool CEnemy2D::Init(void)
 	// sets health
 	health = 50;
 
+	type = CLOSE_COMBAT;
+
 	return true;
 }
 
@@ -811,6 +813,22 @@ void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
 
 	// Update the enemy's direction
 	UpdateDirection();
+}
+
+//return enemy "type" to scene to determine enemy n ammo behaviour
+int CEnemy2D::getType()
+{
+	return type;
+}
+
+int CEnemy2D::getHealth()
+{
+	return health;
+}
+
+void CEnemy2D::setHealth(int health)
+{
+	this->health = health;
 }
 
 /**

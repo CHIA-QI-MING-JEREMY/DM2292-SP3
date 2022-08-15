@@ -139,19 +139,19 @@ bool CScene2D::Init(void)
 		//current lvele to check for enemies
 		cMap2D->SetCurrentLevel(i);
 
-		vector<CEntity2D*> enemies; //temporary vector to contain all the enemies in this 1 map
+		vector<CEnemy2D*> enemies; //temporary vector to contain all the enemies in this 1 map
 			//gets pushed into the enemyVectors vector once filled up
 
 		while (true)
 		{
-			CEnemy2D* cEnemy2D = new CEnemy2D();
+			JEnemy2DVT* cJEnemy2DVT = new JEnemy2DVT();
 			// Pass shader to cEnemy2D
-			cEnemy2D->SetShader("Shader2D_Colour");
+			cJEnemy2DVT->SetShader("Shader2D_Colour");
 			// Initialise the instance
-			if (cEnemy2D->Init() == true)
+			if (cJEnemy2DVT->Init() == true)
 			{
-				cEnemy2D->SetPlayer2D(cPlayer2D);
-				enemies.push_back(cEnemy2D); //push each enemy into the individual enemy vector
+				cJEnemy2DVT->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cJEnemy2DVT); //push each enemy into the individual enemy vector
 			}
 			else
 			{
