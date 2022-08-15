@@ -30,6 +30,26 @@ public:
 	// Initialise this class instance
 	bool Init(void);
 
+	enum SOUND_LIST
+	{
+		BGM_NORMAL = 0,
+		BGM_BNW,
+		FOOTSTEPS,
+		JUMP,
+		LAND,
+		SPLASH,
+		BURNING,
+		TICKING,
+		EXPLOSION,
+		FIREBALL,
+		COLLECT_ITEM,
+		REVEAL_SPRING,
+		FLICK_SWITCH,
+		IMPALED,
+		ENEMY_PUNCH,
+		NUM_SOUNDS
+	};
+
 	// Load a sound
 	bool LoadSound(	string filename, 
 					const int ID,

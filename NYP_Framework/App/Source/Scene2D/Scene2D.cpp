@@ -207,8 +207,15 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort_Female.ogg"), 3, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump_Female.ogg"), 4, true);
 
+	//temp: index to be changed
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Burning.ogg"), CSoundController::SOUND_LIST::BURNING, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Fireball.ogg"), CSoundController::SOUND_LIST::FIREBALL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
+
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), 5, true, true);
 	cSoundController->PlaySoundByID(5); // plays BGM on repeat
+
+
 
 	// variables
 	isAlarmActive = false;
@@ -274,6 +281,23 @@ bool CScene2D::Update(const double dElapsedTime)
 		//}
 
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
+
+		//player ammo collision check with enemy
+		std::vector<CAmmo2D*> ammoList = cPlayer2D->getAmmoList();
+		for (std::vector<CAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+		{
+			CAmmo2D* ammo = (CAmmo2D*)*it;
+			if (ammo->getActive())
+			{
+				//check if ammo hits enemy
+					//if it does, minus away the enemy's health & destory the ammo
+				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
+				{
+					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25); //every hit takes off 25 HP
+					ammo->setActive(false);
+				}
+			}
+		}
 
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
@@ -423,6 +447,19 @@ void CScene2D::Render(void)
 	cGUI_Scene2D->Render();
 	// Calls the CGUI_Scene2D's PostRender()
 	cGUI_Scene2D->PostRender();
+
+	//render player ammo
+	std::vector<CAmmo2D*> ammoList = cPlayer2D->getAmmoList();
+	for (std::vector<CAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CAmmo2D* ammo = (CAmmo2D*)*it;
+		if (ammo->getActive())
+		{
+			ammo->PreRender();
+			ammo->Render();
+			ammo->PostRender();
+		}
+	}
 }
 
 /**

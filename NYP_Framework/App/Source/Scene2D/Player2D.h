@@ -44,6 +44,9 @@ class CMap2D;
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+//include ammo for firing
+#include "Ammo2D.h"
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -66,6 +69,9 @@ public:
 
 	// PostRender
 	void PostRender(void);
+
+	//return ammolist to the scene for pre, post and normal rendering
+	std::vector<CAmmo2D*> getAmmoList(void);
 
 	// Player Movement
 	bool getPlayerMoveStatus();
@@ -178,5 +184,12 @@ protected:
 	int attackDirection;
 	double attackTimer;
 	double maxAttackTimer;
+	//vector full of player's fired ammo
+	std::vector<CAmmo2D*> ammoList;
+	int shootingDirection; //shoots in the direction the player is facing
+
+	//used to get a deactivated ammo to activate
+	CAmmo2D* FetchAmmo(void);
+
 };
 

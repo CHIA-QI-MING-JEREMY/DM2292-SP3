@@ -131,6 +131,15 @@ bool CPlayer2D::Init(void)
 	cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 	iJumpCount = 0;
 
+	//Construct 100 inactive ammo and add into ammoList
+	for (int i = 0; i < 100; ++i)
+	{
+		CAmmo2D* cAmmo2D = new CAmmo2D();
+		cAmmo2D->SetShader("Shader2D");
+		ammoList.push_back(cAmmo2D);
+	}
+	shootingDirection = LEFT; //by default
+
 	//CS: Init the color to white
 	SetColour(WHITE);
 
@@ -305,6 +314,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		
 		// Play the "runL" animation
 		animatedSprites->PlayAnimation("runL", -1, 1.0f);
+		shootingDirection = LEFT; //set direction for shooting ammo
 
 		// SUPERHOT movement
 		isPlayerMoving = true;
@@ -340,6 +350,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		// Play the "runR" animation
 		animatedSprites->PlayAnimation("runR", -1, 1.0f);
+		shootingDirection = RIGHT; //setting direction for ammo shooting
 
 		// SUPERHOT movement
 		isPlayerMoving = true;
@@ -380,6 +391,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		// SUPERHOT movement
 		isPlayerMoving = true;
+		shootingDirection = UP; //setting direction for ammo shooting
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
@@ -406,10 +418,13 @@ void CPlayer2D::Update(const double dElapsedTime)
 				vec2Index = vec2OldIndex;
 				vec2NumMicroSteps.y = 0;
 			}
+
+			
 		}
 
 		// SUPERHOT movement
 		isPlayerMoving = true;
+		shootingDirection = DOWN; //setting direction for ammo shooting
 	}
 	
 	// TO DO: Solve animation issue
@@ -465,6 +480,28 @@ void CPlayer2D::Update(const double dElapsedTime)
 		// reduce the lives by 1
 		cInventoryItem = cInventoryManager->GetItem("Lives");
 		cInventoryItem->Remove(1);
+	}
+
+	//create ammo
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_E))
+	{
+		CAmmo2D* ammo = FetchAmmo();
+		ammo->setActive(true);
+		ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+	}
+
+	//ammo beahviour
+	for (std::vector<CAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CAmmo2D* ammo = (CAmmo2D*)*it;
+		if (ammo->getActive())
+		{
+			ammo->Update(dElapsedTime);
+			if (ammo->LimitReached())
+			{
+				ammo->setActive(false);
+			}
+		}
 	}
 
 	// Check if player is in mid-air, such as walking off a platform
@@ -547,6 +584,12 @@ void CPlayer2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+//return ammolist to the scene for pre, post and normal rendering
+std::vector<CAmmo2D*> CPlayer2D::getAmmoList(void)
+{
+	return ammoList;
 }
 
 /**
@@ -1109,4 +1152,31 @@ void CPlayer2D::setPlayerAttackStatus(bool isAttacking)
 int CPlayer2D::getPlayerAttackDirection()
 {
 	return attackDirection;
+}
+
+//called whenever an ammo is needed ot be shot
+CAmmo2D* CPlayer2D::FetchAmmo()
+{
+	//Exercise 3a: Fetch a game object from m_goList and return it
+	for (std::vector<CAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CAmmo2D* ammo = (CAmmo2D*)*it;
+		if (ammo->getActive()) {
+			continue;
+		}
+		ammo->setActive(true);
+		// microsteps set to player's microsteps
+		ammo->vec2NumMicroSteps = vec2NumMicroSteps;
+		return ammo;
+	}
+
+	//whenever ammoList runs out of ammo, create 10 ammo to use
+	//Get Size before adding 10
+	int prevSize = ammoList.size();
+	for (int i = 0; i < 10; ++i) {
+		ammoList.push_back(new CAmmo2D);
+	}
+	ammoList.at(prevSize)->setActive(true);
+	return ammoList.at(prevSize);
+
 }
