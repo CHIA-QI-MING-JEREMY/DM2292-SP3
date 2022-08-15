@@ -49,12 +49,16 @@ CScene2D::~CScene2D(void)
 		cPlayer2D = NULL;
 	}
 
-	for (unsigned int i = 0; i < enemyVector.size(); i++)
+	for (unsigned int i = 0; i < enemyVectors.size(); i++)
 	{
-		delete enemyVector[i];
-		enemyVector[i] = NULL;
+		for (unsigned int j = 0; j < enemyVectors[i].size(); ++j)
+		{
+			delete enemyVectors[i][j];
+			enemyVectors[i][j] = NULL;
+		}
+		enemyVectors[i].clear();
 	}
-	enemyVector.clear();
+	enemyVectors.clear();
 
 	if (cGUI_Scene2D)
 	{
@@ -82,36 +86,32 @@ bool CScene2D::Init(void)
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
 	
+	maxNumOfMaps = 2;
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
 	cMap2D->SetShader("Shader2D");
 	// Initialise the instance
-	if (cMap2D->Init(3, CSettings::GetInstance()->NUM_TILES_YAXIS, CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
+	if (cMap2D->Init(maxNumOfMaps, CSettings::GetInstance()->NUM_TILES_YAXIS, CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_LabMap_Level_01.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_01.csv", 0) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load A1 Map Level 01" << endl;
+		cout << "Failed to load Jungle Map Level 01" << endl;
 		return false;
 	}
-	if (cMap2D->LoadMap("Maps/DM2213_Map_A1_Win.csv", 1) == false)
+	// Load the map into an array
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_02.csv", 1) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load A1 Map Win" << endl;
+		cout << "Failed to load Jungle Map Level 02" << endl;
 		return false;
 	}
-	if (cMap2D->LoadMap("Maps/DM2213_Map_A1_Lose.csv", 2) == false)
-	{
-		// The loading of a map has failed. Return false
-		cout << "Failed to load A1 Map Lose" << endl;
-		return false;
-	}
-	
+
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Pass shader to cPlayer2D
@@ -123,41 +123,63 @@ bool CScene2D::Init(void)
 		return false;
 	}
 
-	// Create and initialise the CEnemy2D
-	enemyVector.clear();
-	while (true)
+	//clear the individual enemy vectors inside enemyVectors
+	for (int i = 0; i < enemyVectors.size(); ++i)
 	{
-		CEnemy2D* cEnemy2D = new CEnemy2D();
-		// Pass shader to cEnemy2D
-		cEnemy2D->SetShader("Shader2D_Colour");
-		// Initialise the instance
-		if (cEnemy2D->Init() == true)
-		{
-			cEnemy2D->SetPlayer2D(cPlayer2D);
-			enemyVector.push_back(cEnemy2D);
-		}
-		else
-		{
-			// Break out of this loop if all enemies have been loaded
-			break;
-		}
+		enemyVectors[i].clear();
 	}
 
-	// create the alarm box vector
-	alarmBoxVector.clear();
-	alarmBoxVector = cMap2D->FindAllTiles(50);
+	//clear enemyVectors
+	enemyVectors.clear();
 
-	// assign alarm boxes to enemies (if applicable)
-	for (unsigned int i = 0; i < enemyVector.size(); i++)
+	//cycle through the maps and find the enemies
+		//and push them into the 2d enemy vector
+	for (int i = 0; i < maxNumOfMaps; ++i)
 	{
-		for (unsigned int j = 0; j < alarmBoxVector.size(); j++)
+		//current lvele to check for enemies
+		cMap2D->SetCurrentLevel(i);
+
+		vector<CEntity2D*> enemies; //temporary vector to contain all the enemies in this 1 map
+			//gets pushed into the enemyVectors vector once filled up
+
+		while (true)
 		{
-			if (enemyVector[i]->vec2Index.y == alarmBoxVector[j].y)
+			CEnemy2D* cEnemy2D = new CEnemy2D();
+			// Pass shader to cEnemy2D
+			cEnemy2D->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cEnemy2D->Init() == true)
 			{
-				enemyVector[i]->setAssignedAlarmBox(alarmBoxVector[j]);
+				cEnemy2D->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cEnemy2D); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
 			}
 		}
+
+		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 	}
+
+	cMap2D->SetCurrentLevel(0); //reset level
+
+	//// create the alarm box vector
+	//alarmBoxVector.clear();
+	//alarmBoxVector = cMap2D->FindAllTiles(50);
+
+	//// assign alarm boxes to enemies (if applicable)
+	//for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
+	//{
+	//	for (unsigned int j = 0; j < alarmBoxVector.size(); j++)
+	//	{
+	//		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index.y == alarmBoxVector[j].y)
+	//		{
+	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAssignedAlarmBox(alarmBoxVector[j]);
+	//		}
+	//	}
+	//}
 
 	// Initialise the Physics
 	cPhysics2D.Init();
@@ -204,52 +226,61 @@ bool CScene2D::Update(const double dElapsedTime)
 	// Call the cPlayer2D's update method before Map2D
 	// as we want to capture the inputs before Map2D update
 	cPlayer2D->Update(dElapsedTime);
-	
-	// Checks if alarm is active
-	if (!isAlarmActive)
-	{
-		unsigned int uiRow = -1;
-		unsigned int uiCol = -1;
-		if (cMap2D->FindValue(52, uiRow, uiCol))
-		{
-			isAlarmActive = true;
-			alarmTimer = maxAlarmTimer;
-		}
-	}
 
-	if (alarmTimer <= 0.0)
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_F7))
 	{
-		alarmTimer = maxAlarmTimer;
-		isAlarmActive = false;
-		cMap2D->ReplaceTiles(52, 51);
+		cMap2D->SetCurrentLevel(0);
 	}
-	else
+	if (cKeyboardController->IsKeyReleased(GLFW_KEY_F8))
 	{
-		alarmTimer -= dElapsedTime;
+		cMap2D->SetCurrentLevel(1);
 	}
+	
+	//// Checks if alarm is active
+	//if (!isAlarmActive)
+	//{
+	//	unsigned int uiRow = -1;
+	//	unsigned int uiCol = -1;
+	//	if (cMap2D->FindValue(52, uiRow, uiCol))
+	//	{
+	//		isAlarmActive = true;
+	//		alarmTimer = maxAlarmTimer;
+	//	}
+	//}
+
+	//if (alarmTimer <= 0.0)
+	//{
+	//	alarmTimer = maxAlarmTimer;
+	//	isAlarmActive = false;
+	//	cMap2D->ReplaceTiles(52, 51);
+	//}
+	//else
+	//{
+	//	alarmTimer -= dElapsedTime;
+	//}
 
 	// Call all of the cEnemy2D's update methods before Map2D
 	// as we want to capture the updates before Map2D update
-	for (unsigned int i = 0; i < enemyVector.size(); i++)
+	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
-		// informs all enemies that the alarm has been activated
-		if (isAlarmActive && !enemyVector[i]->getAlarmState() && alarmTimer > 0.0)
-		{
-			enemyVector[i]->setAlarmState(true);
-		}
-		else if (!isAlarmActive && enemyVector[i]->getAlarmState() && alarmTimer == maxAlarmTimer)
-		{
-			enemyVector[i]->setAlarmState(false);
-		}
+		//// informs all enemies that the alarm has been activated
+		//if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer > 0.0)
+		//{
+		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
+		//}
+		//else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer == maxAlarmTimer)
+		//{
+		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
+		//}
 
-		enemyVector[i]->Update(dElapsedTime);
+		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 
 		// deletes enemies if they die
-		if (enemyVector[i]->getHealth() <= 0)
+		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
-			delete enemyVector[i];
-			enemyVector[i] = NULL;
-			enemyVector.erase(enemyVector.begin() + i);
+			delete enemyVectors[cMap2D->GetCurrentLevel()][i];
+			enemyVectors[cMap2D->GetCurrentLevel()][i] = NULL;
+			enemyVectors[cMap2D->GetCurrentLevel()].erase(enemyVectors[cMap2D->GetCurrentLevel()].begin() + i);
 		}
 	}
 
@@ -286,13 +317,13 @@ bool CScene2D::Update(const double dElapsedTime)
 	// Player Attacks (TO DO)
 	if (cPlayer2D->getPlayerAttackStatus())
 	{
-		for (int i = 0; i < enemyVector.size(); i++)
+		for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 		{
-			if (cPhysics2D.CalculateDistance(enemyVector[i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
+			if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
 			{
-				int remainingHealth = enemyVector[i]->getHealth() - 25;
+				int remainingHealth = enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25;
 				cout << remainingHealth << endl;
-				enemyVector[i]->setHealth(remainingHealth);
+				enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(remainingHealth);
 			}
 		}
 		cPlayer2D->setPlayerAttackStatus(false);
@@ -304,7 +335,7 @@ bool CScene2D::Update(const double dElapsedTime)
 	// Check if the game should go to the next level
 	if (cGameManager->bLevelCompleted == true)
 	{
-		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
+		//cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bLevelCompleted = false;
 	}
 
@@ -312,10 +343,13 @@ bool CScene2D::Update(const double dElapsedTime)
 	if (cGameManager->bPlayerWon == true)
 	{
 		// Deletes all enemies
-		enemyVector.erase(enemyVector.begin(), enemyVector.end());
+		for (int i = 0; i < maxNumOfMaps; ++i)
+		{
+			enemyVectors[i].erase(enemyVectors[i].begin(), enemyVectors[i].end());
+		}
 		
 		// End the game and switch to win screen
-		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
+		//cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bPlayerWon = false;
 		return false;
 	}
@@ -323,10 +357,13 @@ bool CScene2D::Update(const double dElapsedTime)
 	else if (cGameManager->bPlayerLost == true)
 	{
 		// Deletes all enemies
-		enemyVector.erase(enemyVector.begin(), enemyVector.end());
+		for (int i = 0; i < maxNumOfMaps; ++i)
+		{
+			enemyVectors[i].erase(enemyVectors[i].begin(), enemyVectors[i].end());
+		}
 		
 		// End the game and switch to lose screen
-		cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 2);
+		//cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 2);
 		cGameManager->bPlayerLost = false;
 		return false;
 	}
@@ -363,14 +400,14 @@ void CScene2D::Render(void)
 	cMap2D->PostRender();
 
 	// Calls the CEnemy2D's PreRender()
-	for (unsigned int i = 0; i < enemyVector.size(); i++)
+	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
 		// Calls the CEnemy2D's PreRender()
-		enemyVector[i]->PreRender();
+		enemyVectors[cMap2D->GetCurrentLevel()][i]->PreRender();
 		// Calls the CEnemy2D's Render()
-		enemyVector[i]->Render();
+		enemyVectors[cMap2D->GetCurrentLevel()][i]->Render();
 		// Calls the CPlayer2D's PostRender()
-		enemyVector[i]->PostRender();
+		enemyVectors[cMap2D->GetCurrentLevel()][i]->PostRender();
 	}
 
 	// Calls the CPlayer2D's PreRender()

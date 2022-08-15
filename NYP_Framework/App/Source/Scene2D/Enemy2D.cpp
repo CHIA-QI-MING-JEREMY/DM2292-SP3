@@ -196,492 +196,492 @@ void CEnemy2D::Update(const double dElapsedTime)
 		//if (cPlayer2D->getPlayerMoveStatus())
 		//{
 
-	switch (sCurrentFSM)
-	{
-	case IDLE:
-		if (isAlarmOn)
-		{
-			sCurrentFSM = ALERT_IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Alert_Idle State" << endl;
-			break;
-		}
+	//switch (sCurrentFSM)
+	//{
+	//case IDLE:
+	//	if (isAlarmOn)
+	//	{
+	//		sCurrentFSM = ALERT_IDLE;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Alert_Idle State" << endl;
+	//		break;
+	//	}
 
-		if (vec2Direction.x > 0)
-		{
-			// Play the "idleR" animation
-			animatedSprites->PlayAnimation("idleR", -1, 1.f);
-		}
-		else if(vec2Direction.x < 0)
-		{
-			// Play the "idleL" animation
-			animatedSprites->PlayAnimation("idleL", -1, 1.f);
-		}
+	//	if (vec2Direction.x > 0)
+	//	{
+	//		// Play the "idleR" animation
+	//		animatedSprites->PlayAnimation("idleR", -1, 1.f);
+	//	}
+	//	else if(vec2Direction.x < 0)
+	//	{
+	//		// Play the "idleL" animation
+	//		animatedSprites->PlayAnimation("idleL", -1, 1.f);
+	//	}
 
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
-		}
-		iFSMCounter++;
-		break;
-	case PATROL:
-		if (isAlarmOn)
-		{
-			sCurrentFSM = ALERT_IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Alert_Idle State" << endl;
-			break;
-		}
-		
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-		{
-			srand(static_cast<unsigned> (time(0)));
-			int randomState = rand() % 100;
-			cout << randomState << endl;
-			if (randomState < 50)
-			{
-				sCurrentFSM = TRACK;
-				cout << "Switching to Track State" << endl;
-			}
-			else
-			{
-				if (!isAlarmerActive && !isAlarmOn)
-				{
-					sCurrentFSM = WARN;
-					isAlarmerActive = true;
-					cout << "Switching to Warn State" << endl;
-				}
-				else
-				{
-					sCurrentFSM = TRACK;
-					cout << "Switching to Track State" << endl;
-				}
-			}
-			iFSMCounter = 0;
-		}
-		else
-		{
-			if (vec2Index == waypoints[currentWaypointCounter])
-			{
-				currentWaypointCounter++;
-				sCurrentFSM = IDLE;
-				cout << "Switching to Idle State" << endl;
-			}
+	//	if (iFSMCounter > iMaxFSMCounter)
+	//	{
+	//		sCurrentFSM = PATROL;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Patrol State" << endl;
+	//	}
+	//	iFSMCounter++;
+	//	break;
+	//case PATROL:
+	//	if (isAlarmOn)
+	//	{
+	//		sCurrentFSM = ALERT_IDLE;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Alert_Idle State" << endl;
+	//		break;
+	//	}
+	//	
+	//	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+	//	{
+	//		srand(static_cast<unsigned> (time(0)));
+	//		int randomState = rand() % 100;
+	//		cout << randomState << endl;
+	//		if (randomState < 50)
+	//		{
+	//			sCurrentFSM = TRACK;
+	//			cout << "Switching to Track State" << endl;
+	//		}
+	//		else
+	//		{
+	//			if (!isAlarmerActive && !isAlarmOn)
+	//			{
+	//				sCurrentFSM = WARN;
+	//				isAlarmerActive = true;
+	//				cout << "Switching to Warn State" << endl;
+	//			}
+	//			else
+	//			{
+	//				sCurrentFSM = TRACK;
+	//				cout << "Switching to Track State" << endl;
+	//			}
+	//		}
+	//		iFSMCounter = 0;
+	//	}
+	//	else
+	//	{
+	//		if (vec2Index == waypoints[currentWaypointCounter])
+	//		{
+	//			currentWaypointCounter++;
+	//			sCurrentFSM = IDLE;
+	//			cout << "Switching to Idle State" << endl;
+	//		}
 
-			if (currentWaypointCounter < maxWaypointCounter)
-			{
-				auto path = cMap2D->PathFind(vec2Index,							// start pos
-											waypoints[currentWaypointCounter],	// target pos
-											heuristic::euclidean,				// heuristic
-											10);								// weight
+	//		if (currentWaypointCounter < maxWaypointCounter)
+	//		{
+	//			auto path = cMap2D->PathFind(vec2Index,							// start pos
+	//										waypoints[currentWaypointCounter],	// target pos
+	//										heuristic::euclidean,				// heuristic
+	//										10);								// weight
 
-				// Calculate new destination
-				bool bFirstPosition = true;
-				for (const auto& coord : path)
-				{
-					//std::cout << coord.x << ", " << coord.y << "\n";
-					if (bFirstPosition == true)
-					{
-						// Set a destination
-						vec2Destination = coord;
-						// Calculate the direction between enemy2D and this detination
-						vec2Direction = vec2Destination - vec2Index;
-						bFirstPosition = false;
-					}
-					else
-					{
-						if ((coord - vec2Destination) == vec2Direction)
-						{
-							// Set a destination
-							vec2Destination = coord;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
-			else
-			{
-				currentWaypointCounter = 0;
-			}
+	//			// Calculate new destination
+	//			bool bFirstPosition = true;
+	//			for (const auto& coord : path)
+	//			{
+	//				//std::cout << coord.x << ", " << coord.y << "\n";
+	//				if (bFirstPosition == true)
+	//				{
+	//					// Set a destination
+	//					vec2Destination = coord;
+	//					// Calculate the direction between enemy2D and this detination
+	//					vec2Direction = vec2Destination - vec2Index;
+	//					bFirstPosition = false;
+	//				}
+	//				else
+	//				{
+	//					if ((coord - vec2Destination) == vec2Direction)
+	//					{
+	//						// Set a destination
+	//						vec2Destination = coord;
+	//					}
+	//					else
+	//					{
+	//						break;
+	//					}
+	//				}
+	//			}
+	//		}
+	//		else
+	//		{
+	//			currentWaypointCounter = 0;
+	//		}
 
-			UpdatePosition();
-		}
-		break;
-	case TRACK:
-		if (isAlarmOn)
-		{
-			sCurrentFSM = ALERT_IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Alert_Idle State" << endl;
-			break;
-		}
-		
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-		{
-			//cout << "i32vec2Destination : " << i32vec2Destination.x 
-			//		<< ", " << i32vec2Destination.y << endl;
-			//cout << "i32vec2Direction : " << i32vec2Direction.x 
-			//		<< ", " << i32vec2Direction.y << endl;
-			//system("pause");
+	//		UpdatePosition();
+	//	}
+	//	break;
+	//case TRACK:
+	//	if (isAlarmOn)
+	//	{
+	//		sCurrentFSM = ALERT_IDLE;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Alert_Idle State" << endl;
+	//		break;
+	//	}
+	//	
+	//	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+	//	{
+	//		//cout << "i32vec2Destination : " << i32vec2Destination.x 
+	//		//		<< ", " << i32vec2Destination.y << endl;
+	//		//cout << "i32vec2Direction : " << i32vec2Direction.x 
+	//		//		<< ", " << i32vec2Direction.y << endl;
+	//		//system("pause");
 
-			// Attack
-			// Update direction to move towards for attack
-			//UpdateDirection();
+	//		// Attack
+	//		// Update direction to move towards for attack
+	//		//UpdateDirection();
 
-			// Calculate a path to the player
-			/*cMap2D->PrintSelf();
-			cout << "StartPos: " << vec2Index.x << ", " << vec2Index.y << endl;
-			cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " << cPlayer2D->vec2Index.y << endl;*/
-					
-			auto path = cMap2D->PathFind(vec2Index,				// start pos
-										cPlayer2D->vec2Index,	// target pos
-										heuristic::euclidean,	// heuristic
-										10);					// weight
+	//		// Calculate a path to the player
+	//		/*cMap2D->PrintSelf();
+	//		cout << "StartPos: " << vec2Index.x << ", " << vec2Index.y << endl;
+	//		cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " << cPlayer2D->vec2Index.y << endl;*/
+	//				
+	//		auto path = cMap2D->PathFind(vec2Index,				// start pos
+	//									cPlayer2D->vec2Index,	// target pos
+	//									heuristic::euclidean,	// heuristic
+	//									10);					// weight
 
-			/*cout << "=== Printing out the path ===" << endl;*/
+	//		/*cout << "=== Printing out the path ===" << endl;*/
 
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
-				if (bFirstPosition == true)
-				{
-					// Set a destination
-					vec2Destination = coord;
-					// Calculate the direction between enemy2D and this detination
-					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
-				}
-				else
-				{
-					if ((coord - vec2Destination) == vec2Direction)
-					{
-						// Set a destination
-						vec2Destination = coord;
-					}
-					else
-					{
-						break;
-					}
-				}
+	//		// Calculate new destination
+	//		bool bFirstPosition = true;
+	//		for (const auto& coord : path)
+	//		{
+	//			//std::cout << coord.x << ", " << coord.y << "\n";
+	//			if (bFirstPosition == true)
+	//			{
+	//				// Set a destination
+	//				vec2Destination = coord;
+	//				// Calculate the direction between enemy2D and this detination
+	//				vec2Direction = vec2Destination - vec2Index;
+	//				bFirstPosition = false;
+	//			}
+	//			else
+	//			{
+	//				if ((coord - vec2Destination) == vec2Direction)
+	//				{
+	//					// Set a destination
+	//					vec2Destination = coord;
+	//				}
+	//				else
+	//				{
+	//					break;
+	//				}
+	//			}
 
-				// debug code
-				/*cout << "vec2Destination: " << vec2Destination.x << ", " << vec2Destination.y << endl;
-				cout << "vec2Direction: " << vec2Direction.x << ", " << vec2Direction.y << endl;
-				system("pause");*/
-			}
-					
-			// Update the Enemy2D's position
-			UpdatePosition();
+	//			// debug code
+	//			/*cout << "vec2Destination: " << vec2Destination.x << ", " << vec2Destination.y << endl;
+	//			cout << "vec2Direction: " << vec2Direction.x << ", " << vec2Direction.y << endl;
+	//			system("pause");*/
+	//		}
+	//				
+	//		// Update the Enemy2D's position
+	//		UpdatePosition();
 
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
-			{
-				sCurrentFSM = ATTACK;
-				cout << "Switching to Attack State" << endl;
-				iFSMCounter = 0;
-			}
-		}
-		else
-		{
-			sCurrentFSM = PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Patrol state" << endl;
-		}
-		break;
-	case ATTACK:
-	{
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
-		{
-			InteractWithPlayer();
-		}
-		else
-		{
-			sCurrentFSM = TRACK;
-			cout << "Switching to Track state" << endl;
-		}
-		break;
-	}
-	case WARN:
-	{
-		auto path = cMap2D->PathFind(vec2Index,							// start pos
-									assignedAlarmBox,					// target pos
-									heuristic::euclidean,				// heuristic
-									10);								// weight
+	//		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
+	//		{
+	//			sCurrentFSM = ATTACK;
+	//			cout << "Switching to Attack State" << endl;
+	//			iFSMCounter = 0;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		sCurrentFSM = PATROL;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Patrol state" << endl;
+	//	}
+	//	break;
+	//case ATTACK:
+	//{
+	//	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
+	//	{
+	//		InteractWithPlayer();
+	//	}
+	//	else
+	//	{
+	//		sCurrentFSM = TRACK;
+	//		cout << "Switching to Track state" << endl;
+	//	}
+	//	break;
+	//}
+	//case WARN:
+	//{
+	//	auto path = cMap2D->PathFind(vec2Index,							// start pos
+	//								assignedAlarmBox,					// target pos
+	//								heuristic::euclidean,				// heuristic
+	//								10);								// weight
 
-		// Calculate new destination
-		bool bFirstPosition = true;
-		for (const auto& coord : path)
-		{
-			//std::cout << coord.x << ", " << coord.y << "\n";
-			if (bFirstPosition == true)
-			{
-				// Set a destination
-				vec2Destination = coord;
-				// Calculate the direction between enemy2D and this detination
-				vec2Direction = vec2Destination - vec2Index;
-				bFirstPosition = false;
-			}
-			else
-			{
-				if ((coord - vec2Destination) == vec2Direction)
-				{
-					// Set a destination
-					vec2Destination = coord;
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
+	//	// Calculate new destination
+	//	bool bFirstPosition = true;
+	//	for (const auto& coord : path)
+	//	{
+	//		//std::cout << coord.x << ", " << coord.y << "\n";
+	//		if (bFirstPosition == true)
+	//		{
+	//			// Set a destination
+	//			vec2Destination = coord;
+	//			// Calculate the direction between enemy2D and this detination
+	//			vec2Direction = vec2Destination - vec2Index;
+	//			bFirstPosition = false;
+	//		}
+	//		else
+	//		{
+	//			if ((coord - vec2Destination) == vec2Direction)
+	//			{
+	//				// Set a destination
+	//				vec2Destination = coord;
+	//			}
+	//			else
+	//			{
+	//				break;
+	//			}
+	//		}
+	//	}
 
-		// Update the Enemy2D's position
-		UpdatePosition();
-		
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 50)
-		{
-			sCurrentFSM = ALARM_TRIGGER;
-			cout << "Switching to ALARM_TRIGGER state" << endl;
+	//	// Update the Enemy2D's position
+	//	UpdatePosition();
+	//	
+	//	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 50)
+	//	{
+	//		sCurrentFSM = ALARM_TRIGGER;
+	//		cout << "Switching to ALARM_TRIGGER state" << endl;
 
-			warnTimer = maxWarnTimer;
-		}
+	//		warnTimer = maxWarnTimer;
+	//	}
 
-		break;
-	}
-	case ALARM_TRIGGER:
-	{
-		if (vec2Direction.x > 0)
-		{
-			// Play the "idleR" animation
-			animatedSprites->PlayAnimation("idleR", -1, 1.f);
-		}
-		else if (vec2Direction.x < 0)
-		{
-			// Play the "idleL" animation
-			animatedSprites->PlayAnimation("idleL", -1, 1.f);
-		}
-		
-		if (warnTimer <= 0.0 && !isAlarmOn)
-		{
-			InteractWithMap();
-		}
-		else if (warnTimer > 0.0 && !isAlarmOn)
-		{
-			warnTimer -= dElapsedTime;
-		}
-		
-		if (isAlarmOn)
-		{
-			isAlarmerActive = false;
+	//	break;
+	//}
+	//case ALARM_TRIGGER:
+	//{
+	//	if (vec2Direction.x > 0)
+	//	{
+	//		// Play the "idleR" animation
+	//		animatedSprites->PlayAnimation("idleR", -1, 1.f);
+	//	}
+	//	else if (vec2Direction.x < 0)
+	//	{
+	//		// Play the "idleL" animation
+	//		animatedSprites->PlayAnimation("idleL", -1, 1.f);
+	//	}
+	//	
+	//	if (warnTimer <= 0.0 && !isAlarmOn)
+	//	{
+	//		InteractWithMap();
+	//	}
+	//	else if (warnTimer > 0.0 && !isAlarmOn)
+	//	{
+	//		warnTimer -= dElapsedTime;
+	//	}
+	//	
+	//	if (isAlarmOn)
+	//	{
+	//		isAlarmerActive = false;
 
-			sCurrentFSM = ALERT_IDLE;
-			cout << "Switching to Alert_Idle state" << endl;
-		}
-		break;
-	}
-	case ALERT_IDLE:
-	{
-		if (vec2Direction.x > 0)
-		{
-			// Play the "idleR" animation
-			animatedSprites->PlayAnimation("idleR", -1, 1.f);
-		}
-		else if (vec2Direction.x < 0)
-		{
-			// Play the "idleL" animation
-			animatedSprites->PlayAnimation("idleL", -1, 1.f);
-		}
-		
-		if (!isAlarmOn)
-		{
-			sCurrentFSM = IDLE;
-			cout << "Switching to Idle State" << endl;
-			iFSMCounter = 0;
-			break;
-		}
-		
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = ALERT_PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Alert Patrol State" << endl;
-		}
-		iFSMCounter += 3;
-		break;
-	}
-	case ALERT_PATROL:
-	{
-		if (!isAlarmOn)
-		{
-			sCurrentFSM = IDLE;
-			cout << "Switching to Idle State" << endl;
-			iFSMCounter = 0;
-			break;
-		}
-		
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 7.5f)
-		{
-			sCurrentFSM = ALERT_TRACK;
-			cout << "Switching to Alert Track State" << endl;
-		}
-		else
-		{
-			if (vec2Index == waypoints[currentWaypointCounter])
-			{
-				currentWaypointCounter++;
-				sCurrentFSM = ALERT_IDLE;
-				cout << "Switching to Alert Idle State" << endl;
-			}
+	//		sCurrentFSM = ALERT_IDLE;
+	//		cout << "Switching to Alert_Idle state" << endl;
+	//	}
+	//	break;
+	//}
+	//case ALERT_IDLE:
+	//{
+	//	if (vec2Direction.x > 0)
+	//	{
+	//		// Play the "idleR" animation
+	//		animatedSprites->PlayAnimation("idleR", -1, 1.f);
+	//	}
+	//	else if (vec2Direction.x < 0)
+	//	{
+	//		// Play the "idleL" animation
+	//		animatedSprites->PlayAnimation("idleL", -1, 1.f);
+	//	}
+	//	
+	//	if (!isAlarmOn)
+	//	{
+	//		sCurrentFSM = IDLE;
+	//		cout << "Switching to Idle State" << endl;
+	//		iFSMCounter = 0;
+	//		break;
+	//	}
+	//	
+	//	if (iFSMCounter > iMaxFSMCounter)
+	//	{
+	//		sCurrentFSM = ALERT_PATROL;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Alert Patrol State" << endl;
+	//	}
+	//	iFSMCounter += 3;
+	//	break;
+	//}
+	//case ALERT_PATROL:
+	//{
+	//	if (!isAlarmOn)
+	//	{
+	//		sCurrentFSM = IDLE;
+	//		cout << "Switching to Idle State" << endl;
+	//		iFSMCounter = 0;
+	//		break;
+	//	}
+	//	
+	//	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 7.5f)
+	//	{
+	//		sCurrentFSM = ALERT_TRACK;
+	//		cout << "Switching to Alert Track State" << endl;
+	//	}
+	//	else
+	//	{
+	//		if (vec2Index == waypoints[currentWaypointCounter])
+	//		{
+	//			currentWaypointCounter++;
+	//			sCurrentFSM = ALERT_IDLE;
+	//			cout << "Switching to Alert Idle State" << endl;
+	//		}
 
-			if (currentWaypointCounter < maxWaypointCounter)
-			{
-				auto path = cMap2D->PathFind(vec2Index,							// start pos
-											waypoints[currentWaypointCounter],	// target pos
-											heuristic::euclidean,				// heuristic
-											10);								// weight
+	//		if (currentWaypointCounter < maxWaypointCounter)
+	//		{
+	//			auto path = cMap2D->PathFind(vec2Index,							// start pos
+	//										waypoints[currentWaypointCounter],	// target pos
+	//										heuristic::euclidean,				// heuristic
+	//										10);								// weight
 
-				// Calculate new destination
-				bool bFirstPosition = true;
-				for (const auto& coord : path)
-				{
-					//std::cout << coord.x << ", " << coord.y << "\n";
-					if (bFirstPosition == true)
-					{
-						// Set a destination
-						vec2Destination = coord;
-						// Calculate the direction between enemy2D and this detination
-						vec2Direction = vec2Destination - vec2Index;
-						bFirstPosition = false;
-					}
-					else
-					{
-						if ((coord - vec2Destination) == vec2Direction)
-						{
-							// Set a destination
-							vec2Destination = coord;
-						}
-						else
-						{
-							break;
-						}
-					}
-				}
-			}
-			else
-			{
-				currentWaypointCounter = 0;
-			}
+	//			// Calculate new destination
+	//			bool bFirstPosition = true;
+	//			for (const auto& coord : path)
+	//			{
+	//				//std::cout << coord.x << ", " << coord.y << "\n";
+	//				if (bFirstPosition == true)
+	//				{
+	//					// Set a destination
+	//					vec2Destination = coord;
+	//					// Calculate the direction between enemy2D and this detination
+	//					vec2Direction = vec2Destination - vec2Index;
+	//					bFirstPosition = false;
+	//				}
+	//				else
+	//				{
+	//					if ((coord - vec2Destination) == vec2Direction)
+	//					{
+	//						// Set a destination
+	//						vec2Destination = coord;
+	//					}
+	//					else
+	//					{
+	//						break;
+	//					}
+	//				}
+	//			}
+	//		}
+	//		else
+	//		{
+	//			currentWaypointCounter = 0;
+	//		}
 
-			UpdatePosition();
-		}
-		break;
-	}
-	case ALERT_TRACK:
-	{
-		if (!isAlarmOn)
-		{
-			sCurrentFSM = IDLE;
-			cout << "Switching to Idle State" << endl;
-			iFSMCounter = 0;
-			break;
-		}
-		
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 7.5f)
-		{
-			//cout << "i32vec2Destination : " << i32vec2Destination.x 
-			//		<< ", " << i32vec2Destination.y << endl;
-			//cout << "i32vec2Direction : " << i32vec2Direction.x 
-			//		<< ", " << i32vec2Direction.y << endl;
-			//system("pause");
+	//		UpdatePosition();
+	//	}
+	//	break;
+	//}
+	//case ALERT_TRACK:
+	//{
+	//	if (!isAlarmOn)
+	//	{
+	//		sCurrentFSM = IDLE;
+	//		cout << "Switching to Idle State" << endl;
+	//		iFSMCounter = 0;
+	//		break;
+	//	}
+	//	
+	//	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 7.5f)
+	//	{
+	//		//cout << "i32vec2Destination : " << i32vec2Destination.x 
+	//		//		<< ", " << i32vec2Destination.y << endl;
+	//		//cout << "i32vec2Direction : " << i32vec2Direction.x 
+	//		//		<< ", " << i32vec2Direction.y << endl;
+	//		//system("pause");
 
-			// Attack
-			// Update direction to move towards for attack
-			//UpdateDirection();
+	//		// Attack
+	//		// Update direction to move towards for attack
+	//		//UpdateDirection();
 
-			// Calculate a path to the player
-			/*cMap2D->PrintSelf();
-			cout << "StartPos: " << vec2Index.x << ", " << vec2Index.y << endl;
-			cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " << cPlayer2D->vec2Index.y << endl;*/
+	//		// Calculate a path to the player
+	//		/*cMap2D->PrintSelf();
+	//		cout << "StartPos: " << vec2Index.x << ", " << vec2Index.y << endl;
+	//		cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " << cPlayer2D->vec2Index.y << endl;*/
 
-			auto path = cMap2D->PathFind(vec2Index,				// start pos
-										cPlayer2D->vec2Index,	// target pos
-										heuristic::euclidean,	// heuristic
-										10);					// weight
+	//		auto path = cMap2D->PathFind(vec2Index,				// start pos
+	//									cPlayer2D->vec2Index,	// target pos
+	//									heuristic::euclidean,	// heuristic
+	//									10);					// weight
 
-			/*cout << "=== Printing out the path ===" << endl;*/
+	//		/*cout << "=== Printing out the path ===" << endl;*/
 
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
-				if (bFirstPosition == true)
-				{
-					// Set a destination
-					vec2Destination = coord;
-					// Calculate the direction between enemy2D and this detination
-					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
-				}
-				else
-				{
-					if ((coord - vec2Destination) == vec2Direction)
-					{
-						// Set a destination
-						vec2Destination = coord;
-					}
-					else
-					{
-						break;
-					}
-				}
+	//		// Calculate new destination
+	//		bool bFirstPosition = true;
+	//		for (const auto& coord : path)
+	//		{
+	//			//std::cout << coord.x << ", " << coord.y << "\n";
+	//			if (bFirstPosition == true)
+	//			{
+	//				// Set a destination
+	//				vec2Destination = coord;
+	//				// Calculate the direction between enemy2D and this detination
+	//				vec2Direction = vec2Destination - vec2Index;
+	//				bFirstPosition = false;
+	//			}
+	//			else
+	//			{
+	//				if ((coord - vec2Destination) == vec2Direction)
+	//				{
+	//					// Set a destination
+	//					vec2Destination = coord;
+	//				}
+	//				else
+	//				{
+	//					break;
+	//				}
+	//			}
 
-				// debug code
-				/*cout << "vec2Destination: " << vec2Destination.x << ", " << vec2Destination.y << endl;
-				cout << "vec2Direction: " << vec2Direction.x << ", " << vec2Direction.y << endl;
-				system("pause");*/
-			}
+	//			// debug code
+	//			/*cout << "vec2Destination: " << vec2Destination.x << ", " << vec2Destination.y << endl;
+	//			cout << "vec2Direction: " << vec2Direction.x << ", " << vec2Direction.y << endl;
+	//			system("pause");*/
+	//		}
 
-			// Update the Enemy2D's position
-			UpdatePosition();
+	//		// Update the Enemy2D's position
+	//		UpdatePosition();
 
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
-			{
-				sCurrentFSM = ALERT_ATTACK;
-				cout << "Switching to Alert Attack State" << endl;
-				iFSMCounter = 0;
-			}
-		}
-		else
-		{
-			sCurrentFSM = ALERT_PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Alert Patrol state" << endl;
-		}
-		break;
-	}
-	case ALERT_ATTACK:
-	{
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
-		{
-			InteractWithPlayer();
-		}
-		else
-		{
-			sCurrentFSM = ALERT_TRACK;
-			cout << "Switching to Alert Track state" << endl;
-		}
-		break;
-	}
-	default:
-		break;
-	}
+	//		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
+	//		{
+	//			sCurrentFSM = ALERT_ATTACK;
+	//			cout << "Switching to Alert Attack State" << endl;
+	//			iFSMCounter = 0;
+	//		}
+	//	}
+	//	else
+	//	{
+	//		sCurrentFSM = ALERT_PATROL;
+	//		iFSMCounter = 0;
+	//		cout << "Switching to Alert Patrol state" << endl;
+	//	}
+	//	break;
+	//}
+	//case ALERT_ATTACK:
+	//{
+	//	if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 0.5f)
+	//	{
+	//		InteractWithPlayer();
+	//	}
+	//	else
+	//	{
+	//		sCurrentFSM = ALERT_TRACK;
+	//		cout << "Switching to Alert Track state" << endl;
+	//	}
+	//	break;
+	//}
+	//default:
+	//	break;
+	//}
 
 
 		//}

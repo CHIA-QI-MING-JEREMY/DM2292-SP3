@@ -82,6 +82,9 @@ protected:
 	// A vector containing the instance of CEnemy2Ds
 	vector<CEntity2D*> enemyVector;
 
+	// Vector containing vectors of the enemies for each map
+	vector<vector<CEntity2D*>> enemyVectors;
+
 	// Physics
 	CPhysics2D cPhysics2D;
 
@@ -105,6 +108,8 @@ protected:
 	bool isAlarmActive;
 	double maxAlarmTimer;
 	double alarmTimer;
+
+	int maxNumOfMaps; //to set the number of maps to laod in for 1 scene and the number of maps to check for enemies to push in
 
 	// Constructor
 	CScene2D(void);
