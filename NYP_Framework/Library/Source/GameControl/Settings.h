@@ -18,9 +18,6 @@
 // Include GLFW
 #include <GLFW/glfw3.h>
 
-// Include GLM
-#include <includes/glm.hpp>
-
 class CSettings : public CSingletonTemplate<CSettings>
 {
 	friend CSingletonTemplate<CSettings>;
