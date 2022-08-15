@@ -41,6 +41,9 @@ class CMap2D;
 // Include AnimatedSprites
 #include "Primitives/SpriteAnimation.h"
 
+// Include Camera
+#include "Primitives/Camera2D.h"
+
 class JEnemy2DVT : public CEnemy2D
 {
 public:
@@ -137,6 +140,9 @@ protected:
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
+
+	// Handler to the camera instance
+	Camera2D* camera2D;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;

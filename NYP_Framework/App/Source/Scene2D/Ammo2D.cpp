@@ -26,6 +26,7 @@ CAmmo2D::CAmmo2D()
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, animatedSprites(NULL)
+	, camera2D(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 {
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
@@ -80,6 +81,8 @@ bool CAmmo2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
+	camera2D = Camera2D::GetInstance();
+
 	// Get the handler to the CSoundController instance
 	cSoundController = CSoundController::GetInstance();
 
@@ -98,7 +101,7 @@ bool CAmmo2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the ammo texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Ninja.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load ammo texture" << std::endl;
@@ -182,9 +185,19 @@ void CAmmo2D::Render(void)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-													vec2UVCoordinate.y,
-													0.0f));
+	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+	glm::vec2 cameraPos = camera2D->getPos();
+
+	glm::vec2 IndexPos = vec2Index;
+
+	glm::vec2 actualPos = IndexPos - cameraPos + offset;
+	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
+	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
+	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
+
+	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
+
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
@@ -194,13 +207,9 @@ void CAmmo2D::Render(void)
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
-		//Render the Player sprite
-		glBindVertexArray(VAO);
-		//Render the tile
-		//quadMesh->Render();
-		//CS: Render the animated sprite
-		animatedSprites->Render();
-		glBindVertexArray(0);
+	//CS: Render the animated Sprite
+	animatedSprites->Render();
+
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

@@ -77,6 +77,12 @@
     <ClCompile Include="Source\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\JungleEnemy2DVT.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Ammo2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -135,6 +141,12 @@
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\PlayGameState.h">
       <Filter>GameStateManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Ammo2D.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JungleEnemy2DVT.h">
+      <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
