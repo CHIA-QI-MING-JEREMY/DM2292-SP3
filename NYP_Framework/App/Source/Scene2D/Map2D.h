@@ -35,6 +35,9 @@
 #include <queue>
 #include <functional>
 
+// Include camera
+#include "Primitives/Camera2D.h"
+
 // A structure storing information about Map Sizes
 struct MapSize {
 	unsigned int uiRowSize;
@@ -148,6 +151,9 @@ protected:
 	unsigned int uiCurLevel;
 	// The number of levels
 	unsigned int uiNumLevels;
+	
+	// The handler containing the instance of the camera
+	Camera2D* camera2D;
 
 	// A 1-D array which stores the map sizes for each level
 	MapSize* arrMapSizes;
