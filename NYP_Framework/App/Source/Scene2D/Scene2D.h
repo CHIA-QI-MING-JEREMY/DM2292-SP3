@@ -47,6 +47,9 @@
 // Game Manager
 #include "GameManager.h"
 
+// Camera
+#include "Primitives/Camera2D.h"
+
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
@@ -78,6 +81,9 @@ protected:
 
 	// The handler containing the instance of CPlayer2D
 	CPlayer2D* cPlayer2D;
+	
+	// The handler containing the instance of the camera
+	Camera2D* camera2D;
 
 	// A vector containing the instance of CEnemy2Ds
 	vector<CEntity2D*> enemyVector;
@@ -111,6 +117,10 @@ protected:
 
 	int maxNumOfMaps; //to set the number of maps to laod in for 1 scene and the number of maps to check for enemies to push in
 
+	// zoom (just for demo)
+	// TODO: [SP3] Remove code
+	bool isZoomedIn = false;
+	
 	// Constructor
 	CScene2D(void);
 	// Destructor

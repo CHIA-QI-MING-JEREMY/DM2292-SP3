@@ -47,6 +47,9 @@ class CMap2D;
 //include ammo for firing
 #include "Ammo2D.h"
 
+// Include Camera2D
+#include "Primitives/Camera2D.h"
+
 class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
 {
 	friend CSingletonTemplate<CPlayer2D>;
@@ -104,6 +107,9 @@ protected:
 
 	// CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
+	
+	// The handler containing the instance of the camera
+	Camera2D* camera2D;
 
 	// Player's colour
 	glm::vec4 runtimeColour;

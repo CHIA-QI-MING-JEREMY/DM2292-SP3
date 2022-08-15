@@ -22,6 +22,7 @@ CScene2D::CScene2D(void)
 	, cKeyboardController(NULL)	
 	, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
+	, camera2D(NULL)
 	, cSoundController(NULL)
 {
 }
@@ -47,6 +48,12 @@ CScene2D::~CScene2D(void)
 	{
 		cPlayer2D->Destroy();
 		cPlayer2D = NULL;
+	}
+	
+	if (camera2D)
+	{
+		camera2D->Destroy();
+		camera2D = NULL;
 	}
 
 	for (unsigned int i = 0; i < enemyVectors.size(); i++)
@@ -199,6 +206,11 @@ bool CScene2D::Init(void)
 	// Create and initialise the cGameManager
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
+	
+	// Init the camera
+	camera2D = Camera2D::GetInstance();
+	camera2D->Reset();
+	camera2D->setTargetPos(cPlayer2D->vec2Index);
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -230,6 +242,29 @@ bool CScene2D::Init(void)
 */
 bool CScene2D::Update(const double dElapsedTime)
 {
+	// mouse Position demo
+	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
+	camPos = glm::normalize(camPos);
+	camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x * 2, cPlayer2D->vec2Index.y + camPos.y * 2);
+
+	camera2D->setTargetPos(camPos);
+	camera2D->Update(dElapsedTime);
+
+	// zoom demo
+	if (!isZoomedIn && cKeyboardController->IsKeyPressed('X')) {
+		camera2D->setTargetZoom(3.0f);
+		isZoomedIn = true;
+	}
+	else if (isZoomedIn && cKeyboardController->IsKeyPressed('X')) {
+		camera2D->setTargetZoom(1.0f);
+		isZoomedIn = false;
+	}
+
+	// click test
+	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB)) {
+		std::cout << camera2D->getBlockSelected().x << " " << camera2D->getBlockSelected().y << "\n";
+	}
+	
 	// Call the cPlayer2D's update method before Map2D
 	// as we want to capture the inputs before Map2D update
 	cPlayer2D->Update(dElapsedTime);

@@ -38,6 +38,9 @@ class CMap2D;
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+// Include Camera
+#include "Primitives/Camera2D.h"
+
 class CEnemy2D : public CEntity2D
 {
 public:
@@ -118,6 +121,9 @@ protected:
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
+
+	// Handler to the camera instance
+	Camera2D* camera2D;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
