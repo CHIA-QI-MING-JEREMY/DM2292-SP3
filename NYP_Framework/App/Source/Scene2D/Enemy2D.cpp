@@ -1351,3 +1351,36 @@ void CEnemy2D::UpdatePosition(void)
 		cSoundController->PlaySoundByID(3);
 	}
 }
+
+//called whenever an ammo is needed to be shot
+CEnemyAmmo2D* CEnemy2D::FetchAmmo()
+{
+	//Exercise 3a: Fetch a game object from m_goList and return it
+	for (std::vector<CEnemyAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CEnemyAmmo2D* ammo = (CEnemyAmmo2D*)*it;
+		if (ammo->getActive()) {
+			continue;
+		}
+		ammo->setActive(true);
+		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
+		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
+		return ammo;
+	}
+
+	//whenever ammoList runs out of ammo, create 10 ammo to use
+	//Get Size before adding 10
+	int prevSize = ammoList.size();
+	for (int i = 0; i < 10; ++i) {
+		ammoList.push_back(new CEnemyAmmo2D);
+	}
+	ammoList.at(prevSize)->setActive(true);
+	return ammoList.at(prevSize);
+
+}
+
+//return ammolist to the scene for pre, post and normal rendering
+std::vector<CEnemyAmmo2D*> CEnemy2D::getAmmoList(void)
+{
+	return ammoList;
+}

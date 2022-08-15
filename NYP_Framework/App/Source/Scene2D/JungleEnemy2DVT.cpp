@@ -153,13 +153,13 @@ bool JEnemy2DVT::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 
-	////Construct 100 inactive ammo and add into ammoList
-	//for (int i = 0; i < 100; ++i)
-	//{
-	//	CEnemyAmmo2D* cEnemyAmmo2D = new CEnemyAmmo2D();
-	//	cEnemyAmmo2D->SetShader("Shader2D");
-	//	ammoList.push_back(cEnemyAmmo2D);
-	//}
+	//Construct 100 inactive ammo and add into ammoList
+	for (int i = 0; i < 100; ++i)
+	{
+		CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
+		cEnemyAmmo2D->SetShader("Shader2D");
+		ammoList.push_back(cEnemyAmmo2D);
+	}
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = LEFT; //setting direction for ammo shooting
@@ -267,11 +267,11 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 				}
 			}
 
-			//// Shoot enemy ammo!
-			////shoot ammo in accordance to the direction enemy is facing
-			//CEnemyAmmo2D* ammo = FetchAmmo();
-			//ammo->setActive(true);
-			//ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CJEAmmoVT* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			cout << "Bam!" << shootingDirection << endl;
 
 			sCurrentFSM = RELOAD;
@@ -376,19 +376,19 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		break;
 	}
 
-	////ammo beahviour
-	//for (std::vector<CEnemyAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	//{
-	//	CEnemyAmmo2D* ammo = (CEnemyAmmo2D*)*it;
-	//	if (ammo->getActive())
-	//	{
-	//		ammo->Update(dElapsedTime);
-	//		if (ammo->LimitReached())
-	//		{
-	//			ammo->setActive(false);
-	//		}
-	//	}
-	//}
+	//ammo beahviour
+	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+		if (ammo->getActive())
+		{
+			ammo->Update(dElapsedTime);
+			if (ammo->LimitReached())
+			{
+				ammo->setActive(false);
+			}
+		}
+	}
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -508,6 +508,18 @@ void JEnemy2DVT::Render(void)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	//render enemy ammo
+	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+		if (ammo->getActive())
+		{
+			ammo->PreRender();
+			ammo->Render();
+			ammo->PostRender();
+		}
+	}
+
 }
 
 /**
@@ -556,11 +568,11 @@ void JEnemy2DVT::SetPlayer2D(CPlayer2D* cPlayer2D)
 	UpdateDirection();
 }
 
-////return ammolist to the scene for pre, post and normal rendering
-//std::vector<CEnemyAmmo2D*> CStnEnemy2D::getAmmoList(void)
-//{
-//	return ammoList;
-//}
+//return ammolist to the scene for pre, post and normal rendering
+std::vector<CJEAmmoVT*> JEnemy2DVT::getAmmoList(void)
+{
+	return ammoList;
+}
 
 /**
  @brief Constraint the enemy2D's position within a boundary
@@ -861,7 +873,7 @@ bool JEnemy2DVT::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Gotcha!" << endl;
+		cout << "Jungle Gotcha!" << endl;
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
@@ -1028,28 +1040,28 @@ void JEnemy2DVT::UpdatePosition(void)
 }
 
 //called whenever an ammo is needed to be shot
-//CEnemyAmmo2D* JEnemy2DVT::FetchAmmo()
-//{
-//	//Exercise 3a: Fetch a game object from m_goList and return it
-//	for (std::vector<CEnemyAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-//	{
-//		CEnemyAmmo2D* ammo = (CEnemyAmmo2D*)*it;
-//		if (ammo->getActive()) {
-//			continue;
-//		}
-//		ammo->setActive(true);
-//		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
-//		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
-//		return ammo;
-//	}
-//
-//	//whenever ammoList runs out of ammo, create 10 ammo to use
-//	//Get Size before adding 10
-//	int prevSize = ammoList.size();
-//	for (int i = 0; i < 10; ++i) {
-//		ammoList.push_back(new CEnemyAmmo2D);
-//	}
-//	ammoList.at(prevSize)->setActive(true);
-//	return ammoList.at(prevSize);
-//
-//}
+CJEAmmoVT* JEnemy2DVT::FetchAmmo()
+{
+	//Exercise 3a: Fetch a game object from m_goList and return it
+	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+		if (ammo->getActive()) {
+			continue;
+		}
+		ammo->setActive(true);
+		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
+		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
+		return ammo;
+	}
+
+	//whenever ammoList runs out of ammo, create 10 ammo to use
+	//Get Size before adding 10
+	int prevSize = ammoList.size();
+	for (int i = 0; i < 10; ++i) {
+		ammoList.push_back(new CJEAmmoVT);
+	}
+	ammoList.at(prevSize)->setActive(true);
+	return ammoList.at(prevSize);
+
+}

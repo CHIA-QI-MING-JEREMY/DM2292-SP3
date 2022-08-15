@@ -467,6 +467,24 @@ void CScene2D::Render(void)
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Render();
 		// Calls the CPlayer2D's PostRender()
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->PostRender();
+
+		//if enemy has ammo
+		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::LONG_RANGE ||
+			enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::SPECIAL)
+		{
+			//render enemy ammo
+			std::vector<CEnemyAmmo2D*> ammoList = enemyVectors[cMap2D->GetCurrentLevel()][i]->getAmmoList();
+			for (std::vector<CEnemyAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+			{
+				CEnemyAmmo2D* ammo = (CEnemyAmmo2D*)*it;
+				if (ammo->getActive())
+				{
+					ammo->PreRender();
+					ammo->Render();
+					ammo->PostRender();
+				}
+			}
+		}
 	}
 
 	// Calls the CPlayer2D's PreRender()

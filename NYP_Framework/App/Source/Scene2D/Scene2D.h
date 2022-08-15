@@ -54,6 +54,11 @@
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+//include ammo
+#include "Ammo2D.h"
+#include "EnemyAmmo2D.h"
+#include "JungleEAmmoVT.h"
+
 // Add your include files here
 
 class CScene2D : public CSingletonTemplate<CScene2D>
