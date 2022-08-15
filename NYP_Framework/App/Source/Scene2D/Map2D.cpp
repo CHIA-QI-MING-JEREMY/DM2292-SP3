@@ -28,6 +28,7 @@ using namespace std::placeholders;
 CMap2D::CMap2D(void)
 	: uiCurLevel(0)
 	, quadMesh(NULL)
+	, camera2D(NULL)
 {
 }
 
@@ -57,6 +58,9 @@ CMap2D::~CMap2D(void)
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
+	
+	// nullify the camera since it was created elsewhere
+	camera2D = NULL;
 
 	// Set this to NULL since it was created elsewhere, so we let it be deleted there.
 	cSettings = NULL;
@@ -74,6 +78,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
+	// get the camera main
+	camera2D = Camera2D::GetInstance();
 
 	// Create the arrMapInfo and initialise to 0
 	// Start by initialising the number of levels
@@ -518,21 +524,28 @@ void CMap2D::Render(void)
 	unsigned int transformLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "transform");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
+	glm::vec2 offset = glm::vec2(float(cSettings->NUM_TILES_XAXIS / 2.f), float(cSettings->NUM_TILES_YAXIS / 2.f) - 1);
+	//glm::vec2 offset = glm::vec2(0);
+	glm::vec2 cameraPos = camera2D->getPos();
+
 	// Render
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
 		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
 		{
-			transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
-															cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
-															0.0f));
-			//transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+			glm::vec2 objTransform = glm::vec2(uiCol, cSettings->NUM_TILES_YAXIS - uiRow);
+			glm::vec2 objCamPos = objTransform - cameraPos + offset;
+
+			glm::vec2 actualPos;
+			actualPos = cSettings->ConvertIndexToUVSpace(objCamPos) * camera2D->getZoom();
+
+			transform = glm::mat4(1.f);
+			transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
+			transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
 
 			// Update the shaders with the latest transform
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-			// Render a tile
 			RenderTile(uiRow, uiCol);
 		}
 	}
