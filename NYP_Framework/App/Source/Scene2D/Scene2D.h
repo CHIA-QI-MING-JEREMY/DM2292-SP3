@@ -31,6 +31,7 @@
 
 // Include CEnemy2D
 #include "Enemy2D.h"
+#include "JungleEnemy2DVT.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"
@@ -86,10 +87,11 @@ protected:
 	Camera2D* camera2D;
 
 	// A vector containing the instance of CEnemy2Ds
-	vector<CEntity2D*> enemyVector;
+	//vector<CEntity2D*> enemyVector;
 
 	// Vector containing vectors of the enemies for each map
-	vector<vector<CEntity2D*>> enemyVectors;
+	//vector<vector<CEntity2D*>> enemyVectors;
+	vector<vector<CEnemy2D*>> enemyVectors;
 
 	// Physics
 	CPhysics2D cPhysics2D;

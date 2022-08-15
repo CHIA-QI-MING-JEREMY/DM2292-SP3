@@ -5,6 +5,8 @@
  */
 #pragma once
 
+
+#include <includes/glm.hpp>
 // Include SingletonTemplate
 #include "../DesignPatterns/SingletonTemplate.h"
 
