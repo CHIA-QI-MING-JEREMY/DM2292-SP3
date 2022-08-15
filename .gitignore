@@ -30,3 +30,11 @@ Release/
 *.tlog
 *.pdb
 *.idb
+NYP_Framework/App/App.vcxproj
+NYP_Framework/App/App.vcxproj.filters
+NYP_Framework/App/Debug/App.Build.CppClean.log
+NYP_Framework/App/Debug/App.exe.recipe
+NYP_Framework/App/Debug/App.log
+NYP_Framework/App/imgui.ini
+NYP_Framework/Library/Debug/Library.Build.CppClean.log
+NYP_Framework/Library/Debug/Library.log
