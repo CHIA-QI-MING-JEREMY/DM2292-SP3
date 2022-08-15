@@ -38,6 +38,9 @@ class CMap2D;
 //Include SoundController
 #include "..\SoundController\SoundController.h"
 
+// Include Camera2D
+#include "Primitives/Camera2D.h"
+
 //// Include enemies
 //#include "Enemy2D.h"
 //#include "MblEnemy2D.h"
@@ -121,6 +124,9 @@ protected:
 
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
+
+	// The handler containing the instance of the camera
+	Camera2D* camera2D;
 
 	// Physics
 	CPhysics2D cPhysics2D;
