@@ -109,9 +109,6 @@ public:
 	//glm::vec4 getColour();
 	//void setColour(glm::vec4 colour);
 
-	//return ammolist to the scene for pre, post and normal rendering
-	std::vector<CEnemyAmmo2D*> getAmmoList(void);
-
 protected:
 	enum DIRECTION
 	{

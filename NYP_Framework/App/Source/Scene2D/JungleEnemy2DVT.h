@@ -93,9 +93,6 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	//return ammolist to the scene for pre, post and normal rendering
-	std::vector<CJEAmmoVT*> getAmmoList(void);
-
 	enum ENEMYTYPE
 	{
 		CLOSE_COMBAT = 0,

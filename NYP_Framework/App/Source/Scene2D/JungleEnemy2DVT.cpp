@@ -568,12 +568,6 @@ void JEnemy2DVT::SetPlayer2D(CPlayer2D* cPlayer2D)
 	UpdateDirection();
 }
 
-//return ammolist to the scene for pre, post and normal rendering
-std::vector<CJEAmmoVT*> JEnemy2DVT::getAmmoList(void)
-{
-	return ammoList;
-}
-
 /**
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
