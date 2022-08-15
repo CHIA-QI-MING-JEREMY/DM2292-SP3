@@ -21,6 +21,7 @@
     <ClCompile Include="Source\GUI\imgui_widgets.cpp" />
     <ClCompile Include="Source\Inputs\KeyboardController.cpp" />
     <ClCompile Include="Source\Inputs\MouseController.cpp" />
+    <ClCompile Include="Source\Primitives\Camera2D.cpp" />
     <ClCompile Include="Source\Primitives\Collider.cpp" />
     <ClCompile Include="Source\Primitives\CollisionManager.cpp" />
     <ClCompile Include="Source\Primitives\Entity2D.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="Source\GUI\imgui_internal.h" />
     <ClInclude Include="Source\Inputs\KeyboardController.h" />
     <ClInclude Include="Source\Inputs\MouseController.h" />
+    <ClInclude Include="Source\Primitives\Camera2D.h" />
     <ClInclude Include="Source\Primitives\Collider.h" />
     <ClInclude Include="Source\Primitives\CollisionManager.h" />
     <ClInclude Include="Source\Primitives\Entity2D.h" />
