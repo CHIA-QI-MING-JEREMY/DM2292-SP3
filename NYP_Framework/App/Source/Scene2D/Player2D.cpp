@@ -113,24 +113,24 @@ bool CPlayer2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Skeleton.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/playerspritesheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_Skeleton.png" << endl;
+		cout << "Unable to load Image/playerspritesheet.png" << endl;
 		return false;
 	}
 
 	// Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 18, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleR", 0, 10);
-	animatedSprites->AddAnimation("idleL", 18, 28);
-	animatedSprites->AddAnimation("runR", 36, 48);
-	animatedSprites->AddAnimation("runL", 54, 66);
-	animatedSprites->AddAnimation("attackR", 72, 89);
-	animatedSprites->AddAnimation("attackL", 90, 107);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idleL", 0, 3);
+	animatedSprites->AddAnimation("runR", 4, 7);
+	animatedSprites->AddAnimation("runL", 8, 11);
+	animatedSprites->AddAnimation("attackR", 12, 15);
+	animatedSprites->AddAnimation("attackL", 16, 19);
+	animatedSprites->AddAnimation("idleR", 20, 23);
 
 	// Play idle animation as default
-	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+	animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 
 	// Set the Physics to fall status by default
 	cPhysics2D.Init();
@@ -330,8 +330,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_A))
 	{
-		// Play the "idleL" animation
-		animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		// Play the "idleR" animation
+		animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
@@ -366,8 +366,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_D))
 	{
-		// Play the "idleR" animation
-		animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		// Play the "idleL" animation
+		animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 	}
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
