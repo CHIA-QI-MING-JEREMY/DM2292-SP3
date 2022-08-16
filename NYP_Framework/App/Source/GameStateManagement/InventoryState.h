@@ -12,6 +12,8 @@
 #include "Primitives/Mesh.h"
 #include "../Scene2D/BackgroundEntity.h"
 #include "../Scene2D/GUI_Scene2D.h"
+#include "../Scene2D/InventoryManagerPlanet.h"
+#include "GameControl/Settings.h"
 
 #include <string>
 
@@ -54,4 +56,9 @@ protected:
 	ButtonData resourceSnow;
 	ButtonData resourceBattery;
 	ButtonData resourceScrapMetal;
+	// The handler containing the instance of CInventoryManager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	// The handler containing the instance of CInventoryItem
+	CInventoryItemPlanet* cInventoryItemPlanet;
+	CSettings* cSettings;
 };
