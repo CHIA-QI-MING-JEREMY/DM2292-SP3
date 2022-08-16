@@ -61,9 +61,9 @@
 
 // Add your include files here
 
-class CScene2D : public CSingletonTemplate<CScene2D>
+class TerrestrialPlanet : public CSingletonTemplate<TerrestrialPlanet>
 {
-	friend CSingletonTemplate<CScene2D>;
+	friend CSingletonTemplate<TerrestrialPlanet>;
 
 public:
 	// Init
@@ -129,8 +129,8 @@ protected:
 	bool isZoomedIn = false;
 	
 	// Constructor
-	CScene2D(void);
+	TerrestrialPlanet(void);
 	// Destructor
-	virtual ~CScene2D(void);
+	virtual ~TerrestrialPlanet(void);
 };
 
