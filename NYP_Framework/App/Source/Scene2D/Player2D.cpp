@@ -113,7 +113,7 @@ bool CPlayer2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/playerspritesheet.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PlayerSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
 		cout << "Unable to load Image/playerspritesheet.png" << endl;
@@ -121,16 +121,18 @@ bool CPlayer2D::Init(void)
 	}
 
 	// Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleL", 0, 3);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idleR", 0, 0);
+	animatedSprites->AddAnimation("idleL", 1, 1);
 	animatedSprites->AddAnimation("runR", 4, 7);
 	animatedSprites->AddAnimation("runL", 8, 11);
-	animatedSprites->AddAnimation("attackR", 12, 15);
-	animatedSprites->AddAnimation("attackL", 16, 19);
-	animatedSprites->AddAnimation("idleR", 20, 23);
+	animatedSprites->AddAnimation("attackR", 2, 2);
+	animatedSprites->AddAnimation("attackL", 3, 3);
+	animatedSprites->AddAnimation("idleshieldR", 12, 12);
+	animatedSprites->AddAnimation("idleshieldL", 13, 13);
 
 	// Play idle animation as default
-	animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 
 	// Set the Physics to fall status by default
 	cPhysics2D.Init();
@@ -144,7 +146,7 @@ bool CPlayer2D::Init(void)
 		cAmmo2D->SetShader("Shader2D");
 		ammoList.push_back(cAmmo2D);
 	}
-	shootingDirection = LEFT; //by default
+	shootingDirection = RIGHT; //by default
 
 	//CS: Init the color to white
 	SetColour(WHITE);
@@ -331,7 +333,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_A))
 	{
 		// Play the "idleR" animation
-		animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
@@ -367,7 +369,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_D))
 	{
 		// Play the "idleL" animation
-		animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 	}
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -433,8 +435,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		shootingDirection = DOWN; //setting direction for ammo shooting
 	}
 	
-	// TO DO: Solve animation issue
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q) && attackTimer <= 0.0)
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E) && attackTimer <= 0.0)
 	{
 		if (attackDirection == RIGHT)
 		{
