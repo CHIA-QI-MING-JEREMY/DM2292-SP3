@@ -5,20 +5,20 @@
  Date: Mar 2020
  */
 
-#include "InventoryManager.h"
+#include "InventoryManagerPlanet.h"
 #include <stdexcept>      // std::invalid_argument
 
 /**
 @brief Constructor
 */
-CInventoryManager::CInventoryManager(void) 
+CInventoryManagerPlanet::CInventoryManagerPlanet(void) 
 {
 }
 
 /**
 @brief Destructor
 */
-CInventoryManager::~CInventoryManager(void)
+CInventoryManagerPlanet::~CInventoryManagerPlanet(void)
 {
 	// Clear the memory
 	Exit();
@@ -27,7 +27,7 @@ CInventoryManager::~CInventoryManager(void)
 /**
 @brief Exit by deleting the items
 */
-void CInventoryManager::Exit(void)
+void CInventoryManagerPlanet::Exit(void)
 {
 	// Delete all scenes stored and empty the entire map
 	std::map<std::string, CInventoryItem*>::iterator it, end;
@@ -43,7 +43,7 @@ void CInventoryManager::Exit(void)
 /**
 @brief Add a Scene to this Inventory Manager
 */
-CInventoryItem* CInventoryManager::Add(	const std::string& _name,
+CInventoryItem* CInventoryManagerPlanet::Add(	const std::string& _name,
 								const char* imagePath,
 								const int iItemMaxCount,
 								const int iItemCount)
@@ -68,7 +68,7 @@ CInventoryItem* CInventoryManager::Add(	const std::string& _name,
 /**
 @brief Remove an item from this Inventory Manager
 */
-bool CInventoryManager::Remove(const std::string& _name)
+bool CInventoryManagerPlanet::Remove(const std::string& _name)
 {
 	// Does nothing if it does not exist
 	if (Check(_name))
@@ -90,7 +90,7 @@ bool CInventoryManager::Remove(const std::string& _name)
 /**
 @brief Check if a item exists in this Inventory Manager
 */
-bool CInventoryManager::Check(const std::string& _name)
+bool CInventoryManagerPlanet::Check(const std::string& _name)
 {
 	return inventoryMap.count(_name) != 0;
 }
@@ -98,7 +98,7 @@ bool CInventoryManager::Check(const std::string& _name)
 /**
 @brief Get an item by its name
 */ 
-CInventoryItem* CInventoryManager::GetItem(const std::string& _name)
+CInventoryItem* CInventoryManagerPlanet::GetItem(const std::string& _name)
 {
 	// Does nothing if it does not exist
 	if (!Check(_name))
@@ -111,7 +111,7 @@ CInventoryItem* CInventoryManager::GetItem(const std::string& _name)
 /**
 @brief Get the number of items
 */
-int CInventoryManager::GetNumItems(void) const
+int CInventoryManagerPlanet::GetNumItems(void) const
 {
 	return inventoryMap.size();
 }

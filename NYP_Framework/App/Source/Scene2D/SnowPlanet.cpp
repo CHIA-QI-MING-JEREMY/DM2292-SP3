@@ -105,26 +105,26 @@ bool SnowPlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_Tutorial.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_SnowMap_LevelTutorial.csv", 0) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Tutorial Level" << endl;
+		cout << "Failed to load Snow Map Tutorial Level" << endl;
 		return false;
 	}
-	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_01.csv", 1) == false)
-	{
-		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 01" << endl;
-		return false;
-	}
-	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_02.csv", 2) == false)
-	{
-		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 02" << endl;
-		return false;
-	}
+	//// Load the map into an array
+	//if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_01.csv", 1) == false)
+	//{
+	//	// The loading of a map has failed. Return false
+	//	cout << "Failed to load Jungle Map Level 01" << endl;
+	//	return false;
+	//}
+	//// Load the map into an array
+	//if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_02.csv", 2) == false)
+	//{
+	//	// The loading of a map has failed. Return false
+	//	cout << "Failed to load Jungle Map Level 02" << endl;
+	//	return false;
+	//}
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
