@@ -105,14 +105,14 @@ bool CScene2D::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_01.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", 0) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Jungle Map Level 01" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_02.csv", 1) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02.csv", 1) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Jungle Map Level 02" << endl;
