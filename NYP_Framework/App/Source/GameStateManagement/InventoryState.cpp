@@ -103,8 +103,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 		window_flags |= ImGuiWindowFlags_NoCollapse;
 		window_flags |= ImGuiWindowFlags_NoNav;
 
-		float buttonWidth = 50;
-		float buttonHeight = 50;
+		float buttonWidth = cSettings->iWindowWidth/10;
+		float buttonHeight = cSettings->iWindowHeight / 10;
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
@@ -138,6 +138,40 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
 				cInventoryItemPlanet->GetCount());
+			// Add codes for Exit button here
+			//if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
+			//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+			//{
+			//	 Reset the CKeyboardController
+			//	CKeyboardController::GetInstance()->Reset();
+
+			//	CSoundController::GetInstance()->MasterVolumeDecrease();
+			//}
+			ImGui::End();
+		}
+		ImGuiWindowFlags Textwindow_flags = 0;
+		Textwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		Textwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		Textwindow_flags |= ImGuiWindowFlags_NoBackground;
+		Textwindow_flags |= ImGuiWindowFlags_NoMove;
+		Textwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		Textwindow_flags |= ImGuiWindowFlags_NoNav;
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("Max Bag", NULL, Textwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth /1.5,
+				CSettings::GetInstance()->iWindowHeight / 5.5 ));	// Set the top-left of the window at (10,10)
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Bag Space:%d/%d",
+				cInventoryItemPlanet->GetCount(),cInventoryItemPlanet->GetMaxCount());
 			// Add codes for Exit button here
 			//if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
 			//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
