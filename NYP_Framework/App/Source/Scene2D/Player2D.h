@@ -124,6 +124,12 @@ protected:
 	// Inventory Item
 	CInventoryItem* cInventoryItem;
 
+	// Inventory Manager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+
+	// Inventory Item
+	CInventoryItemPlanet* cInventoryItemPlanet;
+
 	// Sound Controller
 	CSoundController* cSoundController;
 

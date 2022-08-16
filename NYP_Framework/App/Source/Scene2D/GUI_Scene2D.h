@@ -87,4 +87,9 @@ protected:
 	CInventoryManager* cInventoryManager;
 	// The handler containing the instance of CInventoryItem
 	CInventoryItem* cInventoryItem;
+
+	// The handler containing the instance of CInventoryManager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	// The handler containing the instance of CInventoryItem
+	CInventoryItemPlanet* cInventoryItemPlanet;
 };
