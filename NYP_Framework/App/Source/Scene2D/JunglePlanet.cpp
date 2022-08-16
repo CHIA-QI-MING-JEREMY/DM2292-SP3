@@ -385,9 +385,48 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
-
-
-
+			//if this isn't the last enemy in this level
+			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
+			{
+				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
+				srand(static_cast<unsigned> (time(0)));
+				int resourceType = rand() % 20;
+				std::cout << resourceType << std::endl;
+				if (resourceType < 4) //0 1 2 3
+				{
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
+				else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+				{
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
+				else if (resourceType > 16 && resourceType < 19) //17 18
+				{
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
+			}
+			//if this is the last enemy
+			else if(enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
+			{
+				//confirm drop an ironwood
+				CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+				res->SetShader("Shader2D_Colour"); //set shader
+				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+			}
 
 			delete enemyVectors[cMap2D->GetCurrentLevel()][i];
 			enemyVectors[cMap2D->GetCurrentLevel()][i] = NULL;

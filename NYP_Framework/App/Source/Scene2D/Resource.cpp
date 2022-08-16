@@ -143,6 +143,8 @@ bool CResource::Init(void)
 		//if found index for default resource
 		if (cMap2D->FindValue(1, uiRow, uiCol))
 		{
+			//random between 2 numbers to set us Scrap metal or battery
+			//according to which number type is set to, load which texture
 			srand(static_cast<unsigned> (time(0)));
 			int randomState = rand() % 100;
 			if (randomState < 50)
@@ -153,8 +155,6 @@ bool CResource::Init(void)
 			{
 				type = BATTERY;
 			}
-			//random between 2 numbers to set us Scrap metal or battery
-			//according to which number type is set to, load which texture
 		}
 		//index for ironwood
 		else if (cMap2D->FindValue(199, uiRow, uiCol))
@@ -404,15 +404,9 @@ bool CResource::InteractWithPlayer(void)
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
 				cInventoryItemPlanet->Add(1); //add 1 scrap metal
+				collected = true; //delete in scene
 			}
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
-			// if yes, do nothing
-			// if no, add 1 to scrap metal inventory count
-			//
-			//cInventoryItemPlanet->Add(1); // adds 1 to yellow orb counter
-			//std::cout << cInventoryItem->GetCount() << std::endl;
-			// Load the scrap metal texture
-			collected = true; //delete in scene
 			break;
 		}
 		case BATTERY:
@@ -428,27 +422,60 @@ bool CResource::InteractWithPlayer(void)
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 				cInventoryItemPlanet->Add(1); //add 1 battery
+				collected = true; //delete in scene
 			}
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
-			collected = true; //delete in scene
 			break;
 		}
 		case IRONWOOD:
 		{
-			// Load the ironwood texture
-			collected = true; //delete in scene
+			std::cout << "COLLECTED IRONWOOD" << std::endl;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			//check if player's planet inventory total count is max or not
+				//if not at max, add in ironwood and + 1 to resources
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
+				cInventoryItemPlanet->Add(1); //add 1 ironwood
+				collected = true; //delete in scene
+			}
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
 		}
 		case ENERGY_QUARTZ:
 		{
-			// Load the energy quartz texture
-			collected = true; //delete in scene
+			std::cout << "COLLECTED ENERGY_QUARTZ" << std::endl;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			//check if player's planet inventory total count is max or not
+				//if not at max, add in energy quartz and + 1 to resources
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
+				cInventoryItemPlanet->Add(1); //add 1 energy quartz
+				collected = true; //delete in scene
+			}
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
 		}
 		case ICE_CRYSTAL:
 		{
-			// Load the ice crystal texture
-			collected = true; //delete in scene
+			std::cout << "COLLECTED ICE_CRYSTAL" << std::endl;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			//check if player's planet inventory total count is max or not
+				//if not at max, add in ice crystal and + 1 to resources
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
+				cInventoryItemPlanet->Add(1); //add 1 ice crystal
+				collected = true; //delete in scene
+			}
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
 		}
 		default:
