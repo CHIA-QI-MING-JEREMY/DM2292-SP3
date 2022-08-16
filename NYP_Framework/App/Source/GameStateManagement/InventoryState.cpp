@@ -60,6 +60,11 @@ CInventoryState::~CInventoryState(void)
  */
 bool CInventoryState::Init(void)
 {
+
+	// Get the handler to the CSettings instance
+	cSettings = CSettings::GetInstance();
+	// Initialise the CInventoryManagerPlanet
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
 	//Create Background Entity
 	background = new CBackgroundEntity("Image/InventoryBag.png");
@@ -85,6 +90,9 @@ bool CInventoryState::Init(void)
  */
 bool CInventoryState::Update(const double dElapsedTime)
 {
+
+	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
+	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
 	if (cGUI_Scene2D->getPlanetNum() == 3) {
 		ImGuiWindowFlags window_flags = 0;
 		window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -95,8 +103,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 		window_flags |= ImGuiWindowFlags_NoCollapse;
 		window_flags |= ImGuiWindowFlags_NoNav;
 
-		float buttonWidth = 128;
-		float buttonHeight = 128;
+		float buttonWidth = 50;
+		float buttonHeight = 50;
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
@@ -105,9 +113,11 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 			// Create a window called "Hello, world!" and append into it.
 			ImGui::Begin("Main Menu", NULL, window_flags);
-			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
-				CSettings::GetInstance()->iWindowHeight / 3.0));				// Set the top-left of the window at (10,10)
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 3.0-60));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
 
 			//Added rounding for nicer effect
 			ImGuiStyle& style = ImGui::GetStyle();
@@ -125,6 +135,9 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 				CSoundController::GetInstance()->MasterVolumeIncrease();
 			}
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+				cInventoryItemPlanet->GetCount());
 			// Add codes for Exit button here
 			//if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
 			//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
@@ -136,19 +149,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//}
 			ImGui::End();
 		}
-	}
-
-	//For keyboard controls
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_P))
-	{
-		// Reset the CKeyboardController
-		//CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-		cout << "UnLoading InventoryState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
-		CGameStateManager::GetInstance()->OffPauseGameState();
-		return true;
 	}
 
 	return true;

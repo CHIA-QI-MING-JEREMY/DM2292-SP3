@@ -47,6 +47,17 @@ CPlayer2D::CPlayer2D(void)
  */
 CPlayer2D::~CPlayer2D(void)
 {
+	if (cInventoryManager)
+	{
+		cInventoryManager->Destroy();
+		cInventoryManager = NULL;
+	}
+	if (cInventoryManagerPlanet)
+	{
+		cInventoryManagerPlanet->Destroy();
+		cInventoryManagerPlanet = NULL;
+	}
+
 	// Delete the CAnimationSprites
 	if (animatedSprites)
 	{
