@@ -35,11 +35,17 @@ class CMap2D;
 // Include Physics
 #include "Physics2D.h"
 
+// Include Player2D
+#include "Player2D.h"
+
 //Include SoundController
 #include "..\SoundController\SoundController.h"
 
 // Include Camera2D
 #include "Primitives/Camera2D.h"
+
+// Include math.h
+#include <math.h>
 
 //// Include enemies
 //#include "Enemy2D.h"
@@ -83,14 +89,9 @@ public:
 		NUM_RESOURCES
 	};
 
-	void setPosition(glm::i32vec2 indexPos, glm::i32vec2 microStep);
-		//DONT FORGET ADD UPDATEJUMPFALL SO GRAVITY PULLS IT DOWN
-
-
-	//setting the ammo's information needed for its travel path:
-		//player location aka ammo OG location
-		//player direction aka direction for amo to move in
-	void setPath(const int spawnX, const int spawnY, const int eDirection);
+	//sets its spawn location, including microsteps
+		//will fall to land on a platform in update where updatefall is called
+	void setPosition(glm::vec2 indexPos, glm::vec2 microStep);
 
 	enum DIRECTION
 	{
@@ -102,32 +103,26 @@ public:
 	};
 
 	//let ammo interact with the map
-	void InteractWithMap(void);
 	bool CheckPosition(void);
 
-	//let ammo interact with enemies
-	//bool InteractWithEnemy(CEnemy2D* enemy); //called in scene, 1 ammo in the vec to 1 enemy in the vec
-		//if return is true, delete the enemy passed in from the enemy vector and set it to null
-	bool InteractWithEnemy(glm::i32vec2 i32vec2EnemyPos);
 
-	// Shoot ammo, keep it moving after it is already created, used in player class
-	void ShootAmmo(void);
 
 	// return true if ammo hits window boundaries, used to delete
 	//uses ammo specific direction alrdy set in via constructor, used in player class
 	bool LimitReached(void);
 
-	//used to set active to render and check collision of ammo
-	void setActive(bool active);
+	bool getCollected(void); //return collected
+		//if true means delete resource
 
-	//used to check if ammo is active before checking collision and rendering, etc
-	bool getActive(void);
 
 protected:
 	glm::vec2 vec2OldIndex;
 
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
+
+	// Handle to the CPlayer2D
+	CPlayer2D* cPlayer2D;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
@@ -136,7 +131,7 @@ protected:
 	CMesh* quadMesh;
 
 	//CS: Animated Sprite
-	CSpriteAnimation* animatedSprites;
+	//CSpriteAnimation* animatedSprites;
 
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
@@ -146,17 +141,27 @@ protected:
 
 	// Physics
 	CPhysics2D cPhysics2D;
+	void UpdateFall(const double dElapsedTime);
 
-	// ammo's colour
+	//SWITCH TO PLANET SPECIFIC INVENTORY
+	// Inventory Manager
+	CInventoryManager* cInventoryManager;
+	// Inventory Item
+	CInventoryItem* cInventoryItem;
+
+	// Let resource interact with the player
+	bool InteractWithPlayer(void);
+
+	// resource's colour
 	glm::vec4 runtimeColour;
 
 	//direction determines how it will travel after shot
 	int direction;
 
-	//if hit == true, aka ammo hit something, destroy ammo in player class
-	bool hit;
+	//if collected == true, aka resource is collected, delete resource in scene
+	bool collected;
 
-	// Determines whether or not to render it
-	bool active;
+	//determine which resource it is
+	int type;
 };
 

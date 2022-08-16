@@ -57,6 +57,9 @@
 #include "EnemyAmmo2D.h"
 #include "JungleEAmmoVT.h"
 
+//include resources
+#include "Resource.h"
+
 // Add your include files here
 
 class JunglePlanet : public CSingletonTemplate<JunglePlanet>
@@ -93,8 +96,10 @@ protected:
 	//vector<CEntity2D*> enemyVector;
 
 	// Vector containing vectors of the enemies for each map
-	//vector<vector<CEntity2D*>> enemyVectors;
 	vector<vector<CEnemy2D*>> enemyVectors;
+
+	// Vector containing vectors containig the resources in the level
+	vector<vector<CResource*>> resourceVectors;
 
 	// Physics
 	CPhysics2D cPhysics2D;

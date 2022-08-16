@@ -247,6 +247,7 @@ bool SnowPlanet::Init(void)
 */
 bool SnowPlanet::Update(const double dElapsedTime)
 {
+	cGUI_Scene2D->setPlanetNum(3);
 	// mouse Position demo
 	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
 	camPos = glm::normalize(camPos);

@@ -114,6 +114,9 @@ bool JEnemy2DVT::Init(void)
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
+	// Create and initialise the CPlayer2D
+	cPlayer2D = CPlayer2D::GetInstance();
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
