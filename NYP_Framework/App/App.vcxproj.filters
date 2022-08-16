@@ -23,7 +23,7 @@
     <ClCompile Include="Source\Application.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\Scene2D.cpp">
+    <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\Map2D.cpp">
@@ -112,7 +112,7 @@
     <ClInclude Include="Source\Application.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Scene2D.h">
+    <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\Map2D.h">

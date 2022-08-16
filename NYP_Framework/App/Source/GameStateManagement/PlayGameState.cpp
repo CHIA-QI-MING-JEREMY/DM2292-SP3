@@ -43,7 +43,7 @@ bool CPlayGameState::Init(void)
 	cout << "CPlayGameState::Init()\n" << endl;
 
 	// Initialise the cScene2D instance
-	cScene2D = SnowPlanet::GetInstance();
+	cScene2D = TerrestrialPlanet::GetInstance();
 	if (cScene2D->Init() == false)
 	{
 		cout << "Failed to load Scene2D" << endl;

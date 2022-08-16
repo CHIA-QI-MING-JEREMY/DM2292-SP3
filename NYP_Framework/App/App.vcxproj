@@ -36,7 +36,7 @@
     <ClCompile Include="Source\Scene2D\Physics2D.cpp" />
     <ClCompile Include="Source\Scene2D\Player2D.cpp" />
     <ClCompile Include="Source\Scene2D\Resource.cpp" />
-    <ClCompile Include="Source\Scene2D\Scene2D.cpp" />
+    <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp" />
     <ClCompile Include="Source\Scene2D\SnowPlanet.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />
@@ -67,7 +67,7 @@
     <ClInclude Include="Source\Scene2D\Physics2D.h" />
     <ClInclude Include="Source\Scene2D\Player2D.h" />
     <ClInclude Include="Source\Scene2D\Resource.h" />
-    <ClInclude Include="Source\Scene2D\Scene2D.h" />
+    <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h" />
     <ClInclude Include="Source\Scene2D\SnowPlanet.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />

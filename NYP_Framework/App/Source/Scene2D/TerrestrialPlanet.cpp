@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "Scene2D.h"
+#include "TerrestrialPlanet.h"
 #include <iostream>
 using namespace std;
 
@@ -16,7 +16,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CScene2D::CScene2D(void)
+TerrestrialPlanet::TerrestrialPlanet(void)
 	: cMap2D(NULL)
 	, cPlayer2D(NULL)
 	, cKeyboardController(NULL)	
@@ -30,7 +30,7 @@ CScene2D::CScene2D(void)
 /**
  @brief Destructor
  */
-CScene2D::~CScene2D(void)
+TerrestrialPlanet::~TerrestrialPlanet(void)
 {
 	if (cKeyboardController)
 	{
@@ -88,12 +88,12 @@ CScene2D::~CScene2D(void)
 /**
 @brief Init Initialise this instance
 */ 
-bool CScene2D::Init(void)
+bool TerrestrialPlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
 	
-	maxNumOfMaps = 2;
+	maxNumOfMaps = 3;
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -105,17 +105,24 @@ bool CScene2D::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Terrestrial_Tutorial.csv", 0) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 01" << endl;
+		cout << "Failed to load Terrestrial Map Level Tutorial" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02.csv", 1) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Terrestrial_01.csv", 1) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 02" << endl;
+		cout << "Failed to load Terrestrial Map Level 01" << endl;
+		return false;
+	}
+	// Load the map into an array
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Terrestrial_02.csv", 2) == false)
+	{
+		// The loading of a map has failed. Return false
+		cout << "Failed to load Terrestrial Map Level 02" << endl;
 		return false;
 	}
 
@@ -227,8 +234,6 @@ bool CScene2D::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), 5, true, true);
 	cSoundController->PlaySoundByID(5); // plays BGM on repeat
 
-
-
 	// variables
 	isAlarmActive = false;
 	maxAlarmTimer = 10.0;
@@ -240,7 +245,7 @@ bool CScene2D::Init(void)
 /**
 @brief Update Update this instance
 */
-bool CScene2D::Update(const double dElapsedTime)
+bool TerrestrialPlanet::Update(const double dElapsedTime)
 {
 	// mouse Position demo
 	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
@@ -433,7 +438,7 @@ bool CScene2D::Update(const double dElapsedTime)
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void CScene2D::PreRender(void)
+void TerrestrialPlanet::PreRender(void)
 {
 	// Reset the OpenGL rendering environment
 	glLoadIdentity();
@@ -449,7 +454,7 @@ void CScene2D::PreRender(void)
 /**
  @brief Render Render this instance
  */
-void CScene2D::Render(void)
+void TerrestrialPlanet::Render(void)
 {
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
@@ -500,6 +505,6 @@ void CScene2D::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CScene2D::PostRender(void)
+void TerrestrialPlanet::PostRender(void)
 {
 }
