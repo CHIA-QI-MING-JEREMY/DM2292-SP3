@@ -89,6 +89,9 @@
     <ClCompile Include="Source\Scene2D\JungleEAmmoVT.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\JunglePlanet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -158,6 +161,9 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\JungleEAmmoVT.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JunglePlanet.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>
