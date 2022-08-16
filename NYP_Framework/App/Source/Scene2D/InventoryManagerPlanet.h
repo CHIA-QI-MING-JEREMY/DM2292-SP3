@@ -11,7 +11,7 @@
 
 #include <map>
 #include <string>
-#include "InventoryItem.h"
+#include "InventoryItemPlanet.h"
 
 class CInventoryManagerPlanet : public CSingletonTemplate<CInventoryManagerPlanet>
 {
