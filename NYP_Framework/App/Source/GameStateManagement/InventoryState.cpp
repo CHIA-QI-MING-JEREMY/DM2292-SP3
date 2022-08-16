@@ -138,19 +138,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 		}
 	}
 
-	//For keyboard controls
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_P))
-	{
-		// Reset the CKeyboardController
-		//CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-		cout << "UnLoading InventoryState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
-		CGameStateManager::GetInstance()->OffPauseGameState();
-		return true;
-	}
-
 	return true;
 }
 
