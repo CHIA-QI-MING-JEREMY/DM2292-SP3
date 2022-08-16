@@ -19,13 +19,16 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 
+
+#include <stdlib.h>
+
 /**
  @brief Constructor This constructor has public access modifier to be used in player class
  */
 CResource::CResource()
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
-	, animatedSprites(NULL)
+	//, animatedSprites(NULL)
 	, camera2D(NULL)
 	, runtimeColour(glm::vec4(1.0f))
 {
@@ -39,9 +42,33 @@ CResource::CResource()
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
-	hit = false; //ammo hasn't hit anything yet
+	collected = false; //resource hasn't been collected yet
 
-	active = false; //hm, maybe might not need it
+	type = NUM_RESOURCES; //set to max. in init, if at max, means check map to load resource
+
+	Init();
+}
+
+CResource::CResource(int type)
+	: cMap2D(NULL)
+	, cKeyboardController(NULL)
+	//, animatedSprites(NULL)
+	, camera2D(NULL)
+	, runtimeColour(glm::vec4(1.0f))
+{
+	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+
+	// Initialise vecIndex
+	vec2Index = glm::i32vec2(-1, -1);
+	// Initialise vecNumMicroSteps
+	vec2NumMicroSteps = glm::i32vec2(0);
+
+	// Initialise vec2UVCoordinate
+	vec2UVCoordinate = glm::vec2(0.0f);
+
+	collected = false; //ammo hasn't hit anything yet
+
+	this->type = type; //set which resource is spawned
 
 	Init();
 }
@@ -57,12 +84,12 @@ CResource::~CResource(void)
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
-	// Delete the CAnimationSprites
-	if (animatedSprites)
-	{
-		delete animatedSprites;
-		animatedSprites = NULL;
-	}
+	//// Delete the CAnimationSprites
+	//if (animatedSprites)
+	//{
+	//	delete animatedSprites;
+	//	animatedSprites = NULL;
+	//}
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -89,36 +116,152 @@ bool CResource::Init(void)
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
+	// Create and initialise the CPlayer2D
+	cPlayer2D = CPlayer2D::GetInstance();
+
+	// Get the handler to the CInventoryManager instance
+	cInventoryManager = CInventoryManager::GetInstance();
+
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
 	//glGenVertexArrays(1, &VAO);
 	//glBindVertexArray(VAO);
 
-	// Create the quad mesh for the ammo
+	// Create the quad mesh for the resource
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	// Load the ammo texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
-	if (iTextureID == 0)
+	//if type is at default, aka type = NUM_RESOURCES, then check map for num resources
+	if (type == NUM_RESOURCES)
 	{
-		std::cout << "Failed to load ammo texture" << std::endl;
+		// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
+		unsigned int uiRow = -1;
+		unsigned int uiCol = -1;
+
+		//if found index for default resource
+		if (cMap2D->FindValue(1, uiRow, uiCol))
+		{
+			srand(static_cast<unsigned> (time(0)));
+			int randomState = rand() % 100;
+			if (randomState < 50)
+			{
+				type = SCRAP_METAL;
+			}
+			else
+			{
+				type = BATTERY;
+			}
+			//random between 2 numbers to set us Scrap metal or battery
+			//according to which number type is set to, load which texture
+		}
+		//index for ironwood
+		else if (cMap2D->FindValue(2, uiRow, uiCol))
+		{
+			type = IRONWOOD;
+		}
+		//index for energy quartz
+		else if (cMap2D->FindValue(200, uiRow, uiCol))
+		{
+			type = ENERGY_QUARTZ;
+		}
+		//index for ice crystal
+		else if (cMap2D->FindValue(400, uiRow, uiCol))
+		{
+			type = ICE_CRYSTAL;
+		}
+		else
+		{
+			return false;	// Unable to find the start position of the enemy, so quit this game
+		}
+
+		// Erase the value of the player in the arrMapInfo
+		cMap2D->SetMapInfo(uiRow, uiCol, 0);
+
+		// Set the start position of the Player to iRow and iCol
+		vec2Index = glm::vec2(uiCol, uiRow);
+		// By default, microsteps should be zero
+		vec2NumMicroSteps = glm::vec2(0, 0);
+	}
+	//after that use switch case to load in image
+		//if it is created with a type, aka dropped by enemy, just immedately use switch case to decide
+	switch (type)
+	{
+	case SCRAP_METAL:
+	{
+		// Load the scrap metal texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load scrap metal texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case BATTERY:
+	{
+		// Load the battery texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load battery texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case IRONWOOD:
+	{
+		// Load the ironwood texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load ironwood texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case ENERGY_QUARTZ:
+	{
+		// Load the energy quartz texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load energy quartz texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case ICE_CRYSTAL:
+	{
+		// Load the ice crystal texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenTile.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load ice crystal texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	default:
+	{
+		std::cout << "Failed to load resource texture" << std::endl;
 		return false;
+		break;
+	}
 	}
 
-	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
-		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-		//-1 --> repeats forever
-		//		settng it to say 1 will cause it to only repeat 1 time
-		//1.0f --> set time between frames as 1.0f
-		//		increasing this number will cause the animation to slowdown
+	////CS: Create the animated spirte and setup the animation
+	//animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
+	//	cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	////^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
+	//animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
+	////CS: Play the "idle" animation as default
+	//animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//	//-1 --> repeats forever
+	//	//		settng it to say 1 will cause it to only repeat 1 time
+	//	//1.0f --> set time between frames as 1.0f
+	//	//		increasing this number will cause the animation to slowdown
 
 	//Set Physics to fall status by default
 	cPhysics2D.Init();
@@ -126,6 +269,8 @@ bool CResource::Init(void)
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	direction = DOWN;
 
 	return true;
 }
@@ -138,22 +283,24 @@ void CResource::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
-	//move
-	ShootAmmo();
+	//fall to land onto a platform if in the air
+	UpdateFall(dElapsedTime);
 
-	hit = false; //reset hit to false
+	InteractWithPlayer();
 
-	// Interact with the Map
-	InteractWithMap();
 
-	if (!CheckPosition()) //if hit a wall type obj
-	{
-		hit = true; //destroy ammo
-	}
+	//hit = false; //reset hit to false
+
+	//
+
+	//if (!CheckPosition()) //if hit a wall type obj
+	//{
+	//	hit = true; //destroy ammo
+	//}
 	
 	//CS: Update the animated sprite
 	//CS: Play the animation
-	animatedSprites->Update(dElapsedTime);
+	//animatedSprites->Update(dElapsedTime);
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
@@ -207,8 +354,8 @@ void CResource::Render(void)
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
-	//CS: Render the animated Sprite
-	animatedSprites->Render();
+	//CS: render the tile
+	quadMesh->Render();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -222,198 +369,74 @@ void CResource::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
-//setting the ammo's information needed for its travel path:
-		//player location aka ammo OG location
-		//player direction aka direction for amo to move in
-void CResource::setPath(const int spawnX, const int spawnY, const int eDirection)
+//sets its spawn location, including microsteps
+		//will fall to land on a platform in update where updatefall is called
+void CResource::setPosition(glm::vec2 indexPos, glm::vec2 microStep)
 {
-	vec2Index.x = spawnX;
-	vec2Index.y = spawnY;
-	direction = eDirection;
+	vec2Index = indexPos;
+	vec2NumMicroSteps = microStep;
+	return;
 }
 
-void CResource::InteractWithMap(void)
+//let player collect resource
+bool CResource::InteractWithPlayer(void)
 {
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
+	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+
+	// Check if the enemy2D is within 1.5 indices of the player2D
+	if (((vec2Index.x >= i32vec2PlayerPos.x - 0.5) &&
+		(vec2Index.x <= i32vec2PlayerPos.x + 0.5))
+		&&
+		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
+			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-	//Assignment 1
-	case 20: //first button (right), used to create platform
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 13); //deactive button
-
-		//create platform
-		cMap2D->SetMapInfo(17, 3, 100);
-		cMap2D->SetMapInfo(17, 4, 100);
-		cMap2D->SetMapInfo(17, 5, 100);
-
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 21: //second button (up), used to destroy wall
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 11); //deactive button
-
-		//destroy top wall
-		cMap2D->SetMapInfo(21, 8, 0);
-		cMap2D->SetMapInfo(22, 8, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 22: //third button (left), used to change dimension than destroy a block
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 12); //deactive button
-
-		//change dimension
-		if (cMap2D->GetCurrentLevel() == 0)
+		switch (type)
 		{
-			cMap2D->SetCurrentLevel(1);
-		}
-		else if (cMap2D->GetCurrentLevel() == 1)
+		case SCRAP_METAL:
 		{
-			cMap2D->SetCurrentLevel(0);
+			std::cout << "COLLECTED SCRAP METAL" << std::endl;
+			//check if player's planet inventory total count is max or not
+			// if yes, do nothing
+			// if no, add 1 to scrap metal inventory count
+			//cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
+			//cInventoryItem->Add(1); // adds 1 to yellow orb counter
+			//std::cout << cInventoryItem->GetCount() << std::endl;
+			// Load the scrap metal texture
+			collected = true; //delete in scene
+			break;
+		}
+		case BATTERY:
+		{
+			// Load the battery texture
+			std::cout << "COLLECTED BATTERY" << std::endl;
+			collected = true; //delete in scene
+			break;
+		}
+		case IRONWOOD:
+		{
+			// Load the ironwood texture
+			collected = true; //delete in scene
+			break;
+		}
+		case ENERGY_QUARTZ:
+		{
+			// Load the energy quartz texture
+			collected = true; //delete in scene
+			break;
+		}
+		case ICE_CRYSTAL:
+		{
+			// Load the ice crystal texture
+			collected = true; //delete in scene
+			break;
+		}
+		default:
+			break;
 		}
 
-		//destroy block
-		cMap2D->SetMapInfo(11, 11, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 23: //fourth button (discoloured left), used to destroy 2 blocks so player can hope up
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 16); //deactive button
-
-		//make a hole in ceiling
-		cMap2D->SetMapInfo(13, 14, 0);
-		cMap2D->SetMapInfo(13, 15, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 24: //fifth button (left), used to create platform
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 12); //deactive button
-
-		//create platform
-		cMap2D->SetMapInfo(16, 20, 100);
-		cMap2D->SetMapInfo(16, 21, 100);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 25: //sixth button (right), used to destroy platform
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 13); //deactive button
-
-		//destroy platform
-		cMap2D->SetMapInfo(15, 23, 0);
-		cMap2D->SetMapInfo(15, 24, 0);
-		cMap2D->SetMapInfo(14, 23, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 26: //seventh button (up), used to destroy a level of blocks
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 11); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(10, 26, 0);
-		cMap2D->SetMapInfo(10, 27, 0);
-		cMap2D->SetMapInfo(10, 28, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 27: //eighth button (discoloured, left), used to destroy 2 blocks
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 16); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(7, 26, 0);
-		cMap2D->SetMapInfo(7, 27, 0);
-		cMap2D->SetMapInfo(7, 28, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	//Assignment 2
-	case 28: //nineth button (left), used to create platform
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 12); //deactive button
-
-		//create platform
-		cMap2D->SetMapInfo(19, 5, 100);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 29: //tenth button (discoloured, right), used to create platform
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 17); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(13, 1, 0);
-		cMap2D->SetMapInfo(13, 2, 0);
-		cMap2D->SetMapInfo(13, 3, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 32: //eleventh button (discoloured left), used to destroy blocks in walls so player can move through
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 16); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(10, 5, 0);
-		cMap2D->SetMapInfo(10, 6, 0);
-		cMap2D->SetMapInfo(10, 7, 0);
-		cMap2D->SetMapInfo(10, 8, 0);
-
-		cMap2D->SetMapInfo(9, 5, 0);
-		cMap2D->SetMapInfo(9, 6, 0);
-		cMap2D->SetMapInfo(9, 7, 0);
-		cMap2D->SetMapInfo(9, 8, 0);
-
-		cMap2D->SetMapInfo(8, 5, 0);
-		cMap2D->SetMapInfo(8, 6, 0);
-		cMap2D->SetMapInfo(8, 7, 0);
-		cMap2D->SetMapInfo(8, 8, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 33: //twelveth button (discoloured, up), used to create a platform of blocks
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 15); //deactive button
-		
-		//create platform
-		cMap2D->SetMapInfo(19, 11, 101);
-		cMap2D->SetMapInfo(19, 12, 101);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 34: //thirteenth button (discoloured, right), used to destroy blocks
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 17); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(11, 27, 0);
-		cMap2D->SetMapInfo(11, 28, 0);
-
-		//open pathway to healing point
-		cMap2D->SetMapInfo(10, 19, 0);
-		cMap2D->SetMapInfo(10, 20, 0);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 35: //fourteenth button (up), used to destroy wall
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 11); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(10, 26, 0);
-		cMap2D->SetMapInfo(9, 26, 0);
-		cMap2D->SetMapInfo(8, 26, 0);
-
-		cMap2D->SetMapInfo(10, 25, 0);
-		cMap2D->SetMapInfo(9, 25, 0);
-		cMap2D->SetMapInfo(8, 25, 0);
-
-		cMap2D->SetMapInfo(10, 24, 0);
-		cMap2D->SetMapInfo(9, 24, 0);
-		cMap2D->SetMapInfo(8, 24, 0);
-
-		cMap2D->SetMapInfo(10, 23, 0);
-
-		//give new access way to enemy's healing waypoint
-			//open
-		cMap2D->SetMapInfo(10, 19, 0);
-		cMap2D->SetMapInfo(10, 20, 0);
-
-			//close
-		cMap2D->SetMapInfo(7, 17, 100);
-		cMap2D->SetMapInfo(7, 18, 100);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	case 36: //fifteenth button (discoloured left), used to destroy 2 blocks so player can hope up
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 16); //deactive button
-
-		//destroy level of blocks
-		cMap2D->SetMapInfo(15, 23, 0);
-		cMap2D->SetMapInfo(15, 24, 0);
-
-		//create block --> replace sheild/empty space --> stops enemy from firing up
-		cMap2D->SetMapInfo(10, 22, 101);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play flick switch sound
-		break;
-	default:
-		break;
+		return true;
 	}
+	return false;
 }
 
 bool CResource::CheckPosition(void)
@@ -526,90 +549,6 @@ bool CResource::CheckPosition(void)
 	return true;
 }
 
-////let ammo interact with enemies
-//bool CAmmo2D::InteractWithEnemy(CEnemy2D* enemy)
-//{
-//	glm::i32vec2 i32vec2PlayerPos = enemy->vec2Index;
-//
-//	// Check if the ammo is within 1.5 indices of the enemy
-//	if (((vec2Index.x >= i32vec2PlayerPos.x - 0.5) &&
-//		(vec2Index.x <= i32vec2PlayerPos.x + 0.5))
-//		&&
-//		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
-//			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
-//	{
-//		// Decrease enemy health by 1
-//		
-//		//cout << "take that scum!" << endl;
-//
-//		hit = true; //destroy ammo --> only hits enemy once
-//
-//		return true;
-//	}
-//	return false;
-//}
-
-//let ammo interact with enemies
-bool CResource::InteractWithEnemy(glm::i32vec2 i32vec2EnemyPos)
-{
-	// Check if the ammo is within 1.5 indices of the enemy
-	if (((vec2Index.x >= i32vec2EnemyPos.x - 0.5) &&
-		(vec2Index.x <= i32vec2EnemyPos.x + 0.5))
-		&&
-		((vec2Index.y >= i32vec2EnemyPos.y - 0.5) &&
-			(vec2Index.y <= i32vec2EnemyPos.y + 0.5)))
-	{
-		// Decrease enemy health by 1 done in scene
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
-		hit = true; //destroy ammo --> only hits enemy once
-
-		return true;
-	}
-	return false;
-}
-
-// Shoot ammo, keep it moving after it is already created, used in player class
-void CResource::ShootAmmo(void)
-{
-	//can only shoot left, right and up
-	if (direction == LEFT)
-	{
-		vec2NumMicroSteps.x -= 2; //increased to 2 to make ammo faster than player
-		if (vec2NumMicroSteps.x < 0)
-		{
-			vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-			vec2Index.x--;
-		}
-	}
-	else if (direction == RIGHT)
-	{
-		vec2NumMicroSteps.x += 2;
-		if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-		{
-			vec2NumMicroSteps.x = 0;
-			vec2Index.x++;
-		}
-	}
-	else if (direction == UP)
-	{
-		vec2NumMicroSteps.y += 2;
-		if (vec2NumMicroSteps.y > cSettings->NUM_STEPS_PER_TILE_YAXIS)
-		{
-			vec2NumMicroSteps.y = 0;
-			vec2Index.y++;
-		}
-	}
-	else if (direction == DOWN)
-	{
-		vec2NumMicroSteps.y -= 2;
-		if (vec2NumMicroSteps.y < 0)
-		{
-			vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-			vec2Index.y--;
-		}
-	}
-}
-
 // return true if ammo hits window boundaries, used to delete
 	//uses ammo specific direction alrdy set in via constructor, used in player class
 bool CResource::LimitReached(void)
@@ -648,17 +587,63 @@ bool CResource::LimitReached(void)
 	//{
 	//	return true;
 	//}
-	return hit;
+	return collected;
 }
 
-//used to set active to render and check collision of ammo
-void CResource::setActive(bool active)
+void CResource::UpdateFall(const double dElapsedTime)
 {
-	this->active = active;
+	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::FALL)
+	{
+		// Update the elapsed time to the physics engine
+		cPhysics2D.SetTime((float)dElapsedTime);
+		// Call the physics engine update method to calculate the final velocity and displacement
+		cPhysics2D.Update();
+		// Get the displacement from the physics engine
+		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+
+		// Store the current vec2Index.y
+		int iIndex_YAxis_OLD = vec2Index.y;
+
+		// Translate the displacement from pixels to indices
+		int iDisplacement_Microsteps = (int)(v2Displacement.y / cSettings->MICRO_STEP_YAXIS);
+
+		if (vec2Index.y >= 0)
+		{
+			vec2NumMicroSteps.y -= fabs(iDisplacement_Microsteps);
+			if (vec2NumMicroSteps.y < 0)
+			{
+				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+				vec2Index.y--;
+			}
+		}
+
+		// Iterate through all rows until the proposed row
+		// Check if the player will hit a tile, stop jump if so
+		int iIndex_YAxis_Proposed = vec2Index.y;
+		for (int i = iIndex_YAxis_OLD; i >= iIndex_YAxis_Proposed; i--)
+		{
+			// Change the player's index to the current i value
+			vec2Index.y = i;
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition() == false)
+			{
+				// Revert to the previous position
+				if (i != iIndex_YAxis_OLD)
+				{
+					vec2Index.y = i + 1;
+				}
+				// Set the Physics to idle status
+				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+				vec2NumMicroSteps.y = 0;
+				break;
+			}
+		}
+	}
 }
 
-//used to check if ammo is active before checking collision and rendering, etc
-bool CResource::getActive(void)
+//return collected
+		//if true means delete resource
+bool CResource::getCollected(void)
 {
-	return active;
+	return collected;
 }

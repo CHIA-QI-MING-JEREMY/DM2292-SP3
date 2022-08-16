@@ -67,6 +67,18 @@ JunglePlanet::~JunglePlanet(void)
 	}
 	enemyVectors.clear();
 
+
+	for (unsigned int i = 0; i < resourceVectors.size(); i++)
+	{
+		for (unsigned int j = 0; j < resourceVectors[i].size(); ++j)
+		{
+			delete resourceVectors[i][j];
+			resourceVectors[i][j] = NULL;
+		}
+		resourceVectors[i].clear();
+	}
+	resourceVectors.clear();
+
 	if (cGUI_Scene2D)
 	{
 		cGUI_Scene2D->Destroy();
@@ -150,8 +162,12 @@ bool JunglePlanet::Init(void)
 		//and push them into the 2d enemy vector
 	for (int i = 0; i < maxNumOfMaps; ++i)
 	{
-		//current lvele to check for enemies
+		//current level to check for enemies and resources
 		cMap2D->SetCurrentLevel(i);
+
+		/// <summary>
+		/// ENEMIES
+		/// </summary>
 
 		vector<CEnemy2D*> enemies; //temporary vector to contain all the enemies in this 1 map
 			//gets pushed into the enemyVectors vector once filled up
@@ -175,6 +191,32 @@ bool JunglePlanet::Init(void)
 		}
 
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
+
+		/// <summary>
+		/// RESOURCES
+		/// </summary>
+		
+		vector<CResource*> resources; //temporary vector to contain all the resources in this 1 map
+			//gets pushed into the resourceVectors vector once filled 
+		while (true)
+		{
+			CResource* resource = new CResource();
+			// Pass shader to cEnemy2D
+			resource->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (resource->Init() == true)
+			{
+				resources.push_back(resource); //push each resource into the individual resource vector
+			}
+			else
+			{
+				// Break out of this loop if all resources have been loaded
+				break;
+			}
+		}
+
+		resourceVectors.push_back(resources); //push the vector of enemies into enemyVectors
+		
 	}
 
 	cMap2D->SetCurrentLevel(0); //reset level
@@ -348,6 +390,20 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		}
 	}
 
+	//update all resources
+	for (unsigned int i = 0; i < resourceVectors[cMap2D->GetCurrentLevel()].size(); i++)
+	{
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
+
+		//if resource is collected
+		if (resourceVectors[cMap2D->GetCurrentLevel()][i]->getCollected())
+		{
+			delete resourceVectors[cMap2D->GetCurrentLevel()][i];
+			resourceVectors[cMap2D->GetCurrentLevel()][i] = NULL;
+			resourceVectors[cMap2D->GetCurrentLevel()].erase(resourceVectors[cMap2D->GetCurrentLevel()].begin() + i);
+		}
+	}
+
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
 
@@ -472,6 +528,17 @@ void JunglePlanet::Render(void)
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Render();
 		// Calls the CPlayer2D's PostRender()
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->PostRender();
+	}
+
+	// Calls the CResource's PreRender()
+	for (unsigned int i = 0; i < resourceVectors[cMap2D->GetCurrentLevel()].size(); i++)
+	{
+		// Calls the CResource's PreRender()
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->PreRender();
+		// Calls the CResource's Render()
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->Render();
+		// Calls the CResource's PostRender()
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->PostRender();
 	}
 
 	// Calls the CPlayer2D's PreRender()
