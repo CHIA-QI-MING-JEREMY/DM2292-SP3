@@ -120,7 +120,7 @@ bool CResource::Init(void)
 	cPlayer2D = CPlayer2D::GetInstance();
 
 	// Get the handler to the CInventoryManager instance
-	cInventoryManager = CInventoryManager::GetInstance();
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
@@ -157,17 +157,17 @@ bool CResource::Init(void)
 			//according to which number type is set to, load which texture
 		}
 		//index for ironwood
-		else if (cMap2D->FindValue(2, uiRow, uiCol))
+		else if (cMap2D->FindValue(199, uiRow, uiCol))
 		{
 			type = IRONWOOD;
 		}
 		//index for energy quartz
-		else if (cMap2D->FindValue(200, uiRow, uiCol))
+		else if (cMap2D->FindValue(399, uiRow, uiCol))
 		{
 			type = ENERGY_QUARTZ;
 		}
 		//index for ice crystal
-		else if (cMap2D->FindValue(400, uiRow, uiCol))
+		else if (cMap2D->FindValue(599, uiRow, uiCol))
 		{
 			type = ICE_CRYSTAL;
 		}
@@ -395,11 +395,21 @@ bool CResource::InteractWithPlayer(void)
 		case SCRAP_METAL:
 		{
 			std::cout << "COLLECTED SCRAP METAL" << std::endl;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
 			//check if player's planet inventory total count is max or not
+				//if not at max, add in scrap metal and + 1 to resources
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
+				cInventoryItemPlanet->Add(1); //add 1 scrap metal
+			}
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			// if yes, do nothing
 			// if no, add 1 to scrap metal inventory count
-			//cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
-			//cInventoryItem->Add(1); // adds 1 to yellow orb counter
+			//
+			//cInventoryItemPlanet->Add(1); // adds 1 to yellow orb counter
 			//std::cout << cInventoryItem->GetCount() << std::endl;
 			// Load the scrap metal texture
 			collected = true; //delete in scene
@@ -409,6 +419,17 @@ bool CResource::InteractWithPlayer(void)
 		{
 			// Load the battery texture
 			std::cout << "COLLECTED BATTERY" << std::endl;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			//check if player's planet inventory total count is max or not
+				//if not at max, add in battery and + 1 to resources
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
+				cInventoryItemPlanet->Add(1); //add 1 battery
+			}
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			collected = true; //delete in scene
 			break;
 		}

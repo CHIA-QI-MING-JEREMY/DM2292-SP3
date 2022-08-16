@@ -47,6 +47,9 @@ class CMap2D;
 // Include math.h
 #include <math.h>
 
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 //// Include enemies
 //#include "Enemy2D.h"
 //#include "MblEnemy2D.h"
@@ -143,11 +146,11 @@ protected:
 	CPhysics2D cPhysics2D;
 	void UpdateFall(const double dElapsedTime);
 
-	//SWITCH TO PLANET SPECIFIC INVENTORY
 	// Inventory Manager
-	CInventoryManager* cInventoryManager;
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+
 	// Inventory Item
-	CInventoryItem* cInventoryItem;
+	CInventoryItemPlanet* cInventoryItemPlanet;
 
 	// Let resource interact with the player
 	bool InteractWithPlayer(void);

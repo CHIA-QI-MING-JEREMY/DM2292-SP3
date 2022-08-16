@@ -385,6 +385,10 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
+
+
+
+
 			delete enemyVectors[cMap2D->GetCurrentLevel()][i];
 			enemyVectors[cMap2D->GetCurrentLevel()][i] = NULL;
 			enemyVectors[cMap2D->GetCurrentLevel()].erase(enemyVectors[cMap2D->GetCurrentLevel()].begin() + i);

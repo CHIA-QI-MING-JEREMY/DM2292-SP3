@@ -171,6 +171,25 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
+	// Add a resources as one of the inventory items --> check a max of 5 to bring back
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Resources", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a scrap metal as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ScrapMetal", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a battery as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Battery", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a ironwood as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Ironwood", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a energy quartz as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("EnergyQuartz", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a ice crystal as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("IceCrystal", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
