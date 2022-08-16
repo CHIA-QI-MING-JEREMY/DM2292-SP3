@@ -30,20 +30,20 @@ CInventoryManagerPlanet::~CInventoryManagerPlanet(void)
 void CInventoryManagerPlanet::Exit(void)
 {
 	// Delete all scenes stored and empty the entire map
-	std::map<std::string, CInventoryItem*>::iterator it, end;
-	end = inventoryMap.end();
-	for (it = inventoryMap.begin(); it != end; ++it)
+	std::map<std::string, CInventoryItemPlanet*>::iterator it, end;
+	end = inventoryMapPlanet.end();
+	for (it = inventoryMapPlanet.begin(); it != end; ++it)
 	{
 		delete it->second;
 		it->second = nullptr;
 	}
-	inventoryMap.clear();
+	inventoryMapPlanet.clear();
 }
 
 /**
 @brief Add a Scene to this Inventory Manager
 */
-CInventoryItem* CInventoryManagerPlanet::Add(	const std::string& _name,
+CInventoryItemPlanet* CInventoryManagerPlanet::Add(	const std::string& _name,
 								const char* imagePath,
 								const int iItemMaxCount,
 								const int iItemCount)
@@ -55,12 +55,12 @@ CInventoryItem* CInventoryManagerPlanet::Add(	const std::string& _name,
 		return NULL;
 	}
 
-	CInventoryItem* cNewItem = new CInventoryItem(imagePath);
+	CInventoryItemPlanet* cNewItem = new CInventoryItemPlanet(imagePath);
 	cNewItem->iItemMaxCount = iItemMaxCount;
 	cNewItem->iItemCount = iItemCount;
 
 	// Nothing wrong, add the scene to our map
-	inventoryMap[_name] = cNewItem;
+	inventoryMapPlanet[_name] = cNewItem;
 
 	return cNewItem;
 }
@@ -78,11 +78,11 @@ bool CInventoryManagerPlanet::Remove(const std::string& _name)
 		return false;
 	}
 
-	CInventoryItem* target = inventoryMap[_name];
+	CInventoryItemPlanet* target = inventoryMapPlanet[_name];
 
 	// Delete and remove from our map
 	delete target;
-	inventoryMap.erase(_name);
+	inventoryMapPlanet.erase(_name);
 
 	return true;
 }
@@ -92,20 +92,20 @@ bool CInventoryManagerPlanet::Remove(const std::string& _name)
 */
 bool CInventoryManagerPlanet::Check(const std::string& _name)
 {
-	return inventoryMap.count(_name) != 0;
+	return inventoryMapPlanet.count(_name) != 0;
 }
 
 /**
 @brief Get an item by its name
 */ 
-CInventoryItem* CInventoryManagerPlanet::GetItem(const std::string& _name)
+CInventoryItemPlanet* CInventoryManagerPlanet::GetItem(const std::string& _name)
 {
 	// Does nothing if it does not exist
 	if (!Check(_name))
 		return NULL;
 
 	// Find and return the item
-	return inventoryMap[_name];
+	return inventoryMapPlanet[_name];
 }
 
 /**
@@ -113,5 +113,5 @@ CInventoryItem* CInventoryManagerPlanet::GetItem(const std::string& _name)
 */
 int CInventoryManagerPlanet::GetNumItems(void) const
 {
-	return inventoryMap.size();
+	return inventoryMapPlanet.size();
 }

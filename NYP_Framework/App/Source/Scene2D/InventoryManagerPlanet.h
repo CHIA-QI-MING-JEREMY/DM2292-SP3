@@ -20,7 +20,7 @@ public:
 	void Exit(void);
 
 	// Add a new item
-	CInventoryItem* Add(	const std::string& _name,
+	CInventoryItemPlanet* Add(	const std::string& _name,
 							const char* imagePath, 
 							const int iItemMaxCount, 
 							const int iItemCount = 0);
@@ -30,7 +30,7 @@ public:
 	bool Check(const std::string& _name);
 
 	// Get an item by its name
-	CInventoryItem* GetItem(const std::string& _name);
+	CInventoryItemPlanet* GetItem(const std::string& _name);
 	// Get the number of items
 	int GetNumItems(void) const;
 
@@ -42,5 +42,5 @@ protected:
 	virtual ~CInventoryManagerPlanet(void);
 
 	// The map containing all the items
-	std::map<std::string, CInventoryItem*> inventoryMap;
+	std::map<std::string, CInventoryItemPlanet*> inventoryMapPlanet;
 };
