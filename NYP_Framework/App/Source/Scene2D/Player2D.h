@@ -41,6 +41,10 @@ class CMap2D;
 // Include InventoryManager
 #include "InventoryManager.h"
 
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 

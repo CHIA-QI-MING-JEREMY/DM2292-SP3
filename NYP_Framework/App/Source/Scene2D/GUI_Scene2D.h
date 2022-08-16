@@ -18,6 +18,10 @@
 // Include CInventoryManager
 #include "InventoryManager.h"
 
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include GLEW
 #ifndef GLEW_STATIC
 #include <GL/glew.h>
