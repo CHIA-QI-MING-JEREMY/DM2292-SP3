@@ -31,5 +31,9 @@ public:
 	virtual void Destroy(void);
 
 protected:
+	// constants
+	const double kSplashScreenLength = 0.75f;
+	
 	CBackgroundEntity* background;
+	double timeElapsed;
 };
