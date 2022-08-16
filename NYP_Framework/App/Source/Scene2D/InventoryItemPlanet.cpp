@@ -1,10 +1,10 @@
 /**
- CInventoryItem
+ CInventoryItemPlanet
  @brief A class which represents an inventory item which can be collected in the game
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "InventoryItem.h"
+#include "InventoryItemPlanet.h"
 
 // Include ImageLoader
 #include "System\ImageLoader.h"
@@ -14,7 +14,7 @@
 /**
 @brief Constructor
 */
-CInventoryItem::CInventoryItem(const char* imagePath)
+CInventoryItemPlanet::CInventoryItemPlanet(const char* imagePath)
 	: iItemCount(0)
 	, iItemMaxCount(0)
 	, vec2Size(glm::vec2(0.0f))
@@ -32,14 +32,14 @@ CInventoryItem::CInventoryItem(const char* imagePath)
 /**
 @brief Destructor
 */
-CInventoryItem::~CInventoryItem(void)
+CInventoryItemPlanet::~CInventoryItemPlanet(void)
 {
 }
 
 /**
 @brief Add a number of items from this class instance
 */
-void CInventoryItem::Add(const int iNumItems)
+void CInventoryItemPlanet::Add(const int iNumItems)
 {
 	iItemCount += iNumItems;
 	if (iItemCount > iItemMaxCount)
@@ -49,7 +49,7 @@ void CInventoryItem::Add(const int iNumItems)
 /**
 @brief Remove the number of items from this class instance
 */
-void CInventoryItem::Remove(const int iNumItems)
+void CInventoryItemPlanet::Remove(const int iNumItems)
 {
 	iItemCount -= iNumItems;
 	if (iItemCount < 0)
@@ -59,7 +59,7 @@ void CInventoryItem::Remove(const int iNumItems)
 /**
 @brief Get the number of items from this class instance
 */
-int CInventoryItem::GetCount(void) const
+int CInventoryItemPlanet::GetCount(void) const
 {
 	return iItemCount;
 }
@@ -67,7 +67,7 @@ int CInventoryItem::GetCount(void) const
 /**
 @brief  Get the maximum number of items from this class instance
 */
-int CInventoryItem::GetMaxCount(void) const
+int CInventoryItemPlanet::GetMaxCount(void) const
 {
 	return iItemMaxCount;
 }
@@ -75,7 +75,7 @@ int CInventoryItem::GetMaxCount(void) const
 /**
 @brief Get the texture ID
 */
-unsigned int CInventoryItem::GetTextureID(void) const
+unsigned int CInventoryItemPlanet::GetTextureID(void) const
 {
 	return iTextureID;
 }

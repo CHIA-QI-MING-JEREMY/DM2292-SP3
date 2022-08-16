@@ -38,6 +38,10 @@ class CMap2D;
 //Include inventory related classes
 #include "InventoryManager.h"
 
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include Player2D
 #include "Player2D.h"
 

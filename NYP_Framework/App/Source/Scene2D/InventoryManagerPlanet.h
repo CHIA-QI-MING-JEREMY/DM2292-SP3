@@ -1,5 +1,5 @@
 /**
- CInventoryManager
+ CInventoryManagerPlanet
  @brief A class which manages all the inventory items the game
  By: Toh Da Jun
  Date: Mar 2020
@@ -11,16 +11,16 @@
 
 #include <map>
 #include <string>
-#include "InventoryItem.h"
+#include "InventoryItemPlanet.h"
 
-class CInventoryManager : public CSingletonTemplate<CInventoryManager>
+class CInventoryManagerPlanet : public CSingletonTemplate<CInventoryManagerPlanet>
 {
-	friend CSingletonTemplate<CInventoryManager>;
+	friend CSingletonTemplate<CInventoryManagerPlanet>;
 public:
 	void Exit(void);
 
 	// Add a new item
-	CInventoryItem* Add(	const std::string& _name,
+	CInventoryItemPlanet* Add(	const std::string& _name,
 							const char* imagePath, 
 							const int iItemMaxCount, 
 							const int iItemCount = 0);
@@ -30,17 +30,17 @@ public:
 	bool Check(const std::string& _name);
 
 	// Get an item by its name
-	CInventoryItem* GetItem(const std::string& _name);
+	CInventoryItemPlanet* GetItem(const std::string& _name);
 	// Get the number of items
 	int GetNumItems(void) const;
 
 protected:
 	// Constructor
-	CInventoryManager(void);
+	CInventoryManagerPlanet(void);
 
 	// Destructor
-	virtual ~CInventoryManager(void);
+	virtual ~CInventoryManagerPlanet(void);
 
 	// The map containing all the items
-	std::map<std::string, CInventoryItem*> inventoryMap;
+	std::map<std::string, CInventoryItemPlanet*> inventoryMapPlanet;
 };

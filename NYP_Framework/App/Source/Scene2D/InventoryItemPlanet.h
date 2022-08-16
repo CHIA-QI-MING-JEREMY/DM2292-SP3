@@ -1,5 +1,5 @@
 /**
- CInventoryItem
+ CInventoryItemPlanet
  @brief A class which represents an inventory item which can be collected in the game
  By: Toh Da Jun
  Date: Mar 2020
@@ -12,14 +12,14 @@
 #include <map>
 #include <string>
 
-class CInventoryItem : public CEntity2D
+class CInventoryItemPlanet : public CEntity2D
 {
 public:
 	// Constructor
-	CInventoryItem(const char* imagePath = NULL);
+	CInventoryItemPlanet(const char* imagePath = NULL);
 
 	// Destructor
-	virtual ~CInventoryItem(void);
+	virtual ~CInventoryItemPlanet(void);
 
 	// Add a number of items from this class instance
 	void Add(const int iNumItems);

@@ -1,5 +1,5 @@
 /**
- CEnemyAmmo2D
+ CAmmo2D
  @brief A class representing the player object
  By: Toh Da Jun
  Date: Mar 2020
@@ -35,23 +35,18 @@ class CMap2D;
 // Include Physics
 #include "Physics2D.h"
 
-//Include inventory related classes
-#include "InventoryManager.h"
-
-
-// Include InventoryManager
-#include "InventoryManagerPlanet.h"
-
-// Include Player2D
-#include "Player2D.h"
-
 //Include SoundController
 #include "..\SoundController\SoundController.h"
 
-// Include Camera
+// Include Camera2D
 #include "Primitives/Camera2D.h"
 
-class CEnemyAmmo2D : public CEntity2D
+//// Include enemies
+//#include "Enemy2D.h"
+//#include "MblEnemy2D.h"
+//#include "StationaryEnemy2D.h"
+
+class CResource : public CEntity2D
 {
 public:
 
@@ -71,10 +66,26 @@ public:
 	void PostRender(void);
 
 	// Constructor
-	CEnemyAmmo2D();
+	CResource();
+	CResource(int type); //used to create a specific resource
 
 	// Destructor
-	virtual ~CEnemyAmmo2D(void);
+	virtual ~CResource(void);
+
+	//enum to decide what resource is dropped
+	enum RESOURCE_TYPE 
+	{
+		SCRAP_METAL = 0,
+		BATTERY,
+		IRONWOOD,
+		ENERGY_QUARTZ,
+		ICE_CRYSTAL,
+		NUM_RESOURCES
+	};
+
+	void setPosition(glm::i32vec2 indexPos, glm::i32vec2 microStep);
+		//DONT FORGET ADD UPDATEJUMPFALL SO GRAVITY PULLS IT DOWN
+
 
 	//setting the ammo's information needed for its travel path:
 		//player location aka ammo OG location
@@ -90,12 +101,14 @@ public:
 		NUM_DIRECTIONS
 	};
 
-	//let enemy emmo interact with the map
+	//let ammo interact with the map
 	void InteractWithMap(void);
 	bool CheckPosition(void);
 
-	// Let enemy ammo interact with the player
-	bool InteractWithPlayer(void);
+	//let ammo interact with enemies
+	//bool InteractWithEnemy(CEnemy2D* enemy); //called in scene, 1 ammo in the vec to 1 enemy in the vec
+		//if return is true, delete the enemy passed in from the enemy vector and set it to null
+	bool InteractWithEnemy(glm::i32vec2 i32vec2EnemyPos);
 
 	// Shoot ammo, keep it moving after it is already created, used in player class
 	void ShootAmmo(void);
@@ -116,16 +129,6 @@ protected:
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
 
-	// Handler to the camera instance
-	Camera2D* camera2D;
-
-	// Handle to the CPlayer2D
-	CPlayer2D* cPlayer2D;
-
-	//For inventory
-	CInventoryManager* cInventoryManager;
-	CInventoryItem* cInventoryItem;
-
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 
@@ -135,11 +138,14 @@ protected:
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;
 
-	// Physics
-	CPhysics2D cPhysics2D;
-
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
+
+	// The handler containing the instance of the camera
+	Camera2D* camera2D;
+
+	// Physics
+	CPhysics2D cPhysics2D;
 
 	// ammo's colour
 	glm::vec4 runtimeColour;
