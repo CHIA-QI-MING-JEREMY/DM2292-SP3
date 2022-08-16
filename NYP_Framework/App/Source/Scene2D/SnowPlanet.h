@@ -1,5 +1,5 @@
 /**
- JunglePlanet
+ SnowPlanet
  @brief A class which manages the Jungle Planets/Levels
  */
 #pragma once
@@ -55,13 +55,12 @@
 //include ammo
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
 
 // Add your include files here
 
-class JunglePlanet : public CSingletonTemplate<JunglePlanet>
+class SnowPlanet : public CSingletonTemplate<SnowPlanet>
 {
-	friend CSingletonTemplate<JunglePlanet>;
+	friend CSingletonTemplate<SnowPlanet>;
 
 public:
 	// Init
@@ -127,8 +126,8 @@ protected:
 	bool isZoomedIn = false;
 	
 	// Constructor
-	JunglePlanet(void);
+	SnowPlanet(void);
 	// Destructor
-	virtual ~JunglePlanet(void);
+	virtual ~SnowPlanet(void);
 };
 

@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "JunglePlanet.h"
+#include "SnowPlanet.h"
 #include <iostream>
 using namespace std;
 
@@ -16,7 +16,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-JunglePlanet::JunglePlanet(void)
+SnowPlanet::SnowPlanet(void)
 	: cMap2D(NULL)
 	, cPlayer2D(NULL)
 	, cKeyboardController(NULL)	
@@ -30,7 +30,7 @@ JunglePlanet::JunglePlanet(void)
 /**
  @brief Destructor
  */
-JunglePlanet::~JunglePlanet(void)
+SnowPlanet::~SnowPlanet(void)
 {
 	if (cKeyboardController)
 	{
@@ -88,7 +88,7 @@ JunglePlanet::~JunglePlanet(void)
 /**
 @brief Init Initialise this instance
 */ 
-bool JunglePlanet::Init(void)
+bool SnowPlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
@@ -245,7 +245,7 @@ bool JunglePlanet::Init(void)
 /**
 @brief Update Update this instance
 */
-bool JunglePlanet::Update(const double dElapsedTime)
+bool SnowPlanet::Update(const double dElapsedTime)
 {
 	// mouse Position demo
 	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
@@ -438,7 +438,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 /**
  @brief PreRender Set up the OpenGL display environment before rendering
  */
-void JunglePlanet::PreRender(void)
+void SnowPlanet::PreRender(void)
 {
 	// Reset the OpenGL rendering environment
 	glLoadIdentity();
@@ -454,7 +454,7 @@ void JunglePlanet::PreRender(void)
 /**
  @brief Render Render this instance
  */
-void JunglePlanet::Render(void)
+void SnowPlanet::Render(void)
 {
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
@@ -505,6 +505,6 @@ void JunglePlanet::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void JunglePlanet::PostRender(void)
+void SnowPlanet::PostRender(void)
 {
 }
