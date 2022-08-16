@@ -31,7 +31,7 @@
 
 // Include CEnemy2D
 #include "Enemy2D.h"
-#include "JungleEnemy2DVT.h"
+#include "TerrestrialEnemy2DSentry.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"
@@ -57,7 +57,7 @@
 //include ammo
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
+#include "TerrestrialEAmmoSentry.h"
 
 // Add your include files here
 

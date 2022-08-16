@@ -158,14 +158,14 @@ bool TerrestrialPlanet::Init(void)
 
 		while (true)
 		{
-			JEnemy2DVT* cJEnemy2DVT = new JEnemy2DVT();
+			TEnemy2DSentry* cTEnemy2DSentry = new TEnemy2DSentry();
 			// Pass shader to cEnemy2D
-			cJEnemy2DVT->SetShader("Shader2D_Colour");
+			cTEnemy2DSentry->SetShader("Shader2D_Colour");
 			// Initialise the instance
-			if (cJEnemy2DVT->Init() == true)
+			if (cTEnemy2DSentry->Init() == true)
 			{
-				cJEnemy2DVT->SetPlayer2D(cPlayer2D);
-				enemies.push_back(cJEnemy2DVT); //push each enemy into the individual enemy vector
+				cTEnemy2DSentry->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DSentry); //push each enemy into the individual enemy vector
 			}
 			else
 			{
@@ -378,7 +378,7 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		}
 	}
 
-	// Player Attacks (TO DO)
+	// Melee Player Attacks (TO REMOVE)
 	if (cPlayer2D->getPlayerAttackStatus())
 	{
 		for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
