@@ -13,6 +13,11 @@ Interactables
 
 [Snow Planet]
 599 : ice crystal
+400: fur
+401: fur coat
+402: power-up shield
+403: power-up berserk
+404: power-up freeze water shard
 
 
 Solid Blocks
@@ -22,7 +27,13 @@ Solid Blocks
 [Terrestrial Planet]
 
 [Snow Planet]
-
+1000: regular ground with snow (top snow)
+1001: regular ground with snow (left snow)
+1002: regular ground with snow (right snow)
+1003: regular ground with snow (bottom snow)
+1004: regular ground without snow
+1100: water
+1101: ice
 Player : 1400
 
 Enemies
@@ -32,3 +43,6 @@ Enemies
 [Terrestrial Planet]
 
 [Snow Planet]
+2000: Snow Wolf Brown
+2001: Snow Wolf White
+2002: Snow Wolf Boss 
