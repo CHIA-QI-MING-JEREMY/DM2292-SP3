@@ -268,13 +268,13 @@ void CJEAmmoVT::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case BURNABLE_BUSH: //burnable bush block
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, DISSOLVING_BUSH); //turn to dissolving bush
+	case CMap2D::TILE_INDEX::BURNABLE_BUSH: //burnable bush block
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //turn to dissolving bush
 		hit = true;
 		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
 		break;
-	case BURNING_BUSH: //burning bush block
-	case DISSOLVING_BUSH: //dissolving bush block
+	case CMap2D::TILE_INDEX::BURNING_BUSH: //burning bush block
+	case CMap2D::TILE_INDEX::DISSOLVING_BUSH: //dissolving bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); //turn to empty space
 		hit = true;
 		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound

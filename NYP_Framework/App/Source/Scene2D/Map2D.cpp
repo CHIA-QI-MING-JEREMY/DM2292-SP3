@@ -143,6 +143,24 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	/// JUNGLE PLANET SOLID BLOCKS
 	/// </summary>
 	{
+		//poison sprout tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/PoisonSprout.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/PoisonSprout.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(POISON_SPROUT, iTextureID));
+		}
+	}
+
+	/// <summary>
+	/// JUNGLE PLANET SOLID BLOCKS
+	/// </summary>
+	{
 		//burnable bush tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock.tga", true);
 		if (iTextureID == 0)
@@ -153,7 +171,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(600, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(BURNABLE_BUSH, iTextureID));
 		}
 		//burning burnable bush tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock_Burning.tga", true);
@@ -165,7 +183,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(601, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(BURNING_BUSH, iTextureID));
 		}
 		//dissolving burnable bush tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock_Dissolving.tga", true);
@@ -177,7 +195,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(602, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(DISSOLVING_BUSH, iTextureID));
 		}
 
 
@@ -191,7 +209,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(610, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(GRASS_GROUND, iTextureID));
 		}
 		//grass ground, top left corner tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/GrassBlock_TopLeftCorner.tga", true);
@@ -203,7 +221,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(611, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(GRASS_GROUND_L, iTextureID));
 		}
 		//grass ground, top right corner tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/GrassBlock_TopRightCorner.tga", true);
@@ -215,7 +233,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(612, iTextureID));
+			MapOfTextureIDs.insert(pair<int, int>(GRASS_GROUND_R, iTextureID));
 		}
 	}
 

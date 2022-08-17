@@ -236,13 +236,13 @@ void CAmmo2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 600: //burnable bush block
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 601); //turn to burning bush
+	case CMap2D::TILE_INDEX::BURNABLE_BUSH: //burnable bush block
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::BURNING_BUSH); //turn to burning bush
 		hit = true;
 		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
 		break;
-	case 601: //burning bush block
-	case 602: //dissolving bush block
+	case CMap2D::TILE_INDEX::BURNING_BUSH: //burning bush block
+	case CMap2D::TILE_INDEX::DISSOLVING_BUSH: //dissolving bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); //turn to empty space
 		hit = true;
 		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound

@@ -6,6 +6,7 @@ Tile Index:
 
 Interactables
 [Jungle Planet]
+2 : poison sprout
 199 : ironwood
 
 [Terrestrial Planet]
@@ -50,7 +51,9 @@ Solid Blocks
 600 : burnable bush
 601 : burnable bush on fire
 602 : burnable bush being dissolved
-610 : regular grass ground
+610 : grass ground
+611 : grass ground top left rounded corner
+612 : grass ground top right rounded corner
 
 [Terrestrial Planet]
 800 : brown brick
