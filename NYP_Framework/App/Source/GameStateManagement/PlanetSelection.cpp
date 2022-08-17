@@ -77,8 +77,8 @@ bool CPlanetSelectionState::Update(const double dElapsedTime)
 		CKeyboardController::GetInstance()->Reset();
 
 		// Load the menu state
-		cout << "Loading PauseState" << endl;
-		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
+		cout << "Loading MenuState" << endl;
+		CGameStateManager::GetInstance()->SetPauseGameState("MenuState");
 	}
 
 	// Call the cScene2D's Update method

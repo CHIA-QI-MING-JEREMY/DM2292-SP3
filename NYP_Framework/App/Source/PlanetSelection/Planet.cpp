@@ -93,6 +93,8 @@ bool CPlanet::Init(void)
 	hasExplored = true;
 	isVisible = false;
 
+	planetName = "???";
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -108,7 +110,8 @@ bool CPlanet::Init(void)
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-
+	planetIcon = "Image/Planet/PlanetDefault.png";
+	type = TYPE::NO_TYPE;
 
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
@@ -257,6 +260,31 @@ void CPlanet::SetVisibility(bool isVisible)
 bool CPlanet::getVisibility(void)
 {
 	return isVisible;
+}
+
+void CPlanet::SetType(TYPE type)
+{
+	if (type == TYPE::JUNGLE || type == TYPE::JUNGLE_TUTORIAL || type == NO_TYPE) {
+		this->type = type;
+		UpdatePlanetIcon("Image/Planet/PlanetDefault.png");
+	}
+	else if (type == TYPE::SNOW || type == TYPE::SNOW_TUTORIAL) {
+		this->type = type;
+		UpdatePlanetIcon("Image/Planet/PlanetSnow.png");
+	}
+	else if (type == TYPE::TERRESTRIAL || type == TYPE::TERRESTRIAL_TUTORIAL) {
+		this->type = type;
+		UpdatePlanetIcon("Image/Planet/PlanetTerrestrial.png");
+	}
+	else {
+		this->type = type;
+		UpdatePlanetIcon("Image/Planet/PlanetFinal.png");
+	}
+}
+
+int CPlanet::getType(void)
+{
+	return this->type;
 }
 
 void CPlanet::SetScale(float newScale)

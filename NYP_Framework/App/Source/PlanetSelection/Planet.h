@@ -35,9 +35,24 @@ class CMap2D;
 // Include Camera
 #include "Primitives/Camera2D.h"
 
+
+
 class CPlanet : public CEntity2D
 {
 public:
+	enum TYPE
+	{
+		NO_TYPE = 0,
+		JUNGLE,
+		JUNGLE_TUTORIAL,
+		TERRESTRIAL,
+		TERRESTRIAL_TUTORIAL,
+		SNOW,
+		SNOW_TUTORIAL,
+		FINAL,
+		NUM_TYPES
+	};
+
 	// Constructor
 	CPlanet(void);
 
@@ -80,7 +95,10 @@ public:
 
 	void SetVisibility(bool isVisible);
 	bool getVisibility(void);
+	void SetType(TYPE type);
+	int getType(void);
 
+	const char* planetName;
 	bool hasExplored;
 
 	void SetScale(float newScale);
@@ -122,8 +140,9 @@ protected:
 	CSoundController* cSoundController;
 
 	// planet Customisation
-	const char* planetName;
-	const char* planetIcon = "Image/Planet/PlanetDefault.png";
+	
+	const char* planetIcon;
+	TYPE type;
 
 	bool isVisible;
 	// TODO: [SP3] Find way to link to platformer level

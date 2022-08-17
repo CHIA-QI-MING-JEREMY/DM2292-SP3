@@ -19,7 +19,7 @@
 CScenePlanet::CScenePlanet(void)
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
-	//, cGUI_Scene2D(NULL)
+	, cGUI_ScenePlanet(NULL)
 	, cGameManager(NULL)
 	, camera2D(NULL)
 	, cSoundController(NULL)
@@ -49,11 +49,11 @@ CScenePlanet::~CScenePlanet(void)
 		camera2D = NULL;
 	}
 
-	/*if (cGUI_Scene2D)
+	if (cGUI_ScenePlanet)
 	{
-		cGUI_Scene2D->Destroy();
-		cGUI_Scene2D = NULL;
-	}*/
+		cGUI_ScenePlanet->Destroy();
+		cGUI_ScenePlanet = NULL;
+	}
 
 	if (cGameManager)
 	{
@@ -75,6 +75,11 @@ bool CScenePlanet::Init(void)
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
 
+	//Create Background Entity
+	background = new CBackgroundEntity("Image/space_bg.png");
+	background->SetShader("Shader2D");
+	background->Init();
+
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -93,6 +98,15 @@ bool CScenePlanet::Init(void)
 		return false;
 	}
 
+	// Create and initialise the CGUI_Scene2D
+	cGUI_ScenePlanet = CGUI_ScenePlanet::GetInstance();
+	// Initialise the instance
+	if (cGUI_ScenePlanet->Init() == false)
+	{
+		cout << "Failed to load cGUI_ScenePlanet" << endl;
+		return false;
+	}
+
 	//cycle through the maps and find the enemies
 	//and push them into the planet vector
 
@@ -101,6 +115,12 @@ bool CScenePlanet::Init(void)
 
 	camera2D = Camera2D::GetInstance();
 	camera2D->Reset();
+
+	int snowCount = 0;
+	int terraCount = 0;
+	int jungleCount = 0;
+
+	srand(time(NULL));
 
 	planetVector.clear();
 	while (true) {
@@ -115,14 +135,70 @@ bool CScenePlanet::Init(void)
 				cPlanet->SetVisibility(true);
 				nebula = cPlanet;
 			}
-			else {
-				cPlanet->UpdatePlanetIcon("Image/Planet/PlanetDefault.png");
-			}
-			if (cPlanet->vec2Index.x == 8) {
+			else if (cPlanet->vec2Index.x == 8) {
 				camera2D->setTargetPos(glm::vec2(cPlanet->vec2Index.x, cPlanet->vec2Index.y));
+				cPlanet->SetType(CPlanet::TYPE::JUNGLE_TUTORIAL);
 				PlanetSelected = cPlanet;
 				cPlanet->SetVisibility(true);
+				cPlanet->planetName = "Stan Loona";
+				cGUI_ScenePlanet->setPlanetInfo(cPlanet);
 			}
+			else if (cPlanet->vec2Index.x == 11) {
+				cPlanet->SetType(CPlanet::TYPE::SNOW_TUTORIAL);
+			}
+			else if (cPlanet->vec2Index.x == 14) {
+				cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL_TUTORIAL);
+			}
+			else if (cPlanet->vec2Index.x == 31) {
+				cPlanet->SetType(CPlanet::TYPE::FINAL);
+				cPlanet->planetName = "Stan Kepler";
+			}
+			else {
+				// randomiser function
+				bool isSet = false;
+				while (!isSet) {
+					int randomType = rand() % 6;
+					switch (randomType)
+					{
+					case 0:
+					case 3:
+						if (jungleCount < 2) {
+							cPlanet->SetType(CPlanet::TYPE::JUNGLE);
+							jungleCount++;
+							isSet = true;
+						}
+						else {
+							continue;
+						}
+						break;
+					case 1:
+					case 4:
+						if (snowCount < 2) {
+							cPlanet->SetType(CPlanet::TYPE::SNOW);
+							snowCount++;
+							isSet = true;
+						}
+						else {
+							continue;
+						}
+						break;
+					case 2:
+					case 5:
+						if (terraCount < 2) {
+							cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL);
+							terraCount++;
+							isSet = true;
+						}
+						else {
+							continue;
+						}
+						break;
+					default:
+						break;
+					}
+				}
+			}
+
 
 			planetVector.insert(std::make_pair(std::make_pair(cPlanet->vec2Index.x, cPlanet->vec2Index.y), cPlanet));
 		}
@@ -149,7 +225,6 @@ bool CScenePlanet::Init(void)
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
 
-	// Init the camera
 
 	return true;
 }
@@ -176,8 +251,21 @@ bool CScenePlanet::Update(const double dElapsedTime)
 					continue;
 				}
 
-
 				PlanetSelected = x->second;
+				cGUI_ScenePlanet->setPlanetInfo(x->second);
+
+				// TODO: remove the panel uh-
+				if (x->second->vec2Index == camera2D->getPos()) {
+					if (cGUI_ScenePlanet->isShowPanel) {
+						cGUI_ScenePlanet->isShowPanel = false;
+					}
+					else {
+						cGUI_ScenePlanet->isShowPanel = true;
+					}
+				}
+				else {
+					cGUI_ScenePlanet->isShowPanel = true;
+				}
 
 				// get nearby planets
 				if (x->second->getVisibility() == true) {
@@ -187,6 +275,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 							otherPlanets++;
 							continue;
 						}
+						// TODO: [SP3] Set it so that u cannot visit other planets during tutorial
 						if (glm::abs(otherPlanets->second->vec2Index.x - x->second->vec2Index.x) < 7) {
 							otherPlanets->second->SetVisibility(true);
 						}
@@ -231,7 +320,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 	}
 
 	// Call the cGUI_Scene2D's update method
-	// cGUI_Scene2D->Update(dElapsedTime);
+	cGUI_ScenePlanet->Update(dElapsedTime);
 
 	//TODO: [SP3] Add transition to next stage (ship combat)
 	// unslay
@@ -260,6 +349,9 @@ void CScenePlanet::PreRender(void)
  */
 void CScenePlanet::Render(void)
 {
+	//Render Background
+	background->Render();
+
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()
@@ -273,7 +365,12 @@ void CScenePlanet::Render(void)
 		planet.second->PostRender();
 	}
 
-
+	// Calls the CGUI_Scene2D's PreRender()
+	cGUI_ScenePlanet->PreRender();
+	// Calls the CGUI_Scene2D's Render()
+	cGUI_ScenePlanet->Render();
+	// Calls the CGUI_Scene2D's PostRender()
+	cGUI_ScenePlanet->PostRender();
 }
 
 /**

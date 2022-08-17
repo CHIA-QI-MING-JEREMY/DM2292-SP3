@@ -35,7 +35,8 @@
 #include "../App/Source/Scene2D/Physics2D.h"
 
 // Include GUI_Scene2D
-#include "../App/Source/Scene2D/GUI_Scene2D.h"
+#include "GUI_ScenePlanet.h"
+#include "../App/Source/Scene2D/BackgroundEntity.h"
 
 // Include vector
 #include <vector>
@@ -76,6 +77,8 @@ public:
 	void PostRender(void);
 
 protected:
+	CBackgroundEntity* background;
+
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
 
@@ -87,7 +90,7 @@ protected:
 
 	// The handler containing the instance of CGUI_Scene2D
 	// TODO: [SP3] Create new GUI
-	CGUI_Scene2D* cGUI_Scene2D;
+	CGUI_ScenePlanet* cGUI_ScenePlanet;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
