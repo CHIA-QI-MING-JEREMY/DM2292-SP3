@@ -95,6 +95,19 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	//for tile index
+	enum TILE_INDEX
+	{
+		POISON_SPROUT = 2,
+		IRONWOOD = 199,
+		BURNABLE_BUSH = 600,
+		BURNING_BUSH = 601,
+		DISSOLVING_BUSH = 602,
+		GRASS_GROUND = 610,
+		GRASS_GROUND_L = 611,
+		GRASS_GROUND_R = 612
+	};
+
 	// Set the specifications of the map
 	void SetNumTiles(const CSettings::AXIS sAxis, const unsigned int uiValue);
 	void SetNumSteps(const CSettings::AXIS sAxis, const unsigned int uiValue);

@@ -159,7 +159,8 @@ protected:
 		//poison level 0 means the player has not been poisoned
 		//from 0 to 3, caps at 3, increases by 1 everytime the player is hit by something poisonous with a 2 second cooldwon inbetween
 	double poisonLevelIncreaseCooldown;
-	double poisonLevelIncreaseMaxCooldown; //used to reset cooldown
+		//IMPORTANT NOTE: COOLDOWN ONLY APPLIES FOR POISON FROM POISON SPROUT AND POISON FOG, NOT ENEMY POISON AMMO
+	const double poisonLevelIncreaseMaxCooldown = 2.0; //used to reset cooldown
 
 	double poisonDamageHitCooldown; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
 		//once it hits 0, player takes damage
@@ -174,6 +175,8 @@ protected:
 		//2 would be 4.0s
 		//3 would be 3.0s
 
+	// Let player interact with the map
+	void PlayerInteractWithMap(void);
 
 
 	// zoom (just for demo)

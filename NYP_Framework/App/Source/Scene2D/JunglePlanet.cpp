@@ -294,7 +294,7 @@ bool JunglePlanet::Init(void)
 	maxAlarmTimer = 10.0;
 	alarmTimer = 0.0;
 	
-	poisonLevelIncreaseCooldown = 2.0; //poison level can increase every 2 seconds if hit by something poisonous
+	poisonLevelIncreaseCooldown = 0.0; //poison level can increase every 2 seconds if hit by something poisonous
 
 	//contains the int of how much of the health is removed from player per damage hit
 	poisonDamage.clear(); //make sure it is clear before pushing in
@@ -481,7 +481,32 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		}
 	}
 
+	PlayerInteractWithMap();
 
+	//if time to take damage from poison,
+	if (poisonDamageHitCooldown <= 0)
+	{
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+		int poisonLvl = cInventoryItemPlanet->GetCount(); //find poison lvl
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health"); //find player's health to deplete
+		cInventoryItemPlanet->Remove(poisonDamage[poisonLvl]); //player take damage according to their poison level
+
+		poisonDamageHitCooldown = poisonDamageHitMaxCooldown[poisonLvl]; //reset damage hit cooldown
+	}
+	else //time to dElapsedTime away from cooldown
+	{
+		poisonDamageHitCooldown -= dElapsedTime; //deplete cooldown
+	}
+
+	//deplete poison lvl increase cooldown if it isnt at 0
+	if (poisonLevelIncreaseCooldown > 0)
+	{
+		poisonLevelIncreaseCooldown -= dElapsedTime; //deplete cooldown
+	}
+	else if (poisonLevelIncreaseCooldown < 0)
+	{
+		poisonLevelIncreaseCooldown = 0;
+	}
 
 
 	// Call the Map2D's update method
@@ -639,6 +664,27 @@ void JunglePlanet::Render(void)
  */
 void JunglePlanet::PostRender(void)
 {
+}
+
+void JunglePlanet::PlayerInteractWithMap(void)
+{
+	switch (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x))
+	{
+	case CMap2D::TILE_INDEX::POISON_SPROUT:
+		if (poisonLevelIncreaseCooldown <= 0) //poison lvl increase cooldown up
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel"); 
+			//if not at max poison lvl yet
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //increase poison level by 1
+				poisonLevelIncreaseCooldown = poisonLevelIncreaseMaxCooldown; //reset poison level increase cooldown
+			}
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 //to decide which map, aka which level to render
