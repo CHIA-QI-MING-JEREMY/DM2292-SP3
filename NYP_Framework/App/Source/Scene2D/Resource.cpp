@@ -211,7 +211,7 @@ bool CResource::Init(void)
 	case SCRAP_METAL:
 	{
 		// Load the scrap metal texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ScrapMetal.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load scrap metal texture" << std::endl;
@@ -244,7 +244,7 @@ bool CResource::Init(void)
 	case ENERGY_QUARTZ:
 	{
 		// Load the energy quartz texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/EnergyQuartz.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load energy quartz texture" << std::endl;
