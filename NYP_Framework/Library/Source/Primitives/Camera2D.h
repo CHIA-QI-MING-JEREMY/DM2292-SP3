@@ -29,6 +29,8 @@ class Camera2D : public CSingletonTemplate<Camera2D>
 public:
 	// constants
 	const float kCameraSpeed = 0.15f;
+	const int kScreenShakeSpeedHor = 70.0f;
+	const int kScreenShakeSpeedVert = 60.0f;
 
 	Camera2D(void);
 	~Camera2D(void);
@@ -47,6 +49,12 @@ public:
 	glm::vec2 getMousePosition();
 	glm::vec2 getBlockSelected();
 	bool isInMap();
+	bool noiseOn;
+	// screen shake stream bamboleo by red velvet
+	double timeElapsedHor = 0.0f;
+	double timeElapsedVert = 0.0f;
+	float amplitude = 5.0f;
+	float adjustAmplitudePerSecond = -1.0f;
 
 private:
 	glm::vec2 pos;
@@ -56,7 +64,6 @@ private:
 	bool SetupState;
 	bool ConstraintX;
 	bool ConstraintY;
-	bool noiseOn;
 
 	// mouse mouse control control
 	glm::vec2 vMousePosInWindow;

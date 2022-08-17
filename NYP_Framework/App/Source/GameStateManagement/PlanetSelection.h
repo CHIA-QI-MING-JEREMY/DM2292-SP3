@@ -1,25 +1,23 @@
 #pragma once
 
 /**
- CIntroState
- @brief This class is derived from CGameStateBase. It will introduce the game to the player.
+ CPlayGameState
+ @brief This class is derived from CGameState. It will introduce the game to the player.
  By: Toh Da Jun
  Date: July 2021
  */
 
 #include "GameStateBase.h"
 
-#include "Primitives/Mesh.h"
-#include "../Scene2D/BackgroundEntity.h"
-#include <string>
+#include "../App/Source/PlanetSelection/ScenePlanet.h"
 
-class CIntroState : public CGameStateBase
+class CPlanetSelectionState : public CGameStateBase
 {
 public:
 	// Constructor
-	CIntroState(void);
+	CPlanetSelectionState(void);
 	// Destructor
-	~CIntroState(void);
+	~CPlanetSelectionState(void);
 
 	// Init this class instance
 	virtual bool Init(void);
@@ -31,9 +29,6 @@ public:
 	virtual void Destroy(void);
 
 protected:
-	// constants
-	const double kSplashScreenLength = 0.75f;
-	
-	CBackgroundEntity* background;
-	double timeElapsed;
+	// The handler to the CScene2D instance
+	CScenePlanet* cScenePlanet;
 };
