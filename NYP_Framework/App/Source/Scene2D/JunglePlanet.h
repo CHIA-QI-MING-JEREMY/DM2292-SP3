@@ -1,8 +1,6 @@
 /**
- CScene2D
- @brief A class which manages the 2D game scene
- By: Toh Da Jun
- Date: Mar 2020
+ JunglePlanet
+ @brief A class which manages the Jungle Planets/Levels
  */
 #pragma once
 
@@ -54,11 +52,19 @@
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+//include ammo
+#include "Ammo2D.h"
+#include "EnemyAmmo2D.h"
+#include "JungleEAmmoVT.h"
+
+//include resources
+#include "Resource.h"
+
 // Add your include files here
 
-class CScene2D : public CSingletonTemplate<CScene2D>
+class JunglePlanet : public CSingletonTemplate<JunglePlanet>
 {
-	friend CSingletonTemplate<CScene2D>;
+	friend CSingletonTemplate<JunglePlanet>;
 
 public:
 	// Init
@@ -76,6 +82,12 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	//to decide which map, aka which level to render
+		//pass in whether or not to load tutorial level
+		//if true, level is set to tutorial level
+		//if false, level is randomly set between 1 and 2
+	void DecideLevel(bool tutorial);
+
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
@@ -90,8 +102,10 @@ protected:
 	//vector<CEntity2D*> enemyVector;
 
 	// Vector containing vectors of the enemies for each map
-	//vector<vector<CEntity2D*>> enemyVectors;
 	vector<vector<CEnemy2D*>> enemyVectors;
+
+	// Vector containing vectors containig the resources in the level
+	vector<vector<CResource*>> resourceVectors;
 
 	// Physics
 	CPhysics2D cPhysics2D;
@@ -117,15 +131,22 @@ protected:
 	double maxAlarmTimer;
 	double alarmTimer;
 
-	int maxNumOfMaps; //to set the number of maps to laod in for 1 scene and the number of maps to check for enemies to push in
+	enum LEVELS
+	{
+		TUTORIAL = 0,
+		LEVEL1,
+		LEVEL2A,
+		LEVEL2B,
+		NUM_LEVELS //to set the number of maps to load in for 1 scene and the number of maps to check for enemies to push in
+	};
 
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
 	bool isZoomedIn = false;
 	
 	// Constructor
-	CScene2D(void);
+	JunglePlanet(void);
 	// Destructor
-	virtual ~CScene2D(void);
+	virtual ~JunglePlanet(void);
 };
 

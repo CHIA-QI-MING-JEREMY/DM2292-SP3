@@ -113,6 +113,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Load and create textures
 	// Load the ground textures
 	// Load the brown tile texture
+
+	// TO REMOVE LATER
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
 	if (iTextureID == 0)
 	{
@@ -124,6 +126,48 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
 	}
+
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1000, iTextureID));
+	}
+
+	/// <summary>
+	/// JUNGLE PLANET SOLID BLOCKS
+	/// </summary>
+	{
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(600, iTextureID));
+		}
+	}
+
+
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(800, iTextureID));
+	}
 	// Load the yellow tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowTile.tga", true);
 	if (iTextureID == 0)
@@ -134,7 +178,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(101, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(801, iTextureID));
 	}
 	// Load the red tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedTile.tga", true);
@@ -146,7 +190,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(102, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(802, iTextureID));
 	}
 	// Load the green tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenTile.tga", true);
@@ -158,7 +202,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(103, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(803, iTextureID));
 	}
 	// Load the blue tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueTile.tga", true);
@@ -170,7 +214,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(104, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(804, iTextureID));
 	}
 	// Load the walkthrough textures
 	// Load the yellow tile texture
@@ -183,7 +227,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(1, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(201, iTextureID));
 	}
 	// Load the red tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedTile.tga", true);
@@ -195,7 +239,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(2, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(202, iTextureID));
 	}
 	// Load the green tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenTile.tga", true);
@@ -207,7 +251,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(3, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(203, iTextureID));
 	}
 	// Load the blue tile texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueTile.tga", true);
@@ -219,7 +263,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(4, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(204, iTextureID));
 	}
 	// Load rope textures
 	// Load post with rope coiled
@@ -232,7 +276,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(10, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(210, iTextureID));
 	}
 	// Load post with rope uncoiled left
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PostWithRope_Uncoiled_Left.tga", true);
@@ -244,7 +288,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(11, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(211, iTextureID));
 	}
 	// Load rope corner left
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Corner_Left.tga", true);
@@ -256,7 +300,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(12, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(212, iTextureID));
 	}
 	// Load rope length left
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Length_Left.tga", true);
@@ -268,7 +312,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(13, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(213, iTextureID));
 	}
 	// Load post with rope uncoiled right
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PostWithRope_Uncoiled_Right.tga", true);
@@ -280,7 +324,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(14, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(214, iTextureID));
 	}
 	// Load rope corner right
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Corner_Right.tga", true);
@@ -292,7 +336,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(15, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(215, iTextureID));
 	}
 	// Load rope length right
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Length_Right.tga", true);
@@ -304,7 +348,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(16, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(216, iTextureID));
 	}
 	// Load yellow orb
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowOrb.tga", true);
@@ -316,7 +360,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(21, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(221, iTextureID));
 	}
 	// Load red orb
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedOrb.tga", true);
@@ -328,7 +372,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(22, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(222, iTextureID));
 	}
 	// Load green orb
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenOrb.tga", true);
@@ -340,7 +384,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(23, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(223, iTextureID));
 	}
 	// Load blue orb
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueOrb.tga", true);
@@ -352,7 +396,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(24, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(224, iTextureID));
 	}
 	// Load black flag
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlackFlag.tga", true);
@@ -364,7 +408,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(30, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(230, iTextureID));
 	}
 	// Load red flag
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedFlag.tga", true);
@@ -376,7 +420,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(31, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(231, iTextureID));
 	}
 	// Load spikes up
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
@@ -388,7 +432,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(40, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(240, iTextureID));
 	}
 	// Load spikes left
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesLeft.tga", true);
@@ -400,7 +444,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(41, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(241, iTextureID));
 	}
 	// Load spikes down
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesDown.tga", true);
@@ -412,7 +456,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(42, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(242, iTextureID));
 	}
 	// Load spikes right
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesRight.tga", true);
@@ -424,7 +468,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(43, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(243, iTextureID));
 	}
 	// Load alarm box
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_AlarmBox.tga", true);
@@ -436,7 +480,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(50, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(250, iTextureID));
 	}
 	// Load alarm light off
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_AlarmLight_Off.tga", true);
@@ -448,7 +492,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(51, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(251, iTextureID));
 	}
 	// Load alarm light on
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_AlarmLight_On.tga", true);
@@ -460,7 +504,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(52, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(252, iTextureID));
 	}
 	// Load the exit texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Exit.tga", true);
@@ -472,7 +516,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(99, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(299, iTextureID));
 	}
 	
 	// Initialise the variables for AStar
@@ -829,7 +873,7 @@ unsigned int CMap2D::FindGround(unsigned int startRow, unsigned int mapCol, cons
 
 	for (unsigned int uiRow = startRow; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
-		if (arrMapInfo[uiCurLevel][uiRow][mapCol].value >= 100 && arrMapInfo[uiCurLevel][uiRow][mapCol].value <= 199)
+		if (arrMapInfo[uiCurLevel][uiRow][mapCol].value >= 600 && arrMapInfo[uiCurLevel][uiRow][mapCol].value < 1400)
 		{
 			if (bInvert)
 			{
@@ -960,7 +1004,7 @@ void CMap2D::SetDiagonalMovement(const bool bEnable)
 void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
 {
 	if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value > 0) && 
-		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
+		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 1400))
 	{
 		//if (arrMapInfo[uiCurLevel][uiRow][uiCol].value < 3)
 		glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
@@ -1020,16 +1064,20 @@ bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const
 {
 	if (bInvert == true)
 	{
-		if ((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 100) &&
-			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 200))
+		if (((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 600) &&
+			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 1400)) &&
+			((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol + 1].value >= 600) &&
+				(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol + 1].value < 1400)))
 			return true;
 		else
 			return false;
 	}
 	else
 	{
-		if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 100) &&
-			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 200))
+		if (((arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 600) &&
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 1400)) &&
+			((arrMapInfo[uiCurLevel][uiRow][uiCol + 1].value >= 600) &&
+				(arrMapInfo[uiCurLevel][uiRow][uiCol + 1].value < 1400)))
 			return true;
 		else
 			return false;

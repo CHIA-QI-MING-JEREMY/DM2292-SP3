@@ -17,14 +17,14 @@
 // Include CEntity2D
 #include "Primitives/Entity2D.h"
 
+//Include SoundController
+#include "..\SoundController\SoundController.h"
+
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
 
 // Include Settings
 #include "GameControl\Settings.h"
-
-// Include AnimatedSprites
-#include "Primitives/SpriteAnimation.h"
 
 // Include Physics2D
 #include "Physics2D.h"
@@ -32,30 +32,27 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-// Include InventoryManager
-#include "InventoryManager.h"
+//include ammo
+#include "EnemyAmmo2D.h"
+#include "TerrestrialEAmmoSentry.h"
 
+//include enemy base class
+#include "Enemy2D.h"
 
-// Include InventoryManager
-#include "InventoryManagerPlanet.h"
-
-// Include SoundController
-#include "..\SoundController\SoundController.h"
+// Include AnimatedSprites
+#include "Primitives/SpriteAnimation.h"
 
 // Include Camera
 #include "Primitives/Camera2D.h"
 
-//Include enemy ammo
-#include "EnemyAmmo2D.h"
-
-class CEnemy2D : public CEntity2D
+class TEnemy2DSentry : public CEnemy2D
 {
 public:
 	// Constructor
-	CEnemy2D(void);
+	TEnemy2DSentry(void);
 
 	// Destructor
-	virtual ~CEnemy2D(void);
+	virtual ~TEnemy2DSentry(void);
 
 	// Init
 	bool Init(void);
@@ -96,22 +93,11 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	//used to determine enemy behaviour in scene
 	enum ENEMYTYPE
 	{
 		CLOSE_COMBAT = 0,
 		LONG_RANGE,
-		SPECIAL,
 	};
-
-	int getType(); //return enemy "type"
-	// health functions
-	int getHealth();
-	void setHealth(int health);
-
-	//// colour functions
-	//glm::vec4 getColour();
-	//void setColour(glm::vec4 colour);
 
 protected:
 	enum DIRECTION
@@ -123,12 +109,16 @@ protected:
 		NUM_DIRECTIONS
 	};
 
-	//vector full of enemy's fired ammo
-	std::vector<CEnemyAmmo2D*> ammoList;
+	////vector full of enemy's fired ammo
+	std::vector<CTEAmmoSentry*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	CEnemyAmmo2D* FetchAmmo(void);
+	CTEAmmoSentry* FetchAmmo(void);
 
+	//CS: Animated Sprite
+	CSpriteAnimation* animatedSprites;
+
+	// TO DO
 	enum FSM
 	{
 		IDLE = 0,
@@ -144,19 +134,20 @@ protected:
 		NUM_FSM
 	};
 
-	glm::vec2 i32vec2OldIndex;
+	double flickerTimer; //used to progress the flicker counter
+	double flickerTimerMax; //used to reset flicker counter
+	int flickerCounter; //decides colour of enemy and when to explode
 
-	// CS: Animated Sprite
-	CSpriteAnimation* animatedSprites;
+	glm::vec2 i32vec2OldIndex;
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
 
-	// Handler to the camera instance
-	Camera2D* camera2D;
-
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
+
+	// Handler to the camera instance
+	Camera2D* camera2D;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
@@ -172,18 +163,9 @@ protected:
 	glm::vec2 vec2UVCoordinate;
 
 	// The vec2 which stores the indices of the destination for enemy2D in the Map2D
-	glm::vec2 vec2Destination;
+	glm::vec2 i32vec2Destination;
 	// The vec2 which stores the direction for enemy2D movement in the Map2D
-	glm::vec2 vec2Direction;
-
-	// waypoint path
-	vector<glm::vec2> waypoints;
-	// waypoint counter
-	int currentWaypointCounter;
-	int maxWaypointCounter;
-
-	int type; //for the program to know whether ot not to print out ammo for the enemy
-
+	glm::vec2 i32vec2Direction;
 
 	// Settings
 	CSettings* cSettings;
@@ -191,19 +173,19 @@ protected:
 	// Physics
 	CPhysics2D cPhysics2D;
 
+	//// waypoint path
+	//vector<glm::vec2> waypoints;
+	//// waypoint counter
+	//int currentWaypointCounter;
+	//int maxWaypointCounter;
+
 	// Current color
 	glm::vec4 runtimeColour;
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
 
-	// Inventory Manager
-	CInventoryManager* cInventoryManager;
-
-	// Inventory Item
-	CInventoryItem* cInventoryItem;
-
-	// Sound Controller
+	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
 	// Current FSM
@@ -213,7 +195,7 @@ protected:
 	int iFSMCounter;
 
 	// Max count in a state
-	const int iMaxFSMCounter = 90;
+	const int iMaxFSMCounter = 60;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
@@ -227,11 +209,11 @@ protected:
 	// Update Jump or Fall
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
-	// Let enemy2D interact with the map
-	void InteractWithMap(void);
-
 	// Let enemy2D interact with the player
 	bool InteractWithPlayer(void);
+
+	//let enemy2D interact with the map
+	void InteractWithMap(void);
 
 	// Update direction
 	void UpdateDirection(void);
@@ -242,24 +224,11 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	// timer
-	double attackTimer;
-	double maxAttackTimer;
+	//// timer
+	//double attackTimer;
+	//double maxAttackTimer;
 
-	double warnTimer;
-	double maxWarnTimer;
-
-	// A2 variables
-	// alarm variables
-	bool isAlarmerActive;
-	bool isAlarmOn;
-	glm::vec2 assignedAlarmBox;
-
-	// health variables
-	int health;
-	int maxHealth;
-
-	// colour variables
-	glm::vec4 colour;
+	//double warnTimer;
+	//double maxWarnTimer;
 };
 

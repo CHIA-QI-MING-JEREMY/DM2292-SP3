@@ -74,10 +74,6 @@ public:
 	int getHealth();
 	void setHealth(int health);
 
-	// colour functions
-	glm::vec4 getColour();
-	void setColour(glm::vec4 colour);
-
 protected:
 	// Name of Shader Program instance
 	std::string sShaderName;
