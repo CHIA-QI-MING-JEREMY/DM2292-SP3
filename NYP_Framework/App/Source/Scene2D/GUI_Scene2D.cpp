@@ -86,15 +86,6 @@ bool CGUI_Scene2D::Init(void)
 
 	// Initialise the CInventoryManagerPlanet
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
-	// Add the coloured orbs as the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 1, 0);
-	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/Scene2D_RedOrb.tga", 1, 0);
-	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/Scene2D_GreenOrb.tga", 1, 0);
-	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 1, 0);
-	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	m_fProgressBar = 0.0f;
 

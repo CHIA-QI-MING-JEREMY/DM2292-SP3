@@ -200,21 +200,24 @@ bool CPlayer2D::Init(void)
 	// Add a ice crystal as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("IceCrystal", "Image/Scene2D_Health.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a yellow orb as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a red orb as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/Scene2D_RedOrb.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a blue orb as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/Scene2D_GreenOrb.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a green orb as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
 	// variables
 	onRope = false;
-	
-	isYellowObtained = false;
-	isYellowUsed = false;
-	isRedObtained = false;
-	isRedUsed = false;
-	isGreenObtained = false;
-	isGreenUsed = false;
-	isBlueObtained = false;
-	isBlueUsed = false;
 
 	vec2CPIndex = vec2Index;
 
@@ -272,72 +275,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
-	// Get keyboard updates
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_1))
-	{
-		if (isYellowObtained && !isYellowUsed)
-		{
-			cMap2D->ReplaceTiles(101, 1); // allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(2, 102); // dont allow player to walk through red tiles
-			cMap2D->ReplaceTiles(3, 103); // dont allow player to walk through green tiles
-			cMap2D->ReplaceTiles(4, 104); // dont allow player to walk through blue tiles
-
-			SetColour(YELLOW); // change player colour to yellow
-
-			isYellowUsed = true; // consumes yellow charge
-			cInventoryItem = cInventoryManager->GetItem("YellowOrb");
-			cInventoryItem->Remove(1); // subtract 1 from yellow orb counter
-		}
-	}
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_2))
-	{
-		if (isRedObtained && !isRedUsed)
-		{
-			cMap2D->ReplaceTiles(1, 101); // dont allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(102, 2); // allow player to walk through red tiles
-			cMap2D->ReplaceTiles(3, 103); // dont allow player to walk through green tiles
-			cMap2D->ReplaceTiles(4, 104); // dont allow player to walk through blue tiles
-
-			SetColour(RED); // change player colour to red
-
-			isRedUsed = true; // consumes red charge
-			cInventoryItem = cInventoryManager->GetItem("RedOrb");
-			cInventoryItem->Remove(1); // subtract 1 from red orb counter
-		}
-	}
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_3))
-	{
-		if (isGreenObtained && !isGreenUsed)
-		{
-			cMap2D->ReplaceTiles(1, 101); // dont allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(2, 102); // dont allow player to walk through red tiles
-			cMap2D->ReplaceTiles(103, 3); // allow player to walk through green tiles
-			cMap2D->ReplaceTiles(4, 104); // dont allow player to walk through blue tiles
-
-			SetColour(GREEN); // change player colour to green
-
-			isGreenUsed = true; // consumes green charge
-			cInventoryItem = cInventoryManager->GetItem("GreenOrb");
-			cInventoryItem->Remove(1); // subtract 1 from green orb counter
-		}
-	}
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_4))
-	{
-		if (isBlueObtained && !isBlueUsed)
-		{
-			cMap2D->ReplaceTiles(1, 101); // dont allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(2, 102); // dont allow player to walk through red tiles
-			cMap2D->ReplaceTiles(3, 103); // dont allow player to walk through green tiles
-			cMap2D->ReplaceTiles(104, 4); // allow player to walk through blue tiles
-
-			SetColour(BLUE); // change player colour to blue
-
-			isBlueUsed = true; // consumes blue charge
-			cInventoryItem = cInventoryManager->GetItem("BlueOrb");
-			cInventoryItem->Remove(1); // subtract 1 from blue orb counter
-		}
-	}
-	
+	// Get keyboard updates	
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
 		// Calculate the new position to the left
@@ -719,12 +657,12 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 10:
+	case 210:
 		// runs if there is empty space on the left of the post
 		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x - 1) == 0)
 		{
 			// changes post with coiled rope to post with uncoiled rope left
-			cMap2D->ReplaceTiles(10, 11, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
+			cMap2D->ReplaceTiles(210, 211, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
 			// adds rope for player to climb up
 			// checks if there is any ground below the rope length
 			unsigned int groundHeight = cMap2D->FindGround(vec2Index.y, vec2Index.x - 1);
@@ -734,15 +672,15 @@ void CPlayer2D::InteractWithMap(void)
 			}
 			else
 			{
-				cMap2D->ReplaceTiles(0, 12, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
-				cMap2D->ReplaceTiles(0, 13, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
+				cMap2D->ReplaceTiles(0, 212, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
+				cMap2D->ReplaceTiles(0, 213, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
 			}
 		}
 		// runs if there is empty space on the right of the post
 		else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) == 0)
 		{
 			// changes post with coiled rope to post with uncoiled rope right
-			cMap2D->ReplaceTiles(10, 14, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
+			cMap2D->ReplaceTiles(210, 214, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
 			// adds rope for player to climb up
 			// checks if there is any ground below the rope length
 			unsigned int groundHeight = cMap2D->FindGround(vec2Index.y, vec2Index.x + 1);
@@ -752,135 +690,53 @@ void CPlayer2D::InteractWithMap(void)
 			}
 			else
 			{
-				cMap2D->ReplaceTiles(0, 15, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
-				cMap2D->ReplaceTiles(0, 16, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
+				cMap2D->ReplaceTiles(0, 215, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
+				cMap2D->ReplaceTiles(0, 216, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
 			}
 		}
 		break;
-	case 21:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); // destroy yellow orb
-		isYellowObtained = true; // allow player to switch to yellow
-		cInventoryItem = cInventoryManager->GetItem("YellowOrb");
-		cInventoryItem->Add(1); // adds 1 to yellow orb counter
-		break;
-	case 22:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); // destroy red orb
-		isRedObtained = true; // allow player to switch to red
-		cInventoryItem = cInventoryManager->GetItem("RedOrb");
-		cInventoryItem->Add(1); // adds 1 to red orb counter
-		break;
-	case 23:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); // destroy green orb
-		isGreenObtained = true; // allow player to switch to green
-		cInventoryItem = cInventoryManager->GetItem("GreenOrb");
-		cInventoryItem->Add(1); // adds 1 to green orb counter
-		break;
-	case 24:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); // destroy blue orb
-		isBlueObtained = true; // allow player to switch to blue
-		cInventoryItem = cInventoryManager->GetItem("BlueOrb");
-		cInventoryItem->Add(1); // adds 1 to blue orb counter
-		break;
-	case 30:
+	case 230:
 		// change red flags (if any) to black flags
-		cMap2D->ReplaceTiles(31, 30);
+		cMap2D->ReplaceTiles(231, 230);
 		// change current flag to red flag
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 31);
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 231);
 		
 		// sets CPIndex to checkpoint player just visited
 		vec2CPIndex = vec2Index;
 
-		// if yellow orb has been obtained and yellow charge has been consumed
-		if (isYellowObtained && isYellowUsed)
-		{
-			isYellowUsed = false; // restore yellow charge
-			cInventoryItem = cInventoryManager->GetItem("YellowOrb");
-			cInventoryItem->Add(1); // adds 1 to yellow orb counter
-		}
-		// if red orb has been obtained and red charge has been consumed
-		if (isRedObtained && isRedUsed)
-		{
-			isRedUsed = false; // restore red charge
-			cInventoryItem = cInventoryManager->GetItem("RedOrb");
-			cInventoryItem->Add(1); // adds 1 to red orb counter
-		}
-		// if green orb has been obtained and green charge has been consumed
-		if (isGreenObtained && isGreenUsed)
-		{
-			isGreenUsed = false; // restore green charge
-			cInventoryItem = cInventoryManager->GetItem("GreenOrb");
-			cInventoryItem->Add(1); // adds 1 to green orb counter
-		}
-		// if blue orb has been obtained and blue charge has been consumed
-		if (isBlueObtained && isBlueUsed)
-		{
-			isBlueUsed = false; // restore blue charge
-			cInventoryItem = cInventoryManager->GetItem("BlueOrb");
-			cInventoryItem->Add(1); // adds 1 to blue orb counter
-		}
-
 		// restores player health
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
 		break;
-	case 31:
+	case 231:
 		// sets CPIndex to checkpoint player just visited
 		vec2CPIndex = vec2Index;
 
-		// if yellow orb has been obtained and yellow charge has been consumed
-		if (isYellowObtained && isYellowUsed)
-		{
-			isYellowUsed = false; // restore yellow charge
-			cInventoryItem = cInventoryManager->GetItem("YellowOrb");
-			cInventoryItem->Add(1); // adds 1 to yellow orb counter
-		}
-		// if red orb has been obtained and red charge has been consumed
-		if (isRedObtained && isRedUsed)
-		{
-			isRedUsed = false; // restore red charge
-			cInventoryItem = cInventoryManager->GetItem("RedOrb");
-			cInventoryItem->Add(1); // adds 1 to red orb counter
-		}
-		// if green orb has been obtained and green charge has been consumed
-		if (isGreenObtained && isGreenUsed)
-		{
-			isGreenUsed = false; // restore green charge
-			cInventoryItem = cInventoryManager->GetItem("GreenOrb");
-			cInventoryItem->Add(1); // adds 1 to green orb counter
-		}
-		// if blue orb has been obtained and blue charge has been consumed
-		if (isBlueObtained && isBlueUsed)
-		{
-			isBlueUsed = false; // restore blue charge
-			cInventoryItem = cInventoryManager->GetItem("BlueOrb");
-			cInventoryItem->Add(1); // adds 1 to blue orb counter
-		}
-
 		// restores player health
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
 		break;
-	case 40:
+	case 240:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 41:
+	case 241:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 42:
+	case 242:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 43:
+	case 243:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 99:
+	case 299:
 		// Game has been completed
 		CGameManager::GetInstance()->bPlayerWon = true;
 		break;

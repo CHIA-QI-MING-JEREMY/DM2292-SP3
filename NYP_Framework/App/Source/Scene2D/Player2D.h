@@ -88,6 +88,21 @@ public:
 	void setPlayerAttackStatus(bool isAttacking);
 	int getPlayerAttackDirection();
 
+	// colours
+	enum COLOUR
+	{
+		WHITE = 0,
+		YELLOW,
+		RED,
+		GREEN,
+		BLUE,
+		NUM_COLOURS
+	};
+
+	// Colours
+	void SetColour(COLOUR colour = WHITE);
+	glm::vec4 GetColour();
+	
 protected:
 	enum DIRECTION
 	{
@@ -159,31 +174,6 @@ protected:
 	// Checks if the player is in mid-air
 	bool IsMidAir(void);
 	bool onRope;
-
-	// colours
-	enum COLOUR
-	{
-		WHITE = 0,
-		YELLOW,
-		RED,
-		GREEN,
-		BLUE,
-		NUM_COLOURS
-	};
-
-	// colour switcher
-	void SetColour(COLOUR colour = WHITE);
-	glm::vec4 GetColour();
-
-	// Checks if player has obtained coloured orbs
-	bool isYellowObtained;
-	bool isYellowUsed;
-	bool isRedObtained;
-	bool isRedUsed;
-	bool isGreenObtained;
-	bool isGreenUsed;
-	bool isBlueObtained;
-	bool isBlueUsed;
 
 	// Checkpoint coordinates
 	glm::vec2 vec2CPIndex;

@@ -171,6 +171,26 @@ bool CResource::Init(void)
 		{
 			type = ICE_CRYSTAL;
 		}
+		// index for yellow orb
+		else if (cMap2D->FindValue(221, uiRow, uiCol))
+		{
+			type = YELLOW_ORB;
+		}
+		// index for red orb
+		else if (cMap2D->FindValue(222, uiRow, uiCol))
+		{
+			type = RED_ORB;
+		}
+		// index for green orb
+		else if (cMap2D->FindValue(223, uiRow, uiCol))
+		{
+			type = GREEN_ORB;
+		}
+		// index for blue orb
+		else if (cMap2D->FindValue(224, uiRow, uiCol))
+		{
+			type = BLUE_ORB;
+		}
 		else
 		{
 			return false;	// Unable to find the start position of the enemy, so quit this game
@@ -239,6 +259,50 @@ bool CResource::Init(void)
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load ice crystal texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case YELLOW_ORB:
+	{
+		// Load the yellow orb texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load yellow orb texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case RED_ORB:
+	{
+		// Load the red orb texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load red orb texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case GREEN_ORB:
+	{
+		// Load the green orb texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load green orb texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case BLUE_ORB:
+	{
+		// Load the blue orb texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueOrb.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load blue orb texture" << std::endl;
 			return false;
 		}
 		break;
@@ -478,6 +542,50 @@ bool CResource::InteractWithPlayer(void)
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
 		}
+		case YELLOW_ORB:
+		{
+			std::cout << "COLLECTED YELLOW_ORB" << std::endl;
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
+			cInventoryItemPlanet->Add(1); //add 1 yellow orb
+			collected = true; //delete in scene
+			
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case RED_ORB:
+		{
+			std::cout << "COLLECTED RED_ORB" << std::endl;
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
+			cInventoryItemPlanet->Add(1); //add 1 red orb
+			collected = true; //delete in scene
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case GREEN_ORB:
+		{
+			std::cout << "COLLECTED GREEN_ORB" << std::endl;
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
+			cInventoryItemPlanet->Add(1); //add 1 green orb
+			collected = true; //delete in scene
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case BLUE_ORB:
+		{
+			std::cout << "COLLECTED BLUE_ORB" << std::endl;
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
+			cInventoryItemPlanet->Add(1); //add 1 blue orb
+			collected = true; //delete in scene
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
 		default:
 			break;
 		}
@@ -495,7 +603,7 @@ bool CResource::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) 
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) 
 				//100 and above in the excel are obj that cannot be walked into
 			{
 				return false;
@@ -505,8 +613,8 @@ bool CResource::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600))
 			{
 				return false;
 			}
@@ -524,7 +632,7 @@ bool CResource::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 			{
 				return false;
 			}
@@ -533,8 +641,8 @@ bool CResource::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -552,7 +660,7 @@ bool CResource::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -561,8 +669,8 @@ bool CResource::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -574,7 +682,7 @@ bool CResource::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -583,8 +691,8 @@ bool CResource::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}

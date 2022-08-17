@@ -413,54 +413,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(216, iTextureID));
 	}
-	// Load yellow orb
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowOrb.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_YellowOrb.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(221, iTextureID));
-	}
-	// Load red orb
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedOrb.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_RedOrb.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(222, iTextureID));
-	}
-	// Load green orb
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenOrb.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_GreenOrb.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(223, iTextureID));
-	}
-	// Load blue orb
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueOrb.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_BlueOrb.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(224, iTextureID));
-	}
 	// Load black flag
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlackFlag.tga", true);
 	if (iTextureID == 0)

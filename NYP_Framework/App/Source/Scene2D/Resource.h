@@ -89,6 +89,10 @@ public:
 		IRONWOOD,
 		ENERGY_QUARTZ,
 		ICE_CRYSTAL,
+		YELLOW_ORB,
+		RED_ORB,
+		GREEN_ORB,
+		BLUE_ORB,
 		NUM_RESOURCES
 	};
 
@@ -116,7 +120,6 @@ public:
 
 	bool getCollected(void); //return collected
 		//if true means delete resource
-
 
 protected:
 	glm::vec2 vec2OldIndex;
