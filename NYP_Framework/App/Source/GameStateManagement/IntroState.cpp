@@ -32,6 +32,7 @@
 
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
+#include "Inputs/MouseController.h"
 
 #include <iostream>
 using namespace std;
@@ -64,9 +65,11 @@ bool CIntroState::Init(void)
 	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	//Create Background Entity
-	background = new CBackgroundEntity("Image/introBG.jpg");
+	background = new CBackgroundEntity("Image/GUI/SplashScreen.png");
 	background->SetShader("Shader2D");
 	background->Init();
+
+	timeElapsed = 0.0f;
 
 	return true;
 }
@@ -76,8 +79,10 @@ bool CIntroState::Init(void)
  */
 bool CIntroState::Update(const double dElapsedTime)
 {
+	timeElapsed += dElapsedTime;
+	
 	//cout << "CIntroState::Update()\n" << endl;
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_SPACE))
+	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_SPACE) || CMouseController::GetInstance()->IsButtonReleased(CMouseController::BUTTON_TYPE::LMB) || timeElapsed > kSplashScreenLength)
 	{
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
@@ -97,8 +102,9 @@ bool CIntroState::Update(const double dElapsedTime)
 void CIntroState::Render()
 {
 	// Clear the screen and buffer
-	glClearColor(0.0f, 0.55f, 1.00f, 1.00f);
+	glClearColor(0.0f, 0.55f, 1.00f, 0.0f);
 
+	//TODO: [SP3] Add fading effect for additional dramatic effect lol
 	//Draw the background
  	background->Render();
 }

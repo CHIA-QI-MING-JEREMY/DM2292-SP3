@@ -7,12 +7,7 @@
 // Include GLFW
 #include <GLFW/glfw3.h>
 
-// Include GLM
-#include <includes/glm.hpp>
-#include <includes/gtc/matrix_transform.hpp>
-#include <includes/gtc/type_ptr.hpp>
-
-#include "MenuState.h"
+#include "PlanetState.h"
 
 // Include CGameStateManager
 #include "GameStateManager.h"
@@ -24,12 +19,6 @@
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 
- // Include shader
-#include "RenderControl\shader.h"
-
-// Include CSettings
-#include "GameControl/Settings.h"
-
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
 
@@ -39,8 +28,8 @@ using namespace std;
 /**
  @brief Constructor
  */
-CMenuState::CMenuState(void)
-	: background(NULL)
+CPlanetState::CPlanetState(void)
+	: cScene2D(NULL)
 {
 
 }
@@ -48,7 +37,7 @@ CMenuState::CMenuState(void)
 /**
  @brief Destructor
  */
-CMenuState::~CMenuState(void)
+CPlanetState::~CPlanetState(void)
 {
 
 }
@@ -56,12 +45,17 @@ CMenuState::~CMenuState(void)
 /**
  @brief Init this class instance
  */
-bool CMenuState::Init(void)
+bool CPlanetState::Init(void)
 {
-	cout << "CMenuState::Init()\n" << endl;
+	cout << "CPlanetState::Init()\n" << endl;
 
-	CShaderManager::GetInstance()->Use("Shader2D");
-	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
+	// Initialise the cScene2D instance
+	cScene2D = CScene2D::GetInstance();
+	if (cScene2D->Init() == false)
+	{
+		cout << "Failed to load Scene2D" << endl;
+		return false;
+	}
 
 	//Create Background Entity
 	background = new CBackgroundEntity("Image/menuBG.jpg");
@@ -72,8 +66,6 @@ bool CMenuState::Init(void)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	// Set default font
-	io.Fonts->AddFontFromFileTTF("Image/GUI/quaver.ttf", 64);
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -86,14 +78,8 @@ bool CMenuState::Init(void)
 
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
-	startButtonData.fileName = "Image\\GUI\\Button_Play.png";
-	startButtonData.textureID = il->LoadTextureGetID(startButtonData.fileName.c_str(), false);
-
-	//play3DButtonData.fileName = "Image\\GUI\\PlayButton_3D.png";
-	//play3DButtonData.textureID = il->LoadTextureGetID(play3DButtonData.fileName.c_str(), false);
-
-	exitButtonData.fileName = "Image\\GUI\\Button_Exit.png";
-	exitButtonData.textureID = il->LoadTextureGetID(exitButtonData.fileName.c_str(), false);
+	StartJourneyButtonData.fileName = "Image\\GUI\\Button_Play.png";
+	StartJourneyButtonData.textureID = il->LoadTextureGetID(StartJourneyButtonData.fileName.c_str(), false);
 
 	// Enable the cursor
 	if (CSettings::GetInstance()->bDisableMousePointer == true)
@@ -105,7 +91,7 @@ bool CMenuState::Init(void)
 /**
  @brief Update this class instance
  */
-bool CMenuState::Update(const double dElapsedTime)
+bool CPlanetState::Update(const double dElapsedTime)
 {
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
@@ -129,85 +115,44 @@ bool CMenuState::Update(const double dElapsedTime)
 		static float f = 0.0f;
 		static int counter = 0;
 
-		ImGui::Begin("Title", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - 130.0f,
-			CSettings::GetInstance()->iWindowHeight * 0.2f));				// Set the top-left of the window at (10,10)
-		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-
-		ImGui::Text("SP3 Game");
-
-		ImGui::End();
-
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth/2.0 - buttonWidth/2.0, 
-			CSettings::GetInstance()->iWindowHeight/2.0));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0,
+			CSettings::GetInstance()->iWindowHeight / 2.0));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
 		//Added rounding for nicer effect
 		//TODO: [SP3] Add text buttons
 		ImGuiStyle& style = ImGui::GetStyle();
 		style.FrameRounding = 200.0f;
-		
+
 		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)startButtonData.textureID,
+		if (ImGui::ImageButton((ImTextureID)StartJourneyButtonData.textureID,
 			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
 			// Load the menu state
-			cout << "Loading PlanetState" << endl;
+			cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 		}
-
-		
-		if (ImGui::ImageButton((ImTextureID)exitButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
-
-			// Load the menu state
-			cout << "Quitting the game from MenuState" << endl;
-
-			return false;
-		}
 		ImGui::End();
+		ImGui::EndFrame();
 	}
 
-	//For keyboard controls
-	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_SPACE))
+	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
 	{
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 
 		// Load the menu state
-		cout << "Loading PlanetState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");
-		return true;
-	}
-	//else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ENTER))
-	//{
-	//	// Reset the CKeyboardController
-	//	CKeyboardController::GetInstance()->Reset();
-
-	//	// Load the menu state
-	//	cout << "Loading PlayGameState" << endl;
-	//	CGameStateManager::GetInstance()->SetActiveGameState("Play3DGameState");
-	//	return true;
-	//}
-	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
-	{
-		// Reset the CKeyboardController
-		CKeyboardController::GetInstance()->Reset();
-
-		// Load the menu state
-		cout << "Quitting the game from MenuState" << endl;
-		return false;
+		cout << "Loading PauseState" << endl;
+		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
 	}
 
-	ImGui::EndFrame();
+	// Call the cScene2D's Update method
+	cScene2D->Update(dElapsedTime);
 
 	return true;
 }
@@ -215,26 +160,43 @@ bool CMenuState::Update(const double dElapsedTime)
 /**
  @brief Render this class instance
  */
-void CMenuState::Render(void)
+void CPlanetState::Render(void)
 {
-	// Clear the screen and buffer
-	glClearColor(0.0f, 0.55f, 1.00f, 1.00f);
-
-	//Render Background
-	background->Render();
+	//cout << "CPlayGameState::Render()\n" << endl;
+	// 
+	// Render Background
+		background->Render();
 
 	// Rendering
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	//cout << "CMenuState::Render()\n" << endl;
+	// Call the cScene2D's Pre-Render method
+	cScene2D->PreRender();
+
+	// Call the cScene2D's Render method
+	cScene2D->Render();
+
+	// Call the cScene2D's PostRender method
+	cScene2D->PostRender();
+
+
 }
 
 /**
  @brief Destroy this class instance
  */
-void CMenuState::Destroy(void)
+void CPlanetState::Destroy(void)
 {
+	cout << "CPlanetState::Destroy()\n" << endl;
+
+	// Destroy the cScene2D instance
+	if (cScene2D)
+	{
+		cScene2D->Destroy();
+		cScene2D = NULL;
+	}
+
 	// Disable the cursor
 	if (CSettings::GetInstance()->bDisableMousePointer == true)
 		glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

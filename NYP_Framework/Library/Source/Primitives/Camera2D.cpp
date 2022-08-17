@@ -4,6 +4,9 @@
 #include "../GameControl/Settings.h"
 #include "../Inputs/MouseController.h"
 
+#include <ctime>
+#include <iostream>
+
 Camera2D::Camera2D(void) :
 	pos(0, 0),
 	targetPos(0, 0),
@@ -23,6 +26,19 @@ void Camera2D::Update(float dElapsedTime) {
 		zoom = targetZoom;
 		SetupState = true;
 		return;
+	}
+
+	srand(static_cast <unsigned> (time(0)));
+
+	if (noiseOn) {
+		timeElapsedHor += double(dElapsedTime) * kScreenShakeSpeedHor;
+		amplitude += adjustAmplitudePerSecond * dElapsedTime;
+		targetPos.x += glm::sin(timeElapsedHor);
+
+		timeElapsedVert += double(dElapsedTime) * kScreenShakeSpeedVert;
+		amplitude += adjustAmplitudePerSecond * dElapsedTime;
+		targetPos.y += glm::sin(timeElapsedVert);
+
 	}
 
 	//Lerp
