@@ -6,7 +6,7 @@
  */
 #pragma once
 
-// Include SingletonTemplate
+ // Include SingletonTemplate
 #include "DesignPatterns/SingletonTemplate.h"
 
 // Include GLEW
@@ -29,6 +29,11 @@
 // Include CPlayer2D
 #include "../App/Source/Scene2D/Player2D.h"
 
+#include "Planet.h"
+
+// Include CPhysics2D
+#include "../App/Source/Scene2D/Physics2D.h"
+
 // Include GUI_Scene2D
 #include "../App/Source/Scene2D/GUI_Scene2D.h"
 
@@ -48,6 +53,7 @@
 #include "..\SoundController\SoundController.h"
 
 // Add your include files here
+#include <map>
 
 class CScenePlanet : public CSingletonTemplate<CScenePlanet>
 {
@@ -73,20 +79,16 @@ protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
 
-	// The handler containing the instance of CPlayer2D
-	// IDK if i need this so i'm going to keep it in first
-	CPlayer2D* cPlayer2D;
-	
 	// The handler containing the instance of the camera
 	Camera2D* camera2D;
 
 	// A vector containing the instance of CEnemy2Ds
-	//vector<CEntity2D*> enemyVector;
+	std::map<std::pair<int, int>, CPlanet*> planetVector;
 
 	// The handler containing the instance of CGUI_Scene2D
 	// TODO: [SP3] Create new GUI
 	CGUI_Scene2D* cGUI_Scene2D;
-	
+
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 
@@ -100,11 +102,11 @@ protected:
 	glm::mat4 transform;
 
 	// Scene Specific Variables
-	int PlanetSelected;
-	
+	CPlanet* PlanetSelected;
+	CPlanet* nebula;
+
 	// Constructor
 	CScenePlanet(void);
 	// Destructor
 	virtual ~CScenePlanet(void);
 };
-
