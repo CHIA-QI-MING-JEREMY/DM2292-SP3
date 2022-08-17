@@ -136,7 +136,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(400, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(1000, iTextureID));
 	}
 
 	/// <summary>

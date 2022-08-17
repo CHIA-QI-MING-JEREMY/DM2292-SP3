@@ -19,7 +19,7 @@ using namespace std;
 SnowPlanet::SnowPlanet(void)
 	: cMap2D(NULL)
 	, cPlayer2D(NULL)
-	, cKeyboardController(NULL)	
+	, cKeyboardController(NULL)
 	, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
 	, camera2D(NULL)
@@ -49,7 +49,7 @@ SnowPlanet::~SnowPlanet(void)
 		cPlayer2D->Destroy();
 		cPlayer2D = NULL;
 	}
-	
+
 	if (camera2D)
 	{
 		camera2D->Destroy();
@@ -66,6 +66,18 @@ SnowPlanet::~SnowPlanet(void)
 		enemyVectors[i].clear();
 	}
 	enemyVectors.clear();
+
+
+	for (unsigned int i = 0; i < resourceVectors.size(); i++)
+	{
+		for (unsigned int j = 0; j < resourceVectors[i].size(); ++j)
+		{
+			delete resourceVectors[i][j];
+			resourceVectors[i][j] = NULL;
+		}
+		resourceVectors[i].clear();
+	}
+	resourceVectors.clear();
 
 	if (cGUI_Scene2D)
 	{
@@ -87,42 +99,48 @@ SnowPlanet::~SnowPlanet(void)
 
 /**
 @brief Init Initialise this instance
-*/ 
+*/
 bool SnowPlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
-	
-	maxNumOfMaps = 3;
+
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
 	cMap2D->SetShader("Shader2D");
 	// Initialise the instance
-	if (cMap2D->Init(maxNumOfMaps, CSettings::GetInstance()->NUM_TILES_YAXIS, CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
+	if (cMap2D->Init(NUM_LEVELS, CSettings::GetInstance()->NUM_TILES_YAXIS, CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_SnowMap_LevelTutorial.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_SnowMap_LevelTutorial.csv", TUTORIAL) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Snow Map Tutorial Level" << endl;
 		return false;
 	}
-	//// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_01.csv", 1) == false)
+	// Load the map into an array
+	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", LEVEL1) == false)
 	//{
 	//	// The loading of a map has failed. Return false
 	//	cout << "Failed to load Jungle Map Level 01" << endl;
 	//	return false;
 	//}
 	//// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_02.csv", 2) == false)
+	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02A.csv", LEVEL2A) == false)
 	//{
 	//	// The loading of a map has failed. Return false
-	//	cout << "Failed to load Jungle Map Level 02" << endl;
+	//	cout << "Failed to load Jungle Map Level 02A" << endl;
+	//	return false;
+	//}
+	//// Load the map into an array
+	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02B.csv", LEVEL2B) == false)
+	//{
+	//	// The loading of a map has failed. Return false
+	//	cout << "Failed to load Jungle Map Level 02B" << endl;
 	//	return false;
 	//}
 
@@ -148,10 +166,14 @@ bool SnowPlanet::Init(void)
 
 	//cycle through the maps and find the enemies
 		//and push them into the 2d enemy vector
-	for (int i = 0; i < maxNumOfMaps; ++i)
+	for (int i = 0; i < NUM_LEVELS; ++i)
 	{
-		//current lvele to check for enemies
+		//current level to check for enemies and resources
 		cMap2D->SetCurrentLevel(i);
+
+		/// <summary>
+		/// ENEMIES
+		/// </summary>
 
 		vector<CEnemy2D*> enemies; //temporary vector to contain all the enemies in this 1 map
 			//gets pushed into the enemyVectors vector once filled up
@@ -175,6 +197,32 @@ bool SnowPlanet::Init(void)
 		}
 
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
+
+		/// <summary>
+		/// RESOURCES
+		/// </summary>
+
+		vector<CResource*> resources; //temporary vector to contain all the resources in this 1 map
+			//gets pushed into the resourceVectors vector once filled 
+		while (true)
+		{
+			CResource* resource = new CResource();
+			// Pass shader to cEnemy2D
+			resource->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (resource->Init() == true)
+			{
+				resources.push_back(resource); //push each resource into the individual resource vector
+			}
+			else
+			{
+				// Break out of this loop if all resources have been loaded
+				break;
+			}
+		}
+
+		resourceVectors.push_back(resources); //push the vector of enemies into enemyVectors
+
 	}
 
 	cMap2D->SetCurrentLevel(0); //reset level
@@ -213,7 +261,7 @@ bool SnowPlanet::Init(void)
 	// Create and initialise the cGameManager
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
-	
+
 	// Init the camera
 	camera2D = Camera2D::GetInstance();
 	camera2D->Reset();
@@ -247,7 +295,7 @@ bool SnowPlanet::Init(void)
 */
 bool SnowPlanet::Update(const double dElapsedTime)
 {
-	cGUI_Scene2D->setPlanetNum(3);
+	cGUI_Scene2D->setPlanetNum(1);
 	// mouse Position demo
 	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
 	camPos = glm::normalize(camPos);
@@ -270,7 +318,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB)) {
 		std::cout << camera2D->getBlockSelected().x << " " << camera2D->getBlockSelected().y << "\n";
 	}
-	
+
 	// Call the cPlayer2D's update method before Map2D
 	// as we want to capture the inputs before Map2D update
 	cPlayer2D->Update(dElapsedTime);
@@ -283,7 +331,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	{
 		cMap2D->SetCurrentLevel(1);
 	}
-	
+
 	//// Checks if alarm is active
 	//if (!isAlarmActive)
 	//{
@@ -343,9 +391,66 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
+			//if this isn't the last enemy in this level
+			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
+			{
+				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
+				srand(static_cast<unsigned> (time(0)));
+				int resourceType = rand() % 20;
+				std::cout << resourceType << std::endl;
+				if (resourceType < 4) //0 1 2 3
+				{
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
+				else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+				{
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
+				else if (resourceType > 16 && resourceType < 19) //17 18
+				{
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+					//set resource's position where enemy's position is
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
+			}
+			//if this is the last enemy
+			else if (enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
+			{
+				//confirm drop an ironwood
+				CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+				//set resource's position where enemy's position is
+				res->SetShader("Shader2D_Colour"); //set shader
+				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+			}
+
 			delete enemyVectors[cMap2D->GetCurrentLevel()][i];
 			enemyVectors[cMap2D->GetCurrentLevel()][i] = NULL;
 			enemyVectors[cMap2D->GetCurrentLevel()].erase(enemyVectors[cMap2D->GetCurrentLevel()].begin() + i);
+		}
+	}
+
+	//update all resources
+	for (unsigned int i = 0; i < resourceVectors[cMap2D->GetCurrentLevel()].size(); i++)
+	{
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
+
+		//if resource is collected
+		if (resourceVectors[cMap2D->GetCurrentLevel()][i]->getCollected())
+		{
+			delete resourceVectors[cMap2D->GetCurrentLevel()][i];
+			resourceVectors[cMap2D->GetCurrentLevel()][i] = NULL;
+			resourceVectors[cMap2D->GetCurrentLevel()].erase(resourceVectors[cMap2D->GetCurrentLevel()].begin() + i);
 		}
 	}
 
@@ -408,11 +513,11 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (cGameManager->bPlayerWon == true)
 	{
 		// Deletes all enemies
-		for (int i = 0; i < maxNumOfMaps; ++i)
+		for (int i = 0; i < NUM_LEVELS; ++i)
 		{
 			enemyVectors[i].erase(enemyVectors[i].begin(), enemyVectors[i].end());
 		}
-		
+
 		// End the game and switch to win screen
 		//cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 1);
 		cGameManager->bPlayerWon = false;
@@ -422,11 +527,11 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	else if (cGameManager->bPlayerLost == true)
 	{
 		// Deletes all enemies
-		for (int i = 0; i < maxNumOfMaps; ++i)
+		for (int i = 0; i < NUM_LEVELS; ++i)
 		{
 			enemyVectors[i].erase(enemyVectors[i].begin(), enemyVectors[i].end());
 		}
-		
+
 		// End the game and switch to lose screen
 		//cMap2D->SetCurrentLevel(cMap2D->GetCurrentLevel() + 2);
 		cGameManager->bPlayerLost = false;
@@ -475,6 +580,17 @@ void SnowPlanet::Render(void)
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->PostRender();
 	}
 
+	// Calls the CResource's PreRender()
+	for (unsigned int i = 0; i < resourceVectors[cMap2D->GetCurrentLevel()].size(); i++)
+	{
+		// Calls the CResource's PreRender()
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->PreRender();
+		// Calls the CResource's Render()
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->Render();
+		// Calls the CResource's PostRender()
+		resourceVectors[cMap2D->GetCurrentLevel()][i]->PostRender();
+	}
+
 	// Calls the CPlayer2D's PreRender()
 	cPlayer2D->PreRender();
 	// Calls the CPlayer2D's Render()
@@ -508,4 +624,29 @@ void SnowPlanet::Render(void)
  */
 void SnowPlanet::PostRender(void)
 {
+}
+
+//to decide which map, aka which level to render
+void SnowPlanet::DecideLevel(bool tutorial)
+{
+	//if it is to load tutorial level
+	if (tutorial)
+	{
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+	}
+	else //randomise between level 1 and 2
+	{
+		//random between 2 numbers to set us Scrap metal or battery
+			//according to which number type is set to, load which texture
+		srand(static_cast<unsigned> (time(0)));
+		int randomState = rand() % 100;
+		if (randomState < 50)
+		{
+			cMap2D->SetCurrentLevel(LEVEL1); //level 1
+		}
+		else
+		{
+			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
+		}
+	}
 }
