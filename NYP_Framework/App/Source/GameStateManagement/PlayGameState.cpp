@@ -43,7 +43,7 @@ bool CPlayGameState::Init(void)
 	cout << "CPlayGameState::Init()\n" << endl;
 
 	// Initialise the cScene2D instance
-	cScene2D = TerrestrialPlanet::GetInstance();
+	cScene2D = SnowPlanet::GetInstance();
 	if (cScene2D->Init() == false)
 	{
 		cout << "Failed to load Scene2D" << endl;
@@ -74,10 +74,13 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	{
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
+		CInventoryManager::GetInstance()->Exit();
 
 		// Load the menu state
-		cout << "Loading PauseState" << endl;
-		CGameStateManager::GetInstance()->SetPauseGameState("PauseState");
+		cout << "Loading MenuState" << endl;
+		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
+		CGameStateManager::GetInstance()->OffPauseGameState();
+		return true;
 	}
 	else if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_I))
 	{
