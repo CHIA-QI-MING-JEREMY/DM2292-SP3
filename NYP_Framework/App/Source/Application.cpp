@@ -39,7 +39,7 @@
 #include "GameStateManagement/PlayGameState.h"
 // Include CPauseState
 #include "GameStateManagement/PauseState.h"
-#include "GameStateManagement/PlanetState.h"
+#include "GameStateManagement/PlanetSelection.h"
 
 // Add your include files here
 
@@ -244,7 +244,7 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("MenuState", new CMenuState());
 	CGameStateManager::GetInstance()->AddGameState("PlayGameState", new CPlayGameState());
 	CGameStateManager::GetInstance()->AddGameState("PauseState", new CPauseState());
-	//CGameStateManager::GetInstance()->AddGameState("PlanetState", new CPlanetState());
+	CGameStateManager::GetInstance()->AddGameState("PlanetState", new CPlanetSelectionState());
 
 	// Set the active scene
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");

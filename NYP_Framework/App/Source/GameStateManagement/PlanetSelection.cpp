@@ -7,7 +7,8 @@
 // Include GLFW
 #include <GLFW/glfw3.h>
 
-#include "PlayGameState.h"
+#include "../PlanetSelection/ScenePlanet.h"
+#include "PlanetSelection.h"
 
 // Include CGameStateManager
 #include "GameStateManager.h"
@@ -21,8 +22,8 @@ using namespace std;
 /**
  @brief Constructor
  */
-CPlayGameState::CPlayGameState(void)
-	: cScene2D(NULL)
+CPlanetSelectionState::CPlanetSelectionState(void)
+	: cScenePlanet(NULL)
 {
 
 }
@@ -30,7 +31,7 @@ CPlayGameState::CPlayGameState(void)
 /**
  @brief Destructor
  */
-CPlayGameState::~CPlayGameState(void)
+CPlanetSelectionState::~CPlanetSelectionState(void)
 {
 
 }
@@ -38,15 +39,15 @@ CPlayGameState::~CPlayGameState(void)
 /**
  @brief Init this class instance
  */
-bool CPlayGameState::Init(void)
+bool CPlanetSelectionState::Init(void)
 {
 	cout << "CPlayGameState::Init()\n" << endl;
 
 	// Initialise the cScene2D instance
-	cScene2D = CScene2D::GetInstance();
-	if (cScene2D->Init() == false)
+	cScenePlanet = CScenePlanet::GetInstance();
+	if (cScenePlanet->Init() == false)
 	{
-		cout << "Failed to load Scene2D" << endl;
+		cout << "Failed to load cScenePlanet" << endl;
 		return false;
 	}
 
@@ -56,7 +57,7 @@ bool CPlayGameState::Init(void)
 /**
  @brief Update this class instance
  */
-bool CPlayGameState::Update(const double dElapsedTime)
+bool CPlanetSelectionState::Update(const double dElapsedTime)
 {
 	//if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_F10))
 	//{
@@ -81,7 +82,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	}
 
 	// Call the cScene2D's Update method
-	cScene2D->Update(dElapsedTime);
+	cScenePlanet->Update(dElapsedTime);
 
 	return true;
 }
@@ -89,31 +90,31 @@ bool CPlayGameState::Update(const double dElapsedTime)
 /**
  @brief Render this class instance
  */
-void CPlayGameState::Render(void)
+void CPlanetSelectionState::Render(void)
 {
 	//cout << "CPlayGameState::Render()\n" << endl;
 
 	// Call the cScene2D's Pre-Render method
-	cScene2D->PreRender();
+	cScenePlanet->PreRender();
 
 	// Call the cScene2D's Render method
-	cScene2D->Render();
+	cScenePlanet->Render();
 
 	// Call the cScene2D's PostRender method
-	cScene2D->PostRender();
+	cScenePlanet->PostRender();
 }
 
 /**
  @brief Destroy this class instance
  */
-void CPlayGameState::Destroy(void)
+void CPlanetSelectionState::Destroy(void)
 {
 	cout << "CPlayGameState::Destroy()\n" << endl;
 
 	// Destroy the cScene2D instance
-	if (cScene2D)
+	if (cScenePlanet)
 	{
-		cScene2D->Destroy();
-		cScene2D = NULL;
+		cScenePlanet->Destroy();
+		cScenePlanet = NULL;
 	}
 }
