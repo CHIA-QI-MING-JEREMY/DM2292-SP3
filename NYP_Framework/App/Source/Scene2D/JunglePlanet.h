@@ -140,6 +140,13 @@ protected:
 		NUM_LEVELS //to set the number of maps to load in for 1 scene and the number of maps to check for enemies to push in
 	};
 
+	enum TILE_INDEX
+	{
+		BURNABLE_BUSH = 600,
+		BURNING_BUSH = 601,
+		DISSOLVING_BUSH = 602
+	};
+
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
 	bool isZoomedIn = false;

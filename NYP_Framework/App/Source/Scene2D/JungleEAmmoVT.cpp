@@ -268,103 +268,16 @@ void CJEAmmoVT::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	//full sheild to half shield
-	case 150: //player's full shield, down, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 160);
-			//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
+	case BURNABLE_BUSH: //burnable bush block
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, DISSOLVING_BUSH); //turn to dissolving bush
+		hit = true;
+		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
 		break;
-	case 151: //player's full shield, up, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 161);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 152: //player's full shield, left, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 162);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 153: //player's full shield, right, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 163);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 154: //player's full shield, down, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 164);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 155: //player's full shield, up, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 165);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 156: //player's full shield, left, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 166);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 157: //player's full shield, right, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 167);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	//half shield to nothing
-	case 160: //player's half shield, down, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 161: //player's half shield, up, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 162: //player's half shield, left, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 163: //player's half shield, right, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 164: //player's half shield, down, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 165: //player's half shield, up, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 166: //player's half shield, left, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 167: //player's half shield, right, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
+	case BURNING_BUSH: //burning bush block
+	case DISSOLVING_BUSH: //dissolving bush block
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); //turn to empty space
+		hit = true;
+		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
 		break;
 	default:
 		break;

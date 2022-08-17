@@ -155,5 +155,12 @@ protected:
 
 	// Determines whether or not to render it
 	bool active;
+
+	enum TILE_INDEX
+	{
+		BURNABLE_BUSH = 600,
+		BURNING_BUSH = 601,
+		DISSOLVING_BUSH = 602
+	};
 };
 
