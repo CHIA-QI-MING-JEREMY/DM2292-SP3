@@ -18,6 +18,9 @@
     <Filter Include="GameStateManagement">
       <UniqueIdentifier>{ac30f583-9551-43f5-83de-07158ff79146}</UniqueIdentifier>
     </Filter>
+    <Filter Include="PlanetSelection">
+      <UniqueIdentifier>{8527bf0e-45de-4f70-a702-3959c6361faf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp">
@@ -119,6 +122,15 @@
     <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\PlanetSelection\Planet.cpp">
+      <Filter>PlanetSelection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanetSelection\ScenePlanet.cpp">
+      <Filter>PlanetSelection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -219,6 +231,15 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\SnowEAmmo.h">
       <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanetSelection\Planet.h">
+      <Filter>PlanetSelection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanetSelection\ScenePlanet.h">
+      <Filter>PlanetSelection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\PlanetSelection.h">
+      <Filter>GameStateManagement</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
