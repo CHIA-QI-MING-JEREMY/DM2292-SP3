@@ -473,7 +473,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			iJumpCount += 1;
 
 			// Play a sound for jump
-			cSoundController->PlaySoundByID(2);
+			cSoundController->PlaySoundByID(CSoundController::JUMPEFFORT);
 		}
 	}
 
@@ -985,7 +985,7 @@ void CPlayer2D::UpdateJumpFall(const double dElapsedTime)
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 				iJumpCount = 0;
 				vec2NumMicroSteps.y = 0;
-				cSoundController->PlaySoundByID(1); // plays thump sound when player hits the floor
+				cSoundController->PlaySoundByID(CSoundController::THUMP); // plays thump sound when player hits the floor
 				hasLanded = true;
 				break;
 			}

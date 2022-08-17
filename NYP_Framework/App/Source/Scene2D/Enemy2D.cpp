@@ -1144,7 +1144,7 @@ void CEnemy2D::UpdateJumpFall(const double dElapsedTime)
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 				i32vec2NumMicroSteps.y = 0;
-				cSoundController->PlaySoundByID(4); // plays soft thump sound when player hits the floor
+				cSoundController->PlaySoundByID(CSoundController::THUMP); // plays soft thump sound when player hits the floor
 				break;
 			}
 		}
@@ -1348,6 +1348,6 @@ void CEnemy2D::UpdatePosition(void)
 		}
 
 		// Play a sound for jump
-		cSoundController->PlaySoundByID(3);
+		cSoundController->PlaySoundByID(CSoundController::JUMPEFFORT);
 	}
 }

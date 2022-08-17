@@ -202,6 +202,42 @@ bool CSoundController::MasterVolumeDecrease(void)
 	return true;
 }
 
+/**
+ @brief Set Master volume
+ @return true if successfully decreased volume, else false
+ */
+bool CSoundController::MasterVolumeSet(const float volume)
+{
+	// Get the current volume
+	float fCurrentVolume = volume;
+	// Check if the minimum volume has been reached
+	glm::clamp(fCurrentVolume, 0.0f, 1.0f);
+
+	// Update the Mastervolume
+	cSoundEngine->setSoundVolume(fCurrentVolume);
+	cout << "MasterVolumeSet: fCurrentVolume = " << fCurrentVolume << endl;
+
+	return true;
+}
+
+bool CSoundController::BGMVolumeSet(const float volume)
+{
+	for (int i = 0; i < BGM_MARKER; i++) {
+		VolumeSet(i, volume);
+	}
+
+	return true;
+}
+
+bool CSoundController::SFXVolumeSet(const float volume)
+{
+	for (int i = BGM_MARKER + 1; i < NUM_SOUNDS; i++) {
+		VolumeSet(i, volume);
+	}
+
+	return true;
+}
+
 
 /**
  @brief Increase volume of a ISoundSource
@@ -259,6 +295,24 @@ bool CSoundController::VolumeDecrease(const int ID)
 
 	// Decrease the volume by 10%
 	pISoundSource->setDefaultVolume(fCurrentVolume - 0.1f);
+
+	return true;
+}
+
+bool CSoundController::VolumeSet(const int ID, float newVolume)
+{
+	// Get the ISoundSource
+	ISoundSource* pISoundSource = GetSound(ID)->GetSound();
+	if (pISoundSource == nullptr)
+	{
+		return false;
+	}
+
+	// Get the current volume
+	float fCurrentVolume = glm::clamp(newVolume, 0.0f, 1.0f);
+
+	// Decrease the volume by 10%
+	pISoundSource->setDefaultVolume(fCurrentVolume);
 
 	return true;
 }
