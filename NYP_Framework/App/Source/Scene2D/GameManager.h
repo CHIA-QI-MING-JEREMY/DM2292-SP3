@@ -12,6 +12,7 @@
 #include <map>
 #include <string>
 #include "InventoryItem.h"
+#include "InventoryItemPlanet.h"
 
 class CGameManager : public CSingletonTemplate<CGameManager>
 {

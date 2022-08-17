@@ -18,6 +18,10 @@
 // Include CInventoryManager
 #include "InventoryManager.h"
 
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include GLEW
 #ifndef GLEW_STATIC
 #include <GL/glew.h>
@@ -62,6 +66,9 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	void setPlanetNum(int num);
+	int getPlanetNum(void);
+
 protected:
 	// Constructor
 	CGUI_Scene2D(void);
@@ -83,4 +90,11 @@ protected:
 	CInventoryManager* cInventoryManager;
 	// The handler containing the instance of CInventoryItem
 	CInventoryItem* cInventoryItem;
+
+	// The handler containing the instance of CInventoryManager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	// The handler containing the instance of CInventoryItem
+	CInventoryItemPlanet* cInventoryItemPlanet;
+private:
+	int planetNum;
 };

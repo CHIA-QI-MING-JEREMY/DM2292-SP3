@@ -33,7 +33,8 @@ class CMap2D;
 #include "Player2D.h"
 
 //include ammo
-//#include "EnemyAmmo2D.h"
+#include "EnemyAmmo2D.h"
+#include "JungleEAmmoVT.h"
 
 //include enemy base class
 #include "Enemy2D.h"
@@ -92,9 +93,6 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	//return ammolist to the scene for pre, post and normal rendering
-	//std::vector<CEnemyAmmo2D*> getAmmoList(void);
-
 	enum ENEMYTYPE
 	{
 		CLOSE_COMBAT = 0,
@@ -112,10 +110,10 @@ protected:
 	};
 
 	////vector full of enemy's fired ammo
-	//std::vector<CEnemyAmmo2D*> ammoList;
-	//int shootingDirection; //shoots in the direction the enemy is facing
+	std::vector<CJEAmmoVT*> ammoList;
+	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	//CEnemyAmmo2D* FetchAmmo(void);
+	CJEAmmoVT* FetchAmmo(void);
 
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;

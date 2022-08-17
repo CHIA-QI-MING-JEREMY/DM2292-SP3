@@ -41,6 +41,10 @@ class CMap2D;
 // Include InventoryManager
 #include "InventoryManager.h"
 
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
@@ -119,6 +123,12 @@ protected:
 
 	// Inventory Item
 	CInventoryItem* cInventoryItem;
+
+	// Inventory Manager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+
+	// Inventory Item
+	CInventoryItemPlanet* cInventoryItemPlanet;
 
 	// Sound Controller
 	CSoundController* cSoundController;

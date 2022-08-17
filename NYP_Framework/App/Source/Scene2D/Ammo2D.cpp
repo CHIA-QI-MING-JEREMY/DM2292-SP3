@@ -424,7 +424,7 @@ bool CAmmo2D::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) 
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) 
 				//100 and above in the excel are obj that cannot be walked into
 			{
 				return false;
@@ -434,8 +434,8 @@ bool CAmmo2D::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610))
 			{
 				return false;
 			}
@@ -453,7 +453,7 @@ bool CAmmo2D::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610)
 			{
 				return false;
 			}
@@ -462,8 +462,8 @@ bool CAmmo2D::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 610))
 			{
 				return false;
 			}
@@ -481,7 +481,7 @@ bool CAmmo2D::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610)
 			{
 				return false;
 			}
@@ -490,8 +490,8 @@ bool CAmmo2D::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 610))
 			{
 				return false;
 			}
@@ -503,7 +503,7 @@ bool CAmmo2D::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610)
 			{
 				return false;
 			}
@@ -512,8 +512,8 @@ bool CAmmo2D::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610))
 			{
 				return false;
 			}
@@ -525,29 +525,6 @@ bool CAmmo2D::CheckPosition(void)
 	}
 	return true;
 }
-
-////let ammo interact with enemies
-//bool CAmmo2D::InteractWithEnemy(CEnemy2D* enemy)
-//{
-//	glm::i32vec2 i32vec2PlayerPos = enemy->vec2Index;
-//
-//	// Check if the ammo is within 1.5 indices of the enemy
-//	if (((vec2Index.x >= i32vec2PlayerPos.x - 0.5) &&
-//		(vec2Index.x <= i32vec2PlayerPos.x + 0.5))
-//		&&
-//		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
-//			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
-//	{
-//		// Decrease enemy health by 1
-//		
-//		//cout << "take that scum!" << endl;
-//
-//		hit = true; //destroy ammo --> only hits enemy once
-//
-//		return true;
-//	}
-//	return false;
-//}
 
 //let ammo interact with enemies
 bool CAmmo2D::InteractWithEnemy(glm::i32vec2 i32vec2EnemyPos)

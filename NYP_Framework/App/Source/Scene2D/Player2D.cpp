@@ -47,6 +47,17 @@ CPlayer2D::CPlayer2D(void)
  */
 CPlayer2D::~CPlayer2D(void)
 {
+	if (cInventoryManager)
+	{
+		cInventoryManager->Destroy();
+		cInventoryManager = NULL;
+	}
+	if (cInventoryManagerPlanet)
+	{
+		cInventoryManagerPlanet->Destroy();
+		cInventoryManagerPlanet = NULL;
+	}
+
 	// Delete the CAnimationSprites
 	if (animatedSprites)
 	{
@@ -87,13 +98,13 @@ bool CPlayer2D::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(200, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1400, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the player, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
-	if (cMap2D->FindValue(200, uiRow, uiCol) == true)
+	if (cMap2D->FindValue(1400, uiRow, uiCol) == true)
 	{
 		cout << "Another position of the player has been found" << endl;
 		return false;	// Another position of the player has been found, so quit this game
@@ -113,21 +124,23 @@ bool CPlayer2D::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the player texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Skeleton.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PlayerSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_Skeleton.png" << endl;
+		cout << "Unable to load Image/playerspritesheet.png" << endl;
 		return false;
 	}
 
 	// Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 18, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleR", 0, 10);
-	animatedSprites->AddAnimation("idleL", 18, 28);
-	animatedSprites->AddAnimation("runR", 36, 48);
-	animatedSprites->AddAnimation("runL", 54, 66);
-	animatedSprites->AddAnimation("attackR", 72, 89);
-	animatedSprites->AddAnimation("attackL", 90, 107);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idleR", 0, 0);
+	animatedSprites->AddAnimation("idleL", 1, 1);
+	animatedSprites->AddAnimation("runR", 4, 7);
+	animatedSprites->AddAnimation("runL", 8, 11);
+	animatedSprites->AddAnimation("attackR", 2, 2);
+	animatedSprites->AddAnimation("attackL", 3, 3);
+	animatedSprites->AddAnimation("idleshieldR", 12, 12);
+	animatedSprites->AddAnimation("idleshieldL", 13, 13);
 
 	// Play idle animation as default
 	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
@@ -144,7 +157,7 @@ bool CPlayer2D::Init(void)
 		cAmmo2D->SetShader("Shader2D");
 		ammoList.push_back(cAmmo2D);
 	}
-	shootingDirection = LEFT; //by default
+	shootingDirection = RIGHT; //by default
 
 	//CS: Init the color to white
 	SetColour(WHITE);
@@ -158,6 +171,35 @@ bool CPlayer2D::Init(void)
 	// Add a health icon as one of the inventory items
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+	// Add a lives icon as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+
+	// Add a health icon as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+
+	// Add a resources as one of the inventory items --> check a max of 5 to bring back
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Resources", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a scrap metal as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ScrapMetal", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a battery as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Battery", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a ironwood as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Ironwood", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a energy quartz as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("EnergyQuartz", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a ice crystal as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("IceCrystal", "Image/Scene2D_Health.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -330,7 +372,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_A))
 	{
-		// Play the "idleL" animation
+		// Play the "idleR" animation
 		animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
@@ -366,7 +408,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_D))
 	{
-		// Play the "idleR" animation
+		// Play the "idleL" animation
 		animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 	}
 
@@ -433,8 +475,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		shootingDirection = DOWN; //setting direction for ammo shooting
 	}
 	
-	// TO DO: Solve animation issue
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q) && attackTimer <= 0.0)
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E) && attackTimer <= 0.0)
 	{
 		if (attackDirection == RIGHT)
 		{
@@ -1001,7 +1042,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -1010,8 +1051,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600))
 			{
 				return false;
 			}
@@ -1031,7 +1072,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 			if (vec2NumMicroSteps.x != 0)
 			{
 				// If the grid is not accessible, then return false
-				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 				{
 					return false;
 				}
@@ -1043,8 +1084,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 			if (vec2NumMicroSteps.x != 0)
 			{
 				// If the 2 grids are not accessible, then return false
-				if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-					(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+				if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600) ||
+					(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 				{
 					return false;
 				}
@@ -1063,7 +1104,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -1072,8 +1113,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -1085,7 +1126,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -1094,8 +1135,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}

@@ -9,7 +9,9 @@
 
 #include "GameStateBase.h"
 
-#include "..\Scene2D\Scene2D.h"
+#include "..\Scene2D\JunglePlanet.h"
+#include "..\Scene2D\\TerrestrialPlanet.h"
+#include "..\Scene2D\SnowPlanet.h"
 
 class CPlayGameState : public CGameStateBase
 {
@@ -30,5 +32,5 @@ public:
 
 protected:
 	// The handler to the CScene2D instance
-	CScene2D* cScene2D;
+	TerrestrialPlanet* cScene2D;
 };

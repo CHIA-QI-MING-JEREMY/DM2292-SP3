@@ -35,11 +35,18 @@ class CMap2D;
 // Include InventoryManager
 #include "InventoryManager.h"
 
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
 // Include Camera
 #include "Primitives/Camera2D.h"
+
+//Include enemy ammo
+#include "EnemyAmmo2D.h"
 
 class CEnemy2D : public CEntity2D
 {
@@ -106,9 +113,6 @@ public:
 	//glm::vec4 getColour();
 	//void setColour(glm::vec4 colour);
 
-	//return ammolist to the scene for pre, post and normal rendering
-	//std::vector<CEnemyAmmo2D*> getAmmoList(void);
-
 protected:
 	enum DIRECTION
 	{
@@ -120,10 +124,10 @@ protected:
 	};
 
 	//vector full of enemy's fired ammo
-	//std::vector<CEnemyAmmo2D*> ammoList;
+	std::vector<CEnemyAmmo2D*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	//CEnemyAmmo2D* FetchAmmo(void);
+	CEnemyAmmo2D* FetchAmmo(void);
 
 	enum FSM
 	{
