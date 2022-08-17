@@ -143,16 +143,79 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	/// JUNGLE PLANET SOLID BLOCKS
 	/// </summary>
 	{
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+		//burnable bush tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock.tga", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+			cout << "Unable to load Image/JunglePlanet/BurnableBushBlock.tga" << endl;
 			return false;
 		}
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(600, iTextureID));
+		}
+		//burning burnable bush tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock_Burning.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/BurnableBushBlock_Burning.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(601, iTextureID));
+		}
+		//dissolving burnable bush tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock_Dissolving.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/BurnableBushBlock_Dissolving.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(602, iTextureID));
+		}
+
+
+		//grass ground tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/GrassBlock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/GrassBlock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(610, iTextureID));
+		}
+		//grass ground, top left corner tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/GrassBlock_TopLeftCorner.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/GrassBlock_TopLeftCorner.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(611, iTextureID));
+		}
+		//grass ground, top right corner tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/GrassBlock_TopRightCorner.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/GrassBlock_TopRightCorner.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(612, iTextureID));
 		}
 	}
 
