@@ -105,36 +105,42 @@ bool JunglePlanet::Init(void)
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
 	
-	maxNumOfMaps = 3;
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
 	cMap2D->SetShader("Shader2D");
 	// Initialise the instance
-	if (cMap2D->Init(maxNumOfMaps, CSettings::GetInstance()->NUM_TILES_YAXIS, CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
+	if (cMap2D->Init(NUM_LEVELS, CSettings::GetInstance()->NUM_TILES_YAXIS, CSettings::GetInstance()->NUM_TILES_XAXIS) == false)
 	{
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_Tutorial.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_Tutorial.csv", TUTORIAL) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Jungle Map Tutorial Level" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", 1) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", LEVEL1) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Jungle Map Level 01" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02.csv", 2) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02A.csv", LEVEL2A) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 02" << endl;
+		cout << "Failed to load Jungle Map Level 02A" << endl;
+		return false;
+	}
+	// Load the map into an array
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02B.csv", LEVEL2B) == false)
+	{
+		// The loading of a map has failed. Return false
+		cout << "Failed to load Jungle Map Level 02B" << endl;
 		return false;
 	}
 
@@ -160,7 +166,7 @@ bool JunglePlanet::Init(void)
 
 	//cycle through the maps and find the enemies
 		//and push them into the 2d enemy vector
-	for (int i = 0; i < maxNumOfMaps; ++i)
+	for (int i = 0; i < NUM_LEVELS; ++i)
 	{
 		//current level to check for enemies and resources
 		cMap2D->SetCurrentLevel(i);
@@ -507,7 +513,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	if (cGameManager->bPlayerWon == true)
 	{
 		// Deletes all enemies
-		for (int i = 0; i < maxNumOfMaps; ++i)
+		for (int i = 0; i < NUM_LEVELS; ++i)
 		{
 			enemyVectors[i].erase(enemyVectors[i].begin(), enemyVectors[i].end());
 		}
@@ -521,7 +527,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	else if (cGameManager->bPlayerLost == true)
 	{
 		// Deletes all enemies
-		for (int i = 0; i < maxNumOfMaps; ++i)
+		for (int i = 0; i < NUM_LEVELS; ++i)
 		{
 			enemyVectors[i].erase(enemyVectors[i].begin(), enemyVectors[i].end());
 		}
@@ -618,4 +624,29 @@ void JunglePlanet::Render(void)
  */
 void JunglePlanet::PostRender(void)
 {
+}
+
+//to decide which map, aka which level to render
+void JunglePlanet::DecideLevel(bool tutorial)
+{
+	//if it is to load tutorial level
+	if (tutorial)
+	{
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+	}
+	else //randomise between level 1 and 2
+	{
+		//random between 2 numbers to set us Scrap metal or battery
+			//according to which number type is set to, load which texture
+		srand(static_cast<unsigned> (time(0)));
+		int randomState = rand() % 100;
+		if (randomState < 50)
+		{
+			cMap2D->SetCurrentLevel(LEVEL1); //level 1
+		}
+		else
+		{
+			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
+		}
+	}
 }
