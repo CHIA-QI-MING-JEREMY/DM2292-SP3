@@ -147,6 +147,26 @@ protected:
 		DISSOLVING_BUSH = 602
 	};
 
+	int playerPoisonLevel; 
+		//dictates how badly affected the player is by poison
+		//poison level 0 means the player has not been poisoned
+		//from 0 to 3, caps at 3, increases by 1 everytime the player is hit by something poisonous with a 2 second cooldwon inbetween
+	double poisonLevelIncreaseCooldown;
+	double poisonDamageHitCooldown; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
+		//once it hits 0, player takes damage
+	vector<int> poisonDamage; //contains the int of how much of the health is removed from player per damage hit
+		//0 means that the player takes 0% damage
+		//1 means that the player takes 3% damage
+		//2 means that the player takes 5% damage
+		//3 means that the player takes 10% damage
+	vector<double> poisonDamageHitMaxCooldown; //contains the max cooldown to be used for each poison level
+		//0 would be 0.0s
+		//1 would be 5.0s
+		//2 would be 4.0s
+		//3 would be 3.0s
+
+
+
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
 	bool isZoomedIn = false;

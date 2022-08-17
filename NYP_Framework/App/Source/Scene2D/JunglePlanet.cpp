@@ -287,6 +287,28 @@ bool JunglePlanet::Init(void)
 	maxAlarmTimer = 10.0;
 	alarmTimer = 0.0;
 
+	playerPoisonLevel = 0;
+	//dictates how badly affected the player is by poison
+	//poison level 0 means the player has not been poisoned
+	poisonLevelIncreaseCooldown = 2.0; //poison level can increase every 2 seconds if hit by something poisonous
+
+	//contains the int of how much of the health is removed from player per damage hit
+	poisonDamage.clear(); //make sure it is clear before pushing in
+	poisonDamage.push_back(0); //0 means that the player takes 0% damage
+	poisonDamage.push_back(3); //1 means that the player takes 3% damage
+	poisonDamage.push_back(5); //2 means that the player takes 5% damage
+	poisonDamage.push_back(10); //3 means that the player takes 10% damage
+
+	//contains the max cooldown to be used for each poison level
+	poisonDamageHitMaxCooldown.clear(); //make sure it is clear before pushing in
+	poisonDamageHitMaxCooldown.push_back(0.0); //0 would be 0.0s
+	poisonDamageHitMaxCooldown.push_back(5.0); //1 would be 5.0s
+	poisonDamageHitMaxCooldown.push_back(4.0); //2 would be 4.0s
+	poisonDamageHitMaxCooldown.push_back(3.0); //3 would be 3.0s
+
+	poisonDamageHitCooldown = poisonDamageHitMaxCooldown[playerPoisonLevel]; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
+		//once it hits 0, player takes damage
+
 	return true;
 }
 
