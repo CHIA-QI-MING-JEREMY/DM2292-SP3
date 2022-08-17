@@ -406,7 +406,7 @@ bool CJEAmmoVT::CheckPosition(void)
 		{
 			// If the grid is not accessible, then return false
 				//150 to 199 is considered accessable only because they are set to automatically get destoryed upon collision with such index elsewhere
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 150)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610)
 				//100 and above in the excel are obj that cannot be walked into
 			{
 				return false;
@@ -416,8 +416,8 @@ bool CJEAmmoVT::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 150) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 150))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610))
 			{
 				return false;
 			}
@@ -435,7 +435,7 @@ bool CJEAmmoVT::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 150)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610)
 			{
 				return false;
 			}
@@ -444,8 +444,8 @@ bool CJEAmmoVT::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 150) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 150))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 610))
 			{
 				return false;
 			}
@@ -463,7 +463,7 @@ bool CJEAmmoVT::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 150)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610)
 			{
 				return false;
 			}
@@ -472,8 +472,8 @@ bool CJEAmmoVT::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 150) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 150))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 610))
 			{
 				return false;
 			}
@@ -485,7 +485,7 @@ bool CJEAmmoVT::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 150)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610)
 			{
 				return false;
 			}
@@ -494,8 +494,8 @@ bool CJEAmmoVT::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 150) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 150))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610))
 			{
 				return false;
 			}

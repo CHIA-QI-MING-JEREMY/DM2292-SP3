@@ -103,7 +103,7 @@ bool JEnemy2DVT::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(300, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1600, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -627,7 +627,7 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -636,8 +636,8 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600))
 			{
 				return false;
 			}
@@ -656,7 +656,7 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 			{
 				return false;
 			}
@@ -665,8 +665,8 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -686,7 +686,7 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -695,8 +695,8 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -708,7 +708,7 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -717,8 +717,8 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}

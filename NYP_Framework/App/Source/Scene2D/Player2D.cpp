@@ -1042,7 +1042,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -1051,8 +1051,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600))
 			{
 				return false;
 			}
@@ -1072,7 +1072,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 			if (vec2NumMicroSteps.x != 0)
 			{
 				// If the grid is not accessible, then return false
-				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100)
+				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 				{
 					return false;
 				}
@@ -1084,8 +1084,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 			if (vec2NumMicroSteps.x != 0)
 			{
 				// If the 2 grids are not accessible, then return false
-				if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100) ||
-					(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+				if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600) ||
+					(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 				{
 					return false;
 				}
@@ -1104,7 +1104,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -1113,8 +1113,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -1126,7 +1126,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -1135,8 +1135,8 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 100) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 100))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
