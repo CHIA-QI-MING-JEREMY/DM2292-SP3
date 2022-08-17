@@ -82,6 +82,12 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	//to decide which map, aka which level to render
+		//pass in whether or not to load tutorial level
+		//if true, level is set to tutorial level
+		//if false, level is randomly set between 1 and 2
+	void DecideLevel(bool tutorial);
+
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
@@ -125,7 +131,14 @@ protected:
 	double maxAlarmTimer;
 	double alarmTimer;
 
-	int maxNumOfMaps; //to set the number of maps to laod in for 1 scene and the number of maps to check for enemies to push in
+	enum LEVELS
+	{
+		TUTORIAL = 0,
+		LEVEL1,
+		LEVEL2A,
+		LEVEL2B,
+		NUM_LEVELS //to set the number of maps to load in for 1 scene and the number of maps to check for enemies to push in
+	};
 
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
