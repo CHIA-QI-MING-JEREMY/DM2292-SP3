@@ -222,7 +222,7 @@ bool CResource::Init(void)
 	case BATTERY:
 	{
 		// Load the battery texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Battery.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load battery texture" << std::endl;
