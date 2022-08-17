@@ -19,7 +19,11 @@
       <UniqueIdentifier>{ac30f583-9551-43f5-83de-07158ff79146}</UniqueIdentifier>
     </Filter>
     <Filter Include="PlanetSelection">
+<<<<<<< Updated upstream
       <UniqueIdentifier>{8527bf0e-45de-4f70-a702-3959c6361faf}</UniqueIdentifier>
+=======
+      <UniqueIdentifier>{adb3358b-1f81-48e5-ab3d-78b61c3fdc2f}</UniqueIdentifier>
+>>>>>>> Stashed changes
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,14 +126,25 @@
     <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
     <ClCompile Include="Source\PlanetSelection\Planet.cpp">
       <Filter>PlanetSelection</Filter>
     </ClCompile>
     <ClCompile Include="Source\PlanetSelection\ScenePlanet.cpp">
       <Filter>PlanetSelection</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp">
       <Filter>GameStateManagement</Filter>
+=======
+    <ClCompile Include="Source\PlanetSelection\GUI_ScenePlanet.cpp">
+      <Filter>PlanetSelection</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,14 +247,25 @@
     <ClInclude Include="Source\Scene2D\SnowEAmmo.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+=======
+    <ClInclude Include="Source\GameStateManagement\PlanetSelection.h">
+      <Filter>GameStateManagement</Filter>
+    </ClInclude>
+>>>>>>> Stashed changes
     <ClInclude Include="Source\PlanetSelection\Planet.h">
       <Filter>PlanetSelection</Filter>
     </ClInclude>
     <ClInclude Include="Source\PlanetSelection\ScenePlanet.h">
       <Filter>PlanetSelection</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="Source\GameStateManagement\PlanetSelection.h">
       <Filter>GameStateManagement</Filter>
+=======
+    <ClInclude Include="Source\PlanetSelection\GUI_ScenePlanet.h">
+      <Filter>PlanetSelection</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
 </Project>
