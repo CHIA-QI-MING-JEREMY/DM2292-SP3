@@ -4,23 +4,22 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "ScenePlanet.h"
 #include <iostream>
-using namespace std;
+	using namespace std;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 
 #include "System\filesystem.h"
+#include "ScenePlanet.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
 CScenePlanet::CScenePlanet(void)
 	: cMap2D(NULL)
-	, cPlayer2D(NULL)
-	, cKeyboardController(NULL)	
-	, cGUI_Scene2D(NULL)
+	, cKeyboardController(NULL)
+	//, cGUI_Scene2D(NULL)
 	, cGameManager(NULL)
 	, camera2D(NULL)
 	, cSoundController(NULL)
@@ -44,23 +43,17 @@ CScenePlanet::~CScenePlanet(void)
 		cMap2D = NULL;
 	}
 
-	if (cPlayer2D)
-	{
-		cPlayer2D->Destroy();
-		cPlayer2D = NULL;
-	}
-	
 	if (camera2D)
 	{
 		camera2D->Destroy();
 		camera2D = NULL;
 	}
 
-	if (cGUI_Scene2D)
+	/*if (cGUI_Scene2D)
 	{
 		cGUI_Scene2D->Destroy();
 		cGUI_Scene2D = NULL;
-	}
+	}*/
 
 	if (cGameManager)
 	{
@@ -76,12 +69,12 @@ CScenePlanet::~CScenePlanet(void)
 
 /**
 @brief Init Initialise this instance
-*/ 
+*/
 bool CScenePlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
-	
+
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -93,51 +86,61 @@ bool CScenePlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	// TODO: [SP3] Load Empty Map
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Jungle_01.csv", 0) == false)
+	if (cMap2D->LoadMap("Maps/DM2213_Map_Planet.csv", 0) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 01" << endl;
+		cout << "Failed to load planet selection map" << endl;
 		return false;
 	}
 
-	// Create and initialise the CPlayer2D
-	cPlayer2D = CPlayer2D::GetInstance();
-	// Pass shader to cPlayer2D
-	cPlayer2D->SetShader("Shader2D_Colour");
-	// Initialise the instance
-	if (cPlayer2D->Init() == false)
-	{
-		cout << "Failed to load CPlayer2D" << endl;
-		return false;
-	}
+	//cycle through the maps and find the enemies
+	//and push them into the planet vector
 
 	cMap2D->SetCurrentLevel(0); //reset level
+	nebula = NULL;
 
-	//// create the alarm box vector
-	//alarmBoxVector.clear();
-	//alarmBoxVector = cMap2D->FindAllTiles(50);
+	camera2D = Camera2D::GetInstance();
+	camera2D->Reset();
 
-	//// assign alarm boxes to enemies (if applicable)
-	//for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-	//{
-	//	for (unsigned int j = 0; j < alarmBoxVector.size(); j++)
-	//	{
-	//		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index.y == alarmBoxVector[j].y)
-	//		{
-	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAssignedAlarmBox(alarmBoxVector[j]);
-	//		}
-	//	}
-	//}
+	planetVector.clear();
+	while (true) {
+		CPlanet* cPlanet = new CPlanet();
+		// Pass shader to cEnemy2D
+		cPlanet->SetShader("Shader2D_Colour");
+		// Initialise the instance
+		if (cPlanet->Init() == true) {
+			if (cPlanet->vec2Index.x == 0) {
+				cPlanet->UpdatePlanetIcon("Image/Planet/nebula.png");
+				cPlanet->SetScale(6);
+				cPlanet->SetVisibility(true);
+				nebula = cPlanet;
+			}
+			else {
+				cPlanet->UpdatePlanetIcon("Image/Planet/PlanetDefault.png");
+			}
+			if (cPlanet->vec2Index.x == 8) {
+				camera2D->setTargetPos(glm::vec2(cPlanet->vec2Index.x, cPlanet->vec2Index.y));
+				PlanetSelected = cPlanet;
+				cPlanet->SetVisibility(true);
+			}
 
-	// Create and initialise the CGUI_Scene2D
-	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
-	// Initialise the instance
-	if (cGUI_Scene2D->Init() == false)
-	{
-		cout << "Failed to load CGUI_Scene2D" << endl;
-		return false;
+			planetVector.insert(std::make_pair(std::make_pair(cPlanet->vec2Index.x, cPlanet->vec2Index.y), cPlanet));
+		}
+		else {
+			//break up of loop if all the enemies have been loaded
+			break;
+		}
 	}
+
+
+	//// Create and initialise the CGUI_Scene2D
+	//cGUI_Scene2D = CGUI_Scene2D::GetInstance();
+	//// Initialise the instance
+	//if (cGUI_Scene2D->Init() == false)
+	//{
+	//	cout << "Failed to load CGUI_Scene2D" << endl;
+	//	return false;
+	//}
 
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -145,14 +148,8 @@ bool CScenePlanet::Init(void)
 	// Create and initialise the cGameManager
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
-	
-	// Init the camera
-	camera2D = Camera2D::GetInstance();
-	camera2D->Reset();
-	camera2D->setTargetPos(cPlayer2D->vec2Index);
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
-	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
+	// Init the camera
 
 	return true;
 }
@@ -163,11 +160,55 @@ bool CScenePlanet::Init(void)
 bool CScenePlanet::Update(const double dElapsedTime)
 {
 	// mouse Position demo
-	camera2D->setTargetZoom(3.0f);
-	
-	// Call the cPlayer2D's update method before Map2D
-	// as we want to capture the inputs before Map2D update
-	cPlayer2D->Update(dElapsedTime);
+	camera2D->setTargetZoom(1.0f);
+
+	// mouse Click
+	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB)) {
+		glm::vec2 blockSelected = camera2D->getBlockSelected();
+		std::map<std::pair<int, int>, CPlanet*>::iterator x = planetVector.begin();
+		while (x != planetVector.end()) {
+			glm::vec2 playerPos = glm::vec2(x->first.first, x->first.second);
+			if (glm::abs(glm::length(blockSelected - playerPos)) < 3.f) {
+
+				// skip miss nebularr
+				if (x->second->vec2Index.x == 0) {
+					x++;
+					continue;
+				}
+
+
+				PlanetSelected = x->second;
+
+				// get nearby planets
+				if (x->second->getVisibility() == true) {
+					std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
+					while (otherPlanets != planetVector.end()) {
+						if (otherPlanets->second->vec2Index.x == 0) {
+							otherPlanets++;
+							continue;
+						}
+						if (glm::abs(otherPlanets->second->vec2Index.x - x->second->vec2Index.x) < 7) {
+							otherPlanets->second->SetVisibility(true);
+						}
+						else {
+							otherPlanets->second->SetVisibility(false);
+						}
+						otherPlanets++;
+					}
+				}
+
+				camera2D->setTargetPos(x->second->vec2Index);
+			}
+			x++;
+		}
+	}
+
+	// mouse Position demo
+	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - camera2D->getPos().x, camera2D->getMousePosition().y - camera2D->getPos().y);
+	camPos = glm::normalize(camPos);
+	camPos = glm::vec2(camera2D->getPos().x + camPos.x * 2, camera2D->getPos().y + camPos.y * 2);
+
+	camera2D->Update(dElapsedTime);
 
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
@@ -190,7 +231,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 	}
 
 	// Call the cGUI_Scene2D's update method
-	cGUI_Scene2D->Update(dElapsedTime);
+	// cGUI_Scene2D->Update(dElapsedTime);
 
 	//TODO: [SP3] Add transition to next stage (ship combat)
 	// unslay
@@ -225,6 +266,12 @@ void CScenePlanet::Render(void)
 	cMap2D->Render();
 	// Calls the Map2D's PostRender()
 	cMap2D->PostRender();
+
+	for (auto planet : planetVector) {
+		planet.second->PreRender();
+		planet.second->Render();
+		planet.second->PostRender();
+	}
 
 
 }
