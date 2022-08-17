@@ -93,6 +93,12 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	enum ENEMYTYPE
+	{
+		CLOSE_COMBAT = 0,
+		LONG_RANGE,
+	};
+
 protected:
 	enum DIRECTION
 	{

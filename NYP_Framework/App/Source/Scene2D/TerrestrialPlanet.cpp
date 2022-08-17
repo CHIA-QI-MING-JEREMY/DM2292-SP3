@@ -421,10 +421,6 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_5))
 	{
 		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
-		cMap2D->ReplaceTiles(201, 801); // dont allow player to walk through yellow tiles
-		cMap2D->ReplaceTiles(202, 802); // dont allow player to walk through red tiles
-		cMap2D->ReplaceTiles(203, 803); // dont allow player to walk through green tiles
-		cMap2D->ReplaceTiles(204, 804); // dont allow player to walk through blue tiles
 	}
 
 	// restores coloured orb count when the player walks over a checkpoint
@@ -535,7 +531,7 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			//if this isn't the last enemy in this level
 			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
 			{
-				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop energy quartz
+				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
 				srand(static_cast<unsigned> (time(0)));
 				int resourceType = rand() % 20;
 				std::cout << resourceType << std::endl;
@@ -557,7 +553,7 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 				}
 				else if (resourceType > 16 && resourceType < 19) //17 18
 				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::ENERGY_QUARTZ); //create new energy quartz resource
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
 					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 					//set resource's position where enemy's position is
 					res->SetShader("Shader2D_Colour"); //set shader
@@ -567,8 +563,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			//if this is the last enemy
 			else if (enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
 			{
-				//confirm drop an energy quartz
-				CResource* res = new CResource(CResource::RESOURCE_TYPE::ENERGY_QUARTZ); //create new energy quartz resource
+				//confirm drop an ironwood
+				CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
 				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 				//set resource's position where enemy's position is
 				res->SetShader("Shader2D_Colour"); //set shader
