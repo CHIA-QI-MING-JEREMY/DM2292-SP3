@@ -20,11 +20,6 @@ using namespace irrklang;
 #include <map>
 using namespace std;
 
-// Include GLM
-#include <includes/glm.hpp>
-#include <includes/gtc/matrix_transform.hpp>
-#include <includes/gtc/type_ptr.hpp>
-
 // Include SoundInfo class; it stores the sound and other information
 #include "SoundInfo.h"
 
@@ -38,17 +33,20 @@ public:
 	enum SOUND_LIST
 	{
 		BGM_NORMAL = 0,
-		BGM_MARKER,
+		BGM_BNW,
+		FOOTSTEPS,
+		JUMP,
+		LAND,
+		SPLASH,
 		BURNING,
-		FIREBALL,
-		FLICK_SWITCH,
-		THUMP,
-		JUMPEFFORT,
-		JUMPEFFORTFEM,
-		THUMPFEMALE,
 		TICKING,
 		EXPLOSION,
-		SPLASH,
+		FIREBALL,
+		COLLECT_ITEM,
+		REVEAL_SPRING,
+		FLICK_SWITCH,
+		IMPALED,
+		ENEMY_PUNCH,
 		NUM_SOUNDS
 	};
 
@@ -69,22 +67,11 @@ public:
 	bool MasterVolumeIncrease(void);
 	// Decrease Master volume
 	bool MasterVolumeDecrease(void);
-	// Set Master Volume
-	bool MasterVolumeSet(const float volume);
-
-	// Set SFX and BGM Volume 
-	// With Slider
-	// TODO: [SP3] Fix this eventually
-	bool SFXVolumeSet(const float volume);
-	// Set Background Volume
-	bool BGMVolumeSet(const float volume);
 
 	// Increase volume of a ISoundSource
 	bool VolumeIncrease(const int ID);
 	// Decrease volume of a ISoundSource
 	bool VolumeDecrease(const int ID);
-	// Set volume of a ISoundSurce
-	bool VolumeSet(const int ID, const float volume);
 
 	// For 3D sounds only
 	// Set Listener position

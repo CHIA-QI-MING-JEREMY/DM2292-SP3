@@ -77,10 +77,6 @@ protected:
 	// For progress bar demo only
 	float m_fProgressBar;
 
-	// Fonts
-	//TODO: [SP3] Find Somewhere else to put the font
-	ImFont* smallFont;
-
 	CSettings* cSettings;
 
 	// The handler containing the instance of CInventoryManager

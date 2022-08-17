@@ -56,9 +56,6 @@ bool CGUI_Scene2D::Init(void)
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	// Set default font
-	io.Fonts->AddFontFromFileTTF("Image/GUI/quaver.ttf", 13);
-	smallFont = io.Fonts->AddFontFromFileTTF("Image/GUI/quaver.ttf", 10);
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -147,11 +144,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-	ImGui::PushFont(smallFont);
 	ImGui::ProgressBar(cInventoryItem->GetCount() /
 		(float)cInventoryItem->GetMaxCount(), ImVec2(100.0f *
 			relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopFont();
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::End();
