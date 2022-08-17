@@ -122,6 +122,13 @@ protected:
 	// Sound Controller
 	CSoundController* cSoundController;
 
+	// Inventory Manager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+
+	// Inventory Item
+	CInventoryItemPlanet* cInventoryItemPlanet;
+
+
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
@@ -152,6 +159,8 @@ protected:
 		//poison level 0 means the player has not been poisoned
 		//from 0 to 3, caps at 3, increases by 1 everytime the player is hit by something poisonous with a 2 second cooldwon inbetween
 	double poisonLevelIncreaseCooldown;
+	double poisonLevelIncreaseMaxCooldown; //used to reset cooldown
+
 	double poisonDamageHitCooldown; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
 		//once it hits 0, player takes damage
 	vector<int> poisonDamage; //contains the int of how much of the health is removed from player per damage hit

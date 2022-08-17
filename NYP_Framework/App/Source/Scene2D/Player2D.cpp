@@ -200,6 +200,17 @@ bool CPlayer2D::Init(void)
 	// Add a ice crystal as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("IceCrystal", "Image/Scene2D_Health.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+
+	//Jungle Planet
+	// Add a green orb as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/Scene2D_BlueOrb.tga", 5, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vines", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+
+	//T Planet
 	// Add a yellow orb as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);

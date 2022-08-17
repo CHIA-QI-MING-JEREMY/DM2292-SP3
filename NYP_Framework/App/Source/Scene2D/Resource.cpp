@@ -233,7 +233,7 @@ bool CResource::Init(void)
 	case IRONWOOD:
 	{
 		// Load the ironwood texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Ironwood.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load ironwood texture" << std::endl;

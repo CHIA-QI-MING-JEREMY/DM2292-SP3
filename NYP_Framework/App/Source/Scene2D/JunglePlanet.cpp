@@ -255,6 +255,13 @@ bool JunglePlanet::Init(void)
 		return false;
 	}
 
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+		//dictates how badly affected the player is by poison
+		//poison level 0 means the player has not been poisoned
+	cInventoryItemPlanet->Remove(cInventoryItemPlanet->GetCount()); //set poison level to 0
+
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
@@ -286,10 +293,7 @@ bool JunglePlanet::Init(void)
 	isAlarmActive = false;
 	maxAlarmTimer = 10.0;
 	alarmTimer = 0.0;
-
-	playerPoisonLevel = 0;
-	//dictates how badly affected the player is by poison
-	//poison level 0 means the player has not been poisoned
+	
 	poisonLevelIncreaseCooldown = 2.0; //poison level can increase every 2 seconds if hit by something poisonous
 
 	//contains the int of how much of the health is removed from player per damage hit
@@ -306,7 +310,8 @@ bool JunglePlanet::Init(void)
 	poisonDamageHitMaxCooldown.push_back(4.0); //2 would be 4.0s
 	poisonDamageHitMaxCooldown.push_back(3.0); //3 would be 3.0s
 
-	poisonDamageHitCooldown = poisonDamageHitMaxCooldown[playerPoisonLevel]; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+	poisonDamageHitCooldown = poisonDamageHitMaxCooldown[cInventoryItemPlanet->GetCount()]; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
 		//once it hits 0, player takes damage
 
 	return true;
@@ -476,6 +481,9 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		}
 	}
 
+
+
+
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
 
@@ -504,21 +512,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 			cout << "Runtime error: " << e.what();
 			return false;
 		}
-	}
-
-	// Player Attacks (TO DO)
-	if (cPlayer2D->getPlayerAttackStatus())
-	{
-		for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-		{
-			if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
-			{
-				int remainingHealth = enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25;
-				cout << remainingHealth << endl;
-				enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(remainingHealth);
-			}
-		}
-		cPlayer2D->setPlayerAttackStatus(false);
 	}
 
 	// Call the cGUI_Scene2D's update method
