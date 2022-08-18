@@ -169,9 +169,7 @@ bool TEnemy2DSentry::Init(void)
 
 	if (vec2Index == glm::vec2(8, 3))
 	{
-		waypoints.push_back(glm::vec2(9, 3));
-		waypoints.push_back(glm::vec2(17, 4));
-		waypoints.push_back(glm::vec2(19, 8));
+		waypoints = ConstructWaypointVector(waypoints, 300, 5);
 	}
 
 	// sets waypoint counter value
@@ -238,7 +236,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 		{
 			auto path = cMap2D->PathFind(vec2Index,							// start pos
 										waypoints[currentWaypointCounter],	// target pos
-										heuristic::euclidean,				// heuristic
+										heuristic::manhattan,				// heuristic
 										10);								// weight
 
 			// Calculate new destination
@@ -250,7 +248,8 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 				{
 					// Set a destination
 					vec2Destination = coord;
-					// Calculate the direction between enemy2D and this detination
+					
+					// Calculate the direction between enemy2D and this destination
 					vec2Direction = vec2Destination - vec2Index;
 					bFirstPosition = false;
 				}
@@ -904,6 +903,19 @@ void TEnemy2DSentry::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 	}
+}
+
+vector<glm::vec2> TEnemy2DSentry::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
+{
+	for (int i = 0; i < numOfWaypoints; ++i)
+	{
+		waypointVector.push_back(cMap2D->GetTilePosition(startIndex + i));
+		// Erase the value of the waypoint in the arrMapInfo
+		cMap2D->SetMapInfo(waypointVector[i].y, waypointVector[i].x, 0);
+		cout << waypointVector.size() << endl;
+	}
+
+	return waypointVector;
 }
 
 //called whenever an ammo is needed to be shot

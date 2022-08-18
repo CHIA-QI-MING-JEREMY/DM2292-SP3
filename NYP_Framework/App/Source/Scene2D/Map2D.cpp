@@ -1261,7 +1261,7 @@ bool CMap2D::ResetAStarLists(void)
 //find position by tile index
 glm::vec2 CMap2D::GetTilePosition(const int tileIndex, const bool bInvert)
 {
-	glm::vec2 position = glm::vec2(0, 0); //an empty vec2
+	glm::vec2 position; //an empty vec2
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
 		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
