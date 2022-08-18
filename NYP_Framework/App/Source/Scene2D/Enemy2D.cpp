@@ -35,7 +35,7 @@ CEnemy2D::CEnemy2D(void)
 	, cPlayer2D(NULL)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-	, camera2D(NULL)
+	//, camera2D(NULL)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 {
@@ -73,7 +73,7 @@ CEnemy2D::~CEnemy2D(void)
 	cMap2D = NULL;
 
 	// We won't delete this since it was created elsewhere
-	camera2D = NULL;
+	//camera2D = NULL;
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -89,7 +89,7 @@ bool CEnemy2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
-	camera2D = Camera2D::GetInstance();
+	//camera2D = Camera2D::GetInstance();
 	
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();

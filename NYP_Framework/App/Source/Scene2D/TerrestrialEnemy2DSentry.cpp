@@ -36,7 +36,7 @@ TEnemy2DSentry::TEnemy2DSentry(void)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-	, camera2D(NULL)
+	//, camera2D(NULL)
 	, animatedSprites(NULL)
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
@@ -93,7 +93,7 @@ bool TEnemy2DSentry::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
-	camera2D = Camera2D::GetInstance();
+	//camera2D = Camera2D::GetInstance();
 
 	// Get the handler to the CSoundController instance
 	cSoundController = CSoundController::GetInstance();
@@ -240,8 +240,6 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 										waypoints[currentWaypointCounter],	// target pos
 										heuristic::euclidean,				// heuristic
 										10);								// weight
-
-			cout << vec2Index.x << ", " << vec2Index.y << "     " << waypoints[currentWaypointCounter].x << ", " << waypoints[currentWaypointCounter].y << endl;
 
 			// Calculate new destination
 			bool bFirstPosition = true;
@@ -906,8 +904,6 @@ void TEnemy2DSentry::UpdatePosition(void)
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 	}
-
-	cout << i32vec2NumMicroSteps.x << endl;
 }
 
 //called whenever an ammo is needed to be shot
