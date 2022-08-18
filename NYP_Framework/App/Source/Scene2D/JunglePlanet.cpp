@@ -722,7 +722,7 @@ void JunglePlanet::PreRender(void)
 	glLoadIdentity();
 
 	// Clear the screen and buffer
-	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+	glClearColor(0.2f, 0.4f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	// Enable 2D texture rendering
