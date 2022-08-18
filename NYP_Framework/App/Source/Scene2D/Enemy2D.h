@@ -109,10 +109,6 @@ public:
 	int getHealth();
 	void setHealth(int health);
 
-	//// colour functions
-	//glm::vec4 getColour();
-	//void setColour(glm::vec4 colour);
-
 protected:
 	enum DIRECTION
 	{
@@ -128,21 +124,6 @@ protected:
 	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
 	CEnemyAmmo2D* FetchAmmo(void);
-
-	enum FSM
-	{
-		IDLE = 0,
-		PATROL = 1,
-		TRACK = 2,
-		ATTACK = 3,
-		WARN = 4,
-		ALARM_TRIGGER = 5,
-		ALERT_IDLE = 6,
-		ALERT_PATROL = 7,
-		ALERT_TRACK = 8,
-		ALERT_ATTACK = 9,
-		NUM_FSM
-	};
 
 	glm::vec2 i32vec2OldIndex;
 
@@ -176,14 +157,7 @@ protected:
 	// The vec2 which stores the direction for enemy2D movement in the Map2D
 	glm::vec2 vec2Direction;
 
-	// waypoint path
-	vector<glm::vec2> waypoints;
-	// waypoint counter
-	int currentWaypointCounter;
-	int maxWaypointCounter;
-
 	int type; //for the program to know whether ot not to print out ammo for the enemy
-
 
 	// Settings
 	CSettings* cSettings;
@@ -205,9 +179,6 @@ protected:
 
 	// Sound Controller
 	CSoundController* cSoundController;
-
-	// Current FSM
-	FSM sCurrentFSM;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
@@ -241,19 +212,6 @@ protected:
 
 	// Update position
 	void UpdatePosition(void);
-
-	// timer
-	double attackTimer;
-	double maxAttackTimer;
-
-	double warnTimer;
-	double maxWarnTimer;
-
-	// A2 variables
-	// alarm variables
-	bool isAlarmerActive;
-	bool isAlarmOn;
-	glm::vec2 assignedAlarmBox;
 
 	// health variables
 	int health;

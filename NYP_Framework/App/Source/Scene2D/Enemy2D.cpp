@@ -33,7 +33,6 @@ CEnemy2D::CEnemy2D(void)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
 	, camera2D(NULL)
@@ -154,16 +153,6 @@ bool CEnemy2D::Init(void)
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
-
-	// sets waypoint counter value
-	currentWaypointCounter = 0;
-	maxWaypointCounter = waypoints.size();
-	
-	// sets timer values
-	maxAttackTimer = 1.0;
-	attackTimer = 0.0;
-	maxWarnTimer = 2.5;
-	warnTimer = maxWarnTimer;
 
 	// sets health
 	health = 50;
