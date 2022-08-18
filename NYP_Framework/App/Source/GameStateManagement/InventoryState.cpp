@@ -306,7 +306,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Crystals:%d",
-				cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
 		ImGuiWindowFlags Icewindow_flags = 0;
@@ -384,7 +384,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ironwood:%d",
-				cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
 		ImGuiWindowFlags Ironwindow_flags = 0;
@@ -463,7 +463,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Energy Quartz:%d",
-				cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
 		ImGuiWindowFlags Energywindow_flags = 0;
