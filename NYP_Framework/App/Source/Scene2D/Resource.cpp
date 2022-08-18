@@ -347,6 +347,11 @@ void CResource::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
+	// Check if player is in mid-air, such as walking off a platform
+	if (IsMidAir() == true)
+	{
+		cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+	}
 	//fall to land onto a platform if in the air
 	UpdateFall(dElapsedTime);
 
@@ -440,6 +445,29 @@ void CResource::setPosition(glm::vec2 indexPos, glm::vec2 microStep)
 	vec2Index = indexPos;
 	vec2NumMicroSteps = microStep;
 	return;
+}
+
+bool CResource::IsMidAir(void)
+{
+	// if the resource is at the bottom row, then he is not in mid-air for sure
+	if (vec2Index.y == 0)
+	{
+		return false;
+	}
+
+	// Check if the tile below the resource's current position is empty
+	if ((vec2NumMicroSteps.x == 0) && 
+		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600)) //fall if is not a collision obstruction block
+	{
+		return true;
+	}
+
+	//if resource is standing between 2 tiles which are both not obsuctrtion blocks
+	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
+	{
+		return true;
+	}
+	return false;
 }
 
 //let player collect resource

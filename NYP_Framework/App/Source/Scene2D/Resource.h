@@ -84,11 +84,16 @@ public:
 	//enum to decide what resource is dropped
 	enum RESOURCE_TYPE 
 	{
+		//resource
 		SCRAP_METAL = 0,
 		BATTERY,
 		IRONWOOD,
 		ENERGY_QUARTZ,
 		ICE_CRYSTAL,
+		//Jungle Plant specific collectables
+		BURNABLE_BLOCKS,
+		VINE,
+		//T Plant specific collectables
 		YELLOW_ORB,
 		RED_ORB,
 		GREEN_ORB,
@@ -109,9 +114,11 @@ public:
 		NUM_DIRECTIONS
 	};
 
-	//let ammo interact with the map
+	//let resource interact with the map
 	bool CheckPosition(void);
 
+	// Checks if the player is in mid-air
+	bool IsMidAir(void);
 
 
 	// return true if ammo hits window boundaries, used to delete
