@@ -167,7 +167,7 @@ bool TEnemy2DSentry::Init(void)
 	shootingDirection = RIGHT; //setting direction for ammo shooting
 	maxHealth = health = 25; //takes 5 hits to kill
 
-	if (vec2Index == glm::vec2(8, 3))
+	if (vec2Index == glm::vec2(12, 3))
 	{
 		waypoints = ConstructWaypointVector(waypoints, 300, 5);
 	}

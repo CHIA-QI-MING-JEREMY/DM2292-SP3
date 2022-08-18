@@ -172,4 +172,7 @@ protected:
 	bool isRedObtained;
 	bool isGreenObtained;
 	bool isBlueObtained;
+
+	// Checks if player is white
+	bool isWhite;
 };
