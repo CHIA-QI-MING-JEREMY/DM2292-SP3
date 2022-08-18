@@ -167,6 +167,19 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(POISON_FOG, iTextureID));
 		}
+
+		//river water tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/RiverWater.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/RiverWater.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(RIVER_WATER, iTextureID));
+		}
 	}
 
 	/// <summary>
