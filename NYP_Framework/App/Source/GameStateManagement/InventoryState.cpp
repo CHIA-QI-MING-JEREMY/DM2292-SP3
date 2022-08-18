@@ -124,8 +124,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Max Bag", NULL, Textwindow_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.4,
-			CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+			CSettings::GetInstance()->iWindowHeight / 3.3));	// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -149,7 +149,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("BatteryText", NULL, TextBattwindow_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.4,
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
 			CSettings::GetInstance()->iWindowHeight / 5.5));	// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
@@ -174,7 +174,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("ScrapText", NULL, TextScrapMetalwindow_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.4,
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
 			CSettings::GetInstance()->iWindowHeight / 4.5));	// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
@@ -284,6 +284,31 @@ bool CInventoryState::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 	if (cGUI_Scene2D->getPlanetNum() == 3) {
+		ImGuiWindowFlags IceTextwindow_flags = 0;
+		IceTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		IceTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		IceTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		IceTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		IceTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		IceTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("Icetext", NULL, IceTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Crystals:%d",
+				cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+			ImGui::End();
+		}
 		ImGuiWindowFlags Icewindow_flags = 0;
 		Icewindow_flags |= ImGuiWindowFlags_NoTitleBar;
 		Icewindow_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -337,6 +362,31 @@ bool CInventoryState::Update(const double dElapsedTime)
 		
 	}
 	else if (cGUI_Scene2D->getPlanetNum() == 1) {
+		ImGuiWindowFlags IronTextwindow_flags = 0;
+		IronTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		IronTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		IronTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		IronTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		IronTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		IronTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("Irontext", NULL, IronTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ironwood:%d",
+				cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+			ImGui::End();
+		}
 		ImGuiWindowFlags Ironwindow_flags = 0;
 		Ironwindow_flags |= ImGuiWindowFlags_NoTitleBar;
 		Ironwindow_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -391,6 +441,31 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 	}
 	else if (cGUI_Scene2D->getPlanetNum() == 2) {
+		ImGuiWindowFlags EnergyTextwindow_flags = 0;
+		EnergyTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		EnergyTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		EnergyTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		EnergyTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		EnergyTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		EnergyTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("energytext", NULL, EnergyTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Energy Quartz:%d",
+				cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+			ImGui::End();
+		}
 		ImGuiWindowFlags Energywindow_flags = 0;
 		Energywindow_flags |= ImGuiWindowFlags_NoTitleBar;
 		Energywindow_flags |= ImGuiWindowFlags_NoScrollbar;
