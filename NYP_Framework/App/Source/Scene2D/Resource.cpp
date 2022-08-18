@@ -255,7 +255,7 @@ bool CResource::Init(void)
 	case ICE_CRYSTAL:
 	{
 		// Load the ice crystal texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenTile.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/icecrystal.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load ice crystal texture" << std::endl;

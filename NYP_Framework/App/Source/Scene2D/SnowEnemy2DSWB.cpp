@@ -124,23 +124,25 @@ bool SnowEnemy2DSWB::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/wolfbrown.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
+		cout << "Unable to load Image/wolfbrown.png" << endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
-	animatedSprites->AddAnimation("right", 3, 5);
-	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);
+	animatedSprites->AddAnimation("idleR", 0, 3); //3 images for animation, index 0 to 2
+	animatedSprites->AddAnimation("idleL", 4, 7);
+	animatedSprites->AddAnimation("biteR", 8,11);
+	animatedSprites->AddAnimation("biteL", 12, 15);
+	animatedSprites->AddAnimation("walkR", 16, 19);
+	animatedSprites->AddAnimation("walkL", 20, 23);
 	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
 	//1.0f --> set time between frames as 1.0f
@@ -157,20 +159,20 @@ bool SnowEnemy2DSWB::Init(void)
 	bIsActive = true;
 
 	//Construct 100 inactive ammo and add into ammoList
-	for (int i = 0; i < 100; ++i)
-	{
-		CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
-		cEnemyAmmo2D->SetShader("Shader2D");
-		ammoList.push_back(cEnemyAmmo2D);
-	}
+	//for (int i = 0; i < 100; ++i)
+	//{
+	//	CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
+	//	cEnemyAmmo2D->SetShader("Shader2D");
+	//	ammoList.push_back(cEnemyAmmo2D);
+	//}
 
-	type = LONG_RANGE; //has ammo
-	shootingDirection = LEFT; //setting direction for ammo shooting
+//	type = LONG_RANGE; //has ammo
+//	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 25; //takes 5 hits to kill
 
-	flickerTimer = 0.5; //used to progress the flicker counter
-	flickerTimerMax = 0.5; //used to reset flicker counter
-	flickerCounter = 0; //decides colour of enemy and when to explode
+	//flickerTimer = 0.5; //used to progress the flicker counter
+	//flickerTimerMax = 0.5; //used to reset flicker counter
+	//flickerCounter = 0; //decides colour of enemy and when to explode
 
 	return true;
 }
@@ -194,204 +196,142 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case IDLE:
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else {
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 			cout << "Switching to Attack State" << endl;
 		}
-		if (health <= 5)
+		if (iFSMCounter > iMaxFSMCounter)
 		{
-			sCurrentFSM = EXPLODE;
+			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			cout << "Switching to Patrol State" << endl;
+		}
+		if (health < 10) {
+			sCurrentFSM = FEAR;
+			iFSMCounter = 0;
+			cout << "Switching to Fear State" << endl;
 		}
 		iFSMCounter++;
 		break;
-	case RELOAD:
+	case PATROL:
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+		}
+		else {
+			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+		}
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+		{
+			sCurrentFSM = ATTACK;
+			iFSMCounter = 0;
+			cout << "Switching to Attack State" << endl;
+		}
 		if (iFSMCounter > iMaxFSMCounter)
 		{
-			/*sCurrentFSM = IDLE;
+			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;*/
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-			{
-				sCurrentFSM = ATTACK;
-				iFSMCounter = 0;
-				cout << "Switching to Attack State" << endl;
-			}
+			cout << "Switching to Idle State" << endl;
 		}
-		if (health <= 5)
-		{
-			sCurrentFSM = EXPLODE;
+		if (health < 10) {
+			sCurrentFSM = FEAR;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			cout << "Switching to Fear State" << endl;
 		}
+		UpdatePosition();
 		iFSMCounter++;
 		break;
 	case ATTACK:
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+		}
+		else {
+			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
-			// Attack
-			// Update direction to move towards for attack
-			UpdateDirection();
-
-			// Update direction to face and shoot in
-			if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
-				//if player is on same position as enemy, uses this checking instead of the one below
-			{
-				// check if player's x is larger than or smaller than enemy's x
-				// if is larger, direction is right
-				// if is smaller, direction is left
-				if (cPlayer2D->vec2Index.x > vec2Index.x)
-				{
-					shootingDirection = RIGHT; //setting direction for ammo shooting
+			auto path = cMap2D->PathFind(vec2Index,
+				cPlayer2D->vec2Index,
+				heuristic::euclidean,
+				10);
+			//	cout << "=== Printing out the path ===" << endl;
+				//Calculate new destination
+			bool bFirstPosition = true;
+			for (const auto& coord : path) {
+				//std::cout << coord.x << "," << coord.y << "\n";
+				if (bFirstPosition == true) {
+					//Set a destination
+					vec2Destination = coord;
+					//Calc the direction between enemy2D and this destination
+					vec2Direction = vec2Destination - vec2Index;
+					bFirstPosition = false;
 				}
-				else
-				{
-					shootingDirection = LEFT; //setting direction for ammo shooting
-				}
-				
-			}
-			else if (vec2Index.x == cPlayer2D->vec2Index.x ||
-					vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
-					vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
-			{
-				// check if player's y is larger than or smaller than enemy's y
-				// if is larger, direction is up
-				// if is smaller, direction is down
-				if (cPlayer2D->vec2Index.y > vec2Index.y)
-				{
-					shootingDirection = UP; //setting direction for ammo shooting
-				}
-				else
-				{
-					shootingDirection = DOWN; //setting direction for ammo shooting
+				else {
+					if ((coord - vec2Destination) == vec2Direction) {
+						//Set a destination
+						vec2Destination = coord;
+					}
+					else
+						break;
 				}
 			}
-
-			// Shoot enemy ammo!
-			//shoot ammo in accordance to the direction enemy is facing
-			CJEAmmoVT* ammo = FetchAmmo();
-			ammo->setActive(true);
-			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			cout << "Bam!" << shootingDirection << endl;
-
-			sCurrentFSM = RELOAD;
-			cout << "Switching to Reload State" << endl;
+			UpdatePosition();
 		}
-		else
-		{
+		else {
 			if (iFSMCounter > iMaxFSMCounter)
 			{
-				sCurrentFSM = IDLE;
+				sCurrentFSM = PATROL;
 				iFSMCounter = 0;
-				cout << "Switching to Idle State" << endl;
+				cout << "Switching to Patrol State" << endl;
 			}
 			iFSMCounter++;
 		}
-		if (health <= 5)
-		{
-			sCurrentFSM = EXPLODE;
+		if (health < 10) {
+			sCurrentFSM = FEAR;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			cout << "Switching to Fear State" << endl;
 		}
 		break;
-	case EXPLODE:
-		//still flickering through colours
-		if (flickerCounter < 7)
-		{
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
-
-			shootingDirection = DOWN; //to adjust where the sprite faces
-			flickerTimer -= dElapsedTime; //timer counting down
-			if (flickerTimer <= 0) //timer up
-			{
-				++flickerCounter; //increase counter
-				flickerTimer = flickerTimerMax; //reset timer
-			}
-
-			//decide which colour to be
-			if (flickerCounter % 2 == 0) //even
-			{
-				//CS: Change Colour
-				runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
-			}
-			else //odd
-			{
-				//CS: Change Colour
-				runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
-			}
+	case FEAR:
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
-		//explode time
-		if (flickerCounter == 7)
-		{
-			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
-
-			++flickerCounter; //increase counter
-			flickerTimer = flickerTimerMax * 4; //reset timer
+		else {
+			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
-		//countdown for AOE
-		if (flickerCounter == 8)
+		if (iFSMCounter > iMaxFSMCounter)
 		{
-			flickerTimer -= dElapsedTime; //timer counting down
-			for (int i = -1; i < 2; ++i) //added to y
-			{
-				for (int j = -1; j < 2; ++j) //added to x
-				{
-					//change empty space to the explosion tile --> damage player heavily upon collision
-					if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 0)
-					{
-						if (cMap2D->GetCurrentLevel() == 0) //normal map of level 1
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 60); //normal explosion
-						}
-						else if (cMap2D->GetCurrentLevel() == 1) //BnW map of level 1
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 61); //BnW explosion
-						}
-					}
-				}
-			}
-
-			if (flickerTimer <= 0) //timer up
-			{
-				//change from explosions back to normal
-				for (int i = -1; i < 2; ++i) //added to y
-				{
-					for (int j = -1; j < 2; ++j) //added to x
-					{
-						//change empty space to the explosion tile --> damage player heavily upon collision
-						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 60 || //normal explosion
-							cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 61) //BnW explosion
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 0); //set to empty space
-						}
-					}
-				}
-				++flickerCounter; //increase counter
-				health = 0; //kill enemy
-			}
+			sCurrentFSM = IDLE;
+			iFSMCounter = 0;
+			cout << "Switching to Idle State" << endl;
 		}
+		UpdatePosition();
+		iFSMCounter++;
 		break;
 	default:
 		break;
 	}
-
+	
 	//ammo beahviour
-	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	{
-		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-		if (ammo->getActive())
-		{
-			ammo->Update(dElapsedTime);
-			if (ammo->LimitReached())
-			{
-				ammo->setActive(false);
-			}
-		}
-	}
+	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	//{
+	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+	//	if (ammo->getActive())
+	//	{
+	//		ammo->Update(dElapsedTime);
+	//		if (ammo->LimitReached())
+	//		{
+	//			ammo->setActive(false);
+	//		}
+	//	}
+	//}
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -399,27 +339,6 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	// Interact with the Map
 	InteractWithMap();
 
-	//update sprite animation to play depending on the direction enemy is facing
-	if (shootingDirection == LEFT)
-	{
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
-	else if (shootingDirection == RIGHT)
-	{
-		//CS: Play the "right" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
-	else if (shootingDirection == UP)
-	{
-		//CS: Play the "up" animation
-		animatedSprites->PlayAnimation("up", -1, 1.0f);
-	}
-	else if (shootingDirection == DOWN)
-	{
-		//CS: Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -511,17 +430,17 @@ void SnowEnemy2DSWB::Render(void)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	//render enemy ammo
-	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	{
-		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-		if (ammo->getActive())
-		{
-			ammo->PreRender();
-			ammo->Render();
-			ammo->PostRender();
-		}
-	}
+	////render enemy ammo
+	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	//{
+	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+	//	if (ammo->getActive())
+	//	{
+	//		ammo->PreRender();
+	//		ammo->Render();
+	//		ammo->PostRender();
+	//	}
+	//}
 
 }
 
@@ -671,7 +590,6 @@ bool SnowEnemy2DSWB::CheckPosition(DIRECTION eDirection)
 				return false;
 			}
 		}
-
 	}
 	else if (eDirection == UP)
 	{
@@ -870,10 +788,16 @@ bool SnowEnemy2DSWB::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Jungle Gotcha!" << endl;
+		cout << "Snow Gotcha!" << endl;
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("biteR", -1, 1.0f);
+		}
+		else {
+			animatedSprites->PlayAnimation("biteL", -1, 1.0f);
+		}
 		return true;
 	}
 	return false;
@@ -1037,28 +961,28 @@ void SnowEnemy2DSWB::UpdatePosition(void)
 }
 
 //called whenever an ammo is needed to be shot
-CJEAmmoVT* SnowEnemy2DSWB::FetchAmmo()
-{
-	//Exercise 3a: Fetch a game object from m_goList and return it
-	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	{
-		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-		if (ammo->getActive()) {
-			continue;
-		}
-		ammo->setActive(true);
-		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
-		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
-		return ammo;
-	}
-
-	//whenever ammoList runs out of ammo, create 10 ammo to use
-	//Get Size before adding 10
-	int prevSize = ammoList.size();
-	for (int i = 0; i < 10; ++i) {
-		ammoList.push_back(new CJEAmmoVT);
-	}
-	ammoList.at(prevSize)->setActive(true);
-	return ammoList.at(prevSize);
-
-}
+//CJEAmmoVT* SnowEnemy2DSWB::FetchAmmo()
+//{
+//	//Exercise 3a: Fetch a game object from m_goList and return it
+//	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+//	{
+//		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+//		if (ammo->getActive()) {
+//			continue;
+//		}
+//		ammo->setActive(true);
+//		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
+//		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
+//		return ammo;
+//	}
+//
+//	//whenever ammoList runs out of ammo, create 10 ammo to use
+//	//Get Size before adding 10
+//	int prevSize = ammoList.size();
+//	for (int i = 0; i < 10; ++i) {
+//		ammoList.push_back(new CJEAmmoVT);
+//	}
+//	ammoList.at(prevSize)->setActive(true);
+//	return ammoList.at(prevSize);
+//
+//}

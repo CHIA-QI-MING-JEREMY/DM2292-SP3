@@ -104,10 +104,10 @@ protected:
 	};
 
 	////vector full of enemy's fired ammo
-	std::vector<CJEAmmoVT*> ammoList;
-	int shootingDirection; //shoots in the direction the enemy is facing
+	//std::vector<CJEAmmoVT*> ammoList;
+	//int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	CJEAmmoVT* FetchAmmo(void);
+	//CJEAmmoVT* FetchAmmo(void);
 
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;
@@ -115,15 +115,15 @@ protected:
 	enum FSM
 	{
 		IDLE = 0,
-		RELOAD = 1,
+		PATROL=1,
 		ATTACK = 2,
-		EXPLODE,
+		FEAR=3,
 		NUM_FSM
 	};
 
-	double flickerTimer; //used to progress the flicker counter
-	double flickerTimerMax; //used to reset flicker counter
-	int flickerCounter; //decides colour of enemy and when to explode
+	//double flickerTimer; //used to progress the flicker counter
+	//double flickerTimerMax; //used to reset flicker counter
+	//int flickerCounter; //decides colour of enemy and when to explode
 
 	glm::vec2 i32vec2OldIndex;
 
