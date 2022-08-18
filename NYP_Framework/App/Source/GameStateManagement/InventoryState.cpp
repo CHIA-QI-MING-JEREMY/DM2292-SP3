@@ -302,7 +302,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
 				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Crystals:%d",
@@ -380,7 +380,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
 				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ironwood:%d",
@@ -459,7 +459,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
 				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Energy Quartz:%d",
