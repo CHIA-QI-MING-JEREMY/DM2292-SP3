@@ -225,9 +225,10 @@ bool JunglePlanet::Init(void)
 		
 	}
 
-	cMap2D->SetCurrentLevel(1); //reset level
+	cMap2D->SetCurrentLevel(0); //reset level
 
-	cPlayer2D->ResetRespawn(); //find new spawn location of player according to which map is loaded in
+	//find new spawn location of player according to which map is loaded in
+	cPlayer2D->ResetRespawn(); //used if set current lvl used in init doesnt reset to first map
 
 	//// create the alarm box vector
 	//alarmBoxVector.clear();
@@ -488,6 +489,76 @@ bool JunglePlanet::Update(const double dElapsedTime)
 
 	PlayerInteractWithMap();
 
+	//if player is not in river water, F will be used to use the river water instead of collect it
+	if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::RIVER_WATER)
+	{
+		//if the player tries to use the river water
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		{
+			//if the player has river water
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+			//if at least 1 river water
+			if (cInventoryItemPlanet->GetCount() > 0)
+			{
+				//if player is near an unbloomed bouncy bloom, river water is used on the flower
+				//unbloomed bouncy bloom is directly above the player
+				if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM)
+				{
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM); //change the block into a bloomed bouncy bloom
+					cInventoryItemPlanet->Remove(1); //use up 1 river water
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::REVEAL_SPRING); //play spring reveal sound
+				}
+				//unbloomed bouncy bloom is directly below the player
+				else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM)
+				{
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM); //change the block into a bloomed bouncy bloom
+					cInventoryItemPlanet->Remove(1); //use up 1 river water
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::REVEAL_SPRING); //play spring reveal sound
+				}
+				//unbloomed bouncy bloom is directly right of the player
+				else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM)
+				{
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM); //change the block into a bloomed bouncy bloom
+					cInventoryItemPlanet->Remove(1); //use up 1 river water
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::REVEAL_SPRING); //play spring reveal sound
+				}
+				//unbloomed bouncy bloom is directly left of the player
+				else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM)
+				{
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM); //change the block into a bloomed bouncy bloom
+					cInventoryItemPlanet->Remove(1); //use up 1 river water
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::REVEAL_SPRING); //play spring reveal sound
+				}
+				else //else water is used to heal the player and cure their poison
+				{
+					cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+					cInventoryItemPlanet->Add(5); //increase health by 5 for every river water used
+
+					//cure poison, no cooldown consideration needed here
+					cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+					//if poison lvl not at 0
+					if (cInventoryItemPlanet->GetCount() > 0)
+					{
+						cInventoryItemPlanet->Remove(1); //decrease poison level by 1
+
+						//if removed poison entirely
+						if (cInventoryItemPlanet->GetCount() == 0)
+						{
+							cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE); //remove purple poison colour defintely
+						}
+					}
+
+					cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+					cInventoryItemPlanet->Remove(1); //use up 1 river water
+				}
+
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+				std::cout << "USED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
+			}
+		}
+	}
+	
+
 	//if time to take damage from poison,
 	if (poisonDamageHitCooldown <= 0.0)
 	{
@@ -723,7 +794,35 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Add(1); //increase health by 1 for every frame in river water
 
-		//RiverWater
+		//cure poison
+		if (poisonLevelIncreaseCooldown <= 0) //poison lvl increase cooldown up
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+			//if poison lvl not at 0
+			if (cInventoryItemPlanet->GetCount() > 0)
+			{
+				cInventoryItemPlanet->Remove(1); //decrease poison level by 1
+				poisonLevelIncreaseCooldown = poisonLevelIncreaseMaxCooldown; //reset poison level increase/decrease cooldown
+
+				//if removed poison entirely
+				if (cInventoryItemPlanet->GetCount() == 0)
+				{
+					cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE); //remove purple poison colour defintely
+				}
+			}
+		}
+
+		//can pick up river water
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+			//if river water inventory not full yet
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //collect 1 cup of river water
+				std::cout << "COLLECTED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
+			}
+		}
 		break;
 	default:
 		break;
