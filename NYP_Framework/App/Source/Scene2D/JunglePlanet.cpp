@@ -809,6 +809,11 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			}
 		}
 		break;
+	//case CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM: //player gets launched into the air
+	//	cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+	//	cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
+	//	iJumpCount = 1;
+	//	break;
 	default:
 		break;
 	}

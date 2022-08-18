@@ -683,6 +683,11 @@ void CPlayer2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
+	case CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM: //player gets launched into the air
+		cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
+		iJumpCount = 1;
+		break;
 	case 210:
 		// runs if there is empty space on the left of the post
 		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x - 1) == 0)
