@@ -398,7 +398,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 13 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 16)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 213 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 216)
 		{
 			// Calculate the new position to the up
 			if (vec2Index.y < ((int)cSettings->NUM_TILES_YAXIS))
@@ -427,8 +427,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 12 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 13
-			|| cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 15 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 16)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 212 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 213
+			|| cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 215 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 216)
 		{
 			// Calculate the new position to the down
 			if (vec2Index.y >= 0)
@@ -450,8 +450,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 				vec2Index = vec2OldIndex;
 				vec2NumMicroSteps.y = 0;
 			}
-
-			
 		}
 
 		// SUPERHOT movement
@@ -479,8 +477,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		attackTimer -= dElapsedTime;
 	}
 
-	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 12 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 13
-		&& cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 15 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 16)
+	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 212 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 213
+		&& cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 215 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 216)
 	{
 		onRope = false;
 	}
@@ -536,7 +534,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	// Check if player is in mid-air, such as walking off a platform
-	if (IsMidAir() == true)
+	if (IsMidAir() == true && !onRope)
 	{
 		if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP)
 		{
