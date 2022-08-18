@@ -82,6 +82,7 @@ public:
 
 	//return ammolist to the scene for pre, post and normal rendering
 	std::vector<CAmmo2D*> getAmmoList(void);
+	int getShootingDirection(); //for placing burnable blocks in jungle planet
 
 	// Player Movement
 	bool getPlayerMoveStatus();
@@ -106,8 +107,7 @@ public:
 	// Colours
 	void SetColour(COLOUR colour = WHITE);
 	glm::vec4 GetColour();
-	
-protected:
+
 	enum DIRECTION
 	{
 		LEFT = 0,
@@ -116,7 +116,8 @@ protected:
 		DOWN = 3,
 		NUM_DIRECTIONS
 	};
-
+	
+protected:
 	glm::vec2 vec2OldIndex;
 
 	// Handler to the CMap2D instance

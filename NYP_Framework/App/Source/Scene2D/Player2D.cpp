@@ -637,6 +637,12 @@ std::vector<CAmmo2D*> CPlayer2D::getAmmoList(void)
 	return ammoList;
 }
 
+//return shooting direction so jungle planet knows where to place the burnable blocks
+int CPlayer2D::getShootingDirection()
+{
+	return shootingDirection;
+}
+
 /**
  @brief Constraint the player's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
