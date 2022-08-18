@@ -50,8 +50,8 @@ SnowEnemy2DSWB::SnowEnemy2DSWB(void)
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
-	i32vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
-	i32vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
+	vec2Destination = glm::vec2(0, 0);	// Initialise the iDestination
+	vec2Direction = glm::vec2(0, 0);		// Initialise the iDirection
 }
 
 /**
@@ -142,7 +142,7 @@ bool SnowEnemy2DSWB::Init(void)
 	animatedSprites->AddAnimation("walkR", 16, 19);
 	animatedSprites->AddAnimation("walkL", 20, 23);
 	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+	animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
 	//1.0f --> set time between frames as 1.0f
@@ -174,6 +174,15 @@ bool SnowEnemy2DSWB::Init(void)
 	//flickerTimerMax = 0.5; //used to reset flicker counter
 	//flickerCounter = 0; //decides colour of enemy and when to explode
 
+	if (vec2Index.x == 11 && vec2Index.y == 1) {
+		pathway.push_back(glm::vec2(11, 1));
+		pathway.push_back(glm::vec2(18, 2));
+		pathway.push_back(glm::vec2(14, 5));
+		fearpathway = (glm::vec2(20, 1));
+	}
+	currentPathwayCounter = 0;
+	maxPathwayCounter = pathway.size();
+
 	return true;
 }
 
@@ -196,18 +205,6 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case IDLE:
-		if (vec2Direction.x > 0) {
-			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
-		}
-		else {
-			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
-		}
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-		{
-			sCurrentFSM = ATTACK;
-			iFSMCounter = 0;
-			cout << "Switching to Attack State" << endl;
-		}
 		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = PATROL;
@@ -238,6 +235,12 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
+			if (vec2Direction.x > 0) {
+				animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+			}
+			else {
+				animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+			}
 			cout << "Switching to Idle State" << endl;
 		}
 		if (health < 10) {
@@ -245,7 +248,43 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			cout << "Switching to Fear State" << endl;
 		}
-		UpdatePosition();
+		else {
+			if (vec2Index == pathway[currentPathwayCounter]) {
+				currentPathwayCounter++;
+			}
+			if (currentPathwayCounter < maxPathwayCounter) {
+				auto path = cMap2D->PathFind(vec2Index,
+					pathway[currentPathwayCounter],
+					heuristic::manhattan,
+					10);
+				//Calculate new destination
+				bool bFirstPosition = true;
+				for (const auto& coord : path) {
+					//std::cout << coord.x << "," << coord.y << "\n";
+					if (bFirstPosition == true) {
+						//Set a destination
+						vec2Destination = coord;
+						//Calc the direction between enemy2D and this destination
+						vec2Direction = vec2Destination - vec2Index;
+						bFirstPosition = false;
+					}
+					else {
+						if ((coord - vec2Destination) == vec2Direction) {
+							//Set a destination
+							vec2Destination = coord;
+						}
+						else
+							break;
+					}
+				}
+			}
+			else {
+				currentPathwayCounter = 0;
+			}
+			// Patrol around
+			// Update the Enemy2D's position for patrol
+			UpdatePosition();
+		}
 		iFSMCounter++;
 		break;
 	case ATTACK:
@@ -259,7 +298,7 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 		{
 			auto path = cMap2D->PathFind(vec2Index,
 				cPlayer2D->vec2Index,
-				heuristic::euclidean,
+				heuristic::manhattan,
 				10);
 			//	cout << "=== Printing out the path ===" << endl;
 				//Calculate new destination
@@ -306,13 +345,33 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 		else {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;
+		if (health < 10) {
+			auto path = cMap2D->PathFind(vec2Index,
+				fearpathway,
+				heuristic::manhattan,
+				10);
+			//Calculate new destination
+			bool bFirstPosition = true;
+			for (const auto& coord : path) {
+				//std::cout << coord.x << "," << coord.y << "\n";
+				if (bFirstPosition == true) {
+					//Set a destination
+					vec2Destination = coord;
+					//Calc the direction between enemy2D and this destination
+					vec2Direction = vec2Destination - vec2Index;
+					bFirstPosition = false;
+				}
+				else {
+					if ((coord - vec2Destination) == vec2Direction) {
+						//Set a destination
+						vec2Destination = coord;
+					}
+					else
+						break;
+				}
+			}
+			UpdatePosition();
 		}
-		UpdatePosition();
 		iFSMCounter++;
 		break;
 	default:
@@ -845,24 +904,24 @@ void SnowEnemy2DSWB::InteractWithMap(void)
 void SnowEnemy2DSWB::UpdateDirection(void)
 {
 	// Set the destination to the player
-	i32vec2Destination = cPlayer2D->vec2Index;
+	vec2Destination = cPlayer2D->vec2Index;
 
 	// Calculate the direction between enemy2D and player2D
-	i32vec2Direction = i32vec2Destination - vec2Index;
+	vec2Direction = vec2Destination - vec2Index;
 
 	// Calculate the distance between enemy2D and player2D
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, i32vec2Destination);
+	float fDistance = cPhysics2D.CalculateDistance(vec2Index, vec2Destination);
 	if (fDistance >= 0.01f)
 	{
 		// Calculate direction vector.
 		// We need to round the numbers as it is easier to work with whole numbers for movements
-		i32vec2Direction.x = (int)round(i32vec2Direction.x / fDistance);
-		i32vec2Direction.y = (int)round(i32vec2Direction.y / fDistance);
+		vec2Direction.x = (int)round(vec2Direction.x / fDistance);
+		vec2Direction.y = (int)round(vec2Direction.y / fDistance);
 	}
 	else
 	{
 		// Since we are not going anywhere, set this to 0.
-		i32vec2Direction = glm::i32vec2(0);
+		vec2Direction = glm::vec2(0);
 	}
 }
 
@@ -871,7 +930,7 @@ void SnowEnemy2DSWB::UpdateDirection(void)
  */
 void SnowEnemy2DSWB::FlipHorizontalDirection(void)
 {
-	i32vec2Direction.x *= -1;
+	vec2Direction.x *= -1;
 }
 
 /**
@@ -883,7 +942,7 @@ void SnowEnemy2DSWB::UpdatePosition(void)
 	i32vec2OldIndex = vec2Index;
 
 	// if the player is to the left or right of the enemy2D, then jump to attack
-	if (i32vec2Direction.x < 0)
+	if (vec2Direction.x < 0)
 	{
 		// Move left
 		const int iOldIndex = vec2Index.x;
@@ -917,7 +976,7 @@ void SnowEnemy2DSWB::UpdatePosition(void)
 		// Interact with the Player
 		InteractWithPlayer();
 	}
-	else if (i32vec2Direction.x > 0)
+	else if (vec2Direction.x > 0)
 	{
 		// Move right
 		const int iOldIndex = vec2Index.x;
@@ -954,7 +1013,7 @@ void SnowEnemy2DSWB::UpdatePosition(void)
 	}
 
 	// if the player is above the enemy2D, then jump to attack
-	if (i32vec2Direction.y > 0)
+	if (vec2Direction.y > 0)
 	{
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{
