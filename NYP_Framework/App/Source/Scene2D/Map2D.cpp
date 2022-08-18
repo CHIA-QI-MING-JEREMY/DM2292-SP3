@@ -180,6 +180,31 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(RIVER_WATER, iTextureID));
 		}
+
+		//unbloomed bouncy bloom tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BouncyBloom_Unbloomed.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/BouncyBloom_Unbloomed.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(UNBLOOMED_BOUNCY_BLOOM, iTextureID));
+		}
+		//bloomed bouncy bloom tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BouncyBloom_Bloomed.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/BouncyBloom_Bloomed.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(BLOOMED_BOUNCY_BLOOM, iTextureID));
+		}
 	}
 
 	/// <summary>
