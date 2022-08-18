@@ -180,14 +180,14 @@ bool SnowPlanet::Init(void)
 
 		while (true)
 		{
-			JEnemy2DVT* cJEnemy2DVT = new JEnemy2DVT();
+			SnowEnemy2DSWB* snowEnemy2DSWB = new SnowEnemy2DSWB();
 			// Pass shader to cEnemy2D
-			cJEnemy2DVT->SetShader("Shader2D_Colour");
+			snowEnemy2DSWB->SetShader("Shader2D_Colour");
 			// Initialise the instance
-			if (cJEnemy2DVT->Init() == true)
+			if (snowEnemy2DSWB->Init() == true)
 			{
-				cJEnemy2DVT->SetPlayer2D(cPlayer2D);
-				enemies.push_back(cJEnemy2DVT); //push each enemy into the individual enemy vector
+				snowEnemy2DSWB->SetPlayer2D(cPlayer2D);
+				enemies.push_back(snowEnemy2DSWB); //push each enemy into the individual enemy vector
 			}
 			else
 			{
@@ -226,6 +226,8 @@ bool SnowPlanet::Init(void)
 	}
 
 	cMap2D->SetCurrentLevel(0); //reset level
+	cPlayer2D->ResetRespawn();
+
 
 	//// create the alarm box vector
 	//alarmBoxVector.clear();
@@ -295,7 +297,7 @@ bool SnowPlanet::Init(void)
 */
 bool SnowPlanet::Update(const double dElapsedTime)
 {
-	cGUI_Scene2D->setPlanetNum(1);
+	cGUI_Scene2D->setPlanetNum(3);
 	// mouse Position demo
 	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
 	camPos = glm::normalize(camPos);
@@ -382,7 +384,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 					//if it does, minus away the enemy's health & destory the ammo
 				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
 				{
-					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25); //every hit takes off 25 HP
+					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
 					ammo->setActive(false);
 				}
 			}
@@ -394,7 +396,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			//if this isn't the last enemy in this level
 			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
 			{
-				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
+				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ice crystal
 				srand(static_cast<unsigned> (time(0)));
 				int resourceType = rand() % 20;
 				std::cout << resourceType << std::endl;
@@ -416,7 +418,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 				}
 				else if (resourceType > 16 && resourceType < 19) //17 18
 				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::ICE_CRYSTAL); //create new ironwood resource
 					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 					//set resource's position where enemy's position is
 					res->SetShader("Shader2D_Colour"); //set shader
@@ -426,8 +428,8 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			//if this is the last enemy
 			else if (enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
 			{
-				//confirm drop an ironwood
-				CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+				//confirm drop an ice crystal
+				CResource* res = new CResource(CResource::RESOURCE_TYPE::ICE_CRYSTAL); //create new ironwood resource
 				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 				//set resource's position where enemy's position is
 				res->SetShader("Shader2D_Colour"); //set shader
@@ -649,4 +651,5 @@ void SnowPlanet::DecideLevel(bool tutorial)
 			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
 		}
 	}
+	cPlayer2D->ResetRespawn();
 }

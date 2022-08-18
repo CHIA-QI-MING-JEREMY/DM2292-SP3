@@ -77,7 +77,7 @@ bool CInventoryState::Init(void)
 
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
-	resourceSnow.fileName = "Image\\GUI\\Button_VolUp.png";
+	resourceSnow.fileName = "Image\\SnowPlanet\\icecrystal.tga";
 	resourceSnow.textureID = il->LoadTextureGetID(resourceSnow.fileName.c_str(), false);
 	//VolumeDecreaseButtonData.fileName = "Image\\GUI\\Button_VolDown.png";
 	//VolumeDecreaseButtonData.textureID = il->LoadTextureGetID(VolumeDecreaseButtonData.fileName.c_str(), false);
@@ -93,6 +93,39 @@ bool CInventoryState::Update(const double dElapsedTime)
 
 	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
 	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+	ImGuiWindowFlags Textwindow_flags = 0;
+	Textwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+	Textwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+	//window_flags |= ImGuiWindowFlags_MenuBar;
+	Textwindow_flags |= ImGuiWindowFlags_NoBackground;
+	Textwindow_flags |= ImGuiWindowFlags_NoMove;
+	Textwindow_flags |= ImGuiWindowFlags_NoCollapse;
+	Textwindow_flags |= ImGuiWindowFlags_NoNav;
+	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	{
+		static float f = 0.0f;
+		static int counter = 0;
+
+		// Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("Max Bag", NULL, Textwindow_flags);
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.5,
+			CSettings::GetInstance()->iWindowHeight / 5.5));	// Set the top-left of the window at (10,10)
+		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::SameLine;
+		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Bag Space:%d/%d",
+			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		// Add codes for Exit button here
+		//if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
+		//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		//{
+		//	 Reset the CKeyboardController
+		//	CKeyboardController::GetInstance()->Reset();
+
+		//	CSoundController::GetInstance()->MasterVolumeDecrease();
+		//}
+		ImGui::End();
 	if (cGUI_Scene2D->getPlanetNum() == 3) {
 		ImGuiWindowFlags window_flags = 0;
 		window_flags |= ImGuiWindowFlags_NoTitleBar;
@@ -116,7 +149,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
 				CSettings::GetInstance()->iWindowHeight / 3.0-60));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
 			ImGui::SetWindowFontScale(3.f * relativeScale_y);
 
 			//Added rounding for nicer effect
@@ -133,7 +166,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 				// Reset the CKeyboardController
 				CKeyboardController::GetInstance()->Reset();
 
-				CSoundController::GetInstance()->MasterVolumeIncrease();
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
+				cInventoryItemPlanet->Remove(1);
 			}
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
@@ -149,39 +183,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//}
 			ImGui::End();
 		}
-		ImGuiWindowFlags Textwindow_flags = 0;
-		Textwindow_flags |= ImGuiWindowFlags_NoTitleBar;
-		Textwindow_flags |= ImGuiWindowFlags_NoScrollbar;
-		//window_flags |= ImGuiWindowFlags_MenuBar;
-		Textwindow_flags |= ImGuiWindowFlags_NoBackground;
-		Textwindow_flags |= ImGuiWindowFlags_NoMove;
-		Textwindow_flags |= ImGuiWindowFlags_NoCollapse;
-		Textwindow_flags |= ImGuiWindowFlags_NoNav;
-		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-		{
-			static float f = 0.0f;
-			static int counter = 0;
-
-			// Create a window called "Hello, world!" and append into it.
-			ImGui::Begin("Max Bag", NULL, Textwindow_flags);
-			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth /1.5,
-				CSettings::GetInstance()->iWindowHeight / 5.5 ));	// Set the top-left of the window at (10,10)
-			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
-			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Bag Space:%d/%d",
-				cInventoryItemPlanet->GetCount(),cInventoryItemPlanet->GetMaxCount());
-			// Add codes for Exit button here
-			//if (ImGui::ImageButton((ImTextureID)VolumeDecreaseButtonData.textureID,
-			//	ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-			//{
-			//	 Reset the CKeyboardController
-			//	CKeyboardController::GetInstance()->Reset();
-
-			//	CSoundController::GetInstance()->MasterVolumeDecrease();
-			//}
-			ImGui::End();
 		}
 	}
 
