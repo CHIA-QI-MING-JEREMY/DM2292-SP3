@@ -175,6 +175,10 @@ protected:
 		//2 would be 4.0s
 		//3 would be 3.0s
 
+	double poisonPurpleCooldown; //cooldown to flicker between the purple colour and white colour to represent being poisoned
+	const double poisonPurpleMaxCooldown = 0.5; //flicker every 0.5 seconds
+	bool poisonPurple; //decide if colour should be switched to purple or white
+
 	// Let player interact with the map
 	void PlayerInteractWithMap(void);
 

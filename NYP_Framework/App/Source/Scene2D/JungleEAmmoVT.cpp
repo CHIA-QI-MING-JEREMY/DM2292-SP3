@@ -90,8 +90,8 @@ bool CJEAmmoVT::Init(void)
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
-	// Initialise the cInventoryManager
-	cInventoryManager = CInventoryManager::GetInstance();
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
@@ -298,10 +298,17 @@ bool CJEAmmoVT::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		// Decrease the health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(5);
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		// Decrease the health by 2
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(2);
+
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+		//if not at max poison lvl yet
+		if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+		{
+			cInventoryItemPlanet->Add(1); //increase poison level by 1
+		}
+		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
 

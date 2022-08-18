@@ -125,9 +125,10 @@ protected:
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
 
-	//For inventory
-	CInventoryManager* cInventoryManager;
-	CInventoryItem* cInventoryItem;
+	// Inventory Manager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	// Inventory Item
+	CInventoryItemPlanet* cInventoryItemPlanet;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;

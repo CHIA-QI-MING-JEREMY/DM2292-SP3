@@ -96,6 +96,7 @@ public:
 		RED,
 		GREEN,
 		BLUE,
+		PURPLE,
 		NUM_COLOURS
 	};
 

@@ -314,6 +314,9 @@ bool JunglePlanet::Init(void)
 	poisonDamageHitCooldown = poisonDamageHitMaxCooldown[cInventoryItemPlanet->GetCount()]; //starts off at max cooldown whenever the poison lvl is set/changes before depleting
 		//once it hits 0, player takes damage
 
+	poisonPurpleCooldown = 0.0;
+	poisonPurple = false;
+
 	return true;
 }
 
@@ -484,7 +487,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	PlayerInteractWithMap();
 
 	//if time to take damage from poison,
-	if (poisonDamageHitCooldown <= 0)
+	if (poisonDamageHitCooldown <= 0.0)
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
 		int poisonLvl = cInventoryItemPlanet->GetCount(); //find poison lvl
@@ -499,15 +502,46 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	}
 
 	//deplete poison lvl increase cooldown if it isnt at 0
-	if (poisonLevelIncreaseCooldown > 0)
+	if (poisonLevelIncreaseCooldown > 0.0)
 	{
 		poisonLevelIncreaseCooldown -= dElapsedTime; //deplete cooldown
 	}
-	else if (poisonLevelIncreaseCooldown < 0)
+	else if (poisonLevelIncreaseCooldown < 0.0)
 	{
-		poisonLevelIncreaseCooldown = 0;
+		poisonLevelIncreaseCooldown = 0.0;
 	}
 
+	//if player is poisoned, then set player colour to purple
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+	//if poison lvl at least lvl 1
+	if (cInventoryItemPlanet->GetCount() > 0)
+	{
+		//deplete poison colour flickering
+		if (poisonPurpleCooldown < 0.0) //if below zero
+		{
+			poisonPurpleCooldown = poisonPurpleMaxCooldown; //reset cooldown
+
+			//if supposed to change to purple
+			if (poisonPurple)
+			{
+				cPlayer2D->SetColour(CPlayer2D::COLOUR::PURPLE);
+				poisonPurple = false;
+			}
+			else //set to white
+			{
+				cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+				poisonPurple = true;
+			}
+		}
+		else //above 0
+		{
+			poisonPurpleCooldown -= dElapsedTime; //deplete cooldown
+		}
+	}
+	else //nto poisoned
+	{
+		poisonPurple = false;
+	}
 
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
