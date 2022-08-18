@@ -171,6 +171,19 @@ bool CResource::Init(void)
 		{
 			type = ICE_CRYSTAL;
 		}
+
+		//Jungle Planet
+		//index for bunrable blocks
+		else if (cMap2D->FindValue(197, uiRow, uiCol))
+		{
+			type = BURNABLE_BLOCKS;
+		}
+		//index for vine
+		else if (cMap2D->FindValue(198, uiRow, uiCol))
+		{
+			type = VINE;
+		}
+
 		// index for yellow orb
 		else if (cMap2D->FindValue(221, uiRow, uiCol))
 		{
@@ -263,6 +276,31 @@ bool CResource::Init(void)
 		}
 		break;
 	}
+
+	//Jungle Planet
+	case BURNABLE_BLOCKS:
+	{
+		// Load the ironwood texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Ironwood.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load burnable blocks texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+	case VINE:
+	{
+		// Load the ironwood texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Ironwood.tga", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load vines texture" << std::endl;
+			return false;
+		}
+		break;
+	}
+
 	case YELLOW_ORB:
 	{
 		// Load the yellow orb texture
@@ -576,6 +614,32 @@ bool CResource::InteractWithPlayer(void)
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
 		}
+
+		//Jungle Planet
+		case BURNABLE_BLOCKS:
+		{
+			std::cout << "COLLECTED BURNABLE_BLOCKS" << std::endl;
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
+			cInventoryItemPlanet->Add(5); //add 5 burnable blocks --> comes in a bundle
+			collected = true; //delete in scene
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case VINE:
+		{
+			std::cout << "COLLECTED VINE" << std::endl;
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
+			cInventoryItemPlanet->Add(1); //add 1 vine
+			collected = true; //delete in scene
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+
+		//T Planet
 		case YELLOW_ORB:
 		{
 			std::cout << "COLLECTED YELLOW_ORB" << std::endl;

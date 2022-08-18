@@ -207,7 +207,9 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/Scene2D_BlueOrb.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vines", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/Scene2D_BlueOrb.tga", 20, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/Scene2D_BlueOrb.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//T Planet

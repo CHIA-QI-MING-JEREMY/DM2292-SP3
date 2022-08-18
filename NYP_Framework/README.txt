@@ -9,6 +9,10 @@ Interactables
 2 : poison sprout
 3 : poison fog 
 10 : river water 
+20 : unbloomed bouncy bloom
+21 : bloomed bouncy bloom
+197 : burnable block collectable
+198 : vine collectable
 199 : ironwood
 
 [Terrestrial Planet]
