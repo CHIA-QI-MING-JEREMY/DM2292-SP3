@@ -139,20 +139,8 @@ protected:
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
-	// The vec2 which stores the indices of the enemy2D in the Map2D
-	glm::vec2 i32vec2Index;
-
-	// The vec2 variable which stores The number of microsteps from the tile indices for the enemy2D. 
-	// A tile's width or height is in multiples of these microsteps
-	glm::vec2 i32vec2NumMicroSteps;
-
 	// The vec2 variable which stores the UV coordinates to render the enemy2D
 	glm::vec2 vec2UVCoordinate;
-
-	// The vec2 which stores the indices of the destination for enemy2D in the Map2D
-	glm::vec2 i32vec2Destination;
-	// The vec2 which stores the direction for enemy2D movement in the Map2D
-	glm::vec2 i32vec2Direction;
 
 	// Settings
 	CSettings* cSettings;

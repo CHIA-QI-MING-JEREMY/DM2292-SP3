@@ -36,7 +36,7 @@ JEnemy2DVT::JEnemy2DVT(void)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-	, camera2D(NULL)
+	//, camera2D(NULL)
 	, animatedSprites(NULL)
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
@@ -50,8 +50,8 @@ JEnemy2DVT::JEnemy2DVT(void)
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
-	i32vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
-	i32vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
+	vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
+	vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
 }
 
 /**
@@ -93,7 +93,7 @@ bool JEnemy2DVT::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
-	camera2D = Camera2D::GetInstance();
+	//camera2D = Camera2D::GetInstance();
 
 	// Get the handler to the CSoundController instance
 	cSoundController = CSoundController::GetInstance();
@@ -484,7 +484,9 @@ void JEnemy2DVT::Render(void)
 	//glBindVertexArray(0);
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+
+	// TO REMOVE LATER
+	/*glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
 	glm::vec2 cameraPos = camera2D->getPos();
 
 	glm::vec2 IndexPos = vec2Index;
@@ -495,7 +497,11 @@ void JEnemy2DVT::Render(void)
 	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));*/
+
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
+		vec2UVCoordinate.y,
+		0.0f));
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -917,24 +923,24 @@ void JEnemy2DVT::InteractWithMap(void)
 void JEnemy2DVT::UpdateDirection(void)
 {
 	// Set the destination to the player
-	i32vec2Destination = cPlayer2D->vec2Index;
+	vec2Destination = cPlayer2D->vec2Index;
 
 	// Calculate the direction between enemy2D and player2D
-	i32vec2Direction = i32vec2Destination - vec2Index;
+	vec2Direction = vec2Destination - vec2Index;
 
 	// Calculate the distance between enemy2D and player2D
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, i32vec2Destination);
+	float fDistance = cPhysics2D.CalculateDistance(vec2Index, vec2Destination);
 	if (fDistance >= 0.01f)
 	{
 		// Calculate direction vector.
 		// We need to round the numbers as it is easier to work with whole numbers for movements
-		i32vec2Direction.x = (int)round(i32vec2Direction.x / fDistance);
-		i32vec2Direction.y = (int)round(i32vec2Direction.y / fDistance);
+		vec2Direction.x = (int)round(vec2Direction.x / fDistance);
+		vec2Direction.y = (int)round(vec2Direction.y / fDistance);
 	}
 	else
 	{
 		// Since we are not going anywhere, set this to 0.
-		i32vec2Direction = glm::i32vec2(0);
+		vec2Direction = glm::i32vec2(0);
 	}
 }
 
@@ -943,7 +949,7 @@ void JEnemy2DVT::UpdateDirection(void)
  */
 void JEnemy2DVT::FlipHorizontalDirection(void)
 {
-	i32vec2Direction.x *= -1;
+	vec2Direction.x *= -1;
 }
 
 /**
@@ -955,7 +961,7 @@ void JEnemy2DVT::UpdatePosition(void)
 	i32vec2OldIndex = vec2Index;
 
 	// if the player is to the left or right of the enemy2D, then jump to attack
-	if (i32vec2Direction.x < 0)
+	if (vec2Direction.x < 0)
 	{
 		// Move left
 		const int iOldIndex = vec2Index.x;
@@ -989,7 +995,7 @@ void JEnemy2DVT::UpdatePosition(void)
 		// Interact with the Player
 		InteractWithPlayer();
 	}
-	else if (i32vec2Direction.x > 0)
+	else if (vec2Direction.x > 0)
 	{
 		// Move right
 		const int iOldIndex = vec2Index.x;
@@ -1026,7 +1032,7 @@ void JEnemy2DVT::UpdatePosition(void)
 	}
 
 	// if the player is above the enemy2D, then jump to attack
-	if (i32vec2Direction.y > 0)
+	if (vec2Direction.y > 0)
 	{
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{

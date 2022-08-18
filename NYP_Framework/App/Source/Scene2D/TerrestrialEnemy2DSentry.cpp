@@ -36,7 +36,7 @@ TEnemy2DSentry::TEnemy2DSentry(void)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-	, camera2D(NULL)
+	//, camera2D(NULL)
 	, animatedSprites(NULL)
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
@@ -50,8 +50,8 @@ TEnemy2DSentry::TEnemy2DSentry(void)
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
-	i32vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
-	i32vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
+	vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
+	vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
 }
 
 /**
@@ -93,7 +93,7 @@ bool TEnemy2DSentry::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
-	camera2D = Camera2D::GetInstance();
+	//camera2D = Camera2D::GetInstance();
 
 	// Get the handler to the CSoundController instance
 	cSoundController = CSoundController::GetInstance();
@@ -123,28 +123,27 @@ bool TEnemy2DSentry::Init(void)
 	//CS: Create the Quad Mesh using the mesh builder
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
+	// Load the enemy texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PlayerSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
+		cout << "Unable to load Image/playerspritesheet.png" << endl;
 		return false;
 	}
 
-	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
-		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
-	animatedSprites->AddAnimation("right", 3, 5);
-	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	//-1 --> repeats forever
-	//		settng it to say 1 will cause it to only repeat 1 time
-	//1.0f --> set time between frames as 1.0f
-	//		increasing this number will cause the animation to slowdown
+	// Create the animated sprite and setup the animation
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idleR", 0, 0);
+	animatedSprites->AddAnimation("idleL", 1, 1);
+	animatedSprites->AddAnimation("runR", 4, 7);
+	animatedSprites->AddAnimation("runL", 8, 11);
+	animatedSprites->AddAnimation("attackR", 2, 2);
+	animatedSprites->AddAnimation("attackL", 3, 3);
+	animatedSprites->AddAnimation("idleshieldR", 12, 12);
+	animatedSprites->AddAnimation("idleshieldL", 13, 13);
+
+	// Play idle animation as default
+	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -165,20 +164,19 @@ bool TEnemy2DSentry::Init(void)
 	}
 
 	type = LONG_RANGE; //has ammo
-	shootingDirection = LEFT; //setting direction for ammo shooting
+	shootingDirection = RIGHT; //setting direction for ammo shooting
 	maxHealth = health = 25; //takes 5 hits to kill
 
-	flickerTimer = 0.5; //used to progress the flicker counter
-	flickerTimerMax = 0.5; //used to reset flicker counter
-	flickerCounter = 0; //decides colour of enemy and when to explode
-
-	// TO DO
-	/*if (vec2Index == glm::vec2(8, 3))
+	if (vec2Index == glm::vec2(8, 3))
 	{
 		waypoints.push_back(glm::vec2(9, 3));
-		waypoints.push_back(glm::vec2(18, 4));
-		waypoints.push_back(glm::vec2(20, 8));
-	}*/
+		waypoints.push_back(glm::vec2(17, 4));
+		waypoints.push_back(glm::vec2(19, 8));
+	}
+
+	// sets waypoint counter value
+	currentWaypointCounter = 0;
+	maxWaypointCounter = waypoints.size();
 
 	return true;
 }
@@ -201,7 +199,82 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
-	
+	case IDLE:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		}
+		
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = PATROL;
+			iFSMCounter = 0;
+			cout << "Switching to Patrol State" << endl;
+		}
+		iFSMCounter++;
+		break;
+	case PATROL:
+		if (vec2Index == waypoints[currentWaypointCounter])
+		{
+			currentWaypointCounter++;
+			sCurrentFSM = IDLE;
+			cout << "Switching to Idle State" << endl;
+		}
+
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("runR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("runL", -1, 1.0f);
+		}
+
+		if (currentWaypointCounter < maxWaypointCounter)
+		{
+			auto path = cMap2D->PathFind(vec2Index,							// start pos
+										waypoints[currentWaypointCounter],	// target pos
+										heuristic::euclidean,				// heuristic
+										10);								// weight
+
+			// Calculate new destination
+			bool bFirstPosition = true;
+			for (const auto& coord : path)
+			{
+				//std::cout << coord.x << ", " << coord.y << "\n";
+				if (bFirstPosition == true)
+				{
+					// Set a destination
+					vec2Destination = coord;
+					// Calculate the direction between enemy2D and this detination
+					vec2Direction = vec2Destination - vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - vec2Destination) == vec2Direction)
+					{
+						// Set a destination
+						vec2Destination = coord;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			currentWaypointCounter = 0;
+		}
+
+		UpdatePosition();
+		break;
 	default:
 		break;
 	}
@@ -227,26 +300,26 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 	InteractWithMap();
 
 	//update sprite animation to play depending on the direction enemy is facing
-	if (shootingDirection == LEFT)
-	{
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
-	else if (shootingDirection == RIGHT)
-	{
-		//CS: Play the "right" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
-	else if (shootingDirection == UP)
-	{
-		//CS: Play the "up" animation
-		animatedSprites->PlayAnimation("up", -1, 1.0f);
-	}
-	else if (shootingDirection == DOWN)
-	{
-		//CS: Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	}
+	//if (shootingDirection == LEFT)
+	//{
+	//	//CS: Play the "left" animation
+	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
+	//}
+	//else if (shootingDirection == RIGHT)
+	//{
+	//	//CS: Play the "right" animation
+	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
+	//}
+	//else if (shootingDirection == UP)
+	//{
+	//	//CS: Play the "up" animation
+	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
+	//}
+	//else if (shootingDirection == DOWN)
+	//{
+	//	//CS: Play the "idle" animation
+	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -290,28 +363,10 @@ void TEnemy2DSentry::Render(void)
 	unsigned int colorLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "runtimeColour");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-	//transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	//transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-	//	vec2UVCoordinate.y,
-	//	0.0f));
-	//// Update the shaders with the latest transform
-	//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-	//glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
-
-	//// Get the texture to be rendered
-	//glBindTexture(GL_TEXTURE_2D, iTextureID);
-
-	//// Render the tile
-	////glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	////quadMesh->Render();
-
-	////CS: Render the animated sprite
-	//animatedSprites->Render();
-
-	//glBindVertexArray(0);
-
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+
+	// TO REMOVE LATER
+	/*glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
 	glm::vec2 cameraPos = camera2D->getPos();
 
 	glm::vec2 IndexPos = vec2Index;
@@ -322,21 +377,26 @@ void TEnemy2DSentry::Render(void)
 	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));*/
+
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
+		vec2UVCoordinate.y,
+		0.0f));
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
-	// bind textures on corresponding texture units
-	glActiveTexture(GL_TEXTURE0);
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
-	//CS: Render the animated Sprite
+	// Render the animated sprite
+	glBindVertexArray(VAO);
 	animatedSprites->Render();
-
+	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glBindVertexArray(0);
 
 	//render enemy ammo
 	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
@@ -454,7 +514,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -463,8 +523,8 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 1400))
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 ||
+				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -484,7 +544,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 			if (vec2NumMicroSteps.x != 0)
 			{
 				// If the grid is not accessible, then return false
-				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 1400)
+				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 				{
 					return false;
 				}
@@ -496,8 +556,8 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 			if (vec2NumMicroSteps.x != 0)
 			{
 				// If the 2 grids are not accessible, then return false
-				if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 1400) ||
-					(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 1400))
+				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 ||
+					cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600)
 				{
 					return false;
 				}
@@ -516,7 +576,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 1400)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -525,8 +585,8 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 1400) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 1400))
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 ||
+				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600)
 			{
 				return false;
 			}
@@ -538,7 +598,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
 			{
 				return false;
 			}
@@ -547,8 +607,8 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 1400))
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 			{
 				return false;
 			}
@@ -686,6 +746,7 @@ void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
 	}
 }
 
+// TO DO
 /**
  @brief Let enemy2D interact with the player.
  */
@@ -700,42 +761,21 @@ bool TEnemy2DSentry::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Jungle Gotcha!" << endl;
-		// Since the player has been caught, then reset the FSM
+		/*
 		sCurrentFSM = IDLE;
-		iFSMCounter = 0;
+		iFSMCounter = 0;*/
 		return true;
 	}
 	return false;
 }
 
+// TO DO
 //enemy interact with map
 void TEnemy2DSentry::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 50: //purple spring, same function as the black and white spring 
-	case 51: //black and white spring, launch the player repeatedly up into the sky at the rate of a double jump
-		cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
-		break;
-	case 53: //lava, same function as black and white lava
-	case 54: //black and white lava, depletes health
-		// Decrease the health by 2
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
-		health--;
-		break;
-	case 55: //ice water, same function as black and white ice water
-	case 56: //black and white ice water, restores health
-	case 57: //ice water + enemy waypoint
-	case 58: //ice water + enemy waypoint, BnW
-		// Increase the health by 2
-		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); //green
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SPLASH); //play watching in water sound
-		health++;
-		break;
-	case 99:
-		break;
+	
 	default:
 		break;
 	}
@@ -747,24 +787,24 @@ void TEnemy2DSentry::InteractWithMap(void)
 void TEnemy2DSentry::UpdateDirection(void)
 {
 	// Set the destination to the player
-	i32vec2Destination = cPlayer2D->vec2Index;
+	vec2Destination = cPlayer2D->vec2Index;
 
 	// Calculate the direction between enemy2D and player2D
-	i32vec2Direction = i32vec2Destination - vec2Index;
+	vec2Direction = vec2Destination - vec2Index;
 
 	// Calculate the distance between enemy2D and player2D
-	float fDistance = cPhysics2D.CalculateDistance(vec2Index, i32vec2Destination);
+	float fDistance = cPhysics2D.CalculateDistance(vec2Index, vec2Destination);
 	if (fDistance >= 0.01f)
 	{
 		// Calculate direction vector.
 		// We need to round the numbers as it is easier to work with whole numbers for movements
-		i32vec2Direction.x = (int)round(i32vec2Direction.x / fDistance);
-		i32vec2Direction.y = (int)round(i32vec2Direction.y / fDistance);
+		vec2Direction.x = (int)round(vec2Direction.x / fDistance);
+		vec2Direction.y = (int)round(vec2Direction.y / fDistance);
 	}
 	else
 	{
 		// Since we are not going anywhere, set this to 0.
-		i32vec2Direction = glm::i32vec2(0);
+		vec2Direction = glm::i32vec2(0);
 	}
 }
 
@@ -773,7 +813,7 @@ void TEnemy2DSentry::UpdateDirection(void)
  */
 void TEnemy2DSentry::FlipHorizontalDirection(void)
 {
-	i32vec2Direction.x *= -1;
+	vec2Direction.x *= -1;
 }
 
 /**
@@ -785,7 +825,7 @@ void TEnemy2DSentry::UpdatePosition(void)
 	i32vec2OldIndex = vec2Index;
 
 	// if the player is to the left or right of the enemy2D, then jump to attack
-	if (i32vec2Direction.x < 0)
+	if (vec2Direction.x < 0)
 	{
 		// Move left
 		const int iOldIndex = vec2Index.x;
@@ -817,9 +857,9 @@ void TEnemy2DSentry::UpdatePosition(void)
 		}
 
 		// Interact with the Player
-		InteractWithPlayer();
+		//InteractWithPlayer();
 	}
-	else if (i32vec2Direction.x > 0)
+	else if (vec2Direction.x > 0)
 	{
 		// Move right
 		const int iOldIndex = vec2Index.x;
@@ -852,11 +892,11 @@ void TEnemy2DSentry::UpdatePosition(void)
 		}
 
 		// Interact with the Player
-		InteractWithPlayer();
+		//InteractWithPlayer();
 	}
 
 	// if the player is above the enemy2D, then jump to attack
-	if (i32vec2Direction.y > 0)
+	if (vec2Direction.y > 0)
 	{
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{

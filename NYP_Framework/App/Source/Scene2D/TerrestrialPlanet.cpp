@@ -224,7 +224,9 @@ bool TerrestrialPlanet::Init(void)
 
 	}
 
-	cMap2D->SetCurrentLevel(0); //reset level
+	cMap2D->SetCurrentLevel(2); //reset level
+
+	cPlayer2D->ResetRespawn();
 
 	//// create the alarm box vector
 	//alarmBoxVector.clear();
@@ -790,4 +792,6 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
 		}
 	}
+
+	cPlayer2D->ResetRespawn(); // spawn player at the right starting location
 }
