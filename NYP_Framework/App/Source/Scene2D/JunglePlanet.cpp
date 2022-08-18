@@ -225,7 +225,9 @@ bool JunglePlanet::Init(void)
 		
 	}
 
-	cMap2D->SetCurrentLevel(0); //reset level
+	cMap2D->SetCurrentLevel(1); //reset level
+
+	cPlayer2D->ResetRespawn(); //find new spawn location of player according to which map is loaded in
 
 	//// create the alarm box vector
 	//alarmBoxVector.clear();
@@ -717,6 +719,12 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			}
 		}
 		break;
+	case CMap2D::TILE_INDEX::RIVER_WATER:
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Add(1); //increase health by 1 for every frame in river water
+
+		//RiverWater
+		break;
 	default:
 		break;
 	}
@@ -745,4 +753,6 @@ void JunglePlanet::DecideLevel(bool tutorial)
 			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
 		}
 	}
+
+	cPlayer2D->ResetRespawn(); //spawn player at the right starting location
 }

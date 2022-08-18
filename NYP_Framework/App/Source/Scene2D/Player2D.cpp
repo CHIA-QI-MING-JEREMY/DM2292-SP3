@@ -246,6 +246,39 @@ bool CPlayer2D::Init(void)
 }
 
 /**
+ @brief Reset this instance, including player's location
+ */
+bool CPlayer2D::ResetRespawn()
+{
+	unsigned int uiRow = -1;
+	unsigned int uiCol = -1;
+	if (cMap2D->FindValue(1400, uiRow, uiCol) == false)
+		return false;	// Unable to find the start position of the player, so quit this game
+
+	// Erase the value of the player in the arrMapInfo
+	cMap2D->SetMapInfo(uiRow, uiCol, 0);
+
+	if (cMap2D->FindValue(1400, uiRow, uiCol) == true)
+	{
+		cout << "Another position of the player has been found" << endl;
+		return false;	// Another position of the player has been found, so quit this game
+	}
+
+	// Set the start position of the Player to iRow and iCol
+	vec2Index = glm::i32vec2(uiCol, uiRow);
+	// By default, microsteps should be zero
+	vec2NumMicroSteps = glm::i32vec2(0, 0);
+
+	//CS: Reset jump
+	iJumpCount = 0;
+
+	//CS: Init the color to white
+	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	return true;
+}
+
+/**
  @brief Reset this instance
  */
 bool CPlayer2D::Reset()
@@ -1036,13 +1069,19 @@ bool CPlayer2D::IsMidAir(void)
 
 	// Check if the tile below the player's current position is empty
 	if (vec2NumMicroSteps.x == 0 &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0))
+		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600))
 	{
 		return true;
 	}
 
 	// Check if the player is floating between 2 tiles when not on rope
 	if (vec2NumMicroSteps.y != 0 && (onRope == false))
+	{
+		return true;
+	}
+
+	//if player is standing between 2 tiles which are both not obsuctrtion blocks
+	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
 	{
 		return true;
 	}

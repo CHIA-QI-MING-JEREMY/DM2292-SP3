@@ -62,6 +62,9 @@ public:
 	// Init
 	bool Init(void);
 
+	// Reset & respawn
+	bool ResetRespawn(void);
+
 	// Reset
 	bool Reset(void);
 
