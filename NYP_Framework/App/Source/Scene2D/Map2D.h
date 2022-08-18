@@ -122,6 +122,9 @@ public:
 	// Get the value at certain indices in the arrMapInfo
 	int GetMapInfo(const unsigned int uiRow, const unsigned int uiCol, const bool bInvert = true) const;
 
+	//find position by tile index
+	glm::vec2 CMap2D::GetTilePosition(const int tileIndex, const bool bInvert = true);
+
 	// Load a map
 	bool LoadMap(string filename, const unsigned int uiLevel = 0);
 

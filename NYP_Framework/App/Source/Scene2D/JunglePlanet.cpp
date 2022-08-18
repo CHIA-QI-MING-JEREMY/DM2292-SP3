@@ -529,6 +529,60 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		}
 	}
 	
+	//if player has burnable blocks to put down, put down in the direction the player is facing
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
+	{
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
+		//if player has burnable blocks
+		if (cInventoryItemPlanet->GetCount() > 0)
+		{
+			//player facing down, trying to put a burnable block
+			if (cPlayer2D->getShootingDirection() == CPlayer2D::DIRECTION::DOWN)
+			{
+				//if the spot is empty
+				if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x) == 0)
+				{
+					//set tile to burnable bush
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+				}
+			}
+			//player facing up, trying to put a burnable block
+			else if (cPlayer2D->getShootingDirection() == CPlayer2D::DIRECTION::UP)
+			{
+				//if the spot is empty
+				if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x) == 0)
+				{
+					//set tile to burnable bush
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+				}
+			}
+			//player facing left, trying to put a burnable block
+			else if (cPlayer2D->getShootingDirection() == CPlayer2D::DIRECTION::LEFT)
+			{
+				//if the spot is empty
+				if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1) == 0)
+				{
+					//set tile to burnable bush
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+				}
+			}
+			//player facing right, trying to put a burnable block
+			else if (cPlayer2D->getShootingDirection() == CPlayer2D::DIRECTION::RIGHT)
+			{
+				//if the spot is empty
+				if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1) == 0)
+				{
+					//set tile to burnable bush
+					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+				}
+			}
+
+			cInventoryItemPlanet->Remove(1);
+			std::cout << "USE BB: " << cInventoryItemPlanet->GetCount() << std::endl;
+		}
+	}
+	
+
 
 	//if time to take damage from poison,
 	if (poisonDamageHitCooldown <= 0.0)

@@ -281,7 +281,7 @@ bool CResource::Init(void)
 	case BURNABLE_BLOCKS:
 	{
 		// Load the ironwood texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Ironwood.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlocks_Bundle.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load burnable blocks texture" << std::endl;
