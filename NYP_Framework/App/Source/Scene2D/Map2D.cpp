@@ -155,6 +155,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(POISON_SPROUT, iTextureID));
 		}
+		//poison fog tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/PoisonFog.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/PoisonFog.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(POISON_FOG, iTextureID));
+		}
 	}
 
 	/// <summary>

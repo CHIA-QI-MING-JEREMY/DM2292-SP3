@@ -705,6 +705,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 	switch (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x))
 	{
 	case CMap2D::TILE_INDEX::POISON_SPROUT:
+	case CMap2D::TILE_INDEX::POISON_FOG:
 		if (poisonLevelIncreaseCooldown <= 0) //poison lvl increase cooldown up
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel"); 

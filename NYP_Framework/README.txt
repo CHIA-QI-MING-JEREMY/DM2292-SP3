@@ -7,6 +7,7 @@ Tile Index:
 Interactables
 [Jungle Planet]
 2 : poison sprout
+3 : poison fog
 199 : ironwood
 
 [Terrestrial Planet]
