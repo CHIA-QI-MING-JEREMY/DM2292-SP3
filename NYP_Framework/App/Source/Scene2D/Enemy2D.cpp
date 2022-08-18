@@ -205,32 +205,10 @@ void CEnemy2D::Render(void)
 	unsigned int colorLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "runtimeColour");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
-	//transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	//transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-	//												vec2UVCoordinate.y,
-	//												0.0f));
-
-
-	//// Update the shaders with the latest transform
-	//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-	//glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
-
-	//// bind textures on corresponding texture units
-	//glActiveTexture(GL_TEXTURE0);
-	//// Get the texture to be rendered
-	//glBindTexture(GL_TEXTURE_2D, iTextureID);
-
-	////CS: render the tile
-	////quadMesh->Render();
-	////CS: Render the animated Sprite
-	//animatedSprites->Render();
-
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
-	//Get camera transforms and use them instead
-
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+
+	// TO REMOVE LATER
+	/*glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
 	glm::vec2 cameraPos = camera2D->getPos();
 
 	glm::vec2 IndexPos = vec2Index;
@@ -241,22 +219,26 @@ void CEnemy2D::Render(void)
 	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));*/
+
+	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
+		vec2UVCoordinate.y,
+		0.0f));
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
 
-	// bind textures on corresponding texture units
-	glActiveTexture(GL_TEXTURE0);
 	// Get the texture to be rendered
 	glBindTexture(GL_TEXTURE_2D, iTextureID);
 
-	//CS: Render the animated Sprite
+	// Render the animated sprite
+	glBindVertexArray(VAO);
 	animatedSprites->Render();
-
+	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
+	glBindVertexArray(0);
 }
 
 /**

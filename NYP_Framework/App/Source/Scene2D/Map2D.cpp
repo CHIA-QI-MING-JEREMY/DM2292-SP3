@@ -1170,20 +1170,16 @@ bool CMap2D::isBlocked(const unsigned int uiRow, const unsigned int uiCol, const
 {
 	if (bInvert == true)
 	{
-		if (((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 600) &&
-			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 1400)) &&
-			((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol + 1].value >= 600) &&
-				(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol + 1].value < 1400)))
+		if ((arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value >= 600) &&
+			(arrMapInfo[uiCurLevel][cSettings->NUM_TILES_YAXIS - uiRow - 1][uiCol].value < 1400))
 			return true;
 		else
 			return false;
 	}
 	else
 	{
-		if (((arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 600) &&
-			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 1400)) &&
-			((arrMapInfo[uiCurLevel][uiRow][uiCol + 1].value >= 600) &&
-				(arrMapInfo[uiCurLevel][uiRow][uiCol + 1].value < 1400)))
+		if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 600) &&
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 1400))
 			return true;
 		else
 			return false;
