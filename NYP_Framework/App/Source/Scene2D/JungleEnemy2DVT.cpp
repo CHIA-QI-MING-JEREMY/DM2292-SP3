@@ -314,7 +314,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			}
 
 		}
-		if (iFSMCounter > iMaxFSMCounter) //after a while in wander mode
+		if (iFSMCounter > iWanderReturnMaxFSMCounter) //after a while in wander mode
 		{
 			sCurrentFSM = TELEPORT; //switch to teleport
 			iFSMCounter = 0;
@@ -329,6 +329,21 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			break;
 		}
 		UpdatePosition(); //move around a bit aimlessly
+		iFSMCounter++;
+		break;
+	case RELOAD:
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = SHOOT;
+			iFSMCounter = 0;
+			cout << "Switching to Attack State" << endl;
+		}
+		if (health <= 5)
+		{
+			sCurrentFSM = RECOVER;
+			iFSMCounter = 0;
+			cout << "Switching to Recover State" << endl;
+		}
 		iFSMCounter++;
 		break;
 	case RETURN:
@@ -408,27 +423,6 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
 			cout << "Switching to Explode State" << endl;
-		}
-		iFSMCounter++;
-		break;
-	case RELOAD:
-		if (iFSMCounter > 60)
-		{
-			/*sCurrentFSM = IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;*/
-			//if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-			{
-				sCurrentFSM = SHOOT;
-				iFSMCounter = 0;
-				cout << "Switching to Attack State" << endl;
-			}
-		}
-		if (health <= 5)
-		{
-			sCurrentFSM = RECOVER;
-			iFSMCounter = 0;
-			cout << "Switching to Recover State" << endl;
 		}
 		iFSMCounter++;
 		break;
