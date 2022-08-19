@@ -18,6 +18,7 @@ public:
 		IDLE = 0,
 		JUMP,
 		FALL,
+		KNOCKBACK,
 		NUM_STATUS
 	};
 

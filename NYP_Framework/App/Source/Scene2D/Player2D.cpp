@@ -503,6 +503,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cSoundController->PlaySoundByID(2);
 		}
 	}
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_8)) {
+		cout << "KNOCKBACK" << endl;
+		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) {
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::KNOCKBACK);
+			cPhysics2D.SetInitialVelocity(glm::vec2(-3.f, 0.f));
+		}
+		UpdateKnockback(dElapsedTime);
+	}
 
 
 	// resets player location at last visited checkpoint
@@ -1062,6 +1070,42 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 	}
 
 	return true;
+}
+
+void CPlayer2D::UpdateKnockback(const double dElapsedTime)
+{
+	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::KNOCKBACK)
+	{
+		// Update the elapsed time to the physics engine
+		cPhysics2D.SetTime((float)dElapsedTime);
+		// Call the physics engine update method to calculate the final velocity and displacement
+		cPhysics2D.Update();
+		// Get the displacement from the physics engine
+		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+
+		// Store the current vec2Index.y
+		int iIndex_XAxis_OLD = vec2Index.x;
+
+		// Translate the displacement from pixels to indices
+		int iDisplacement_Microsteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
+		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+		{
+			vec2NumMicroSteps.x += iDisplacement_Microsteps;
+			if (vec2NumMicroSteps.x > cSettings->NUM_STEPS_PER_TILE_XAXIS)
+			{
+				vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+				if (vec2NumMicroSteps.x < 0)
+				{
+					vec2NumMicroSteps.x = 0;
+				}
+				vec2Index.x--;
+			}
+		}
+
+		// Constraint the player's position within the screen boundary
+		Constraint(LEFT);
+
+	}
 }
 
 bool CPlayer2D::IsMidAir(void)
