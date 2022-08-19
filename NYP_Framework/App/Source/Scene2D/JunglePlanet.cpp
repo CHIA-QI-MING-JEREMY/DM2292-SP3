@@ -865,7 +865,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		break;
 	case CMap2D::TILE_INDEX::ROCK:
 		//if player wants to tie a vine to the rock
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_H))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
 			//if player has a vine

@@ -387,7 +387,11 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || 
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT)
+
 		{
 			// Calculate the new position to the up
 			if (vec2Index.y < ((int)cSettings->NUM_TILES_YAXIS))
@@ -414,8 +418,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
-		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT) ||
-			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT))
+		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_LEFT || 
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT) ||
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || 
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT) ||
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_LEFT ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_RIGHT) ||
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT))
 		{
 			if (vec2NumMicroSteps.y != 0 || vec2Index.y - 1 != cMap2D->FindGround(vec2Index.y, vec2Index.x))
 			{
@@ -465,8 +475,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 		attackTimer -= dElapsedTime;
 	}
 
-	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_CORNER_LEFT && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT
-		&& cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT)
+	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_CORNER_LEFT && 
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT && 
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT && 
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_CORNER_LEFT &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_LEFT &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_CORNER_RIGHT &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_RIGHT)
 	{
 		onRope = false;
 	}
@@ -485,16 +501,17 @@ void CPlayer2D::Update(const double dElapsedTime)
 		}
 	}
 
-	// resets player location at last visited checkpoint
-	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
-	{
-		vec2Index = vec2CPIndex;
-		vec2NumMicroSteps.x = 0;
 
-		// reduce the lives by 1
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->Remove(1);
-	}
+	// resets player location at last visited checkpoint
+	//if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+	//{
+	//	vec2Index = vec2CPIndex;
+	//	vec2NumMicroSteps.x = 0;
+
+	//	// reduce the lives by 1
+	//	cInventoryItem = cInventoryManager->GetItem("Lives");
+	//	cInventoryItem->Remove(1);
+	//}
 
 	// create ammo
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_E))
