@@ -107,6 +107,8 @@ bool SnowPlanet::Init(void)
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
 
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
 	// Set a shader to this class
@@ -307,13 +309,13 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
 		}
 	}
-	if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && turnBerserkOffTimer > 5.0f) {
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
-			cout << "Switching back to BERSERK player mode" << endl;
-			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
-			cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
-		}
-	}
+	//if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && turnBerserkOffTimer < 5.0f) {
+	//	if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
+	//		cout << "Switching back to BERSERK player mode" << endl;
+	//		cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
+	//		cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
+	//	}
+	//}
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 		if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK) {
 			cout << "Shield Mode Activated" << endl;
@@ -329,6 +331,11 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		if (cKeyboardController->IsKeyReleased(GLFW_KEY_G)) {
 			cout << "Turning to Berserk Mode" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+			cInventoryItemPlanet->Add(15);
+			if (cInventoryItemPlanet->GetCount() > cInventoryItemPlanet->GetMaxCount()) {
+				cInventoryItemPlanet->setCount(cInventoryItemPlanet->GetMaxCount());
+			}
 		}
 	}
 	if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK || cPlayer2D->getModeOfPlayer()==CPlayer2D::MODE::BERSERKSHIELD) {
