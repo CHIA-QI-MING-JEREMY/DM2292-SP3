@@ -791,22 +791,22 @@ void CPlayer2D::InteractWithMap(void)
 void CPlayer2D::UpdateHealthLives(void)
 {
 	// Update health and lives
-	cInventoryItem = cInventoryManager->GetItem("Health");
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 	// Check if a life is lost
-	if (cInventoryItem->GetCount() <= 0)
+	if (cInventoryItemPlanet->GetCount() <= 0)
 	{
 		// Reset the Health to max value
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		// But we reduce the lives by 1
-		cInventoryItem = cInventoryManager->GetItem("Lives");
-		cInventoryItem->Remove(1);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		cInventoryItemPlanet->Remove(1);
 		// Respawn player back at last visited checkpoint
 		vec2Index = vec2CPIndex;
 		vec2NumMicroSteps.x = 0;
 	}
 	// Check if there are any lives left
-	cInventoryItem = cInventoryManager->GetItem("Lives");
-	if (cInventoryItem->GetCount() <= 0)
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+	if (cInventoryItemPlanet->GetCount() <= 0)
 	{
 		// Player loses the game
 		CGameManager::GetInstance()->bPlayerLost = true;
@@ -1117,7 +1117,7 @@ void CPlayer2D::SetColour(COLOUR colour)
 		runtimeColour = glm::vec4(1.0, 0.0, 1.0, 1.0); // PURPLE
 		break;
 	case PINK:
-		runtimeColour = glm::vec4(1.0, 0.5, 0.5,1.0);//PINK
+		runtimeColour = glm::vec4(1.0, 0.5, 0.5, 1.0); // PINK
 		break;
 	default:
 		cout << "Unknown Colour." << endl;
