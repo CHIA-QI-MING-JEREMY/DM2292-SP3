@@ -11,6 +11,14 @@ Interactables
 10 : river water 
 20 : unbloomed bouncy bloom
 21 : bloomed bouncy bloom
+30 : rock (no vine)
+31 : rock with vine tied to it, vine leading to the left
+32 : vine left corner (connects vine tied with rock to dangling vine)
+33 : vine dangling on the left of its right neighbour
+34 : rock with vine tied to it, vine leading to the right
+35 : vine right corner (connects vine tied with rock to dangling vine)
+36 : vine dangling on the right of its left neighbour
+40 : spot to set moving leaves
 197 : burnable block collectable
 198 : vine collectable
 199 : ironwood
@@ -61,6 +69,7 @@ Solid Blocks
 610 : grass ground
 611 : grass ground top left rounded corner
 612 : grass ground top right rounded corner
+620 : moving leaves
 
 [Terrestrial Planet]
 800 : ground tile solid
