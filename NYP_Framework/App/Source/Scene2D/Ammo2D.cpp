@@ -81,7 +81,7 @@ bool CAmmo2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
-	//camera2D = Camera2D::GetInstance();
+	camera2D = Camera2D::GetInstance();
 
 	// Get the handler to the CSoundController instance
 	cSoundController = CSoundController::GetInstance();
@@ -186,8 +186,7 @@ void CAmmo2D::Render(void)
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 	
-	// TO REMOVE LATER
-	/*glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
 	glm::vec2 cameraPos = camera2D->getPos();
 
 	glm::vec2 IndexPos = vec2Index;
@@ -198,11 +197,11 @@ void CAmmo2D::Render(void)
 	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));*/
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
 
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
+	/*transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
 		vec2UVCoordinate.y,
-		0.0f));
+		0.0f));*/
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
