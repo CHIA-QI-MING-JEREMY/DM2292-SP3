@@ -208,16 +208,6 @@ bool CScenePlanet::Init(void)
 		}
 	}
 
-
-	//// Create and initialise the CGUI_Scene2D
-	//cGUI_Scene2D = CGUI_Scene2D::GetInstance();
-	//// Initialise the instance
-	//if (cGUI_Scene2D->Init() == false)
-	//{
-	//	cout << "Failed to load CGUI_Scene2D" << endl;
-	//	return false;
-	//}
-
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
@@ -225,6 +215,8 @@ bool CScenePlanet::Init(void)
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
 
+	StartCombat = false;
+	lState = false;
 
 	return true;
 }
@@ -234,11 +226,19 @@ bool CScenePlanet::Init(void)
 */
 bool CScenePlanet::Update(const double dElapsedTime)
 {
+ 	if (cGUI_ScenePlanet->StartCombat) {
+		StartCombat = true;
+	}
+
 	// mouse Position demo
 	camera2D->setTargetZoom(1.0f);
+	if (CMouseController::GetInstance()->IsButtonUp(CMouseController::BUTTON_TYPE::LMB)) {
+		lState = false;
+	}
 
 	// mouse Click
-	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB)) {
+	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB) && !lState) {
+		lState = true;
 		glm::vec2 blockSelected = camera2D->getBlockSelected();
 		std::map<std::pair<int, int>, CPlanet*>::iterator x = planetVector.begin();
 		while (x != planetVector.end()) {
@@ -255,7 +255,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 				cGUI_ScenePlanet->setPlanetInfo(x->second);
 
 				// TODO: remove the panel uh-
-				if (x->second->vec2Index == camera2D->getPos()) {
+				if (glm::abs(x->second->vec2Index.x - camera2D->getPos().x) < 1) {
 					if (cGUI_ScenePlanet->isShowPanel) {
 						cGUI_ScenePlanet->isShowPanel = false;
 					}
@@ -292,12 +292,8 @@ bool CScenePlanet::Update(const double dElapsedTime)
 		}
 	}
 
-	// mouse Position demo
-	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - camera2D->getPos().x, camera2D->getMousePosition().y - camera2D->getPos().y);
-	camPos = glm::normalize(camPos);
-	camPos = glm::vec2(camera2D->getPos().x + camPos.x * 2, camera2D->getPos().y + camPos.y * 2);
-
 	camera2D->Update(dElapsedTime);
+	std::cout << camera2D->getPos().x << " " << camera2D->getPos().y << "\n";
 
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);

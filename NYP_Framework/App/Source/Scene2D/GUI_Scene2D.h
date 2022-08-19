@@ -95,6 +95,8 @@ protected:
 	CInventoryManagerPlanet* cInventoryManagerPlanet;
 	// The handler containing the instance of CInventoryItem
 	CInventoryItemPlanet* cInventoryItemPlanet;
+
+	bool lState;
 private:
 	int planetNum;
 };

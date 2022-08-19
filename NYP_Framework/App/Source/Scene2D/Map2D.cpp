@@ -28,7 +28,7 @@ using namespace std::placeholders;
 CMap2D::CMap2D(void)
 	: uiCurLevel(0)
 	, quadMesh(NULL)
-	//, camera2D(NULL)
+	, camera2D(NULL)
 {
 }
 
@@ -60,7 +60,7 @@ CMap2D::~CMap2D(void)
 	glDeleteBuffers(1, &EBO);
 	
 	// nullify the camera since it was created elsewhere
-	//camera2D = NULL;
+	camera2D = NULL;
 
 	// Set this to NULL since it was created elsewhere, so we let it be deleted there.
 	cSettings = NULL;
@@ -79,7 +79,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// get the camera main
-	//camera2D = Camera2D::GetInstance();
+	camera2D = Camera2D::GetInstance();
 
 	// Create the arrMapInfo and initialise to 0
 	// Start by initialising the number of levels
@@ -113,6 +113,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	// Load and create textures
 	// Load the ground textures
 	// Load the brown tile texture
+
+	if (findTilesForShip() == false) {
+		return false;
+	}
 
 	// TO REMOVE LATER
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
@@ -700,15 +704,14 @@ void CMap2D::Render(void)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	glm::vec2 offset = glm::vec2(float(cSettings->NUM_TILES_XAXIS / 2.f), float(cSettings->NUM_TILES_YAXIS / 2.f) - 1);
-	//glm::vec2 offset = glm::vec2(0);
-	//glm::vec2 cameraPos = camera2D->getPos();
+	glm::vec2 cameraPos = camera2D->getPos();
 
 	// Render
 	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
 	{
 		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; uiCol++)
 		{
-			/*glm::vec2 objTransform = glm::vec2(uiCol, cSettings->NUM_TILES_YAXIS - uiRow);
+			glm::vec2 objTransform = glm::vec2(uiCol, cSettings->NUM_TILES_YAXIS - uiRow);
 			glm::vec2 objCamPos = objTransform - cameraPos + offset;
 
 			glm::vec2 actualPos;
@@ -716,12 +719,12 @@ void CMap2D::Render(void)
 
 			transform = glm::mat4(1.f);
 			transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-			transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));*/
+			transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
 
-			transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-			transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
-				cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
-				0.0f));
+			//transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+			//transform = glm::translate(transform, glm::vec3(cSettings->ConvertIndexToUVSpace(cSettings->x, uiCol, false, 0),
+			//	cSettings->ConvertIndexToUVSpace(cSettings->y, uiRow, true, 0),
+			//	0.0f));
 
 			// Update the shaders with the latest transform
 			glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -1258,29 +1261,188 @@ bool CMap2D::ResetAStarLists(void)
 	return true;
 }
 
-//find position by tile index
-glm::vec2 CMap2D::GetTilePosition(const int tileIndex, const bool bInvert)
+bool CMap2D::findTilesForShip()
 {
-	glm::vec2 position = glm::vec2(0, 0); //an empty vec2
-	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipWallInt.png", true);
+	if (iTextureID == 0)
 	{
-		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
-		{
-			if (arrMapInfo[uiCurLevel][uiRow][uiCol].value == tileIndex)
-			{
-				position.x = uiCol;
-				if (bInvert)
-				{
-					position.y = cSettings->NUM_TILES_YAXIS - uiRow - 1;
-				}
-				else
-				{
-					position.y = uiRow;
-				}
-			}
-		}
+		cout << "Unable to load Image/ShipCombat/ShipWallInt.png" << endl;
+		return false;
 	}
-	return position;
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1210, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipWallExt.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipWallExt.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1217, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipCorner1.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipCorner1.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1211, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipCorner2.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipCorner2.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1212, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipCorner3.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipCorner3.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1213, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipCorner4.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipCorner4.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1214, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipWallIntLeft.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipWallIntLeft.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1215, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/DoorClosed.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/DoorClosed.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1216, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipWallExt.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipWallExt.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1217, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipWallIntRight.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipWallIntRight.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1218, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/floorTile.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/floorTile.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(598, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/floorTileBroke.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/floorTileBroke.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(597, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/StorageBox.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/StorageBox.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1219, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/ShipController.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/ShipController.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1220, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/WeaponController.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/WeaponController.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1221, iTextureID));
+	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/DoorOpen.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/DoorOpen.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1222, iTextureID));
+	}
+
+
+
+	return true;
 }
 
 /**

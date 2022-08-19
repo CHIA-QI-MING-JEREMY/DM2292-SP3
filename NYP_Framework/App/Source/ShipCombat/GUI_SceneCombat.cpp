@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: May 2021
  */
-#include "GUI_ScenePlanet.h"
+#include "GUI_SceneCombat.h"
 
 // Include Mesh Builder
 #include "Primitives/MeshBuilder.h"
@@ -19,10 +19,9 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-CGUI_ScenePlanet::CGUI_ScenePlanet(void)
+CGUI_SceneCombat::CGUI_SceneCombat(void)
 	: cSettings(NULL)
 	, window_flags(0)
-	, cPlanet(NULL)
 	, cInventoryManager(NULL)
 	, cInventoryItem(NULL)
 {
@@ -31,7 +30,7 @@ CGUI_ScenePlanet::CGUI_ScenePlanet(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CGUI_ScenePlanet::~CGUI_ScenePlanet(void)
+CGUI_SceneCombat::~CGUI_SceneCombat(void)
 {
 	if (cInventoryManager)
 	{
@@ -51,7 +50,7 @@ CGUI_ScenePlanet::~CGUI_ScenePlanet(void)
 /**
   @brief Initialise this instance
   */
-bool CGUI_ScenePlanet::Init(void)
+bool CGUI_SceneCombat::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -84,13 +83,16 @@ bool CGUI_ScenePlanet::Init(void)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 
 	CImageLoader* il = CImageLoader::GetInstance();
-	StartCombatButtonData.fileName = "Image\\GUI\\Button_Play.png";
-	StartCombatButtonData.textureID = il->LoadTextureGetID(StartCombatButtonData.fileName.c_str(), false);
+	AcceptButtonData.fileName = "Image\\GUI\\tick.png";
+	AcceptButtonData.textureID = il->LoadTextureGetID(AcceptButtonData.fileName.c_str(), false);
+	RejectButtonData.fileName = "Image\\GUI\\cross.png";
+	RejectButtonData.textureID = il->LoadTextureGetID(RejectButtonData.fileName.c_str(), false);
 
 	// Show the mouse pointer
 	glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	isShowPanel = false;
-	StartCombat = false;
+	GuiState = GUI_STATE::noShow;
+	makeChanges = false;
 
 	return true;
 }
@@ -98,11 +100,12 @@ bool CGUI_ScenePlanet::Init(void)
 /**
  @brief Update this instance
  */
-void CGUI_ScenePlanet::Update(const double dElapsedTime)
+void CGUI_SceneCombat::Update(const double dElapsedTime)
 {
 	// Calculate the relative scale to our default windows width
 	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
 	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
+	CImageLoader* il = CImageLoader::GetInstance();
 
 	// Start the Dear ImGui frame
 	ImGui_ImplOpenGL3_NewFrame();
@@ -115,9 +118,8 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 		return;
 	}
 
-	float buttonWidth = 128;
-	float buttonHeight = 64;
-
+	float buttonWidth = 25;
+	float buttonHeight = 25;
 
 	// Create an invisible window which covers the entire OpenGL window
 	ImGui::Begin("Invisible window", NULL, window_flags);
@@ -125,96 +127,70 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
 	ImGui::SetWindowFontScale(2.f * relativeScale_y);
 
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+
+	// Render panels for click click
+	switch (GuiState)
 	{
-		static float f = 0.0f;
-		static int counter = 0;
-
-		// Create a window called "Hello, world!" and append into it.
-		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth * 0.8,
-			CSettings::GetInstance()->iWindowHeight * 0.85));				// Set the top-left of the window at (10,10)
-		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-
-		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)StartCombatButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// To next scene
-			StartCombat = true;
-		}
-
-		ImGui::End();
-	}
-
-	// Display the FPS
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "INTER-GALACTICAL MAP SYSTEM");
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'I' to view your inventory.");
-
-	ImGui::End();
-
-	// Render the panel
-	if (cPlanet != NULL && isShowPanel) {
-		ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-			ImGuiWindowFlags_NoTitleBar |
-			ImGuiWindowFlags_NoMove |
-			ImGuiWindowFlags_NoResize |
-			ImGuiWindowFlags_NoCollapse |
-			ImGuiWindowFlags_NoScrollbar;
+	case CGUI_SceneCombat::showRepair:
 		ImGui::Begin("Lives", NULL, livesWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.6f,
-			cSettings->iWindowHeight * 0.45f));
+			cSettings->iWindowHeight * 0.4f));
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
 
 		// planet information
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Planet Name: ");
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Repair Ship Tile?");
 		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), cPlanet->planetName);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap x 1");
 		ImGui::NewLine();
-		switch (cPlanet->getType())
+		// Add codes for Start button here
+		if (ImGui::ImageButton((ImTextureID)AcceptButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
 		{
-		case CPlanet::TYPE::JUNGLE:
-		case CPlanet::TYPE::JUNGLE_TUTORIAL:
-			ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Key Resources: ");
-			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood\nScrap Metal\nBatteries");
-			break;
-		case CPlanet::TYPE::SNOW:
-		case CPlanet::TYPE::SNOW_TUTORIAL:
-			ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Key Resources: ");
-			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ice Crystals\nHound Teeth\nScrap Metal\nBatteries");
-			break;
-		case CPlanet::TYPE::TERRESTRIAL:
-		case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
-			ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Key Resources: ");
-			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Energy Quartz\nScrap Metal\nBatteries");
-			break;
-		default:
-			break;
+			makeChanges = true;
 		}
+		ImGui::SameLine();
+		// Add codes for Start button here
+		if (ImGui::ImageButton((ImTextureID)RejectButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			GuiState = GUI_STATE::noShow;
+			makeChanges = false;
+		}
+
 		ImGui::End();
+		break;
+	case CGUI_SceneCombat::showWeapons:
+		break;
+	case CGUI_SceneCombat::showStorage:
+		break;
+	case CGUI_SceneCombat::num_GUIState:
+		break;
+	default:
+		break;
 	}
+
+	ImGui::End();
 }
 
 
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CGUI_ScenePlanet::PreRender(void)
+void CGUI_SceneCombat::PreRender(void)
 {
 }
 
 /**
  @brief Render this instance
  */
-void CGUI_ScenePlanet::Render(void)
+void CGUI_SceneCombat::Render(void)
 {
 	// Rendering
 	ImGui::Render();
@@ -224,21 +200,6 @@ void CGUI_ScenePlanet::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CGUI_ScenePlanet::PostRender(void)
+void CGUI_SceneCombat::PostRender(void)
 {
-}
-
-void CGUI_ScenePlanet::setPlanetNum(int num)
-{
-	planetNum = num;
-}
-
-int CGUI_ScenePlanet::getPlanetNum(void)
-{
-	return planetNum;
-}
-
-void CGUI_ScenePlanet::setPlanetInfo(CPlanet* cPlanet)
-{
-	this->cPlanet = cPlanet;
 }

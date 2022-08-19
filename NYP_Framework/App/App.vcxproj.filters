@@ -1,191 +1,103 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    <Filter Include="ShipCombat">
+      <UniqueIdentifier>{a2b874e2-68a0-405c-b0f3-ce7497fce9a3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene2D">
-      <UniqueIdentifier>{a357a60d-f2e7-4675-b29d-d35641c7a73c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SoundController">
-      <UniqueIdentifier>{b2686d34-610a-4e06-8d0f-0ce3b6236893}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="GameStateManagement">
-      <UniqueIdentifier>{ac30f583-9551-43f5-83de-07158ff79146}</UniqueIdentifier>
+      <UniqueIdentifier>{28276fac-91e5-4ddc-b324-4534bb05f8f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="PlanetSelection">
-<<<<<<< Updated upstream
-      <UniqueIdentifier>{8527bf0e-45de-4f70-a702-3959c6361faf}</UniqueIdentifier>
-=======
-      <UniqueIdentifier>{adb3358b-1f81-48e5-ab3d-78b61c3fdc2f}</UniqueIdentifier>
->>>>>>> Stashed changes
+      <UniqueIdentifier>{59d64ddd-f406-43ce-bc5a-b9a5f8a2cd5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameStateManagement">
+      <UniqueIdentifier>{8f7b0585-e421-44ac-bf7d-f29622d2de04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SoundController">
+      <UniqueIdentifier>{f2b628a4-f1c0-47b0-90a9-2d04c2d5a614}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Map2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Player2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\InventoryItem.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\InventoryManager.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Physics2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\GameManager.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SoundController\SoundController.cpp">
-      <Filter>SoundController</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\SoundController\SoundInfo.cpp">
-      <Filter>SoundController</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Enemy2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\BackgroundEntity.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\IntroState.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\MenuState.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\PauseState.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\PlayGameState.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\JungleEnemy2DVT.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Ammo2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\EnemyAmmo2D.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\JungleEAmmoVT.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\JunglePlanet.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\SnowPlanet.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\InventoryItemPlanet.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\InventoryManagerPlanet.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\Resource.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\InventoryState.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DSentry.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\TerrestrialEAmmoSentry.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\SnowEnemy2DSWB.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-=======
-    <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
->>>>>>> Stashed changes
-    <ClCompile Include="Source\PlanetSelection\Planet.cpp">
-      <Filter>PlanetSelection</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\PlanetSelection\ScenePlanet.cpp">
-      <Filter>PlanetSelection</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-    <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp">
-      <Filter>GameStateManagement</Filter>
-=======
-    <ClCompile Include="Source\PlanetSelection\GUI_ScenePlanet.cpp">
-      <Filter>PlanetSelection</Filter>
->>>>>>> Stashed changes
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Source\Application.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Source\ShipCombat\SceneCombat.h">
+      <Filter>ShipCombat</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h">
+    <ClInclude Include="Source\ShipCombat\ShipPlayer.h">
+      <Filter>ShipCombat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Ammo2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Map2D.h">
+    <ClInclude Include="Source\Scene2D\BackgroundEntity.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Player2D.h">
+    <ClInclude Include="Source\Scene2D\Enemy2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\GUI_Scene2D.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\InventoryManager.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\InventoryItem.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Physics2D.h">
+    <ClInclude Include="Source\Scene2D\EnemyAmmo2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\GameManager.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\SoundController\SoundController.h">
-      <Filter>SoundController</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\SoundController\SoundInfo.h">
-      <Filter>SoundController</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Enemy2D.h">
+    <ClInclude Include="Source\Scene2D\GUI_Scene2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\BackgroundEntity.h">
+    <ClInclude Include="Source\Scene2D\InventoryItem.h">
       <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\InventoryItemPlanet.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\InventoryManager.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\InventoryManagerPlanet.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JungleEAmmoVT.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JungleEnemy2DVT.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JunglePlanet.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Map2D.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Physics2D.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\Resource.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\SnowEAmmo.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\SnowEnemy2DSWB.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\SnowPlanet.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\TerrestrialEAmmoSentry.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DSentry.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanetSelection\GUI_ScenePlanet.h">
+      <Filter>PlanetSelection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanetSelection\Planet.h">
+      <Filter>PlanetSelection</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PlanetSelection\ScenePlanet.h">
+      <Filter>PlanetSelection</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\GameStateBase.h">
       <Filter>GameStateManagement</Filter>
@@ -196,76 +108,157 @@
     <ClInclude Include="Source\GameStateManagement\IntroState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\InventoryState.h">
+      <Filter>GameStateManagement</Filter>
+    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\MenuState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\PauseState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\PlanetSelection.h">
+      <Filter>GameStateManagement</Filter>
+    </ClInclude>
     <ClInclude Include="Source\GameStateManagement\PlayGameState.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\Ammo2D.h">
+    <ClInclude Include="Source\SoundController\SoundController.h">
+      <Filter>SoundController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SoundController\SoundInfo.h">
+      <Filter>SoundController</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Scene2D\Player2D.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\JungleEnemy2DVT.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\EnemyAmmo2D.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\JungleEAmmoVT.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\JunglePlanet.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\SnowPlanet.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\InventoryItemPlanet.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\InventoryManagerPlanet.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\Resource.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\InventoryState.h">
+    <ClInclude Include="Source\GameStateManagement\ShipCombat.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DSentry.h">
-      <Filter>Scene2D</Filter>
+    <ClInclude Include="Source\ShipCombat\GUI_SceneCombat.h">
+      <Filter>ShipCombat</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\TerrestrialEAmmoSentry.h">
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\ShipCombat\SceneCombat.cpp">
+      <Filter>ShipCombat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShipCombat\ShipPlayer.cpp">
+      <Filter>ShipCombat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Ammo2D.cpp">
       <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\SnowEnemy2DSWB.h">
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\BackgroundEntity.cpp">
       <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\Scene2D\SnowEAmmo.h">
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Enemy2D.cpp">
       <Filter>Scene2D</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-=======
-    <ClInclude Include="Source\GameStateManagement\PlanetSelection.h">
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\EnemyAmmo2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\GameManager.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\GUI_Scene2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\InventoryItem.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\InventoryItemPlanet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\InventoryManager.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\InventoryManagerPlanet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\JungleEAmmoVT.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\JungleEnemy2DVT.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\JunglePlanet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Map2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Physics2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Player2D.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\Resource.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\SnowEnemy2DSWB.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\SnowPlanet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialEAmmoSentry.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DSentry.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanetSelection\GUI_ScenePlanet.cpp">
+      <Filter>PlanetSelection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanetSelection\Planet.cpp">
+      <Filter>PlanetSelection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PlanetSelection\ScenePlanet.cpp">
+      <Filter>PlanetSelection</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp">
       <Filter>GameStateManagement</Filter>
-    </ClInclude>
->>>>>>> Stashed changes
-    <ClInclude Include="Source\PlanetSelection\Planet.h">
-      <Filter>PlanetSelection</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\PlanetSelection\ScenePlanet.h">
-      <Filter>PlanetSelection</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-    <ClInclude Include="Source\GameStateManagement\PlanetSelection.h">
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\IntroState.cpp">
       <Filter>GameStateManagement</Filter>
-=======
-    <ClInclude Include="Source\PlanetSelection\GUI_ScenePlanet.h">
-      <Filter>PlanetSelection</Filter>
->>>>>>> Stashed changes
-    </ClInclude>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\InventoryState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\MenuState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\PauseState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\PlayGameState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundController\SoundController.cpp">
+      <Filter>SoundController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SoundController\SoundInfo.cpp">
+      <Filter>SoundController</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\GameStateManagement\ShipCombat.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShipCombat\GUI_SceneCombat.cpp">
+      <Filter>ShipCombat</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

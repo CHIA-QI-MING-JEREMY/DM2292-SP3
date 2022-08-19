@@ -86,6 +86,7 @@ bool CGUI_Scene2D::Init(void)
 
 	// Initialise the CInventoryManagerPlanet
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+	lState = false;
 
 	m_fProgressBar = 0.0f;
 

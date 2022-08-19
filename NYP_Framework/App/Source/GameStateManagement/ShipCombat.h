@@ -9,20 +9,15 @@
 
 #include "GameStateBase.h"
 
-#include "Primitives/Mesh.h"
-#include "../Scene2D/BackgroundEntity.h"
+#include "../App/Source/ShipCombat/SceneCombat.h"
 
-#include <string>
-
-#include "../App/Source/PlanetSelection/ScenePlanet.h"
-
-class CPlanetSelectionState : public CGameStateBase
+class CShipCombatState : public CGameStateBase
 {
 public:
 	// Constructor
-	CPlanetSelectionState(void);
+	CShipCombatState(void);
 	// Destructor
-	~CPlanetSelectionState(void);
+	~CShipCombatState(void);
 
 	// Init this class instance
 	virtual bool Init(void);
@@ -34,7 +29,6 @@ public:
 	virtual void Destroy(void);
 
 protected:
-
 	// The handler to the CScene2D instance
-	CScenePlanet* cScenePlanet;
+	CSceneCombat* cSceneCombat;
 };

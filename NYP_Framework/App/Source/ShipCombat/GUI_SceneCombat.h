@@ -41,15 +41,23 @@
 
 #include "GameControl/Settings.h"
 
-#include "Planet.h"
-
 #include <string>
 using namespace std;
 
-class CGUI_ScenePlanet : public CSingletonTemplate<CGUI_ScenePlanet>, public CEntity2D
+class CGUI_SceneCombat : public CSingletonTemplate<CGUI_SceneCombat>, public CEntity2D
 {
-	friend CSingletonTemplate<CGUI_ScenePlanet>;
+	friend CSingletonTemplate<CGUI_SceneCombat>;
 public:
+	enum GUI_STATE
+	{
+		noShow = 0,
+		showRepair,
+		showWeapons,
+		showStorage,
+		num_GUIState
+	};
+
+
 	// Init
 	bool Init(void);
 
@@ -68,16 +76,18 @@ public:
 	void setPlanetNum(int num);
 	int getPlanetNum(void);
 
-	void setPlanetInfo(CPlanet* cPlanet);
 	bool isShowPanel;
-	bool StartCombat;
+	glm::vec2 playerPos;
+	bool makeChanges;
+	GUI_STATE GuiState;
 
 protected:
+
 	// Constructor
-	CGUI_ScenePlanet(void);
+	CGUI_SceneCombat(void);
 
 	// Destructor
-	virtual ~CGUI_ScenePlanet(void);
+	virtual ~CGUI_SceneCombat(void);
 
 	// FPS Control
 	CFPSCounter* cFPSCounter;
@@ -93,15 +103,14 @@ protected:
 		unsigned textureID;
 	};
 
-	ButtonData StartCombatButtonData;
+	ButtonData AcceptButtonData;
+	ButtonData RejectButtonData;
 
 	// The handler containing the instance of CInventoryManager
 	CInventoryManager* cInventoryManager;
 	// The handler containing the instance of CInventoryItem
 	CInventoryItem* cInventoryItem;
 
-	CPlanet* cPlanet;
-
 private:
-	int planetNum;
+	
 };

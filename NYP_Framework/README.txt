@@ -77,6 +77,15 @@ Solid Blocks
 1100: water
 1101: ice
 
+[Space Ship]
+1210: Planet / Space Ship Interior wall
+1211: Ship corner 1
+1212: Ship corner 2
+1213: Ship corner 3
+1214: Ship corner 4
+1215: Ship left wall
+
+
 Player : 1400
 
 Enemies

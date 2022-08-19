@@ -12,6 +12,8 @@
 
 // Include CGameStateManager
 #include "GameStateManager.h"
+// Include ImageLoader
+#include "System\ImageLoader.h"
 
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
@@ -41,7 +43,7 @@ CPlanetSelectionState::~CPlanetSelectionState(void)
  */
 bool CPlanetSelectionState::Init(void)
 {
-	cout << "CPlayGameState::Init()\n" << endl;
+	cout << "CPlanetSelectionState::Init()\n" << endl;
 
 	// Initialise the cScene2D instance
 	cScenePlanet = CScenePlanet::GetInstance();
@@ -59,18 +61,16 @@ bool CPlanetSelectionState::Init(void)
  */
 bool CPlanetSelectionState::Update(const double dElapsedTime)
 {
-	//if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_F10))
-	//{
-	//	// Reset the CKeyboardController
-	//	CKeyboardController::GetInstance()->Reset();
 
-	//	// Load the menu state
-	//	cout << "Loading MenuState" << endl;
-	//	CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
-	//	CGameStateManager::GetInstance()->OffPauseGameState();
-	//	return true;
-	//}
+	if (cScenePlanet->StartCombat) {
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
 
+		// Load the menu state
+		cout << "Loading ShipCombatState" << endl;
+		CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
+	}
+	
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
 	{
 		// Reset the CKeyboardController
@@ -78,7 +78,7 @@ bool CPlanetSelectionState::Update(const double dElapsedTime)
 
 		// Load the menu state
 		cout << "Loading MenuState" << endl;
-		CGameStateManager::GetInstance()->SetPauseGameState("MenuState");
+		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 	}
 
 	// Call the cScene2D's Update method
