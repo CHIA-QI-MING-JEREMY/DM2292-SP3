@@ -35,7 +35,7 @@ CEnemy2D::CEnemy2D(void)
 	, cPlayer2D(NULL)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-	//, camera2D(NULL)
+	, camera2D(NULL)
 	, animatedSprites(NULL)
 	, cSoundController(NULL)
 {
@@ -73,7 +73,7 @@ CEnemy2D::~CEnemy2D(void)
 	cMap2D = NULL;
 
 	// We won't delete this since it was created elsewhere
-	//camera2D = NULL;
+	camera2D = NULL;
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -89,7 +89,7 @@ bool CEnemy2D::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
-	//camera2D = Camera2D::GetInstance();
+	camera2D = Camera2D::GetInstance();
 	
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
@@ -207,8 +207,7 @@ void CEnemy2D::Render(void)
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
 
-	// TO REMOVE LATER
-	/*glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
 	glm::vec2 cameraPos = camera2D->getPos();
 
 	glm::vec2 IndexPos = vec2Index;
@@ -219,11 +218,7 @@ void CEnemy2D::Render(void)
 	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));*/
-
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-		vec2UVCoordinate.y,
-		0.0f));
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
