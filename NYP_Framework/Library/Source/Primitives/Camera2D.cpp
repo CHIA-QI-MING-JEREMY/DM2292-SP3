@@ -10,7 +10,7 @@
 Camera2D::Camera2D(void) :
 	pos(0, 0),
 	targetPos(0, 0),
-	targetZoom(1.5f),
+	targetZoom(1.15f),
 	SetupState(false),
 	zoom(1.f)
 {

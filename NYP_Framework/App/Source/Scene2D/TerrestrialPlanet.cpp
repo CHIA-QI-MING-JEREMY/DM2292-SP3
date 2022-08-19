@@ -310,17 +310,13 @@ bool TerrestrialPlanet::Init(void)
 bool TerrestrialPlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(2);
-	// mouse Position demo
-	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
-	camPos = glm::normalize(camPos);
-	camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x * 2, cPlayer2D->vec2Index.y + camPos.y * 2);
-
-	camera2D->setTargetPos(camPos);
+	
+	camera2D->setTargetPos(cPlayer2D->vec2Index);
 	camera2D->Update(dElapsedTime);
 
 	// zoom demo
 	if (!isZoomedIn && cKeyboardController->IsKeyPressed('X')) {
-		camera2D->setTargetZoom(3.0f);
+		camera2D->setTargetZoom(1.3f);
 		isZoomedIn = true;
 	}
 	else if (isZoomedIn && cKeyboardController->IsKeyPressed('X')) {
