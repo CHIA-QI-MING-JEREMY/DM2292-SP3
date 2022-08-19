@@ -1,2 +1,41 @@
 ﻿  Settings.cpp
-  Library.vcxproj -> C:\Users\65813\OneDrive\Documents\DM2292-SP3\NYP_Framework\Debug\Library.lib
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  KeyboardController.cpp
+  MouseController.cpp
+  Camera2D.cpp
+D:\Jeremy\NYP\Year 2\Sem 1\DM2292 Studio Project 3\DM2292-SP3\NYP_Framework\Library\Source\Primitives\Camera2D.h(32,35): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+D:\Jeremy\NYP\Year 2\Sem 1\DM2292 Studio Project 3\DM2292-SP3\NYP_Framework\Library\Source\Primitives\Camera2D.h(33,36): warning C4244: 'initializing': conversion from 'float' to 'const int', possible loss of data
+D:\Jeremy\NYP\Year 2\Sem 1\DM2292 Studio Project 3\DM2292-SP3\NYP_Framework\Library\Source\Primitives\Camera2D.cpp(36,42): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+D:\Jeremy\NYP\Year 2\Sem 1\DM2292 Studio Project 3\DM2292-SP3\NYP_Framework\Library\Source\Primitives\Camera2D.cpp(40,43): warning C4244: '+=': conversion from 'double' to 'T', possible loss of data
+          with
+          [
+              T=float
+          ]
+  Collider.cpp
+  CollisionManager.cpp
+  Entity2D.cpp
+  Entity3D.cpp
+  LevelOfDetails.cpp
+  Mesh.cpp
+  MeshBuilder.cpp
+  SpriteAnimation.cpp
+D:\Jeremy\NYP\Year 2\Sem 1\DM2292 Studio Project 3\DM2292-SP3\NYP_Framework\Library\Source\Primitives\SpriteAnimation.cpp(75,62): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+  ShaderManager.cpp
+  Generating Code...
+  Compiling...
+  ImageLoader.cpp
+  LoadOBJ.cpp
+  FPSCounter.cpp
+  StopWatch.cpp
+  Generating Code...
+  Library.vcxproj -> D:\Jeremy\NYP\Year 2\Sem 1\DM2292 Studio Project 3\DM2292-SP3\NYP_Framework\Debug\Library.lib

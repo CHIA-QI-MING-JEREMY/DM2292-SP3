@@ -676,7 +676,7 @@ void CEnemy2D::UpdatePosition(void)
 
 		// Play the "runR" animation
 		animatedSprites->PlayAnimation("runL", -1, 1.f);
-		
+
 		// Check if enemy2D is in mid-air, such as walking off a platform
 		if (IsMidAir() == true)
 		{

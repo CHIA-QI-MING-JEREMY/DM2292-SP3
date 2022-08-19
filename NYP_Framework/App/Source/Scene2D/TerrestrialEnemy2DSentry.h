@@ -103,6 +103,8 @@ protected:
 		NUM_DIRECTIONS
 	};
 
+	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
+
 	////vector full of enemy's fired ammo
 	std::vector<CTEAmmoSentry*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing

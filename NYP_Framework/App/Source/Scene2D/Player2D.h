@@ -41,7 +41,6 @@ class CMap2D;
 // Include InventoryManager
 #include "InventoryManager.h"
 
-
 // Include InventoryManager
 #include "InventoryManagerPlanet.h"
 
@@ -83,9 +82,6 @@ public:
 	//return ammolist to the scene for pre, post and normal rendering
 	std::vector<CAmmo2D*> getAmmoList(void);
 	int getShootingDirection(); //for placing burnable blocks in jungle planet
-
-	// Player Movement
-	bool getPlayerMoveStatus();
 
 	// Attacks
 	bool getPlayerAttackStatus();
@@ -182,10 +178,6 @@ protected:
 
 	// Checkpoint coordinates
 	glm::vec2 vec2CPIndex;
-
-	// SUPERHOT movement
-	// Checks if the player is moving
-	bool isPlayerMoving;
 
 	// Sounds
 	bool hasLanded;
