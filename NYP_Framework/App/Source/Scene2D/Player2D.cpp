@@ -212,18 +212,21 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/Scene2D_BlueOrb.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
-	//T Planet
+	// Terrestrial Planet
 	// Add a yellow orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a red orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/Scene2D_RedOrb.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/Scene2D_RedOrb.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a blue orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/Scene2D_GreenOrb.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/Scene2D_GreenOrb.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a green orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 1, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a toxicity level as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ToxicityLevel", "Image/Scene2D_YellowOrb.tga", 100, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Load the sounds into CSoundController
@@ -233,8 +236,6 @@ bool CPlayer2D::Init(void)
 	onRope = false;
 
 	vec2CPIndex = vec2Index;
-
-	isPlayerMoving = false;
 
 	isAttacking = false;
 	attackDirection = RIGHT;
@@ -312,12 +313,6 @@ bool CPlayer2D::Reset()
  */
 void CPlayer2D::Update(const double dElapsedTime)
 {
-	// SUPERHOT movement
-	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-	{
-		isPlayerMoving = false;
-	}
-	
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
@@ -347,9 +342,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		// Play the "runL" animation
 		animatedSprites->PlayAnimation("runL", -1, 1.0f);
 		shootingDirection = LEFT; //set direction for shooting ammo
-
-		// SUPERHOT movement
-		isPlayerMoving = true;
 
 		// Attack Direction
 		attackDirection = LEFT;
@@ -384,9 +376,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		animatedSprites->PlayAnimation("runR", -1, 1.0f);
 		shootingDirection = RIGHT; //setting direction for ammo shooting
 
-		// SUPERHOT movement
-		isPlayerMoving = true;
-
 		// Attack Direction
 		attackDirection = RIGHT;
 	}
@@ -398,7 +387,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 13 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 16)
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT)
 		{
 			// Calculate the new position to the up
 			if (vec2Index.y < ((int)cSettings->NUM_TILES_YAXIS))
@@ -421,41 +410,38 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 
-		// SUPERHOT movement
-		isPlayerMoving = true;
 		shootingDirection = UP; //setting direction for ammo shooting
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 12 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 13
-			|| cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 15 || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == 16)
+		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT) ||
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT))
 		{
-			// Calculate the new position to the down
-			if (vec2Index.y >= 0)
+			if (vec2NumMicroSteps.y != 0 || vec2Index.y - 1 != cMap2D->FindGround(vec2Index.y, vec2Index.x))
 			{
-				vec2NumMicroSteps.y--;
-				if (vec2NumMicroSteps.y < 0)
+				// Calculate the new position to the down
+				if (vec2Index.y >= 0)
 				{
-					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
-					vec2Index.y--;
+					vec2NumMicroSteps.y--;
+					if (vec2NumMicroSteps.y < 0)
+					{
+						vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+						vec2Index.y--;
+					}
+				}
+				onRope = true;
+
+				// Constraint the player's position within the screen 
+				Constraint(DOWN);
+
+				if (CheckPosition(DOWN) == false)
+				{
+					vec2Index = vec2OldIndex;
+					vec2NumMicroSteps.y = 0;
 				}
 			}
-			onRope = true;
-
-			// Constraint the player's position within the screen 
-			Constraint(DOWN);
-
-			if (CheckPosition(DOWN) == false)
-			{
-				vec2Index = vec2OldIndex;
-				vec2NumMicroSteps.y = 0;
-			}
-
-			
 		}
 
-		// SUPERHOT movement
-		isPlayerMoving = true;
 		shootingDirection = DOWN; //setting direction for ammo shooting
 	}
 	
@@ -479,8 +465,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		attackTimer -= dElapsedTime;
 	}
 
-	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 12 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 13
-		&& cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 15 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != 16)
+	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_CORNER_LEFT && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT
+		&& cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT)
 	{
 		onRope = false;
 	}
@@ -491,10 +477,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
 
-			if (!isAlarmOn)
-			{
-				cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f)); // jump height: 2.5f -> 4 tiles for 64/48, 3.5 -> 4 tiles for 32/24
-			}
+			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f)); // jump height: 2.5f -> 4 tiles for 64/48, 3.5 -> 4 tiles for 32/24
 			iJumpCount += 1;
 
 			// Play a sound for jump
@@ -513,7 +496,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cInventoryItem->Remove(1);
 	}
 
-	//create ammo
+	// create ammo
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_E))
 	{
 		CAmmo2D* ammo = FetchAmmo();
@@ -536,7 +519,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 
 	// Check if player is in mid-air, such as walking off a platform
-	if (IsMidAir() == true)
+	if (IsMidAir() == true && !onRope)
 	{
 		if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP)
 		{
@@ -696,12 +679,12 @@ void CPlayer2D::InteractWithMap(void)
 		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
 		iJumpCount = 1;
 		break;
-	case 210:
+	case CMap2D::TILE_INDEX::ROPE_POST_COILED:
 		// runs if there is empty space on the left of the post
 		if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x - 1) == 0)
 		{
 			// changes post with coiled rope to post with uncoiled rope left
-			cMap2D->ReplaceTiles(210, 211, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::ROPE_POST_COILED, CMap2D::TILE_INDEX::ROPE_POST_UNCOILED_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
 			// adds rope for player to climb up
 			// checks if there is any ground below the rope length
 			unsigned int groundHeight = cMap2D->FindGround(vec2Index.y, vec2Index.x - 1);
@@ -711,15 +694,15 @@ void CPlayer2D::InteractWithMap(void)
 			}
 			else
 			{
-				cMap2D->ReplaceTiles(0, 212, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
-				cMap2D->ReplaceTiles(0, 213, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
+				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
+				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
 			}
 		}
 		// runs if there is empty space on the right of the post
 		else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) == 0)
 		{
 			// changes post with coiled rope to post with uncoiled rope right
-			cMap2D->ReplaceTiles(210, 214, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::ROPE_POST_COILED, CMap2D::TILE_INDEX::ROPE_POST_UNCOILED_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x, vec2Index.x + 1);
 			// adds rope for player to climb up
 			// checks if there is any ground below the rope length
 			unsigned int groundHeight = cMap2D->FindGround(vec2Index.y, vec2Index.x + 1);
@@ -729,16 +712,16 @@ void CPlayer2D::InteractWithMap(void)
 			}
 			else
 			{
-				cMap2D->ReplaceTiles(0, 215, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
-				cMap2D->ReplaceTiles(0, 216, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
+				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
+				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
 			}
 		}
 		break;
-	case 230:
+	case CMap2D::TILE_INDEX::BLACK_FLAG:
 		// change red flags (if any) to black flags
-		cMap2D->ReplaceTiles(231, 230);
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_FLAG, CMap2D::TILE_INDEX::BLACK_FLAG);
 		// change current flag to red flag
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 231);
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::RED_FLAG);
 		
 		// sets CPIndex to checkpoint player just visited
 		vec2CPIndex = vec2Index;
@@ -747,7 +730,7 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
 		break;
-	case 231:
+	case CMap2D::TILE_INDEX::RED_FLAG:
 		// sets CPIndex to checkpoint player just visited
 		vec2CPIndex = vec2Index;
 
@@ -755,27 +738,27 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
 		break;
-	case 240:
+	case CMap2D::TILE_INDEX::SPIKES_UP:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 241:
+	case CMap2D::TILE_INDEX::SPIKES_LEFT:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 242:
+	case CMap2D::TILE_INDEX::SPIKES_DOWN:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 243:
+	case CMap2D::TILE_INDEX::SPIKES_RIGHT:
 		// decrease health by 1
 		cInventoryItem = cInventoryManager->GetItem("Health");
 		cInventoryItem->Remove(1);
 		break;
-	case 299:
+	case CMap2D::TILE_INDEX::EXIT_DOOR:
 		// Game has been completed
 		CGameManager::GetInstance()->bPlayerWon = true;
 		break;
@@ -1054,12 +1037,18 @@ bool CPlayer2D::IsMidAir(void)
 	}
 
 	// Check if the tile below the player is a coloured collectible tile
-	if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 1
-		|| cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 2
-		|| cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 3
-		|| cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 4)
+	if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW
+		|| cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == CMap2D::TILE_INDEX::RED_TILE_HOLLOW
+		|| cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == CMap2D::TILE_INDEX::GREEN_TILE_HOLLOW
+		|| cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW)
 	{
 		return true;
+	}
+
+	// Check if the player is on the rope corners
+	if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_LEFT || cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT)
+	{
+		return false;
 	}
 
 	// Check if the tile below the player's current position is empty
@@ -1075,7 +1064,7 @@ bool CPlayer2D::IsMidAir(void)
 		return true;
 	}
 
-	//if player is standing between 2 tiles which are both not obsuctrtion blocks
+	//if player is standing between 2 tiles which are both not obstruction blocks
 	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
 	{
 		return true;
@@ -1088,19 +1077,19 @@ void CPlayer2D::SetColour(COLOUR colour)
 {
 	switch (colour)
 	{
-	case 0:
+	case WHITE:
 		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); // WHITE
 		break;
-	case 1:
+	case YELLOW:
 		runtimeColour = glm::vec4(1.0, 1.0, 0.0, 1.0); // YELLOW
 		break;
-	case 2:
+	case RED:
 		runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); // RED
 		break;
-	case 3:
+	case GREEN:
 		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); // GREEN
 		break;
-	case 4:
+	case BLUE:
 		runtimeColour = glm::vec4(0.0, 0.0, 1.0, 1.0); // BLUE
 		break;
 	case PURPLE:
@@ -1115,11 +1104,6 @@ void CPlayer2D::SetColour(COLOUR colour)
 glm::vec4 CPlayer2D::GetColour()
 {
 	return runtimeColour;
-}
-
-bool CPlayer2D::getPlayerMoveStatus()
-{
-	return isPlayerMoving;
 }
 
 bool CPlayer2D::getPlayerAttackStatus()

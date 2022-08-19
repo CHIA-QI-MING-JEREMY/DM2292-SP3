@@ -299,6 +299,8 @@ bool TerrestrialPlanet::Init(void)
 	isGreenObtained = false;
 	isBlueObtained = false;
 
+	isWhite = true;
+
 	return true;
 }
 
@@ -361,15 +363,17 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
 		{
-			cMap2D->ReplaceTiles(801, 201); // allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(202, 802); // dont allow player to walk through red tiles
-			cMap2D->ReplaceTiles(203, 803); // dont allow player to walk through green tiles
-			cMap2D->ReplaceTiles(204, 804); // dont allow player to walk through blue tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_SOLID, CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW); // allow player to walk through yellow tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_HOLLOW, CMap2D::TILE_INDEX::RED_TILE_SOLID); // dont allow player to walk through red tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::GREEN_TILE_HOLLOW, CMap2D::TILE_INDEX::GREEN_TILE_SOLID); // dont allow player to walk through green tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW, CMap2D::TILE_INDEX::BLUE_TILE_SOLID); // dont allow player to walk through blue tiles
 
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::YELLOW); // change player colour to yellow
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from yellow orb counter
+
+			isWhite = false;
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_2))
@@ -377,15 +381,17 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
 		{
-			cMap2D->ReplaceTiles(201, 801); // dont allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(802, 202); // allow player to walk through red tiles
-			cMap2D->ReplaceTiles(203, 803); // dont allow player to walk through green tiles
-			cMap2D->ReplaceTiles(204, 804); // dont allow player to walk through blue tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW, CMap2D::TILE_INDEX::YELLOW_TILE_SOLID); // dont allow player to walk through yellow tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_SOLID, CMap2D::TILE_INDEX::RED_TILE_HOLLOW); // allow player to walk through red tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::GREEN_TILE_HOLLOW, CMap2D::TILE_INDEX::GREEN_TILE_SOLID); // dont allow player to walk through green tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW, CMap2D::TILE_INDEX::BLUE_TILE_SOLID); // dont allow player to walk through blue tiles
 
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::RED); // change player colour to red
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from red orb counter
+
+			isWhite = false;
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_3))
@@ -393,15 +399,17 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
 		{
-			cMap2D->ReplaceTiles(201, 801); // dont allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(202, 802); // dont allow player to walk through red tiles
-			cMap2D->ReplaceTiles(803, 203); // allow player to walk through green tiles
-			cMap2D->ReplaceTiles(204, 804); // dont allow player to walk through blue tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW, CMap2D::TILE_INDEX::YELLOW_TILE_SOLID); // dont allow player to walk through yellow tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_HOLLOW, CMap2D::TILE_INDEX::RED_TILE_SOLID); // dont allow player to walk through red tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::GREEN_TILE_SOLID, CMap2D::TILE_INDEX::GREEN_TILE_HOLLOW); // allow player to walk through green tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW, CMap2D::TILE_INDEX::BLUE_TILE_SOLID); // dont allow player to walk through blue tiles
 
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::GREEN); // change player colour to green
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from green orb counter
+
+			isWhite = false;
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_4))
@@ -409,28 +417,33 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
 		{
-			cMap2D->ReplaceTiles(201, 801); // dont allow player to walk through yellow tiles
-			cMap2D->ReplaceTiles(202, 802); // dont allow player to walk through red tiles
-			cMap2D->ReplaceTiles(203, 803); // dont allow player to walk through green tiles
-			cMap2D->ReplaceTiles(804, 204); // allow player to walk through blue tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW, CMap2D::TILE_INDEX::YELLOW_TILE_SOLID); // dont allow player to walk through yellow tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_HOLLOW, CMap2D::TILE_INDEX::RED_TILE_SOLID); // dont allow player to walk through red tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::GREEN_TILE_HOLLOW, CMap2D::TILE_INDEX::GREEN_TILE_SOLID); // dont allow player to walk through green tiles
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BLUE_TILE_SOLID, CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW); // allow player to walk through blue tiles
 
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::BLUE); // change player colour to blue
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from blue orb counter
+
+			isWhite = false;
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_5))
 	{
-		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
-		cMap2D->ReplaceTiles(201, 801); // dont allow player to walk through yellow tiles
-		cMap2D->ReplaceTiles(202, 802); // dont allow player to walk through red tiles
-		cMap2D->ReplaceTiles(203, 803); // dont allow player to walk through green tiles
-		cMap2D->ReplaceTiles(204, 804); // dont allow player to walk through blue tiles
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW, CMap2D::TILE_INDEX::YELLOW_TILE_SOLID); // dont allow player to walk through yellow tiles
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_HOLLOW, CMap2D::TILE_INDEX::RED_TILE_SOLID); // dont allow player to walk through red tiles
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::GREEN_TILE_HOLLOW, CMap2D::TILE_INDEX::GREEN_TILE_SOLID); // dont allow player to walk through green tiles
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW, CMap2D::TILE_INDEX::BLUE_TILE_SOLID); // dont allow player to walk through blue tiles
+
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE); // change player colour to white
+
+		isWhite = true;
 	}
 
 	// restores coloured orb count when the player walks over a checkpoint
-	if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) == 231)
+	if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) == CMap2D::TILE_INDEX::RED_FLAG)
 	{
 		// if yellow orb has been obtained and yellow charge has been consumed
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
@@ -625,21 +638,6 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cout << "Runtime error: " << e.what();
 			return false;
 		}
-	}
-
-	// Player Attacks (TO DO)
-	if (cPlayer2D->getPlayerAttackStatus())
-	{
-		for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-		{
-			if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
-			{
-				int remainingHealth = enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25;
-				cout << remainingHealth << endl;
-				enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(remainingHealth);
-			}
-		}
-		cPlayer2D->setPlayerAttackStatus(false);
 	}
 
 	// Call the cGUI_Scene2D's update method

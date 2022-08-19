@@ -16,10 +16,10 @@ Interactables
 199 : ironwood
 
 [Terrestrial Planet]
-201 : yellow brick
-202 : red brick
-203 : green brick
-204 : blue brick
+201 : yellow tile hollow
+202 : red tile hollow
+203 : green tile hollow
+204 : blue tile hollow
 210 : rope post (coiled)
 211 : rope post (uncoiled left)
 212 : rope corner (left)
@@ -62,11 +62,11 @@ Solid Blocks
 612 : grass ground top right rounded corner
 
 [Terrestrial Planet]
-800 : brown brick
-801 : yellow brick
-802 : red brick
-803 : green brick
-804 : blue brick
+800 : ground tile solid
+801 : yellow tile solid
+802 : red tile solid
+803 : green tile solid
+804 : blue tile solid
 
 [Snow Planet]
 1000: regular ground with snow (top snow)
