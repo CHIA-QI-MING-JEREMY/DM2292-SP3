@@ -1105,7 +1105,7 @@ void CPlayer2D::UpdateKnockback(const double dElapsedTime)
 		// Constraint the player's position within the screen boundary
 		Constraint(LEFT);
 		int iIndex_XAxis_Proposed = vec2Index.x;
-		for (int i = iIndex_XAxis_OLD; i <= iIndex_XAxis_Proposed; i++)
+		for (int i = iIndex_XAxis_OLD; i >= iIndex_XAxis_Proposed; i++)
 		{
 			// Change the player's index to the current i value
 			vec2Index.x = i;
