@@ -1452,6 +1452,31 @@ bool CMap2D::findTilesForShip()
 	return true;
 }
 
+//find position by tile index
+glm::vec2 CMap2D::GetTilePosition(const int tileIndex, const bool bInvert)
+{
+	glm::vec2 position; //an empty vec2
+	for (unsigned int uiRow = 0; uiRow < cSettings->NUM_TILES_YAXIS; uiRow++)
+	{
+		for (unsigned int uiCol = 0; uiCol < cSettings->NUM_TILES_XAXIS; ++uiCol)
+		{
+			if (arrMapInfo[uiCurLevel][uiRow][uiCol].value == tileIndex)
+			{
+				position.x = uiCol;
+				if (bInvert)
+				{
+					position.y = cSettings->NUM_TILES_YAXIS - uiRow - 1;
+				}
+				else
+				{
+					position.y = uiRow;
+				}
+			}
+		}
+	}
+	return position;
+}
+
 /**
  @brief Print out the details about this class instance in the console
  */
