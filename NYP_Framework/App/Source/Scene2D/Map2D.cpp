@@ -292,11 +292,25 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(VINE_RIGHT, iTextureID));
 		}
+
+		//space tile, alt tiles for moving leaves --> leaves will move onto these tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Hidden.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Hidden.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(MOVING_LEAF_ALT, iTextureID));
+		}
 	}
 
 	/// <summary>
 	/// JUNGLE PLANET SOLID BLOCKS
 	/// </summary>
+	int x;
 	{
 		//burnable bush tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlock.tga", true);
@@ -371,6 +385,19 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(GRASS_GROUND_R, iTextureID));
+		}
+
+		//moving leaves solid tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/MovingLeaf.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/MovingLeaf.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(MOVING_LEAF_SOLID, iTextureID));
 		}
 	}
 
