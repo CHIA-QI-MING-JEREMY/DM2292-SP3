@@ -1104,6 +1104,22 @@ void CPlayer2D::UpdateKnockback(const double dElapsedTime)
 
 		// Constraint the player's position within the screen boundary
 		Constraint(LEFT);
+		int iIndex_XAxis_Proposed = vec2Index.x;
+		for (int i = iIndex_XAxis_OLD; i <= iIndex_XAxis_Proposed; i++)
+		{
+			// Change the player's index to the current i value
+			vec2Index.x = i;
+			// If the new position is not feasible, then revert to old position
+			if (CheckPosition(LEFT) == false)
+			{
+				// Align with the row
+				vec2NumMicroSteps.x = 0;
+				// Set the Physics to fall status
+				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+				break;
+			}
+		}
+
 
 	}
 }
