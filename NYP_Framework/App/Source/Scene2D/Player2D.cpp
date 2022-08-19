@@ -1112,12 +1112,8 @@ void CPlayer2D::UpdateKnockback(const double dElapsedTime)
 			// If the new position is not feasible, then revert to old position
 			if (CheckPosition(LEFT) == false)
 			{
-				if (i != iIndex_XAxis_OLD) {
-					vec2Index.x = i + 1;
-				}
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+				vec2Index = vec2OldIndex;
 				vec2NumMicroSteps.x = 0;
-				break;
 			}
 		}
 
