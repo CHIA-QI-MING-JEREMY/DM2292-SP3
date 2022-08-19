@@ -90,14 +90,22 @@ public:
 		IRONWOOD,
 		ENERGY_QUARTZ,
 		ICE_CRYSTAL,
-		//Jungle Plant specific collectables
+		//Jungle Planet specific collectables
 		BURNABLE_BLOCKS,
 		VINE,
-		//T Plant specific collectables
+		//Terrestrial Planet specific collectables
 		YELLOW_ORB,
 		RED_ORB,
 		GREEN_ORB,
 		BLUE_ORB,
+		ANTIDOTE_PILL,
+		//Snow Planet specific collectables
+		SHIELD,
+		BERSERK,
+		FREEZE,
+		FUR,
+		FUR_COAT,
+
 		NUM_RESOURCES
 	};
 

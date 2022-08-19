@@ -229,7 +229,10 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a toxicity level as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ToxicityLevel", "Image/Scene2D_YellowOrb.tga", 100, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ToxicityLevel", "Image/TerrestrialPlanet/ToxicityLevel.tga", 100, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add an antidote pill as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("AntidotePill", "Image/TerrestrialPlanet/AntidotePill.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Load the sounds into CSoundController

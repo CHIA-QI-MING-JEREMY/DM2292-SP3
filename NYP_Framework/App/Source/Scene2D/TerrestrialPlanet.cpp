@@ -627,6 +627,14 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		}
 	}
 
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("AntidotePill");
+	if (cInventoryItemPlanet->GetCount() == cInventoryItemPlanet->GetMaxCount())
+	{
+		cInventoryItemPlanet->Remove(1);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
+		cInventoryItemPlanet->Remove(20);
+	}
+
 	// Call the cPlayer2D's update method before Map2D
 	// as we want to capture the inputs before Map2D update
 	cPlayer2D->Update(dElapsedTime);

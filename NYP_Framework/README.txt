@@ -49,7 +49,8 @@ Interactables
 250 : alarm box
 251 : alarm light (off)
 252 : alarm light (on)
-299 : exit
+260 : antidote pill
+299 : exit door
 399 : energy quartz
 
 [Snow Planet]
