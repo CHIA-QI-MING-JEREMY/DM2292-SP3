@@ -30,6 +30,8 @@ public:
 	// Get the maximum number of items from this class instance
 	int GetMaxCount(void) const;
 
+	void setCount(int a);
+
 	// Get the texture ID
 	unsigned int GetTextureID(void) const;
 

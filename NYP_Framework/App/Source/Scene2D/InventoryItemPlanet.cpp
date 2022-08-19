@@ -72,6 +72,11 @@ int CInventoryItemPlanet::GetMaxCount(void) const
 	return iItemMaxCount;
 }
 
+void CInventoryItemPlanet::setCount(int a)
+{
+	iItemCount = a;
+}
+
 /**
 @brief Get the texture ID
 */
