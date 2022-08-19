@@ -840,8 +840,10 @@ bool SnowEnemy2DSWB::InteractWithPlayer(void)
 		else {
 			animatedSprites->PlayAnimation("biteL", -1, 1.0f);
 		}
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
-		cInventoryItemPlanet->Remove(1);
+		if (cPlayer2D->modeOfPlayer != CPlayer2D::MODE::BERSERKSHIELD && cPlayer2D->modeOfPlayer != CPlayer2D::MODE::SHIELD) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+			cInventoryItemPlanet->Remove(1);
+		}
 		return true;
 	}
 	return false;

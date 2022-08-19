@@ -83,6 +83,8 @@ CPlayer2D::~CPlayer2D(void)
   */
 bool CPlayer2D::Init(void)
 {
+
+	modeOfPlayer = NORMAL;
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 	// Reset all keys since we are starting a new game
@@ -161,6 +163,7 @@ bool CPlayer2D::Init(void)
 
 	//CS: Init the color to white
 	SetColour(WHITE);
+
 
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
@@ -534,6 +537,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 	}
+
 
 	// Check if player is in mid-air, such as walking off a platform
 	if (IsMidAir() == true && !onRope)

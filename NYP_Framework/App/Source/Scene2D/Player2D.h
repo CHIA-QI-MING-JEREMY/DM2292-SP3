@@ -113,6 +113,19 @@ public:
 		NUM_DIRECTIONS
 	};
 
+	enum MODE
+	{
+		NORMAL = 0,
+		SHIELD = 1,
+		BERSERK = 2,
+		BERSERKSHIELD = 3,
+		NUM_MODE
+	};
+
+	int modeOfPlayer;
+
+	MODE MODE;
+
 protected:
 	glm::vec2 vec2OldIndex;
 
@@ -133,6 +146,8 @@ protected:
 
 	// Player's colour
 	glm::vec4 runtimeColour;
+
+	CGUI_Scene2D* cGUI_Scene2D;
 
 	// Inventory Manager
 	CInventoryManager* cInventoryManager;
@@ -193,5 +208,9 @@ protected:
 
 	//used to get a deactivated ammo to activate
 	CAmmo2D* FetchAmmo(void);
+
+private:
+	float turnBerserkTimer;
+	float turnBerserkOffTimer;
 
 };
