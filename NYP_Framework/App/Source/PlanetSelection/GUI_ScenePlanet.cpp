@@ -65,6 +65,7 @@ bool CGUI_ScenePlanet::Init(void)
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.Fonts->AddFontFromFileTTF("Image/GUI/quaver.ttf", 10);
 	io.Fonts->Build();
+	io.WantCaptureMouse;
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -84,7 +85,7 @@ bool CGUI_ScenePlanet::Init(void)
 	window_flags |= ImGuiWindowFlags_NoCollapse;
 
 	CImageLoader* il = CImageLoader::GetInstance();
-	StartCombatButtonData.fileName = "Image\\GUI\\Button_Play.png";
+	StartCombatButtonData.fileName = "Image\\GUI\\Button_VolDown.png";
 	StartCombatButtonData.textureID = il->LoadTextureGetID(StartCombatButtonData.fileName.c_str(), false);
 
 	// Show the mouse pointer
@@ -124,28 +125,6 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 	ImGui::SetWindowPos(ImVec2(0.0f, 0.0f));
 	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
 	ImGui::SetWindowFontScale(2.f * relativeScale_y);
-
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
-	{
-		static float f = 0.0f;
-		static int counter = 0;
-
-		// Create a window called "Hello, world!" and append into it.
-		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth * 0.8,
-			CSettings::GetInstance()->iWindowHeight * 0.85));				// Set the top-left of the window at (10,10)
-		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-
-		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)StartCombatButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// To next scene
-			StartCombat = true;
-		}
-
-		ImGui::End();
-	}
 
 	// Display the FPS
 	ImGui::TextColored(ImVec4(1, 1, 1, 1), "INTER-GALACTICAL MAP SYSTEM");
@@ -198,6 +177,27 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 			break;
 		default:
 			break;
+		}
+		ImGui::End();
+	}
+
+	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+	{
+		static float f = 0.0f;
+		static int counter = 0;
+
+		// Create a window called "Hello, world!" and append into it.
+		ImGui::Begin("Main Menu", NULL, window_flags);
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth * 0.8,
+			CSettings::GetInstance()->iWindowHeight * 0.85));				// Set the top-left of the window at (10,10)
+		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+
+		// Add codes for Start button here
+		if (ImGui::ImageButton((ImTextureID)StartCombatButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			// To next scene
+			StartCombat = true;
 		}
 		ImGui::End();
 	}

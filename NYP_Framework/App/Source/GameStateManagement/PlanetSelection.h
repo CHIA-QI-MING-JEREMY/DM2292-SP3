@@ -15,6 +15,7 @@
 #include <string>
 
 #include "../App/Source/PlanetSelection/ScenePlanet.h"
+#include "GameInfo.h"
 
 class CPlanetSelectionState : public CGameStateBase
 {
