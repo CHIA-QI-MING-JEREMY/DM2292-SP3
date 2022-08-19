@@ -257,5 +257,8 @@ protected:
 	//std::vector<int> m_grid;
 	std::vector<glm::vec2> m_directions;
 	HeuristicFunction m_heuristic;
+
+	// my function disappeared what the fuck
+	bool findTilesForShip(void);
 };
 

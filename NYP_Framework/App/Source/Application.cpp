@@ -41,6 +41,7 @@
 #include "GameStateManagement/PauseState.h"
 #include "GameStateManagement/InventoryState.h"
 #include "GameStateManagement/PlanetSelection.h"
+#include "GameStateManagement/ShipCombat.h"
 
 // Add your include files here
 
@@ -247,6 +248,7 @@ bool Application::Init(void)
 	CGameStateManager::GetInstance()->AddGameState("PauseState", new CPauseState());
 	CGameStateManager::GetInstance()->AddGameState("InventoryState", new CInventoryState());
 	CGameStateManager::GetInstance()->AddGameState("PlanetState", new CPlanetSelectionState());
+	CGameStateManager::GetInstance()->AddGameState("ShipCombatState", new CShipCombatState());
 
 	// Set the active scene
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");

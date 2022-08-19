@@ -76,6 +76,8 @@ public:
 	// PostRender
 	void PostRender(void);
 
+	bool StartCombat;
+
 protected:
 	CBackgroundEntity* background;
 
@@ -107,6 +109,7 @@ protected:
 	// Scene Specific Variables
 	CPlanet* PlanetSelected;
 	CPlanet* nebula;
+	bool lState;
 
 	// Constructor
 	CScenePlanet(void);

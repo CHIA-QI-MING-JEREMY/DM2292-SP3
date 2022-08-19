@@ -6,7 +6,7 @@
  */
 #pragma once
 
- // Include Singleton template
+// Include Singleton template
 #include "DesignPatterns\SingletonTemplate.h"
 
 // Include GLEW
@@ -24,7 +24,7 @@
 #include "Primitives/Entity2D.h"
 
 // Include the Map2D as we will use it to check the player's movements and actions
-class CMap2D;
+#include "../App/Source/Scene2D/Map2D.h"
 
 // Include Keyboard controller
 #include "Inputs\KeyboardController.h"
@@ -33,29 +33,23 @@ class CMap2D;
 #include "Primitives/SpriteAnimation.h"
 
 // Include Physics2D
-#include "Physics2D.h"
+#include "../App/Source/Scene2D/Physics2D.h"
 
 // Include GameManager
-#include "GameManager.h"
+#include "../App/Source/Scene2D/GameManager.h"
 
 // Include InventoryManager
-#include "InventoryManager.h"
-
-// Include InventoryManager
-#include "InventoryManagerPlanet.h"
+#include "../App/Source/Scene2D/InventoryManager.h"
 
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
-//include ammo for firing
-#include "Ammo2D.h"
-
 // Include Camera2D
 #include "Primitives/Camera2D.h"
 
-class CPlayer2D : public CSingletonTemplate<CPlayer2D>, public CEntity2D
+class CShipPlayer : public CSingletonTemplate<CShipPlayer>, public CEntity2D
 {
-	friend CSingletonTemplate<CPlayer2D>;
+	friend CSingletonTemplate<CShipPlayer>;
 public:
 
 	// Init
@@ -79,31 +73,6 @@ public:
 	// PostRender
 	void PostRender(void);
 
-	//return ammolist to the scene for pre, post and normal rendering
-	std::vector<CAmmo2D*> getAmmoList(void);
-	int getShootingDirection(); //for placing burnable blocks in jungle planet
-
-	// Attacks
-	bool getPlayerAttackStatus();
-	void setPlayerAttackStatus(bool isAttacking);
-	int getPlayerAttackDirection();
-
-	// colours
-	enum COLOUR
-	{
-		WHITE = 0,
-		YELLOW,
-		RED,
-		GREEN,
-		BLUE,
-		PURPLE,
-		NUM_COLOURS
-	};
-
-	// Colours
-	void SetColour(COLOUR colour = WHITE);
-	glm::vec4 GetColour();
-
 	enum DIRECTION
 	{
 		LEFT = 0,
@@ -112,7 +81,7 @@ public:
 		DOWN = 3,
 		NUM_DIRECTIONS
 	};
-
+	
 protected:
 	glm::vec2 vec2OldIndex;
 
@@ -127,7 +96,7 @@ protected:
 
 	// CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
-
+	
 	// The handler containing the instance of the camera
 	Camera2D* camera2D;
 
@@ -140,58 +109,29 @@ protected:
 	// Inventory Item
 	CInventoryItem* cInventoryItem;
 
-	// Inventory Manager
-	CInventoryManagerPlanet* cInventoryManagerPlanet;
-
-	// Inventory Item
-	CInventoryItemPlanet* cInventoryItemPlanet;
-
 	// Sound Controller
 	CSoundController* cSoundController;
 
 	// Constructor
-	CPlayer2D(void);
+	CShipPlayer(void);
 
 	// Destructor
-	virtual ~CPlayer2D(void);
+	virtual ~CShipPlayer(void);
 
 	// Constraint the player's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
-
-	// Let player interact with the map
-	void InteractWithMap(void);
 
 	// Updates the player's health and number of lives
 	void UpdateHealthLives(void);
 
 	// Physics
 	CPhysics2D cPhysics2D;
-	void UpdateJumpFall(const double dElapsedTime);
-	int iJumpCount;
 
 	// Checks for feasible position to move into
 	bool CheckPosition(DIRECTION eDirection);
 
-	// Checks if the player is in mid-air
-	bool IsMidAir(void);
-	bool onRope;
-
-	// Checkpoint coordinates
-	glm::vec2 vec2CPIndex;
-
-	// Sounds
-	bool hasLanded;
-
-	// Attack
-	bool isAttacking;
-	int attackDirection;
-	double attackTimer;
-	double maxAttackTimer;
-	//vector full of player's fired ammo
-	std::vector<CAmmo2D*> ammoList;
-	int shootingDirection; //shoots in the direction the player is facing
-
-	//used to get a deactivated ammo to activate
-	CAmmo2D* FetchAmmo(void);
-
+	// SUPERHOT movement
+	// Checks if the player is moving
+	bool isPlayerMoving;
 };
+
