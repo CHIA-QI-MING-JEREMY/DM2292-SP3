@@ -19,6 +19,7 @@ Interactables
 35 : vine right corner (connects vine tied with rock to dangling vine)
 36 : vine dangling on the right of its left neighbour
 40 : spot to set moving leaves
+41 : transitional block used to switch moving leaf blocks
 197 : burnable block collectable
 198 : vine collectable
 199 : ironwood
