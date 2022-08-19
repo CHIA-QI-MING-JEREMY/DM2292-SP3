@@ -45,7 +45,8 @@ bool CPlayGameState::Init(void)
 {
 	cout << "CPlayGameState::Init()\n" << endl;
 
-	type = CGameInfo::GetInstance()->selectedPlanet->getType();
+	//type = CGameInfo::GetInstance()->selectedPlanet->getType();
+	type = CPlanet::TYPE::TERRESTRIAL;
 
 	std::cout << (CPlanet::TYPE(type)) << "\n";
 
