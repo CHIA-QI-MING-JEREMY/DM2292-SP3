@@ -300,6 +300,10 @@ bool TerrestrialPlanet::Init(void)
 	isBlueObtained = false;
 
 	isWhite = true;
+	maxToxicityLevelDuration = 2.0;
+	toxicityLevelDuration = maxToxicityLevelDuration;
+	maxToxicDamageDuration = 1.0;
+	toxicDamageDuration = maxToxicDamageDuration;
 
 	return true;
 }
@@ -468,6 +472,41 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
 			cInventoryItemPlanet->Add(1); // adds 1 to blue orb counter
+		}
+	}
+
+	if (!isWhite)
+	{
+		if (toxicityLevelDuration > 0.0)
+		{
+			toxicityLevelDuration -= dElapsedTime;
+		}
+		else
+		{
+			toxicityLevelDuration = maxToxicityLevelDuration;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
+			cInventoryItemPlanet->Add(5);
+			cout << "Toxicity Level: " << cInventoryItemPlanet->GetCount() << endl;
+		}
+	}
+	else
+	{
+		toxicityLevelDuration = maxToxicityLevelDuration;
+	}
+
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
+	if (cInventoryItemPlanet->GetCount() == cInventoryItemPlanet->GetMaxCount())
+	{
+		if (toxicDamageDuration > 0.0)
+		{
+			toxicDamageDuration -= dElapsedTime;
+		}
+		else
+		{
+			toxicDamageDuration = maxToxicDamageDuration;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+			cInventoryItemPlanet->Remove(10);
+			cout << "Health: " << cInventoryItemPlanet->GetCount() << endl;
 		}
 	}
 

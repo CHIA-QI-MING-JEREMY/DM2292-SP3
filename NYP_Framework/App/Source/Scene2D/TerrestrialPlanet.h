@@ -175,4 +175,10 @@ protected:
 
 	// Checks if player is white
 	bool isWhite;
+
+	// Timers to increase toxiciity level and toxic damage
+	double maxToxicityLevelDuration;
+	double toxicityLevelDuration;
+	double maxToxicDamageDuration;
+	double toxicDamageDuration;
 };

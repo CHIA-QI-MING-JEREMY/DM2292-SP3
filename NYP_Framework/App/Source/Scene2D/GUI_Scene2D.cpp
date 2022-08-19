@@ -173,7 +173,36 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
 	ImGui::End();
 
-	if (planetNum == 2) {
+	if (planetNum == 2)
+	{
+		// Render the Toxicity Level
+		ImGuiWindowFlags toxicityWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("ToxicityLevel", NULL, toxicityWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.125f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,
+				cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.66f, 0.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+		ImGui::ProgressBar(cInventoryItemPlanet->GetCount() /
+			(float)cInventoryItemPlanet->GetMaxCount(), ImVec2(100.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+		
 		// Render the inventory items
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
 		ImGuiWindowFlags yellowOrbWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |

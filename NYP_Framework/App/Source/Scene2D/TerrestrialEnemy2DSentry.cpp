@@ -390,8 +390,6 @@ void TEnemy2DSentry::Render(void)
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
 	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
 
-	cout << camera2D->getZoom() << endl;
-
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 	glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
