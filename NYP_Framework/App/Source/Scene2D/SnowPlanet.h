@@ -148,5 +148,8 @@ protected:
 	SnowPlanet(void);
 	// Destructor
 	virtual ~SnowPlanet(void);
+private:
+	float turnBerserkTimer;
+	float turnBerserkOffTimer;
 };
 

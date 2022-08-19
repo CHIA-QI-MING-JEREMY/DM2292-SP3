@@ -537,7 +537,22 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 	}
-
+	if (shootingDirection == LEFT) {
+		if (modeOfPlayer == SHIELD) {
+			animatedSprites->PlayAnimation("idleshieldL", -1, 1.0f);
+		}
+		else if (modeOfPlayer == BERSERKSHIELD) {
+			animatedSprites->PlayAnimation("idleshieldL", -1, 1.0f);
+		}
+	}
+	else if (shootingDirection == RIGHT) {
+		if (modeOfPlayer == SHIELD) {
+			animatedSprites->PlayAnimation("idleshieldR", -1, 1.0f);
+		}
+		else if (modeOfPlayer == BERSERKSHIELD) {
+			animatedSprites->PlayAnimation("idleshieldR", -1, 1.0f);
+		}
+	}
 
 	// Check if player is in mid-air, such as walking off a platform
 	if (IsMidAir() == true && !onRope)
@@ -1128,6 +1143,16 @@ void CPlayer2D::SetColour(COLOUR colour)
 glm::vec4 CPlayer2D::GetColour()
 {
 	return runtimeColour;
+}
+
+int CPlayer2D::getModeOfPlayer()
+{
+	return modeOfPlayer;
+}
+
+void CPlayer2D::setModeOfPlayer(int a)
+{
+	modeOfPlayer = a;
 }
 
 bool CPlayer2D::getPlayerAttackStatus()

@@ -102,6 +102,8 @@ SnowPlanet::~SnowPlanet(void)
 */
 bool SnowPlanet::Init(void)
 {
+	turnBerserkOffTimer = 5.f;
+	turnBerserkTimer = 0.f;
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
 
@@ -298,6 +300,50 @@ bool SnowPlanet::Init(void)
 bool SnowPlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(3);
+	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::NORMAL && turnBerserkOffTimer==5.0f) {
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
+			cout << "Switching back to NORMAL player mode" << endl;
+			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::NORMAL);
+			cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+		}
+	}
+	if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && turnBerserkOffTimer > 5.0f) {
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
+			cout << "Switching back to BERSERK player mode" << endl;
+			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
+			cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
+		}
+	}
+	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK) {
+			cout << "Shield Mode Activated" << endl;
+			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::SHIELD);
+		}
+		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK) {
+			cout << "Berserk Shield Mode Activated" << endl;
+			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERKSHIELD);
+			cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
+		}
+	}
+	if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_G)) {
+			cout << "Turning to Berserk Mode" << endl;
+			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
+		}
+	}
+	if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK || cPlayer2D->getModeOfPlayer()==CPlayer2D::MODE::BERSERKSHIELD) {
+		turnBerserkOffTimer -= dElapsedTime;
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
+		cout << "TurnBerserkOffTimer:" << turnBerserkOffTimer << endl;
+	}
+	if (turnBerserkOffTimer <= turnBerserkTimer) {
+		cout << "Turning to Normal Mode" << endl;
+		cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::NORMAL);
+	}
+	if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::NORMAL) {
+		turnBerserkOffTimer = 5.0f;
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+	}
 	// mouse Position demo
 	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
 	camPos = glm::normalize(camPos);
