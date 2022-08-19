@@ -170,6 +170,12 @@ protected:
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
+	// Inventory Manager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+
+	// Inventory Item
+	CInventoryItemPlanet* cInventoryItemPlanet;
+
 	// Current FSM
 	FSM sCurrentFSM;
 

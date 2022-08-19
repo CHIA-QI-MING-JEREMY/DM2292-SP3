@@ -44,12 +44,13 @@ Interactables
 399 : energy quartz
 
 [Snow Planet]
-599 : ice crystal
 400: fur
 401: fur coat
 402: power-up shield
 403: power-up berserk
 404: power-up freeze water shard
+598: water
+599 : ice crystal
 
 
 Solid Blocks
@@ -74,8 +75,7 @@ Solid Blocks
 1002: regular ground with snow (right snow)
 1003: regular ground with snow (bottom snow)
 1004: regular ground without snow
-1100: water
-1101: ice
+1100: ice
 
 [Space Ship]
 1210: Planet / Space Ship Interior wall

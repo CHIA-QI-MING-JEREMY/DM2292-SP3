@@ -93,7 +93,7 @@ bool SnowEnemy2DSWB::Init(void)
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
-//	camera2D = Camera2D::GetInstance();
+	camera2D = Camera2D::GetInstance();
 
 	// Get the handler to the CSoundController instance
 	cSoundController = CSoundController::GetInstance();
@@ -116,6 +116,8 @@ bool SnowEnemy2DSWB::Init(void)
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
+
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
@@ -441,43 +443,21 @@ void SnowEnemy2DSWB::Render(void)
 	unsigned int colorLoc = glGetUniformLocation(CShaderManager::GetInstance()->activeShader->ID, "runtimeColour");
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
+
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	//transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-	//	vec2UVCoordinate.y,
-	//	0.0f));
-	//// Update the shaders with the latest transform
-	//glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
-	//glUniform4fv(colorLoc, 1, glm::value_ptr(runtimeColour));
+	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+	glm::vec2 cameraPos = camera2D->getPos();
 
-	//// Get the texture to be rendered
-	//glBindTexture(GL_TEXTURE_2D, iTextureID);
+	glm::vec2 IndexPos = vec2Index;
 
-	//// Render the tile
-	////glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	////quadMesh->Render();
+	glm::vec2 actualPos = IndexPos - cameraPos + offset;
+	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
+	actualPos.x += i32vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
+	actualPos.y += i32vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
-	////CS: Render the animated sprite
-	//animatedSprites->Render();
+	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
+	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
 
-	//glBindVertexArray(0);
-
-	//transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	//glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
-	//glm::vec2 cameraPos = camera2D->getPos();
-
-	//glm::vec2 IndexPos = vec2Index;
-
-	//glm::vec2 actualPos = IndexPos - cameraPos + offset;
-	//actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	//actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
-	//actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
-
-	//transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
-	//transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
-
-	transform = glm::translate(transform, glm::vec3(vec2UVCoordinate.x,
-		vec2UVCoordinate.y,
-		0.0f));
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -492,7 +472,6 @@ void SnowEnemy2DSWB::Render(void)
 	animatedSprites->Render();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
 	////render enemy ammo
 	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	//{
@@ -861,6 +840,8 @@ bool SnowEnemy2DSWB::InteractWithPlayer(void)
 		else {
 			animatedSprites->PlayAnimation("biteL", -1, 1.0f);
 		}
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(1);
 		return true;
 	}
 	return false;
