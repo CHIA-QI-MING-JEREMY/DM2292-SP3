@@ -1118,6 +1118,28 @@ void CPlayer2D::UpdateKnockback(const double dElapsedTime)
 			vec2NumMicroSteps.x = 0;
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
+		if (vec2NumMicroSteps.y != 0 || vec2Index.y - 1 != cMap2D->FindGround(vec2Index.y, vec2Index.x))
+		{
+			// Calculate the new position to the down
+			if (vec2Index.y >= 0)
+			{
+				vec2NumMicroSteps.y--;
+				if (vec2NumMicroSteps.y < 0)
+				{
+					vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+					vec2Index.y--;
+				}
+			}
+			// Constraint the player's position within the screen 
+			Constraint(DOWN);
+
+			if (CheckPosition(DOWN) == false)
+			{
+				vec2Index = vec2OldIndex;
+				vec2NumMicroSteps.y = 0;
+				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+			}
+		}
 
 	}
 
