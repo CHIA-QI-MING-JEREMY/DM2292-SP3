@@ -103,6 +103,8 @@ protected:
 		NUM_DIRECTIONS
 	};
 
+	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
+
 	////vector full of enemy's fired ammo
 	std::vector<CJEAmmoVT*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing
@@ -117,6 +119,11 @@ protected:
 		IDLE = 0,
 		RELOAD = 1,
 		ATTACK = 2,
+		TELEPORT,
+		WANDER,
+		SHOOT,
+		RETURN,
+		RECOVER,
 		EXPLODE,
 		NUM_FSM
 	};
@@ -148,11 +155,11 @@ protected:
 	// Physics
 	CPhysics2D cPhysics2D;
 
-	//// waypoint path
-	//vector<glm::vec2> waypoints;
-	//// waypoint counter
-	//int currentWaypointCounter;
-	//int maxWaypointCounter;
+	// waypoint path
+	vector<glm::vec2> waypoints;
+	// waypoint counter
+	int currentWaypointCounter;
+	int maxWaypointCounter;
 
 	// Current color
 	glm::vec4 runtimeColour;
@@ -170,7 +177,7 @@ protected:
 	int iFSMCounter;
 
 	// Max count in a state
-	const int iMaxFSMCounter = 60;
+	const int iMaxFSMCounter = 200;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
