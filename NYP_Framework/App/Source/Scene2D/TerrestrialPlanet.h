@@ -173,10 +173,13 @@ protected:
 	bool isGreenObtained;
 	bool isBlueObtained;
 
+	// Checks if player is trapped in coloured tiles
+	bool isColourTrapped(glm::vec4 playerColour);
+
 	// Checks if player is white
 	bool isWhite;
 
-	// Timers to increase toxiciity level and toxic damage
+	// Timers to increase toxicity level and toxic damage
 	double maxToxicityLevelDuration;
 	double toxicityLevelDuration;
 	double maxToxicDamageDuration;
