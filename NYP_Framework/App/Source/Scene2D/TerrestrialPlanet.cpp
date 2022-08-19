@@ -308,6 +308,117 @@ bool TerrestrialPlanet::Init(void)
 	return true;
 }
 
+bool TerrestrialPlanet::isColourTrapped(glm::vec4 playerColour)
+{
+	int playerTileIndex = cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x);
+	int playerTileIndex_Right = cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1);
+	
+	// yellow check
+	if (playerColour == glm::vec4(1.0, 1.0, 0.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// red check
+	else if (playerColour == glm::vec4(1.0, 0.0, 0.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// green check
+	else if (playerColour == glm::vec4(0.0, 1.0, 0.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// blue check
+	else if (playerColour == glm::vec4(0.0, 0.0, 1.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// white check
+	else if (playerColour == glm::vec4(1.0, 1.0, 1.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+				playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
 /**
 @brief Update Update this instance
 */
@@ -440,6 +551,12 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE); // change player colour to white
 
 		isWhite = true;
+	}
+
+	if (isColourTrapped(cPlayer2D->GetColour()))
+	{
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(cInventoryItemPlanet->GetCount()); // remove all remaining health
 	}
 
 	// restores coloured orb count when the player walks over a checkpoint
