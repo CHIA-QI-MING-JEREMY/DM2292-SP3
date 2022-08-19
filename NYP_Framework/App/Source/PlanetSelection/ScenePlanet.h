@@ -77,6 +77,7 @@ public:
 	void PostRender(void);
 
 	bool StartCombat;
+	CPlanet* gotoPlanet;
 
 protected:
 	CBackgroundEntity* background;

@@ -12,6 +12,10 @@
 #include "..\Scene2D\JunglePlanet.h"
 #include "..\Scene2D\\TerrestrialPlanet.h"
 #include "..\Scene2D\SnowPlanet.h"
+#include "../App/Source/PlanetSelection/ScenePlanet.h"
+#include "../App/Source/PlanetSelection/Planet.h"
+#include "../App/Source/Scene2D/GameManager.h"
+
 
 class CPlayGameState : public CGameStateBase
 {
@@ -32,5 +36,9 @@ public:
 
 protected:
 	// The handler to the CScene2D instance
-	TerrestrialPlanet* cScene2D;
+	TerrestrialPlanet* cTerrestrialPlanet;
+	JunglePlanet* cJunglePlanet;
+	SnowPlanet* cSnowPlanet;
+	// Selected planet
+	int type;
 };

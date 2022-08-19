@@ -71,6 +71,12 @@ public:
 	// PostRender
 	void PostRender(void);
 
+<<<<<<< Updated upstream
+=======
+	int getNumEncounters(void);
+	bool goToPlatform;
+
+>>>>>>> Stashed changes
 protected:
 	// constants
 	float kScreenShakeLength = 0.5f;
@@ -116,6 +122,14 @@ protected:
 	bool isZoomedIn = false;
 	bool lState;
 	glm::vec2 blockSelected;
+<<<<<<< Updated upstream
+=======
+
+	// Ship Combat !!
+	int numOfEncounters;
+	bool isEncounter;
+
+>>>>>>> Stashed changes
 	
 	// Constructor
 	CSceneCombat(void);

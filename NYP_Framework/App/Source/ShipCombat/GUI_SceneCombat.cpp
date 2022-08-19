@@ -170,7 +170,32 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		break;
 	case CGUI_SceneCombat::showStorage:
 		break;
-	case CGUI_SceneCombat::num_GUIState:
+	case CGUI_SceneCombat::showExit:
+		ImGui::Begin("Exit", NULL, livesWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.6f,
+			cSettings->iWindowHeight * 0.4f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+		// planet information
+		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Start Exploring?");
+		ImGui::NewLine();
+		// Add codes for Start button here
+		if (ImGui::ImageButton((ImTextureID)AcceptButtonData.textureID,
+			ImVec2(buttonWidth * relativeScale_x, buttonHeight * relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			makeChanges = true;
+		}
+		ImGui::SameLine();
+		// Add codes for Start button here
+		if (ImGui::ImageButton((ImTextureID)RejectButtonData.textureID,
+			ImVec2(buttonWidth * relativeScale_x, buttonHeight * relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			GuiState = GUI_STATE::noShow;
+			makeChanges = false;
+		}
+
+		ImGui::End();
 		break;
 	default:
 		break;

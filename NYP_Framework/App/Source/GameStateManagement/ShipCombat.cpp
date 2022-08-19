@@ -78,7 +78,16 @@ bool CShipCombatState::Update(const double dElapsedTime)
 
 		// Load the menu state
 		cout << "Loading MenuState" << endl;
-		CGameStateManager::GetInstance()->SetPauseGameState("MenuState");
+		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
+	}
+
+	if (cSceneCombat->getNumEncounters() <= 0 && cSceneCombat->goToPlatform) {
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
+
+		// Load the menu state
+		cout << "Loading PlayGameState" << endl;
+		CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
 	}
 
 	// Call the cScene2D's Update method

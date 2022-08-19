@@ -14,6 +14,7 @@
 
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
+#include "GameInfo.h"
 
 #include <iostream>
 using namespace std;
@@ -22,7 +23,9 @@ using namespace std;
  @brief Constructor
  */
 CPlayGameState::CPlayGameState(void)
-	: cScene2D(NULL)
+	: cSnowPlanet(NULL)
+	, cJunglePlanet(NULL)
+	, cTerrestrialPlanet(NULL)
 {
 
 }
@@ -42,14 +45,63 @@ bool CPlayGameState::Init(void)
 {
 	cout << "CPlayGameState::Init()\n" << endl;
 
+	type = CGameInfo::GetInstance()->selectedPlanet->getType();
+
+	std::cout << (CPlanet::TYPE(type)) << "\n";
+
 	// Initialise the cScene2D instance
-	cScene2D = TerrestrialPlanet::GetInstance();
-	if (cScene2D->Init() == false)
+	switch (type)
 	{
-		cout << "Failed to load Scene2D" << endl;
+	case CPlanet::TYPE::SNOW:
+	case CPlanet::TYPE::SNOW_TUTORIAL:
+		cSnowPlanet = SnowPlanet::GetInstance();
+		if (cSnowPlanet->Init() == false) {
+			return false;
+		}
+		break;
+	case CPlanet::TYPE::JUNGLE:
+	case CPlanet::TYPE::JUNGLE_TUTORIAL:
+		cJunglePlanet = JunglePlanet::GetInstance();
+		if (cJunglePlanet->Init() == false) {
+			return false;
+		}
+		break;
+	case CPlanet::TYPE::TERRESTRIAL:
+	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
+		cTerrestrialPlanet = TerrestrialPlanet::GetInstance();
+		if (cTerrestrialPlanet->Init() == false) {
+			return false;
+		}
+		break;
+	default:
 		return false;
+		break;
 	}
 
+	switch (type)
+	{
+	case CPlanet::TYPE::SNOW:
+		cSnowPlanet->DecideLevel(false);
+		break;
+	case CPlanet::TYPE::SNOW_TUTORIAL:
+		cSnowPlanet->DecideLevel(true);
+		break;
+	case CPlanet::TYPE::JUNGLE:
+		cJunglePlanet->DecideLevel(false);
+		break;
+	case CPlanet::TYPE::JUNGLE_TUTORIAL:
+		cJunglePlanet->DecideLevel(true);
+		break;
+	case CPlanet::TYPE::TERRESTRIAL:
+		cTerrestrialPlanet->DecideLevel(false);
+		break;
+	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
+		cTerrestrialPlanet->DecideLevel(true);
+		break;
+	default:
+		return false;
+		break;
+	}
 	return true;
 }
 
@@ -93,7 +145,24 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	}
 
 	// Call the cScene2D's Update method
-	cScene2D->Update(dElapsedTime);
+	switch (type)
+	{
+	case CPlanet::TYPE::SNOW:
+	case CPlanet::TYPE::SNOW_TUTORIAL:
+		cSnowPlanet->Update(dElapsedTime);
+		break;
+	case CPlanet::TYPE::JUNGLE:
+	case CPlanet::TYPE::JUNGLE_TUTORIAL:
+		cJunglePlanet->Update(dElapsedTime);
+		break;
+	case CPlanet::TYPE::TERRESTRIAL:
+	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
+		cTerrestrialPlanet->Update(dElapsedTime);
+		break;
+	default:
+		return false;
+		break;
+	}
 
 	return true;
 }
@@ -103,16 +172,30 @@ bool CPlayGameState::Update(const double dElapsedTime)
  */
 void CPlayGameState::Render(void)
 {
-	//cout << "CPlayGameState::Render()\n" << endl;
-
-	// Call the cScene2D's Pre-Render method
-	cScene2D->PreRender();
-
-	// Call the cScene2D's Render method
-	cScene2D->Render();
-
-	// Call the cScene2D's PostRender method
-	cScene2D->PostRender();
+	// Call the cScene2D's Update method
+	switch (type)
+	{
+	case CPlanet::TYPE::SNOW:
+	case CPlanet::TYPE::SNOW_TUTORIAL:
+		cSnowPlanet->PreRender();
+		cSnowPlanet->Render();
+		cSnowPlanet->PostRender();
+		break;
+	case CPlanet::TYPE::JUNGLE:
+	case CPlanet::TYPE::JUNGLE_TUTORIAL:
+		cJunglePlanet->PreRender();
+		cJunglePlanet->Render();
+		cJunglePlanet->PostRender();
+		break;
+	case CPlanet::TYPE::TERRESTRIAL:
+	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
+		cTerrestrialPlanet->PreRender();
+		cTerrestrialPlanet->Render();
+		cTerrestrialPlanet->PostRender();
+		break;
+	default:
+		break;
+	}
 }
 
 /**
@@ -122,10 +205,31 @@ void CPlayGameState::Destroy(void)
 {
 	cout << "CPlayGameState::Destroy()\n" << endl;
 
-	// Destroy the cScene2D instance
-	if (cScene2D)
+	// Call the cScene2D's Update method
+	switch (type)
 	{
-		cScene2D->Destroy();
-		cScene2D = NULL;
+	case CPlanet::TYPE::SNOW:
+	case CPlanet::TYPE::SNOW_TUTORIAL:
+		if (cSnowPlanet) {
+			cSnowPlanet->Destroy();
+			cSnowPlanet = NULL;
+		}
+		break;
+	case CPlanet::TYPE::JUNGLE:
+	case CPlanet::TYPE::JUNGLE_TUTORIAL:
+		if (cJunglePlanet) {
+			cJunglePlanet->Destroy();
+			cJunglePlanet = NULL;
+		}
+		break;
+	case CPlanet::TYPE::TERRESTRIAL:
+	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
+		if (cTerrestrialPlanet) {
+			cTerrestrialPlanet->Destroy();
+			cTerrestrialPlanet = NULL;
+		}
+		break;
+	default:
+		break;
 	}
 }

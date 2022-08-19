@@ -151,7 +151,7 @@ bool CScenePlanet::Init(void)
 			}
 			else if (cPlanet->vec2Index.x == 31) {
 				cPlanet->SetType(CPlanet::TYPE::FINAL);
-				cPlanet->planetName = "Stan Kepler";
+				cPlanet->planetName = "Stan Kep1er";
 			}
 			else {
 				// randomiser function
@@ -227,6 +227,7 @@ bool CScenePlanet::Init(void)
 bool CScenePlanet::Update(const double dElapsedTime)
 {
  	if (cGUI_ScenePlanet->StartCombat) {
+		gotoPlanet = PlanetSelected;
 		StartCombat = true;
 	}
 
