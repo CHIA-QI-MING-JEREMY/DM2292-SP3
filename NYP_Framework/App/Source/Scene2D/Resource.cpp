@@ -280,7 +280,7 @@ bool CResource::Init(void)
 	//Jungle Planet
 	case BURNABLE_BLOCKS:
 	{
-		// Load the ironwood texture
+		// Load the burnable bush blocks texture
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BurnableBushBlocks_Bundle.tga", true);
 		if (iTextureID == 0)
 		{
@@ -291,8 +291,8 @@ bool CResource::Init(void)
 	}
 	case VINE:
 	{
-		// Load the ironwood texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Ironwood.tga", true);
+		// Load the vine texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Vine_Collectable.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load vines texture" << std::endl;
