@@ -1116,6 +1116,9 @@ void CPlayer2D::SetColour(COLOUR colour)
 	case PURPLE:
 		runtimeColour = glm::vec4(1.0, 0.0, 1.0, 1.0); // PURPLE
 		break;
+	case PINK:
+		runtimeColour = glm::vec4(1.0, 0.5, 0.5,1.0);//PINK
+		break;
 	default:
 		cout << "Unknown Colour." << endl;
 		break;

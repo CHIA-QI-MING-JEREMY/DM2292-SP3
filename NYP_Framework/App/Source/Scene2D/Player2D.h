@@ -97,6 +97,7 @@ public:
 		GREEN,
 		BLUE,
 		PURPLE,
+		PINK,
 		NUM_COLOURS
 	};
 
@@ -146,8 +147,6 @@ protected:
 
 	// Player's colour
 	glm::vec4 runtimeColour;
-
-	CGUI_Scene2D* cGUI_Scene2D;
 
 	// Inventory Manager
 	CInventoryManager* cInventoryManager;
