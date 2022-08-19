@@ -320,6 +320,8 @@ bool JunglePlanet::Init(void)
 	poisonPurpleCooldown = 0.0;
 	poisonPurple = false;
 
+	swayingLeavesCooldown = swayingLeavesMaxCooldown; //cooldown to switch leaves with its alt positions
+
 	return true;
 }
 
@@ -529,6 +531,19 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		}
 	}
 	
+	//leaves sawying --> moving platforms
+	swayingLeavesCooldown -= dElapsedTime; //depelte cooldown
+	if (swayingLeavesCooldown <= 0.0) //cooldown up
+	{
+		//switch alt with solid and solid with alt
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::MOVING_LEAF_ALT, CMap2D::TILE_INDEX::MOVING_LEAF_TRANSITIONER); //all alt still bank
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::MOVING_LEAF_SOLID, CMap2D::TILE_INDEX::MOVING_LEAF_ALT); //all solid now blank
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::MOVING_LEAF_TRANSITIONER, CMap2D::TILE_INDEX::MOVING_LEAF_SOLID); //all transiiton blank now solid
+
+		swayingLeavesCooldown = swayingLeavesMaxCooldown; //reset cooldown
+	}
+
+
 	//if player has burnable blocks to put down, put down in the direction the player is facing
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
 	{
@@ -581,8 +596,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 			std::cout << "USE BB: " << cInventoryItemPlanet->GetCount() << std::endl;
 		}
 	}
-	
-
 
 	//if time to take damage from poison,
 	if (poisonDamageHitCooldown <= 0.0)

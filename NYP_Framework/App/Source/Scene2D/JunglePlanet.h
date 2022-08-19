@@ -179,6 +179,10 @@ protected:
 	const double poisonPurpleMaxCooldown = 0.5; //flicker every 0.5 seconds
 	bool poisonPurple; //decide if colour should be switched to purple or white
 
+	double swayingLeavesCooldown; //cooldown to switch leaves with its alt positions
+	const double swayingLeavesMaxCooldown = 1; //flicker every 1 second
+
+
 	// Let player interact with the map
 	void PlayerInteractWithMap(void);
 
