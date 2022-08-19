@@ -120,9 +120,6 @@
     <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\GameInfo.cpp">
-      <Filter>GameStateManagement</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -245,9 +242,6 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h">
       <Filter>Scene2D</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\GameStateManagement\GameInfo.h">
-      <Filter>GameStateManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

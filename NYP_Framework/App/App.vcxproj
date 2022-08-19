@@ -12,7 +12,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
-    <ClInclude Include="Source\GameStateManagement\GameInfo.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateBase.h" />
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />
     <ClInclude Include="Source\GameStateManagement\IntroState.h" />
@@ -56,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\GameStateManagement\GameInfo.cpp" />
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp" />
     <ClCompile Include="Source\GameStateManagement\InventoryState.cpp" />

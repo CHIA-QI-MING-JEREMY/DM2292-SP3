@@ -143,8 +143,11 @@ bool CSceneCombat::Init(void)
 	TimeElapsed = 0.0f;
 	lState = false;
 	blockSelected = glm::vec2(0, 0);
+<<<<<<< Updated upstream
+=======
 	numOfEncounters = rand() % 2 + 1;
 	goToPlatform = false;
+>>>>>>> Stashed changes
 
 	// Audio Stuff
 
@@ -185,11 +188,14 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 		cGUI_SceneCombat->makeChanges = false;
 	}
+<<<<<<< Updated upstream
+=======
 	if (cGUI_SceneCombat->makeChanges && cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showExit) {
 		goToPlatform = true;
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 		cGUI_SceneCombat->makeChanges = false;
 	}
+>>>>>>> Stashed changes
 
 
 	if (CMouseController::GetInstance()->IsButtonDown(0) && !lState) {
@@ -197,6 +203,10 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		PlayerInteractWithMap(camera2D->getBlockSelected());
 
 	}
+<<<<<<< Updated upstream
+	std::cout << blockSelected.x << " " << blockSelected.y << "\n";
+	
+=======
 
 	std::cout << numOfEncounters << "\n";
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_V)) {
@@ -206,6 +216,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		cMap2D->SetMapInfo(7, 16, 1222, false);
 	}
 
+
+>>>>>>> Stashed changes
 	// Call the cPlayer2D's update method before Map2D
 	// as we want to capture the inputs before Map2D update
 	cPlayer2D->Update(dElapsedTime);
@@ -307,12 +319,14 @@ void CSceneCombat::PostRender(void)
 {
 }
 
+<<<<<<< Updated upstream
+=======
 int CSceneCombat::getNumEncounters(void)
 {
 	return numOfEncounters;
 }
 
-
+>>>>>>> Stashed changes
 void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 {
 	switch (cMap2D->GetMapInfo(position.y, position.x))
@@ -322,10 +336,12 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showRepair;
 		blockSelected = position;
 		break;
-
+<<<<<<< Updated upstream
+=======
 	case 1222:
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showExit;
 		break;
+>>>>>>> Stashed changes
 	default:
 		break;
 	}
