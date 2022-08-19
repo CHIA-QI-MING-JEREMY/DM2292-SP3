@@ -1116,6 +1116,7 @@ void CPlayer2D::UpdateKnockback(const double dElapsedTime)
 		{
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 		}
 
 	}
