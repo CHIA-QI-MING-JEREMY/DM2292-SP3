@@ -1114,8 +1114,8 @@ void CPlayer2D::UpdateKnockback(const double dElapsedTime)
 			{
 				// Align with the row
 				vec2NumMicroSteps.x = 0;
-				// Set the Physics to fall status
-				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+				// Set the Physics to idle status
+				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 				break;
 			}
 		}
