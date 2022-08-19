@@ -142,7 +142,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	}
 
 	/// <summary>
-	/// JUNGLE PLANET SOLID BLOCKS
+	/// JUNGLE PLANET INTERACTABLES
 	/// </summary>
 	{
 		//poison sprout tile
@@ -206,6 +206,91 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(BLOOMED_BOUNCY_BLOOM, iTextureID));
+		}
+
+		//rock tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Rock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Rock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(ROCK, iTextureID));
+		}
+		//rock vine tied left tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Rock_VineTied_Left.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Rock_VineTied_Left.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(ROCK_VINE_LEFT, iTextureID));
+		}
+		//vine left corner tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Vine_Corner_Left.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Vine_Corner_Left.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(VINE_CORNER_LEFT, iTextureID));
+		}
+		//vine left tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Vine_Left.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Vine_Left.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(VINE_LEFT, iTextureID));
+		}
+		//rock vine tied right tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Rock_VineTied_Right.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Rock_VineTied_Right.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(ROCK_VINE_RIGHT, iTextureID));
+		}
+		//vine right corner tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Vine_Corner_Right.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Vine_Corner_Right.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(VINE_CORNER_RIGHT, iTextureID));
+		}
+		//vine right tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Vine_Right.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Vine_Right.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(VINE_RIGHT, iTextureID));
 		}
 	}
 
