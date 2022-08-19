@@ -54,6 +54,7 @@ public:
 		showRepair,
 		showWeapons,
 		showStorage,
+		showExit,
 		num_GUIState
 	};
 

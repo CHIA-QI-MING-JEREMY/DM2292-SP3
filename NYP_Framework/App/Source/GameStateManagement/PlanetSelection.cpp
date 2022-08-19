@@ -61,6 +61,7 @@ bool CPlanetSelectionState::Init(void)
  */
 bool CPlanetSelectionState::Update(const double dElapsedTime)
 {
+	CGameInfo::GetInstance()->selectedPlanet = cScenePlanet->gotoPlanet;
 
 	if (cScenePlanet->StartCombat) {
 		// Reset the CKeyboardController

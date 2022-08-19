@@ -143,8 +143,6 @@ bool CShipPlayer::Init(void)
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
-	isPlayerMoving = false;
-
 	return true;
 }
 
@@ -188,45 +186,78 @@ void CShipPlayer::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
-	// Get keyboard updates	
-	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	//// Get keyboard updates	
+	//if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	//{
+	//	// Calculate the new position to the left
+	//	if (vec2Index.x >= 0)
+	//	{
+	//		vec2NumMicroSteps.x--; //speed_multiplier;
+	//		if (vec2NumMicroSteps.x < 0)
+	//		{
+	//			vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+	//			vec2Index.x--;
+	//		}
+	//	}
+
+	//	if (!CheckPosition(LEFT))
+	//	{
+	//		vec2Index.x = vec2OldIndex.x;
+	//		vec2NumMicroSteps.x = 0;
+	//	}
+
+	//	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	//	Constraint(LEFT);
+
+	//	// Play the "runL" animation
+	//	animatedSprites->PlayAnimation("runL", -1, 1.0f);
+
+	//	// SUPERHOT movement
+	//	isPlayerMoving = true;
+
+	//}
+	//else if (cKeyboardController->IsKeyReleased(GLFW_KEY_A))
+	//{
+	//	// Play the "idleR" animation
+	//	animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+	//}
+	//else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
+	//{
+	//	// Calculate the new position to the right
+	//	if (vec2Index.x < ((int)cSettings->NUM_TILES_XAXIS))
+	//	{
+	//		vec2NumMicroSteps.x++;
+	//		if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
+	//		{
+	//			vec2NumMicroSteps.x = 0;
+	//			vec2Index.x++;
+	//		}
+	//	}
+
+	//	// Constraint the player's position within the screen 
+	//	Constraint(RIGHT);
+
+	//	if (CheckPosition(RIGHT) == false)
+	//	{
+	//		vec2NumMicroSteps.x = 0;
+	//	}
+
+	//	// Play the "runR" animation
+	//	animatedSprites->PlayAnimation("runR", -1, 1.0f);
+
+	//	// SUPERHOT movement
+	//	isPlayerMoving = true;
+	//}
+	//else if (cKeyboardController->IsKeyReleased(GLFW_KEY_D))
+	//{
+	//	// Play the "idleL" animation
+	//	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+	//}
+
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
-		// Calculate the new position to the left
-		if (vec2Index.x >= 0)
-		{
-			vec2NumMicroSteps.x--; //speed_multiplier;
-			if (vec2NumMicroSteps.x < 0)
-			{
-				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
-			}
-		}
-
-		if (!CheckPosition(LEFT))
-		{
-			vec2Index.x = vec2OldIndex.x;
-			vec2NumMicroSteps.x = 0;
-		}
-
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-		Constraint(LEFT);
-
-		// Play the "runL" animation
-		animatedSprites->PlayAnimation("runL", -1, 1.0f);
-
-		// SUPERHOT movement
-		isPlayerMoving = true;
-
-	}
-	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_A))
-	{
-		// Play the "idleR" animation
-		animatedSprites->PlayAnimation("idleL", -1, 1.0f);
-	}
-	else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
-	{
-		// Calculate the new position to the right
-		if (vec2Index.x < ((int)cSettings->NUM_TILES_XAXIS))
+		// Calculate the new position up
+		if (vec2Index.x < (int)cSettings->NUM_TILES_YAXIS)
 		{
 			vec2NumMicroSteps.x++;
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
@@ -236,24 +267,50 @@ void CShipPlayer::Update(const double dElapsedTime)
 			}
 		}
 
-		// Constraint the player's position within the screen 
+		// Constraint the player's position within the screen boundary
 		Constraint(RIGHT);
 
+		// If the new position is not feasible, then revert to old position
 		if (CheckPosition(RIGHT) == false)
 		{
 			vec2NumMicroSteps.x = 0;
 		}
 
-		// Play the "runR" animation
+		// SUPERHOT movement
+		isPlayerMoving = true;
+
+		// Play the "runL" animation
 		animatedSprites->PlayAnimation("runR", -1, 1.0f);
+
+	}
+	else if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
+	{
+		// Calculate the new position down
+		if (vec2Index.x >= 0)
+		{
+			vec2NumMicroSteps.x--;
+			if (vec2NumMicroSteps.x <= 0)
+			{
+				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS);
+				vec2Index.x--;
+			}
+		}
+
+		// Constraint the player's position within the screen boundary
+		Constraint(LEFT);
+
+		// If the new position is not feasible, then revert to old position
+		if (CheckPosition(LEFT) == false)
+		{
+			vec2Index = vec2OldIndex;
+			vec2NumMicroSteps.x = 0;
+		}
+
+		// Play the "runR" animation
+		animatedSprites->PlayAnimation("runL", -1, 1.0f);
 
 		// SUPERHOT movement
 		isPlayerMoving = true;
-	}
-	else if (cKeyboardController->IsKeyReleased(GLFW_KEY_D))
-	{
-		// Play the "idleL" animation
-		animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 	}
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
@@ -372,7 +429,7 @@ void CShipPlayer::Render(void)
 
 	glm::vec2 actualPos = IndexPos - cameraPos + offset;
 	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
+	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_YAXIS;
 	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
