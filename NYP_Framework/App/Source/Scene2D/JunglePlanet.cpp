@@ -863,11 +863,62 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			}
 		}
 		break;
-	//case CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM: //player gets launched into the air
-	//	cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-	//	cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
-	//	iJumpCount = 1;
-	//	break;
+	case CMap2D::TILE_INDEX::ROCK:
+		//if player wants to tie a vine to the rock
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_H))
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
+			//if player has a vine
+			if (cInventoryItemPlanet->GetCount() > 0)
+			{
+				// runs if there is empty space on the left of the rock
+				if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x - 1) == 0)
+				{
+					// changes rock to rock with vine tied toward the left
+					cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::ROCK, CMap2D::TILE_INDEX::ROCK_VINE_LEFT,
+						cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.x + 1);
+					// adds vine for player to climb up
+					// checks if there is any ground below the vine length
+					unsigned int groundHeight = cMap2D->FindGround(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1);
+					if (groundHeight < 0)
+					{
+						cout << "There is a hole in the ground at column " << cPlayer2D->vec2Index.x - 1 << endl;
+					}
+					else
+					{
+						cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::VINE_CORNER_LEFT,
+							cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x - 1, cPlayer2D->vec2Index.x);
+						cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::VINE_LEFT, groundHeight, 
+							cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, cPlayer2D->vec2Index.x);
+					}
+				}
+				// runs if there is empty space on the right of the rock
+				else if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x + 1) == 0)
+				{
+					// changes rock to rock with vine tied toward the  right
+					cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::ROCK, CMap2D::TILE_INDEX::ROCK_VINE_RIGHT,
+						cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, cPlayer2D->vec2Index.x + 1);
+					// adds vine for player to climb up
+					// checks if there is any ground below the vine length
+					unsigned int groundHeight = cMap2D->FindGround(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1);
+					if (groundHeight < 0)
+					{
+						cout << "There is a hole in the ground at column " << cPlayer2D->vec2Index.x + 1 << endl;
+					}
+					else
+					{
+						cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::VINE_CORNER_RIGHT,
+							cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x + 1, cPlayer2D->vec2Index.x + 2);
+						cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::VINE_RIGHT, groundHeight,
+							cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, cPlayer2D->vec2Index.x + 2);
+					}
+				}
+
+				cInventoryItemPlanet->Remove(1); //use 1 vine
+				std::cout << "USED VINE: " << cInventoryItemPlanet->GetCount() << std::endl;
+			}
+		}
+		break;
 	default:
 		break;
 	}
