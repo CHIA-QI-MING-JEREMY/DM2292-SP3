@@ -305,6 +305,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(MOVING_LEAF_ALT, iTextureID));
 		}
+		//blank tile, used as a temp for switching alt with solid and vice versa
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Hidden.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Hidden.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(MOVING_LEAF_TRANSITIONER, iTextureID));
+		}
 	}
 
 	/// <summary>
