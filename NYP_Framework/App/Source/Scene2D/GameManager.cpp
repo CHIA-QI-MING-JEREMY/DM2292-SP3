@@ -14,7 +14,8 @@ CGameManager::CGameManager(void)
 	, bPlayerLost(false)
 	, bLevelCompleted(false)
 	, bLevelToReplay(false)
-	, bGameToRestart(false) {
+	, bGameToRestart(false)
+{
 }
 
 /**

@@ -52,6 +52,8 @@
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+#include "../Scene2D/InventoryManagerPlanet.h"
+
 //include ammo
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
@@ -89,6 +91,10 @@ public:
 	void DecideLevel(bool tutorial);
 
 protected:
+	// The handler containing the instance of CInventoryManager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	// The handler containing the instance of CInventoryItem
+	CInventoryItemPlanet* cInventoryItemPlanet;
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
 
@@ -148,5 +154,8 @@ protected:
 	SnowPlanet(void);
 	// Destructor
 	virtual ~SnowPlanet(void);
+private:
+	float turnBerserkTimer;
+	float turnBerserkOffTimer;
 };
 

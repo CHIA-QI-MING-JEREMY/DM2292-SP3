@@ -122,9 +122,8 @@ public:
 		BERSERKSHIELD = 3,
 		NUM_MODE
 	};
-
-	int modeOfPlayer;
-
+	int getModeOfPlayer();
+	void setModeOfPlayer(int a);
 	MODE MODE;
 
 protected:
@@ -204,6 +203,7 @@ protected:
 	//vector full of player's fired ammo
 	std::vector<CAmmo2D*> ammoList;
 	int shootingDirection; //shoots in the direction the player is facing
+	int modeOfPlayer;
 
 	//used to get a deactivated ammo to activate
 	CAmmo2D* FetchAmmo(void);
