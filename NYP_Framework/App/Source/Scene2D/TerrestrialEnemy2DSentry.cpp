@@ -124,23 +124,21 @@ bool TEnemy2DSentry::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PlayerSpriteSheet.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/SentrySpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/playerspritesheet.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/SentrySpriteSheet.png" << endl;
 		return false;
 	}
 
 	// Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleR", 0, 0);
-	animatedSprites->AddAnimation("idleL", 1, 1);
-	animatedSprites->AddAnimation("runR", 4, 7);
-	animatedSprites->AddAnimation("runL", 8, 11);
-	animatedSprites->AddAnimation("attackR", 2, 2);
-	animatedSprites->AddAnimation("attackL", 3, 3);
-	animatedSprites->AddAnimation("idleshieldR", 12, 12);
-	animatedSprites->AddAnimation("idleshieldL", 13, 13);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 6, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idleR", 0, 3);
+	animatedSprites->AddAnimation("idleL", 6, 9);
+	animatedSprites->AddAnimation("runR", 12, 17);
+	animatedSprites->AddAnimation("runL", 18, 23);
+	animatedSprites->AddAnimation("attackR", 24, 26);
+	animatedSprites->AddAnimation("attackL", 27, 29);
 
 	// Play idle animation as default
 	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
