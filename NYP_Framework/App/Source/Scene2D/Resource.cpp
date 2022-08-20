@@ -701,13 +701,21 @@ bool CResource::InteractWithPlayer(void)
 		}
 		case ANTIDOTE_PILL:
 		{
-			std::cout << "COLLECTED ANTIDOTE_PILL" << std::endl;
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
+			if (cInventoryItemPlanet->GetCount() != 0)
+			{
+				std::cout << "COLLECTED ANTIDOTE_PILL" << std::endl;
 
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("AntidotePill");
-			cInventoryItemPlanet->Add(1); //add 1 antidote pill
-			collected = true; //delete in scene
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("AntidotePill");
+				cInventoryItemPlanet->Add(1); //add 1 antidote pill
+				collected = true; //delete in scene
 
-			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			}
+			else
+			{
+				std::cout << "ANTIDOTE PILL NOT NEEDED. TOXICITY LEVEL 0" << std::endl;
+			}
 			break;
 		}
 		default:
