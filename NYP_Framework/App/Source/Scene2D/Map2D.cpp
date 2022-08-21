@@ -117,10 +117,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	}
 
 	// TO REMOVE LATER
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
 		return false;
 	}
 	else
@@ -129,10 +129,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
 	}
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
 		return false;
 	}
 	else
@@ -417,10 +417,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	/// Terrestrial Planet Interactables
 	/// </summary>
 	// Load the yellow tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Yellow.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_YellowTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Yellow.tga" << endl;
 		return false;
 	}
 	else
@@ -429,10 +429,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(YELLOW_TILE_HOLLOW, iTextureID));
 	}
 	// Load the red tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Red.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_RedTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Red.tga" << endl;
 		return false;
 	}
 	else
@@ -441,10 +441,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(RED_TILE_HOLLOW, iTextureID));
 	}
 	// Load the green tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Green.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_GreenTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Green.tga" << endl;
 		return false;
 	}
 	else
@@ -453,10 +453,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(GREEN_TILE_HOLLOW, iTextureID));
 	}
 	// Load the blue tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Blue.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_BlueTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Blue.tga" << endl;
 		return false;
 	}
 	else
@@ -466,10 +466,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	}
 	// Load rope textures
 	// Load post with rope coiled
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PostWithRope_Coiled.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Post_Coiled.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_PostWithRope_Coiled.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Post_Coiled.tga" << endl;
 		return false;
 	}
 	else
@@ -478,10 +478,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_POST_COILED, iTextureID));
 	}
 	// Load post with rope uncoiled left
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PostWithRope_Uncoiled_Left.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Post_Uncoiled_Left.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_PostWithRope_Uncoiled_Left.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Post_Uncoiled_Left.tga" << endl;
 		return false;
 	}
 	else
@@ -490,10 +490,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_POST_UNCOILED_LEFT, iTextureID));
 	}
 	// Load rope corner left
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Corner_Left.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Corner_Left.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_Rope_Corner_Left.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Corner_Left.tga" << endl;
 		return false;
 	}
 	else
@@ -502,10 +502,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_CORNER_LEFT, iTextureID));
 	}
 	// Load rope length left
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Length_Left.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Length_Left.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_Rope_Length_Left.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Length_Left.tga" << endl;
 		return false;
 	}
 	else
@@ -514,10 +514,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_LENGTH_LEFT, iTextureID));
 	}
 	// Load post with rope uncoiled right
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PostWithRope_Uncoiled_Right.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Post_Uncoiled_Right.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_PostWithRope_Uncoiled_Right.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Post_Uncoiled_Right.tga" << endl;
 		return false;
 	}
 	else
@@ -526,10 +526,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_POST_UNCOILED_RIGHT, iTextureID));
 	}
 	// Load rope corner right
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Corner_Right.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Corner_Right.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_Rope_Corner_Right.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Corner_Right.tga" << endl;
 		return false;
 	}
 	else
@@ -538,10 +538,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_CORNER_RIGHT, iTextureID));
 	}
 	// Load rope length right
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Rope_Length_Right.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Length_Right.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_Rope_Length_Right.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Rope_Length_Right.tga" << endl;
 		return false;
 	}
 	else
@@ -550,10 +550,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_LENGTH_RIGHT, iTextureID));
 	}
 	// Load black flag
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlackFlag.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Flag_Black.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_BlackFlag.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Flag_Black.tga" << endl;
 		return false;
 	}
 	else
@@ -562,10 +562,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(BLACK_FLAG, iTextureID));
 	}
 	// Load red flag
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedFlag.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Flag_Red.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_RedFlag.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Flag_Red.tga" << endl;
 		return false;
 	}
 	else
@@ -573,6 +573,8 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(RED_FLAG, iTextureID));
 	}
+	
+	/*
 	// Load spikes up
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
 	if (iTextureID == 0)
@@ -621,11 +623,13 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(SPIKES_RIGHT, iTextureID));
 	}
+	*/
+
 	// Load alarm box
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_AlarmBox.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmBox.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_AlarmBox.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/AlarmBox.tga" << endl;
 		return false;
 	}
 	else
@@ -634,10 +638,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ALARM_BOX, iTextureID));
 	}
 	// Load alarm light off
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_AlarmLight_Off.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmLight_Off.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_AlarmLight_Off.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/AlarmLight_Off.tga" << endl;
 		return false;
 	}
 	else
@@ -646,10 +650,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(ALARM_LIGHT_OFF, iTextureID));
 	}
 	// Load alarm light on
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_AlarmLight_On.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmLight_On.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_AlarmLight_On.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/AlarmLight_On.tga" << endl;
 		return false;
 	}
 	else
@@ -673,10 +677,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	/// <summary>
 	/// Terrestrial Planet Solid Blocks
 	/// </summary>
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BrownTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_BrownTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
 		return false;
 	}
 	else
@@ -685,10 +689,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(GROUND_TILE_SOLID, iTextureID));
 	}
 	// Load the yellow tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Yellow.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_YellowTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Yellow.tga" << endl;
 		return false;
 	}
 	else
@@ -697,10 +701,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(YELLOW_TILE_SOLID, iTextureID));
 	}
 	// Load the red tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Red.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_RedTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Red.tga" << endl;
 		return false;
 	}
 	else
@@ -709,10 +713,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(RED_TILE_SOLID, iTextureID));
 	}
 	// Load the green tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Green.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_GreenTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Green.tga" << endl;
 		return false;
 	}
 	else
@@ -721,10 +725,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(GREEN_TILE_SOLID, iTextureID));
 	}
 	// Load the blue tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueTile.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Blue.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_BlueTile.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Blue.tga" << endl;
 		return false;
 	}
 	else

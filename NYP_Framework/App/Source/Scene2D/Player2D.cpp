@@ -206,27 +206,27 @@ bool CPlayer2D::Init(void)
 
 	//Jungle Planet
 	// Add a green orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/TerrestrialPlanet/Orb_Blue.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/Scene2D_BlueOrb.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/TerrestrialPlanet/Orb_Blue.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/Scene2D_BlueOrb.tga", 20, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/TerrestrialPlanet/Orb_Blue.tga", 20, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/TerrestrialPlanet/Orb_Blue.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Terrestrial Planet
 	// Add a yellow orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/TerrestrialPlanet/Orb_Yellow.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a red orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/Scene2D_RedOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/TerrestrialPlanet/Orb_Red.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a blue orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/Scene2D_GreenOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/TerrestrialPlanet/Orb_Green.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a green orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/TerrestrialPlanet/Orb_Blue.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a toxicity level as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ToxicityLevel", "Image/TerrestrialPlanet/ToxicityLevel.tga", 100, 0);

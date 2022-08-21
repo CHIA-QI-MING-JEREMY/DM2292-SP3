@@ -309,7 +309,7 @@ if (type == NUM_RESOURCES)
 	case YELLOW_ORB:
 	{
 		// Load the yellow orb texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_YellowOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Orb_Yellow.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load yellow orb texture" << std::endl;
@@ -320,7 +320,7 @@ if (type == NUM_RESOURCES)
 	case RED_ORB:
 	{
 		// Load the red orb texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_RedOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Orb_Red.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load red orb texture" << std::endl;
@@ -331,7 +331,7 @@ if (type == NUM_RESOURCES)
 	case GREEN_ORB:
 	{
 		// Load the green orb texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_GreenOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Orb_Green.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load green orb texture" << std::endl;
@@ -342,7 +342,7 @@ if (type == NUM_RESOURCES)
 	case BLUE_ORB:
 	{
 		// Load the blue orb texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_BlueOrb.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Orb_Blue.tga", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load blue orb texture" << std::endl;
