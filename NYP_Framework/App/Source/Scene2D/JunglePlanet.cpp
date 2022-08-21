@@ -196,6 +196,24 @@ bool JunglePlanet::Init(void)
 			}
 		}
 
+		while (true)
+		{
+			JEnemy2DShyC* cJEnemy2DShyC = new JEnemy2DShyC();
+			// Pass shader to cEnemy2D
+			cJEnemy2DShyC->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cJEnemy2DShyC->Init() == true)
+			{
+				cJEnemy2DShyC->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cJEnemy2DShyC); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
+			}
+		}
+
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
 		/// <summary>

@@ -107,6 +107,7 @@ Player : 1400
 Enemies
 [Jungle Planet]
 1600 : vigilant teleporter
+1610 : shy chaser
 
 [Terrestrial Planet]
 
