@@ -104,10 +104,20 @@ public:
 		SPECIAL,
 	};
 
-	int getType(); //return enemy "type"
+	// enemy type
+	int getType();
+
 	// health functions
 	int getHealth();
 	void setHealth(int health);
+
+	// alarm functions
+	bool getAlarmerState();
+	void setAlarmerState(bool isAlarmerActive);
+	bool getAlarmState();
+	void setAlarmState(bool isAlarmOn);
+	glm::vec2 getAssignedAlarmBox();
+	void setAssignedAlarmBox(glm::vec2 alarmBoxLocation);
 
 protected:
 	enum DIRECTION
@@ -184,7 +194,7 @@ protected:
 	int iFSMCounter;
 
 	// Max count in a state
-	const int iMaxFSMCounter = 90;
+	const int iMaxFSMCounter = 60;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
@@ -216,6 +226,11 @@ protected:
 	// health variables
 	int health;
 	int maxHealth;
+
+	// alarm variables
+	bool isAlarmerActive;
+	bool isAlarmOn;
+	glm::vec2 assignedAlarmBox;
 
 	// colour variables
 	glm::vec4 colour;
