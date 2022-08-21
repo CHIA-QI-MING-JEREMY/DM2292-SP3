@@ -186,11 +186,29 @@ bool TerrestrialPlanet::Init(void)
 			if (cTEnemy2DSentry->Init() == true)
 			{
 				cTEnemy2DSentry->SetPlayer2D(cPlayer2D);
-				enemies.push_back(cTEnemy2DSentry); //push each enemy into the individual enemy vector
+				enemies.push_back(cTEnemy2DSentry); //push each sentry into the individual enemy vector
 			}
 			else
 			{
-				// Break out of this loop if all enemies have been loaded
+				// Break out of this loop if all sentries have been loaded
+				break;
+			}
+		}
+
+		while (true)
+		{
+			TEnemy2DTurret* cTEnemy2DTurret = new TEnemy2DTurret();
+			// Pass shader to cEnemy2D
+			cTEnemy2DTurret->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cTEnemy2DTurret->Init() == true)
+			{
+				cTEnemy2DTurret->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DTurret); //push each turret into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all turrets have been loaded
 				break;
 			}
 		}
@@ -933,7 +951,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2A); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{
