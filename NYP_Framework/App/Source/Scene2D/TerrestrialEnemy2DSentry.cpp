@@ -163,7 +163,7 @@ bool TEnemy2DSentry::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 5 hits to kill
+	maxHealth = health = 25; //takes 1 hit to kill
 
 	if (vec2Index == glm::vec2(12, 3))
 	{
