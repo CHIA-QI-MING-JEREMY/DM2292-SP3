@@ -333,6 +333,12 @@ void CEnemy2D::setAssignedAlarmBox(glm::vec2 alarmBoxLocation)
 	assignedAlarmBox = alarmBoxLocation;
 }
 
+//accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
+bool CEnemy2D::getHunkering(void)
+{
+	return hunkering;
+}
+
 /**
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check

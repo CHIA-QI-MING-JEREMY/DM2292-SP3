@@ -165,17 +165,18 @@ bool JEnemy2DShyC::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	type = CLOSE_COMBAT; //no ammo
+	type = DEFENCE; //has hunker to reduce damage
 	shootingDirection = LEFT; //setting direction for ammo shooting
 	previousHealth = maxHealth = health = 50; //takes 10 hits to kill
 
-	flickerTimer = 0.5; //used to progress the flicker counter
-	flickerTimerMax = 0.5; //used to reset flicker counter
+	flickerTimer = flickerTimerMax; //used to progress the flicker counter
 	flickerCounter = 0; //decides colour of enemy and when to explode
 
 	attackCooldownCurrent = 3.0; //the cooldown that gets dt-ed away
 	attackCooldownMax = 3.0; //the overall cooldown duration, eg 5s
 	healingCooldown = 0.0; //timer between when the enemy heals when in new location
+
+	hunkering = false;
 
 	return true;
 }
@@ -209,21 +210,41 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case CAMOUFLAGE:
+		//TEMP
+		runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0); //black
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
+		{
+			sCurrentFSM = EXPLODE;
+			iFSMCounter = 0;
+			cout << "Switching to Explode State" << endl;
+			break;
+		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f)
 		{
 			sCurrentFSM = AGGRO;
 			iFSMCounter = 0;
 			cout << "Switching to Aggro State" << endl;
+			break;
 		}
 		if (health != previousHealth) //was just attacked
 		{
 			sCurrentFSM = HUNKER;
 			iFSMCounter = 0;
 			cout << "Switching to Hunker State" << endl;
+			break;
 		}
 		iFSMCounter++;
 		break;
 	case AGGRO:
+		//TEMP
+		runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
+		{
+			sCurrentFSM = EXPLODE;
+			iFSMCounter = 0;
+			cout << "Switching to Explode State" << endl;
+			break;
+		}
 		if (health <= maxHealth / 2) //hunker once health gets too low
 		{
 			sCurrentFSM = HUNKER;
@@ -339,15 +360,58 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-	case RETURN:
-		if (health <= maxHealth / 2) //if health is low, switch to hunker
+	case HUNKER:
+		//TEMP
+		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); //green
+		hunkering = true;
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
-			sCurrentFSM = HUNKER;
+			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
-			cout << "Switching to Hunker State" << endl;
+			cout << "Switching to Explode State" << endl;
+			hunkering = false;
+			break;
 		}
-		//if too close to the current waypoint
-		else if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) < 0.5f)
+		if (health > maxHealth / 2 && //more than half health
+			cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //within aggro range
+		{
+			sCurrentFSM = AGGRO;
+			iFSMCounter = 0;
+			cout << "Switching to Aggro State" << endl;
+			hunkering = false;
+			break;
+		}
+		//if in hunker for a certain period of time without switching out
+		if (iFSMCounter > iMaxFSMCounter) 
+		{
+			//if too close to the spawn point
+			if (cPhysics2D.CalculateDistance(vec2Index, spawnPoint) < 0.5f)
+			{
+				sCurrentFSM = CAMOUFLAGE;
+				cout << "Switching to Camouflage State" << endl;
+			}
+			else
+			{
+				sCurrentFSM = RETURN;
+				cout << "Switching to Return State" << endl;
+			}
+			iFSMCounter = 0;
+			hunkering = false;
+			break;
+		}
+		iFSMCounter++;
+		break;
+	case RETURN:
+		//TEMP
+		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
+		{
+			sCurrentFSM = EXPLODE;
+			iFSMCounter = 0;
+			cout << "Switching to Explode State" << endl;
+		}
+		//if too close to the spawn point
+		else if (cPhysics2D.CalculateDistance(vec2Index, spawnPoint) < 0.5f)
 		{
 			sCurrentFSM = CAMOUFLAGE;
 			iFSMCounter = 0;
@@ -402,14 +466,11 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-
-
-
 	case EXPLODE:
 		//still flickering through colours
 		if (flickerCounter < 7)
 		{
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
 
 			shootingDirection = DOWN; //to adjust where the sprite faces
 			flickerTimer -= dElapsedTime; //timer counting down
@@ -434,8 +495,8 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		//explode time
 		if (flickerCounter == 7)
 		{
-			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
+			//cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
 
 			++flickerCounter; //increase counter
 			flickerTimer = flickerTimerMax * 4; //reset timer
@@ -448,17 +509,10 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 			{
 				for (int j = -1; j < 2; ++j) //added to x
 				{
-					//change empty space to the explosion tile --> damage player heavily upon collision
+					//change empty space to the explosion tile --> damage player heavily upon collision, plus poison
 					if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 0)
 					{
-						if (cMap2D->GetCurrentLevel() == 0) //normal map of level 1
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 60); //normal explosion
-						}
-						else if (cMap2D->GetCurrentLevel() == 1) //BnW map of level 1
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 61); //BnW explosion
-						}
+						cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, CMap2D::TILE_INDEX::POISON_EXPLOSION); //poison explosion
 					}
 				}
 			}
@@ -470,9 +524,8 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					for (int j = -1; j < 2; ++j) //added to x
 					{
-						//change empty space to the explosion tile --> damage player heavily upon collision
-						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 60 || //normal explosion
-							cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 61) //BnW explosion
+						//change explosion tile to empty space
+						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == CMap2D::TILE_INDEX::POISON_EXPLOSION) //poison explosion
 						{
 							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 0); //set to empty space
 						}
@@ -1164,4 +1217,10 @@ CJEAmmoVT* JEnemy2DShyC::FetchAmmo()
 	ammoList.at(prevSize)->setActive(true);
 	return ammoList.at(prevSize);
 
+}
+
+//accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
+bool JEnemy2DShyC::getHunkering(void)
+{
+	return hunkering;
 }

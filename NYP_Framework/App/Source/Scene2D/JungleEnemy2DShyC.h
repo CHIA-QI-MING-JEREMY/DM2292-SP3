@@ -93,6 +93,8 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	bool getHunkering(void); //accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
+
 protected:
 	enum DIRECTION
 	{
@@ -127,7 +129,7 @@ protected:
 	int previousHealth; //keep track to know whether enemy was just attacked
 
 	double flickerTimer; //used to progress the flicker counter
-	double flickerTimerMax; //used to reset flicker counter
+	const double flickerTimerMax = 0.5; //used to reset flicker counter
 	int flickerCounter; //decides colour of enemy and when to explode
 
 	glm::vec2 i32vec2OldIndex;
@@ -175,8 +177,7 @@ protected:
 	int iFSMCounter;
 
 	// Max count in a state
-	const int iMaxFSMCounter = 60;
-	const int iWanderReturnMaxFSMCounter = 300;
+	const int iMaxFSMCounter = 160;
 
 	glm::vec2 spawnPoint; //point to return to using return, enemy's safe space
 

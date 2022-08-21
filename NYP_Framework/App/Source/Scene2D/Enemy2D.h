@@ -101,6 +101,7 @@ public:
 	{
 		CLOSE_COMBAT = 0,
 		LONG_RANGE,
+		DEFENCE,
 		SPECIAL,
 	};
 
@@ -118,6 +119,9 @@ public:
 	void setAlarmState(bool isAlarmOn);
 	glm::vec2 getAssignedAlarmBox();
 	void setAssignedAlarmBox(glm::vec2 alarmBoxLocation);
+
+	//damage altering functions
+	bool getHunkering(void); //accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
 
 protected:
 	enum DIRECTION
@@ -231,6 +235,9 @@ protected:
 	bool isAlarmerActive;
 	bool isAlarmOn;
 	glm::vec2 assignedAlarmBox;
+
+	//damage reduction variables
+	bool hunkering; //used to check if damage dealt to enemy should be lessened or not
 
 	// colour variables
 	glm::vec4 colour;

@@ -8,6 +8,7 @@ Interactables
 [Jungle Planet]
 2 : poison sprout
 3 : poison fog 
+4 : poison explosion
 10 : river water 
 20 : unbloomed bouncy bloom
 21 : bloomed bouncy bloom
