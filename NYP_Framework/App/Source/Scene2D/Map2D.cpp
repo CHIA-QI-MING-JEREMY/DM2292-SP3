@@ -317,6 +317,19 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(MOVING_LEAF_TRANSITIONER, iTextureID));
 		}
+
+		//poof tile, teleporattion residue --> to indicate something has teleported away from here
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/TeleportationResidue.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/TeleportationResidue.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(TELEPORTATION_RESIDUE, iTextureID));
+		}
 	}
 
 	/// <summary>

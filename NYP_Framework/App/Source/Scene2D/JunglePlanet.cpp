@@ -417,7 +417,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 					//if it does, minus away the enemy's health & destory the ammo
 				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
 				{
-					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25); //every hit takes off 25 HP
+					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
 					ammo->setActive(false);
 				}
 			}

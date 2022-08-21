@@ -178,7 +178,14 @@ protected:
 
 	// Max count in a state
 	const int iMaxFSMCounter = 60;
-	const int iWanderReturnMaxFSMCounter = 200;
+	const int iWanderReturnMaxFSMCounter = 300;
+
+	vector<glm::vec2> enemysTeleportationResidue; //a vector of locations where this enemy left behind teleportation residue
+	vector<double> enemysTResidueCooldown; //timer for how long the residue will last
+	const double enemysTResidueMaxCooldown = 3.0; //poof effects last for 3 seconds before disappearing
+
+	double healingCooldown; //timer between when the enemy heals when in new location
+	const double healingMaxCooldown = 0.2; //can heal 1 HP every 0.5 second
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);

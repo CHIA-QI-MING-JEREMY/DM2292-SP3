@@ -176,11 +176,17 @@ bool JEnemy2DVT::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = LEFT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 5 hits to kill
+	maxHealth = health = 50; //takes 10 hits to kill
 
 	flickerTimer = 0.5; //used to progress the flicker counter
 	flickerTimerMax = 0.5; //used to reset flicker counter
 	flickerCounter = 0; //decides colour of enemy and when to explode
+
+	//make sure both vectors start off empty
+	enemysTeleportationResidue.clear(); //a vector of locations where this enemy left behind teleportation residue
+	enemysTResidueCooldown.clear(); //timer for how long the residue will last
+
+	healingCooldown = 0.0; //timer between when the enemy heals when in new location
 
 	return true;
 }
@@ -199,12 +205,42 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		health = maxHealth;
 	}
 
+	//check if there are any existing teleporattion residue left behind by this enemy
+		//deplete their cooldowns if so
+	for (int i = 0; i < enemysTeleportationResidue.size(); ++i)
+	{
+		enemysTResidueCooldown[i] -= dElapsedTime; //deplete specific cooldown
+
+		if (enemysTResidueCooldown[i] <= 0.0) //if cooldown is up
+		{
+			//remove poof effect
+			cMap2D->SetMapInfo(enemysTeleportationResidue[i].y, enemysTeleportationResidue[i].x, 0);
+
+			//remove the removed teleportation residue's location from the vector
+			enemysTeleportationResidue.erase(enemysTeleportationResidue.begin() + i); 
+			//as well as its cooldown timer
+			enemysTResidueCooldown.erase(enemysTResidueCooldown.begin() + i);
+		}
+	}
+
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
 	case TELEPORT:
-		if (health <= 5) //if health is low, switch to recover
+		++currentWaypointCounter; //increase the enemy's current waypoint count
+			//if pointing at the spot beyond the last waypoint index, set current back to first
+		if (currentWaypointCounter == maxWaypointCounter)
+		{
+			currentWaypointCounter = 0;
+		}
+
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::TELEPORTATION_RESIDUE); //leave behind a "poof" effect before teleporting
+		enemysTeleportationResidue.push_back(vec2Index); //push the poof's location into vector of poof locations
+		enemysTResidueCooldown.push_back(enemysTResidueMaxCooldown); //starts its own cooldown
+
+		vec2Index = waypoints[currentWaypointCounter]; //teleport the enemy to the way point
+		if (health <= 15) //if health is low, switch to recover
 		{
 			sCurrentFSM = RECOVER;
 			iFSMCounter = 0;
@@ -212,15 +248,6 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		}
 		else
 		{
-			++currentWaypointCounter; //increase the enemy's current waypoint count
-			//if pointing at the spot beyond the last waypoint index, set current back to first
-			if (currentWaypointCounter == maxWaypointCounter) 
-			{
-				currentWaypointCounter = 0;
-			}
-
-			vec2Index = waypoints[currentWaypointCounter]; //teleport the enemy to the way point
-
 			sCurrentFSM = WANDER; //switch to wander
 			iFSMCounter = 0;
 			cout << "Switching to Wander State" << endl;
@@ -228,13 +255,13 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case WANDER:
-		if (health <= 5) //if health is low, switch to teleport (teleport then recover)
-		{
-			sCurrentFSM = TELEPORT;
-			iFSMCounter = 0;
-			cout << "Switching to Teleport State" << endl;
-			break;
-		}
+		//if (health <= 15) //if health is low, switch to teleport (teleport then recover)
+		//{
+		//	sCurrentFSM = TELEPORT;
+		//	iFSMCounter = 0;
+		//	cout << "Switching to Teleport State" << endl;
+		//	break;
+		//}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f &&
 			(vec2Index.y == cPlayer2D->vec2Index.y || // player is left or right of the enemy
 				vec2Index.x == cPlayer2D->vec2Index.x)) // player is above or below the enemy
@@ -314,13 +341,6 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			}
 
 		}
-		if (iFSMCounter > iWanderReturnMaxFSMCounter) //after a while in wander mode
-		{
-			sCurrentFSM = TELEPORT; //switch to teleport
-			iFSMCounter = 0;
-			cout << "Switching to Teleport State" << endl;
-			break;
-		}
 		//if too far from the current waypoint
 		if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) > 1.5f)
 		{
@@ -338,16 +358,16 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			cout << "Switching to Attack State" << endl;
 		}
-		if (health <= 5)
+		if (health <= 15)
 		{
-			sCurrentFSM = RECOVER;
+			sCurrentFSM = TELEPORT;
 			iFSMCounter = 0;
-			cout << "Switching to Recover State" << endl;
+			cout << "Switching to Teleport State" << endl;
 		}
 		iFSMCounter++;
 		break;
 	case RETURN:
-		if (health <= 5) //if health is low, switch to teleport (teleport then recover)
+		if (health <= 15) //if health is low, switch to teleport (teleport then recover)
 		{
 			sCurrentFSM = TELEPORT;
 			iFSMCounter = 0;
@@ -356,8 +376,18 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		//if too close to the current waypoint
 		else if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) < 0.5f)
 		{
-			sCurrentFSM = WANDER; //switch to wander
-			cout << "Switching to Wander State" << endl;
+			if (iFSMCounter > iWanderReturnMaxFSMCounter) //after a while in wander/return mode
+			{
+				sCurrentFSM = TELEPORT; //switch to teleport
+				iFSMCounter = 0;
+				cout << "Switching to Teleport State" << endl;
+				break;
+			}
+			else
+			{
+				sCurrentFSM = WANDER; //switch to wander
+				cout << "Switching to Wander State" << endl;
+			}
 		}
 		else //move back to waypoint
 		{
@@ -409,6 +439,106 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case RECOVER:
+		if (health >= maxHealth) //at full health
+		{
+			health = maxHealth; //max health
+
+			sCurrentFSM = WANDER;
+			iFSMCounter = 0;
+			cout << "Switching to Wander State" << endl;
+			runtimeColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); //reset to white
+			break;
+		}
+		else if (health >= maxHealth / 2) //if at least 50% health, check if player is in shooting range
+		{
+			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f &&
+				(vec2Index.y == cPlayer2D->vec2Index.y || // player is left or right of the enemy
+					vec2Index.x == cPlayer2D->vec2Index.x)) // player is above or below the enemy
+			{
+				bool pathClear = true; //only set to false if there is an impassable tile
+				if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
+					//if player is on same position as enemy, uses this checking instead of the one below
+				{
+					// check if player's x is larger than or smaller than enemy's x
+					// if is larger, direction is right
+					// if is smaller, direction is left
+					if (cPlayer2D->vec2Index.x > vec2Index.x)
+					{
+						//check if the path to the right is clear
+						for (int i = 0; i <= (cPlayer2D->vec2Index.x - vec2Index.x); ++i)
+						{
+							//if the tile is impassable : 610 on
+							if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+							{
+								pathClear = false;
+							}
+						}
+					}
+					else
+					{
+						//check if the path to the left is clear
+						for (int i = 0; i <= (vec2Index.x - cPlayer2D->vec2Index.x); ++i)
+						{
+							//if the tile is impassable : 610 on
+							if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - i) >= 610) //tile isnt a destoryable block
+							{
+								pathClear = false;
+							}
+						}
+					}
+				}
+				else if (vec2Index.x == cPlayer2D->vec2Index.x ||
+					vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
+					vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
+				{
+					// check if player's y is larger than or smaller than enemy's y
+					// if is larger, direction is up
+					// if is smaller, direction is down
+					if (cPlayer2D->vec2Index.y > vec2Index.y)
+					{
+						//check if the path upward is clear
+						for (int i = 0; i <= (cPlayer2D->vec2Index.y - vec2Index.y); ++i)
+						{
+							//if the tile is impassable : 610 on
+							if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x) >= 610) //tile isnt a destoryable block
+							{
+								pathClear = false;
+							}
+						}
+					}
+					else
+					{
+						//check if the path down is clear
+						for (int i = 0; i <= (vec2Index.y - cPlayer2D->vec2Index.y); ++i)
+						{
+							//if the tile is impassable : 610 on
+							if (cMap2D->GetMapInfo(vec2Index.y - i, vec2Index.x) >= 610) //tile isnt a destoryable block
+							{
+								pathClear = false;
+							}
+						}
+					}
+				}
+
+				//only change into SHOOT state if path is clear
+				if (pathClear)
+				{
+					sCurrentFSM = SHOOT;
+					iFSMCounter = 0;
+					cout << "Switching to Shooting State" << endl;
+					runtimeColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); //reset to white
+					break;
+				}
+
+			}
+		}
+		runtimeColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f); //green colour to show healing
+		if (healingCooldown <= 0.0) //cooldown up
+		{
+			++health; //heal
+			healingCooldown = healingMaxCooldown; //reset healing cooldown
+		}
+		healingCooldown -= dElapsedTime; //deplete healing cooldown
 		iFSMCounter++;
 		break;
 	case IDLE:
