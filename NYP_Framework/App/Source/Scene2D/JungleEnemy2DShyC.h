@@ -116,17 +116,15 @@ protected:
 
 	enum FSM
 	{
-		IDLE = 0,
-		RELOAD = 1,
-		ATTACK = 2,
-		TELEPORT,
-		WANDER,
-		SHOOT,
+		CAMOUFLAGE = 0,
+		AGGRO,
+		HUNKER,
 		RETURN,
-		RECOVER,
 		EXPLODE,
 		NUM_FSM
 	};
+
+	int previousHealth; //keep track to know whether enemy was just attacked
 
 	double flickerTimer; //used to progress the flicker counter
 	double flickerTimerMax; //used to reset flicker counter
@@ -180,10 +178,10 @@ protected:
 	const int iMaxFSMCounter = 60;
 	const int iWanderReturnMaxFSMCounter = 300;
 
-	vector<glm::vec2> enemysTeleportationResidue; //a vector of locations where this enemy left behind teleportation residue
-	vector<double> enemysTResidueCooldown; //timer for how long the residue will last
-	const double enemysTResidueMaxCooldown = 3.0; //poof effects last for 3 seconds before disappearing
+	glm::vec2 spawnPoint; //point to return to using return, enemy's safe space
 
+	double attackCooldownCurrent; //the cooldown that gets dt-ed away
+	double attackCooldownMax; //the overall cooldown duration, eg 5s
 	double healingCooldown; //timer between when the enemy heals when in new location
 	const double healingMaxCooldown = 0.2; //can heal 1 HP every 0.5 second
 
