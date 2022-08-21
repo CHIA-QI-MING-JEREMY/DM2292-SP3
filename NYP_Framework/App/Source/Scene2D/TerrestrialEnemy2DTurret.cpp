@@ -169,7 +169,7 @@ bool TEnemy2DTurret::Init(void)
 	maxHealth = health = 25; //takes 1 hit to kill
 
 	isAlarmerActive = false;
-	isAlarmOn = true;
+	isAlarmOn = false;
 
 	return true;
 }
@@ -303,12 +303,33 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		{
 			animatedSprites->PlayAnimation("attackR", 0, 1.f);
 			//cout << "Play attackR anim" << endl;
+
+			shootingDirection = RIGHT;
+
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CTEAmmoTurret* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
 			animatedSprites->PlayAnimation("attackL", 0, 1.f);
 			//cout << "Play attackL anim" << endl;
+
+			shootingDirection = LEFT;
+
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CTEAmmoTurret* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
 		}
+
+		// TO DO
+		// prevent enemy ammo from shooting more than once
 
 		if (iFSMCounter > iMaxFSMCounter)
 		{
