@@ -124,18 +124,16 @@ bool TEnemy2DTurret::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade_Test.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade_Test.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade.png" << endl;
 		return false;
 	}
 
 	// Create the animated sprite and setup the animation
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 8, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	animatedSprites->AddAnimation("hidden", 0, 0);
-	animatedSprites->AddAnimation("jitterR", 37, 39);
-	animatedSprites->AddAnimation("jitterL", 45, 47);
 	animatedSprites->AddAnimation("decloakR", 0, 7);
 	animatedSprites->AddAnimation("decloakL", 8, 15);
 	animatedSprites->AddAnimation("targetR", 16, 18);
@@ -168,7 +166,10 @@ bool TEnemy2DTurret::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 5 hits to kill
+	maxHealth = health = 25; //takes 1 hit to kill
+
+	isAlarmerActive = false;
+	isAlarmOn = true;
 
 	return true;
 }
@@ -195,28 +196,41 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
+			//cout << "Play hidden anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
 			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
+			//cout << "Play hidden anim" << endl;
 		}
 		
+		if (isAlarmOn)
+		{
+			sCurrentFSM = ALERT_DECLOAK;
+			iFSMCounter = 0;
+			animatedSprites->Reset();
+			cout << "Switching to Alert_Decloak state" << endl;
+			break;
+		}
+
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 5.f)
 		{
 			sCurrentFSM = DECLOAK;
 			iFSMCounter = 0;
+			animatedSprites->Reset();
 			cout << "Switching to Decloak State" << endl;
 		}
-		iFSMCounter++;
 		break;
 	case DECLOAK:
 		if (vec2Direction.x > 0)
 		{
-			animatedSprites->PlayAnimation("decloakR", 0, 1.0f);
+			animatedSprites->PlayAnimation("decloakR", 0, 1.f);
+			//cout << "Play decloakR anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
-			animatedSprites->PlayAnimation("decloakL", 0, 1.0f);
+			animatedSprites->PlayAnimation("decloakL", 0, 1.f);
+			//cout << "Play decloakL anim" << endl;
 		}
 
 		if (iFSMCounter > iMaxFSMCounter)
@@ -231,10 +245,20 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("targetR", -1, 1.f);
+			//cout << "Play targetR anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
 			animatedSprites->PlayAnimation("targetL", -1, 1.f);
+			//cout << "Play targetL anim" << endl;
+		}
+
+		if (isAlarmOn)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target state" << endl;
+			break;
 		}
 
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 7.f)
@@ -242,12 +266,15 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			sCurrentFSM = CLOAK;
 			iFSMCounter = 0;
 			cout << "Switching to Cloak State" << endl;
+			break;
 		}
-		else if (iFSMCounter > iMaxFSMCounter)
+
+		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 			cout << "Switching to Attack State" << endl;
+			break;
 		}
 		iFSMCounter++;
 		break;
@@ -255,10 +282,12 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("cloakR", 0, 1.f);
+			//cout << "Play cloakR anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
 			animatedSprites->PlayAnimation("cloakL", 0, 1.f);
+			//cout << "Play cloakL anim" << endl;
 		}
 
 		if (iFSMCounter > iMaxFSMCounter)
@@ -273,10 +302,12 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("attackR", 0, 1.f);
+			//cout << "Play attackR anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
 			animatedSprites->PlayAnimation("attackL", 0, 1.f);
+			//cout << "Play attackL anim" << endl;
 		}
 
 		if (iFSMCounter > iMaxFSMCounter)
@@ -286,6 +317,103 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			cout << "Switching to Target State" << endl;
 		}
 		iFSMCounter++;
+		break;
+	case ALERT_DECLOAK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("decloakR", 0, 0.5f);
+			//cout << "Play decloakR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("decloakL", 0, 0.5f);
+			//cout << "Play decloakL anim" << endl;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target State" << endl;
+		}
+		iFSMCounter += 2;
+		break;
+	case ALERT_TARGET:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("targetR", -1, 0.5f);
+			//cout << "Play targetR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("targetL", -1, 0.5f);
+			//cout << "Play targetL anim" << endl;
+		}
+
+		if (!isAlarmOn)
+		{
+			sCurrentFSM = TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Target state" << endl;
+			break;
+		}
+
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 9.f)
+		{
+			sCurrentFSM = ALERT_STANDBY;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Standby State" << endl;
+			break;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_ATTACK;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Attack State" << endl;
+			break;
+		}
+		iFSMCounter += 2;
+		break;
+	case ALERT_ATTACK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("attackR", -1, 1.f);
+			//cout << "Play attackR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("attackL", -1, 1.f);
+			//cout << "Play attackL anim" << endl;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target State" << endl;
+		}
+		iFSMCounter++;
+		break;
+	case ALERT_STANDBY:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("targetR", -1, 0.5f);
+			//cout << "Play targetR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("targetL", -1, 0.5f);
+			//cout << "Play targetL anim" << endl;
+		}
+
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 9.f)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target State" << endl;
+			break;
+		}
 		break;
 	default:
 		break;
@@ -304,6 +432,8 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			}
 		}
 	}
+
+	UpdateDirection();
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -832,18 +962,6 @@ void TEnemy2DTurret::UpdatePosition(void)
 	// if the player is to the left or right of the enemy2D, then jump to attack
 	if (vec2Direction.x < 0)
 	{
-		// Move left
-		const int iOldIndex = vec2Index.x;
-		if (vec2Index.x >= 0)
-		{
-			i32vec2NumMicroSteps.x--;
-			if (i32vec2NumMicroSteps.x < 0)
-			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
-			}
-		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
 
@@ -866,19 +984,6 @@ void TEnemy2DTurret::UpdatePosition(void)
 	}
 	else if (vec2Direction.x > 0)
 	{
-		// Move right
-		const int iOldIndex = vec2Index.x;
-		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-		{
-			i32vec2NumMicroSteps.x++;
-
-			if (i32vec2NumMicroSteps.x >= cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS)
-			{
-				i32vec2NumMicroSteps.x = 0;
-				vec2Index.x++;
-			}
-		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
 
@@ -898,16 +1003,6 @@ void TEnemy2DTurret::UpdatePosition(void)
 
 		// Interact with the Player
 		//InteractWithPlayer();
-	}
-
-	// if the player is above the enemy2D, then jump to attack
-	if (vec2Direction.y > 0)
-	{
-		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
-		}
 	}
 }
 
