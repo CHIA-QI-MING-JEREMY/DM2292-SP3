@@ -218,7 +218,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (planetNum == 2)
+	if (planetNum == 2 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
 	{
 		// Render the Toxicity Level
 		ImGuiWindowFlags toxicityWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
