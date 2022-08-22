@@ -132,8 +132,6 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'I' to view your inventory.");
 
-	ImGui::End();
-
 	// Render the panel
 	if (cPlanet != NULL && isShowPanel) {
 		ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -167,7 +165,7 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 			ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Key Resources: ");
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ice Crystals\nHound Teeth\nScrap Metal\nBatteries");
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ice Crystals\nScrap Metal\nBatteries");
 			break;
 		case CPlanet::TYPE::TERRESTRIAL:
 		case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
@@ -180,30 +178,31 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 			break;
 		}
 		ImGui::End();
+
 	}
 
-	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
-		static float f = 0.0f;
-		static int counter = 0;
-
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("Main Menu", NULL, window_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth * 0.8,
 			CSettings::GetInstance()->iWindowHeight * 0.85));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
-		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)StartCombatButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			// To next scene
-			StartCombat = true;
-		}
+		ImGui::Image((ImTextureID)StartCombatButtonData.textureID, ImVec2(buttonWidth * relativeScale_x, buttonHeight * relativeScale_y));
+
 		// prevent clicking the background !!
 		isButtonHover = ImGui::IsItemHovered();
+
+		std::cout << isButtonHover << "\n";
+
+		if (ImGui::IsItemClicked()) {
+			std::cout << "Clicked\n";
+			StartCombat = true;
+		}
 		ImGui::End();
 	}
+
+	ImGui::End();
 }
 
 
