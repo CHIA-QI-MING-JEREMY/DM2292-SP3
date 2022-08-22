@@ -170,6 +170,11 @@ protected:
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
+	// Inventory Manager
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	// Inventory Item
+	CInventoryItemPlanet* cInventoryItemPlanet;
+
 	// Current FSM
 	FSM sCurrentFSM;
 
@@ -182,7 +187,7 @@ protected:
 	glm::vec2 spawnPoint; //point to return to using return, enemy's safe space
 
 	double attackCooldownCurrent; //the cooldown that gets dt-ed away
-	double attackCooldownMax; //the overall cooldown duration, eg 5s
+	const double attackCooldownMax = 2.0; //the overall cooldown duration, eg 5s
 	double healingCooldown; //timer between when the enemy heals when in new location
 	const double healingMaxCooldown = 0.2; //can heal 1 HP every 0.5 second
 

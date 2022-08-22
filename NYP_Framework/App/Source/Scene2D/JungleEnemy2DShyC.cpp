@@ -118,6 +118,9 @@ bool JEnemy2DShyC::Init(void)
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
@@ -172,8 +175,7 @@ bool JEnemy2DShyC::Init(void)
 	flickerTimer = flickerTimerMax; //used to progress the flicker counter
 	flickerCounter = 0; //decides colour of enemy and when to explode
 
-	attackCooldownCurrent = 3.0; //the cooldown that gets dt-ed away
-	attackCooldownMax = 3.0; //the overall cooldown duration, eg 5s
+	attackCooldownCurrent = attackCooldownMax; //the cooldown that gets dt-ed away
 	healingCooldown = 0.0; //timer between when the enemy heals when in new location
 
 	hunkering = false;
@@ -1014,7 +1016,17 @@ bool JEnemy2DShyC::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Jungle Gotcha!" << endl;
+		cout << "Shy Chaser Gotcha!" << endl;
+		if (attackCooldownCurrent == 0)
+		{
+			// Decrease the health by 1
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+			cInventoryItemPlanet->Remove(5);
+			//cout << "Take that!" << endl;
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+			attackCooldownCurrent = attackCooldownMax; //reset attack cooldown
+		}
+
 		return true;
 	}
 	return false;
