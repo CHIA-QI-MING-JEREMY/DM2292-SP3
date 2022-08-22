@@ -818,11 +818,11 @@ bool CResource::InteractWithPlayer(void)
 		case FUR:
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
-			if (cInventoryItemPlanet->GetCount() != 50)
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				std::cout << "COLLECTED FUR" << std::endl;
 				collected = true; //delete in scene
-				cInventoryItemPlanet->Add(15);
+				cInventoryItemPlanet->Add(5);
 
 				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			}
@@ -836,11 +836,11 @@ bool CResource::InteractWithPlayer(void)
 		{
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
-			if (cInventoryItemPlanet->GetCount() != 50)
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				std::cout << "COLLECTED FUR COAT" << std::endl;
 				collected = true; //delete in scene
-				cInventoryItemPlanet->Add(10);
+				cInventoryItemPlanet->Add(3);
 
 				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			}
