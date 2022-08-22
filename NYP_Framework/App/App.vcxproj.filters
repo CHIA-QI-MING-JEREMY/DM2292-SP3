@@ -120,8 +120,11 @@
     <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\GameStateManagement\GameInfo.cpp">
-      <Filter>GameStateManagement</Filter>
+    <ClCompile Include="Source\ShipCombat\InventoryItemShip.cpp">
+      <Filter>ShipCombat</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ShipCombat\InventoryManagerShip.cpp">
+      <Filter>ShipCombat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +251,12 @@
     </ClInclude>
     <ClInclude Include="Source\GameStateManagement\GameInfo.h">
       <Filter>GameStateManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShipCombat\InventoryItemShip.h">
+      <Filter>ShipCombat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShipCombat\InventoryManagerShip.h">
+      <Filter>ShipCombat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

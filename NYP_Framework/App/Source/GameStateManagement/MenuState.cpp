@@ -158,7 +158,7 @@ bool CMenuState::Update(const double dElapsedTime)
 
 			// Load the menu state
 			cout << "Loading PlanetState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");
 		}
 
 		

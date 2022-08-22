@@ -348,7 +348,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		camera2D->setTargetZoom(1.0f);
 		isZoomedIn = false;
 	}
-
+ 
 	// click test
 	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB)) {
 		std::cout << camera2D->getBlockSelected().x << " " << camera2D->getBlockSelected().y << "\n";
@@ -962,4 +962,9 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	}
 
 	cPlayer2D->ResetRespawn(); //spawn player at the right starting location
+}
+
+bool JunglePlanet::getIsOnShip(void)
+{
+	return cGUI_Scene2D->getGoOnShip();
 }

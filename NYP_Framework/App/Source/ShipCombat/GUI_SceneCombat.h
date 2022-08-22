@@ -81,6 +81,7 @@ public:
 	glm::vec2 playerPos;
 	bool makeChanges;
 	GUI_STATE GuiState;
+	ImVec2 blockPosition;
 
 protected:
 
@@ -106,6 +107,8 @@ protected:
 
 	ButtonData AcceptButtonData;
 	ButtonData RejectButtonData;
+	unsigned PlayerBarTextureID;
+	unsigned BitTextureID;
 
 	// The handler containing the instance of CInventoryManager
 	CInventoryManager* cInventoryManager;

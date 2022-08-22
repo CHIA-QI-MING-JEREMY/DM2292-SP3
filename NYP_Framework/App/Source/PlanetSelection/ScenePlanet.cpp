@@ -12,6 +12,7 @@
 
 #include "System\filesystem.h"
 #include "ScenePlanet.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -119,6 +120,7 @@ bool CScenePlanet::Init(void)
 	int snowCount = 0;
 	int terraCount = 0;
 	int jungleCount = 0;
+	int counter = 0;
 
 	srand(time(NULL));
 
@@ -136,7 +138,11 @@ bool CScenePlanet::Init(void)
 				nebula = cPlanet;
 			}
 			else if (cPlanet->vec2Index.x == 8) {
-				camera2D->setTargetPos(glm::vec2(cPlanet->vec2Index.x, cPlanet->vec2Index.y));
+				// first time running the planet so we init with this x
+				if (CGameInfo::GetInstance()->initPlanets == false) {
+					camera2D->setTargetPos(glm::vec2(cPlanet->vec2Index.x, cPlanet->vec2Index.y));
+					CGameInfo::GetInstance()->currentPlanetPos = cPlanet->vec2Index;
+				}
 				cPlanet->SetType(CPlanet::TYPE::JUNGLE_TUTORIAL);
 				PlanetSelected = cPlanet;
 				cPlanet->SetVisibility(true);
@@ -154,57 +160,105 @@ bool CScenePlanet::Init(void)
 				cPlanet->planetName = "Stan Kep1er";
 			}
 			else {
-				// randomiser function
-				bool isSet = false;
-				while (!isSet) {
-					int randomType = rand() % 6;
-					switch (randomType)
+				if (CGameInfo::GetInstance()->initPlanets == false) {
+					// randomiser function
+					bool isSet = false;
+					while (!isSet) {
+						int randomType = rand() % 6;
+						switch (randomType)
+						{
+						case 0:
+						case 3:
+							if (jungleCount < 2) {
+								cPlanet->SetType(CPlanet::TYPE::JUNGLE);
+								jungleCount++;
+								isSet = true;
+								CGameInfo::GetInstance()->planetList.push_back(0);
+							}
+							else {
+								continue;
+							}
+							break;
+						case 1:
+						case 4:
+							if (snowCount < 2) {
+								cPlanet->SetType(CPlanet::TYPE::SNOW);
+								snowCount++;
+								isSet = true;
+								CGameInfo::GetInstance()->planetList.push_back(1);
+							}
+							else {
+								continue;
+							}
+							break;
+						case 2:
+						case 5:
+							if (terraCount < 2) {
+								cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL);
+								terraCount++;
+								isSet = true;
+								CGameInfo::GetInstance()->planetList.push_back(2);
+							}
+							else {
+								continue;
+							}
+							break;
+						default:
+							break;
+						}
+					}
+				}
+				else {
+					switch (CGameInfo::GetInstance()->planetList[counter])
 					{
 					case 0:
-					case 3:
-						if (jungleCount < 2) {
-							cPlanet->SetType(CPlanet::TYPE::JUNGLE);
-							jungleCount++;
-							isSet = true;
-						}
-						else {
-							continue;
-						}
+						cPlanet->SetType(CPlanet::TYPE::JUNGLE);
 						break;
 					case 1:
-					case 4:
-						if (snowCount < 2) {
-							cPlanet->SetType(CPlanet::TYPE::SNOW);
-							snowCount++;
-							isSet = true;
-						}
-						else {
-							continue;
-						}
+						cPlanet->SetType(CPlanet::TYPE::SNOW);
 						break;
 					case 2:
-					case 5:
-						if (terraCount < 2) {
-							cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL);
-							terraCount++;
-							isSet = true;
-						}
-						else {
-							continue;
-						}
+						cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL);
 						break;
 					default:
 						break;
 					}
+					counter++;
 				}
 			}
-
 
 			planetVector.insert(std::make_pair(std::make_pair(cPlanet->vec2Index.x, cPlanet->vec2Index.y), cPlanet));
 		}
 		else {
 			//break up of loop if all the enemies have been loaded
 			break;
+		}
+	}
+
+	if (CGameInfo::GetInstance()->initPlanets == false) {
+		CGameInfo::GetInstance()->initPlanets = true;
+	}
+	else {
+		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
+		while (otherPlanets != planetVector.end()) {
+			if (otherPlanets->second->vec2Index.x == 0) {
+				otherPlanets++;
+				continue;
+			}
+			// TODO: [SP3] Set it so that u cannot visit other planets during tutorial
+			glm::vec2 s = CGameInfo::GetInstance()->selectedPlanet->getPos();
+			if (s == otherPlanets->second->vec2Index) {
+				camera2D->setTargetPos(glm::vec2(otherPlanets->second->vec2Index.x, otherPlanets->second->vec2Index.y));
+				PlanetSelected = otherPlanets->second;
+			}
+
+			if (glm::abs(otherPlanets->second->vec2Index.x - PlanetSelected->vec2Index.x) < 7) {
+				otherPlanets->second->SetVisibility(true);
+			}
+			else {
+				otherPlanets->second->SetVisibility(false);
+			}
+			otherPlanets++;
 		}
 	}
 
@@ -228,6 +282,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 {
  	if (cGUI_ScenePlanet->StartCombat) {
 		gotoPlanet = PlanetSelected;
+		CGameInfo::GetInstance()->selectedPlanet = PlanetSelected;
 		StartCombat = true;
 	}
 
@@ -238,7 +293,9 @@ bool CScenePlanet::Update(const double dElapsedTime)
 	}
 
 	// mouse Click
-	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB) && !lState) {
+	auto& io = ImGui::GetIO();
+	std::cout << (bool)cGUI_ScenePlanet->isButtonHover << "\n";
+	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB) && !lState && !cGUI_ScenePlanet->isButtonHover) {
 		lState = true;
 		glm::vec2 blockSelected = camera2D->getBlockSelected();
 		std::map<std::pair<int, int>, CPlanet*>::iterator x = planetVector.begin();
@@ -268,33 +325,14 @@ bool CScenePlanet::Update(const double dElapsedTime)
 					cGUI_ScenePlanet->isShowPanel = true;
 				}
 
-				// get nearby planets
-				if (x->second->getVisibility() == true) {
-					std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
-					while (otherPlanets != planetVector.end()) {
-						if (otherPlanets->second->vec2Index.x == 0) {
-							otherPlanets++;
-							continue;
-						}
-						// TODO: [SP3] Set it so that u cannot visit other planets during tutorial
-						if (glm::abs(otherPlanets->second->vec2Index.x - x->second->vec2Index.x) < 7) {
-							otherPlanets->second->SetVisibility(true);
-						}
-						else {
-							otherPlanets->second->SetVisibility(false);
-						}
-						otherPlanets++;
-					}
-				}
-
 				camera2D->setTargetPos(x->second->vec2Index);
 			}
 			x++;
 		}
 	}
+	
 
 	camera2D->Update(dElapsedTime);
-	std::cout << camera2D->getPos().x << " " << camera2D->getPos().y << "\n";
 
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);

@@ -18,6 +18,7 @@ using namespace std;
 // Include the Map2D as we will use it to check the player's movements and actions
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
+#include "GUI_Scene2D.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -708,6 +709,11 @@ void CPlayer2D::Constraint(DIRECTION eDirection)
 
 void CPlayer2D::InteractWithMap(void)
 {
+	// set exit panel to be false lmaooo
+	if (CGUI_Scene2D::GetInstance()->getShowExitPanel()) {
+		CGUI_Scene2D::GetInstance()->setShowExitPanel(false);
+	}
+
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
 	case CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM: //player gets launched into the air
@@ -796,7 +802,8 @@ void CPlayer2D::InteractWithMap(void)
 		break;
 	case CMap2D::TILE_INDEX::EXIT_DOOR:
 		// Game has been completed
-		CGameManager::GetInstance()->bPlayerWon = true;
+		CGUI_Scene2D::GetInstance()->setShowExitPanel(true);
+		CGUI_Scene2D::GetInstance()->setBlockPosition(camera2D->getBlockPositionWindow(vec2Index));
 		break;
 	default:
 		break;

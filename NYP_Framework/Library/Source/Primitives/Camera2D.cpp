@@ -108,6 +108,27 @@ glm::vec2 Camera2D::getBlockSelected()
 	return glm::vec2(int(mouseSelect.x), int(mouseSelect.y));
 }
 
+glm::vec2 Camera2D::getMousePositionWindow()
+{
+	// Create stuff
+	CMouseController* cMouseController = CMouseController::GetInstance();
+	CSettings* cSettings = CSettings::GetInstance();
+
+	return glm::vec2(cMouseController->GetMousePositionX(), cSettings->iWindowHeight - cMouseController->GetMousePositionY());
+}
+
+glm::vec2 Camera2D::getBlockPositionWindow(glm::vec2 blockPos)
+{
+	// Reverse of mouse position calculator tbh
+	CSettings* cSettings = CSettings::GetInstance();
+
+	vMousePosWorldSpace = (blockPos - pos) * zoom;
+	vMousePosConvertedRatio = glm::vec2(vMousePosWorldSpace.x * cSettings->iWindowWidth / cSettings->NUM_TILES_XAXIS, vMousePosWorldSpace.y * cSettings->iWindowHeight / cSettings->NUM_TILES_YAXIS);
+	vMousePosInWindow = glm::vec2(vMousePosConvertedRatio.x + cSettings->iWindowWidth * 0.5, vMousePosConvertedRatio.y + cSettings->iWindowHeight * 0.5);
+	
+	return glm::vec2(vMousePosInWindow.x, cSettings->iWindowHeight - vMousePosInWindow.y);
+}
+
 bool Camera2D::isInMap()
 {
 	CSettings* cSettings = CSettings::GetInstance();

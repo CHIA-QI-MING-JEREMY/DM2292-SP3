@@ -94,6 +94,8 @@ public:
 		//if false, level is randomly set between 1 and 2
 	void DecideLevel(bool tutorial);
 
+	bool getIsOnShip(void);
+
 protected:
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;

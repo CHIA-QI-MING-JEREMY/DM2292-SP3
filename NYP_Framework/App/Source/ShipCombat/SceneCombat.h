@@ -56,6 +56,17 @@ class CSceneCombat : public CSingletonTemplate<CSceneCombat>
 	friend CSingletonTemplate<CSceneCombat>;
 
 public:
+	// State
+	enum CURRENT_STATE
+	{
+		SHIP_NOSTATE = 0,
+		SHIPUPGRADE_NP,
+		SHIPUPGRADE,
+		SHIPCOMBAT,
+		SHIPLANDED,
+		NUM_STATES
+	};
+
 	// Init
 	bool Init(void);
 
@@ -72,11 +83,15 @@ public:
 	void PostRender(void);
 
 	int getNumEncounters(void);
-	bool goToPlatform;
+	bool goToNextScene;
+	void SetNewState(int newState);
+	int getCurrentState();
 
 protected:
 	// constants
 	float kScreenShakeLength = 0.5f;
+
+	CURRENT_STATE state;
 
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;

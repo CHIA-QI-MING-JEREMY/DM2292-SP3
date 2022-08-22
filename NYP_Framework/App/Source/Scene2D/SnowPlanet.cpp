@@ -706,3 +706,8 @@ void SnowPlanet::DecideLevel(bool tutorial)
 	}
 	cPlayer2D->ResetRespawn();
 }
+
+bool SnowPlanet::getIsOnShip(void)
+{
+	return cGUI_Scene2D->getGoOnShip();
+}

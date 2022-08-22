@@ -48,6 +48,8 @@ public:
 
 	glm::vec2 getMousePosition();
 	glm::vec2 getBlockSelected();
+	glm::vec2 getMousePositionWindow();
+	glm::vec2 getBlockPositionWindow(glm::vec2 blockPos);
 	bool isInMap();
 	bool noiseOn;
 	// screen shake stream bamboleo by red velvet
