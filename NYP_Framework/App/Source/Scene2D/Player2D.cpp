@@ -245,6 +245,10 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("shield", "Image/SnowPlanet/shieldpowerup.tga", 10, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("fur", "Image/SnowPlanet/fur.tga", 100, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("furcoat", "Image/SnowPlanet/furcoat.tga", 100, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
