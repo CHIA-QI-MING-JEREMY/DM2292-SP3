@@ -68,8 +68,8 @@ Interactables
 405: ice rope top
 406: ice rope mid
 407: ice rope bot
-597: water top
-598: water
+595: water top
+596: water
 599 : ice crystal
 
 
