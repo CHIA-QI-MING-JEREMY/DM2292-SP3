@@ -237,7 +237,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//SnowPlanet
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Temperature", "Image/SnowPlanet/temp.tga", 50, 50);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Temperature", "Image/SnowPlanet/temp.tga", 30, 30);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("berserk", "Image/SnowPlanet/berserkpowerup.tga",10,0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
@@ -1248,6 +1248,9 @@ void CPlayer2D::SetColour(COLOUR colour)
 		break;
 	case PINK:
 		runtimeColour = glm::vec4(1.0, 0.5, 0.5, 1.0); // PINK
+		break;
+	case SKYBLUE:
+		runtimeColour = glm::vec4(0.53f, 0.81f, 0.92f, 1.0f); // SKYBLUE
 		break;
 	default:
 		cout << "Unknown Colour." << endl;

@@ -355,8 +355,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.53f, 0.81f, 0.92f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-	ImGui::ProgressBar(cInventoryItemPlanet->GetCount(), ImVec2(100.0f *
-		relativeScale_x, 20.0f * relativeScale_y), "50C");
+	ImGui::ProgressBar(cInventoryItemPlanet->GetCount()/
+			(float)cInventoryItemPlanet->GetMaxCount(), ImVec2(100.0f *
+		relativeScale_x, 20.0f * relativeScale_y)," ");
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::End();

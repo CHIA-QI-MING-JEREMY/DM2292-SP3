@@ -102,6 +102,10 @@ SnowPlanet::~SnowPlanet(void)
 */
 bool SnowPlanet::Init(void)
 {
+	healthDropTimer = 3.f;
+	healthTimer = 0.f;
+	tempTimer = 0.f;
+	tempDropTimer = 5.0f;
 	turnBerserkOffTimer = 5.f;
 	turnBerserkTimer = 0.f;
 	// Include Shader Manager
@@ -289,9 +293,9 @@ bool SnowPlanet::Init(void)
 	cSoundController->PlaySoundByID(5); // plays BGM on repeat
 
 	// variables
-	isAlarmActive = false;
-	maxAlarmTimer = 10.0;
-	alarmTimer = 0.0;
+	//isAlarmActive = false;
+	//maxAlarmTimer = 10.0;
+	//alarmTimer = 0.0;
 
 	return true;
 }
@@ -350,6 +354,32 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::NORMAL) {
 		turnBerserkOffTimer = 5.0f;
 		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+	}
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
+	if (tempDropTimer >= tempTimer && cInventoryItemPlanet->GetCount() > 0) {
+		cout << tempDropTimer << endl;
+		tempDropTimer -= dElapsedTime;
+	}
+	if (tempDropTimer < tempTimer) {
+		if (cInventoryItemPlanet->GetCount() > 0) {
+			cInventoryItemPlanet->Remove(3);
+		}
+		else if (cInventoryItemPlanet->GetCount() <= 0) {
+			cInventoryItemPlanet->setCount(0);
+		}
+		tempDropTimer = 5.0f;
+	}
+	if (cInventoryItemPlanet->GetCount() <= 0) {
+		healthDropTimer -= dElapsedTime;
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::SKYBLUE);
+	}
+	else {
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+	}
+	if (healthDropTimer < healthTimer) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(5);
+		healthDropTimer = 3.f;
 	}
 	// mouse Position demo
 	// zoom demo

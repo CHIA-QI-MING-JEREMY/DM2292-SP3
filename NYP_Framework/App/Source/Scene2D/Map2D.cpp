@@ -598,6 +598,142 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(RED_FLAG, iTextureID));
 	}
+
+	/// <summary>
+	/// Snow Planet Interactables
+	/// </summary>
+	// Load the ropetop texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/ropetop.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/ropetop.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ROPE_TOP_ICE, iTextureID));
+	}
+	//Load the rope middle texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/ropemiddle.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/ropemiddle.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ROPE_MIDDLE_ICE, iTextureID));
+	}
+	//Load the rope bottom texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/ropebottom.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/ropebottom.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ROPE_BOTTOM_ICE, iTextureID));
+	}
+	//Load the water texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/water.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/water.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(WATER, iTextureID));
+	}
+	//Load the water top texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/watertop.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/watertop.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(WATER_TOP, iTextureID));
+	}
+	//Load the snowtop texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/snowTop.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/snowTop.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(TOP_SNOW, iTextureID));
+	}
+	//Load the snowleft texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/snowLeft.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/snowLeft.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(LEFT_SNOW, iTextureID));
+	}
+	//Load the snowright texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/snowRight.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/snowRight.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(RIGHT_SNOW, iTextureID));
+	}
+	//Load the snowbot texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/snowBot.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/snowBot.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(BOTTOM_SNOW, iTextureID));
+	}
+	//Load the no snow texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/snowblock.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/snowblock.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(NO_SNOW, iTextureID));
+	}
+	//Load the ice texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/ice.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/ice.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ICE, iTextureID));
+	}
 	
 	/*
 	// Load spikes up

@@ -98,6 +98,7 @@ public:
 		BLUE,
 		PURPLE,
 		PINK,
+		SKYBLUE,
 		NUM_COLOURS
 	};
 

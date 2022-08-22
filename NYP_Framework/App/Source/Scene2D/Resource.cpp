@@ -167,7 +167,7 @@ if (type == NUM_RESOURCES)
 		type = ENERGY_QUARTZ;
 	}
 	//index for ice crystal
-	else if (cMap2D->FindValue(599, uiRow, uiCol))
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ICE_CRYSTAL, uiRow, uiCol))
 	{
 		type = ICE_CRYSTAL;
 	}
@@ -207,6 +207,22 @@ if (type == NUM_RESOURCES)
 	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ANTIDOTE_PILL, uiRow, uiCol))
 	{
 		type = ANTIDOTE_PILL;
+	}
+	//snow planet
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR, uiRow, uiCol)) {
+		type = FUR;
+	}
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR_COAT, uiRow, uiCol)) {
+		type = FUR_COAT;
+	}
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::SHIELD_POWERUP, uiRow, uiCol)) {
+		type = SHIELD;
+	}
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::BERSERK_POWERUP, uiRow, uiCol)) {
+		type = BERSERK;
+	}
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FREEZE_POWERUP, uiRow, uiCol)) {
+		type = FREEZE;
 	}
 	else
 	{
@@ -357,6 +373,59 @@ if (type == NUM_RESOURCES)
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/TerrestrialPlanet/AntidotePill.tga" << endl;
+			return false;
+		}
+		break;
+	}
+	case FUR:
+	{
+		//Load Fur texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/fur.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/SnowPlanet/fur.tga" << endl;
+			return false;
+		}
+		break;
+	}
+	case FUR_COAT:
+		//Load Furcoat texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/furcoat.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/SnowPlanet/furcoat.tga" << endl;
+			return false;
+		}
+		break;
+	case SHIELD:
+	{
+		//Load shield texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/shieldpowerup.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/SnowPlanet/shieldpowerup.tga" << endl;
+			return false;
+		}
+		break;
+	}
+	case BERSERK:
+	{
+		//Load Berserk texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/berserkpowerup.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/SnowPlanet/berserkpowerup.tga" << endl;
+			return false;
+		}
+		break;
+	}
+	case FREEZE:
+	{
+		//Load Freeze texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/freezewaterpowerup.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/SnowPlanet/freezewaterpowerup.tga" << endl;
 			return false;
 		}
 		break;
