@@ -342,6 +342,81 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(TELEPORTATION_RESIDUE, iTextureID));
 		}
+
+		//pressed button down
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Down_Pressed.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Down_Pressed.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(DOWN_BUTTON_PRESSED, iTextureID));
+		}
+		//pressed button up
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Up_Pressed.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Up_Pressed.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(UP_BUTTON_PRESSED, iTextureID));
+		}
+		//pressed button right
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Right_Pressed.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Right_Pressed.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_PRESSED, iTextureID));
+		}
+		//pressed button left
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Left_Pressed.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Left_Pressed.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(LEFT_BUTTON_PRESSED, iTextureID));
+		}
+
+
+		//down button 1
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Down.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Down.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(DOWN_BUTTON_1, iTextureID));
+		}
+		//right button 1
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Right.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Right.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_1, iTextureID));
+		}
 	}
 
 	/// <summary>
@@ -435,6 +510,80 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(MOVING_LEAF_SOLID, iTextureID));
+		}
+		//leaves solid tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/MovingLeaf.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/MovingLeaf.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(LEAF_SOLID, iTextureID));
+		}
+
+		//stone ground tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/StoneBlock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(STONE_GROUND, iTextureID));
+		}
+		//grassy stone ground tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock_Grass.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/StoneBlock_Grass.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(STONE_GROUND_GRASS, iTextureID));
+		}
+		//mossy stone ground tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock_Mossy.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/StoneBlock_Mossy.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(STONE_GROUND_MOSS, iTextureID));
+		}
+
+		//down button 1 stone ground tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/StoneBlock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(DOWN_BUTTON_1_BLOCKS, iTextureID));
+		}
+		//right button 1 stone ground tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/StoneBlock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_1_BLOCKS, iTextureID));
 		}
 	}
 

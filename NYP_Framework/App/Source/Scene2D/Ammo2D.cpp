@@ -252,6 +252,14 @@ void CAmmo2D::InteractWithMap(void)
 		hit = true;
 		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
 		break;
+	case CMap2D::TILE_INDEX::DOWN_BUTTON_1:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DOWN_BUTTON_PRESSED); //deactivate button
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::DOWN_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		break;
+	case CMap2D::TILE_INDEX::RIGHT_BUTTON_1:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::RIGHT_BUTTON_PRESSED); //deactivate button
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RIGHT_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		break;
 	default:
 		break;
 	}
