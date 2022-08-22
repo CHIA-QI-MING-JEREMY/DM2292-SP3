@@ -117,7 +117,7 @@ bool CShipPlayer::Init(void)
 	// Create the quad mesh for the player
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
-	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH * 0.75, cSettings->TILE_HEIGHT * 0.75 );
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT );
 
 	// Load the player texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_PlayerSpriteSheet.png", true);
@@ -441,8 +441,8 @@ void CShipPlayer::Render(void)
 
 	glm::vec2 actualPos = IndexPos - cameraPos + offset;
 	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_YAXIS;
-	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
+	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS * camera2D->getZoom();
+	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS * camera2D->getZoom();
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
 	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));

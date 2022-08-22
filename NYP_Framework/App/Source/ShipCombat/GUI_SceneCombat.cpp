@@ -169,9 +169,9 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoScrollbar;
 
 	ImGui::Begin("Health", NULL, healthWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-		cSettings->iWindowHeight * 0.01f));
-	ImGui::SetWindowSize(ImVec2(2.0f * relativeScale_x, 2.0f * relativeScale_y));
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.01f * relativeScale_x),
+		cSettings->iWindowHeight * (0.01f * relativeScale_y)));
+	ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 
 	ImGui::Image((void*)(intptr_t)PlayerBarTextureID, ImVec2(300, 100));
@@ -184,7 +184,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::Begin("Health Bit", NULL, healthWindowFlags);
 		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.13f,
 			cSettings->iWindowHeight * 0.11f));
-		ImGui::SetWindowSize(ImVec2(1.0f * relativeScale_x, 1.0f * relativeScale_y));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 
 		ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(10, 14));
 		ImGui::SameLine();
