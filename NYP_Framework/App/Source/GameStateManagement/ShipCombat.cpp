@@ -12,6 +12,7 @@
 
 // Include CGameStateManager
 #include "GameStateManager.h"
+#include "GameInfo.h"
 
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
@@ -51,6 +52,13 @@ bool CShipCombatState::Init(void)
 		return false;
 	}
 
+	if (CGameInfo::GetInstance()->PrevState == 1) {
+		cSceneCombat->SetNewState(CSceneCombat::CURRENT_STATE::SHIPCOMBAT);
+	}
+	else if (CGameInfo::GetInstance()->PrevState == 2) {
+		cSceneCombat->SetNewState(CSceneCombat::CURRENT_STATE::SHIPUPGRADE_NP);
+	}
+
 	return true;
 }
 
@@ -81,13 +89,28 @@ bool CShipCombatState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 	}
 
-	if (cSceneCombat->getNumEncounters() <= 0 && cSceneCombat->goToPlatform) {
-		// Reset the CKeyboardController
-		CKeyboardController::GetInstance()->Reset();
+	if (cSceneCombat->goToNextScene) {
+		switch (cSceneCombat->getCurrentState())
+		{
+		case CSceneCombat::CURRENT_STATE::SHIPLANDED:
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
 
-		// Load the menu state
-		cout << "Loading PlayGameState" << endl;
-		CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			// Load the menu state
+			cout << "Loading PlayGameState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			break;
+		case CSceneCombat::CURRENT_STATE::SHIPUPGRADE_NP:
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+			cout << "Loading PlayGameState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");
+			break;
+		default:
+			break;
+		}
 	}
 
 	// Call the cScene2D's Update method

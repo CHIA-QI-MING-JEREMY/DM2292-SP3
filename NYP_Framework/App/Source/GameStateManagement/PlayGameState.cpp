@@ -45,8 +45,8 @@ bool CPlayGameState::Init(void)
 {
 	cout << "CPlayGameState::Init()\n" << endl;
 
-	//type = CGameInfo::GetInstance()->selectedPlanet->getType();
-	type = CPlanet::TYPE::TERRESTRIAL_TUTORIAL;
+	type = CGameInfo::GetInstance()->selectedPlanet->getType();
+	//type = CPlanet::TYPE::TERRESTRIAL;
 
 	std::cout << (CPlanet::TYPE(type)) << "\n";
 
@@ -145,6 +145,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetPauseGameState("InventoryState");
 	}
 
+
 	// Call the cScene2D's Update method
 	switch (type)
 	{
@@ -159,6 +160,50 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	case CPlanet::TYPE::TERRESTRIAL:
 	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
 		cTerrestrialPlanet->Update(dElapsedTime);
+		break;
+	default:
+		return false;
+		break;
+	}
+
+	// Call the cScene2D's Update method
+	switch (type)
+	{
+	case CPlanet::TYPE::SNOW:
+	case CPlanet::TYPE::SNOW_TUTORIAL:
+		if (cSnowPlanet->getIsOnShip()) {
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+			cout << "Loading ShipCombatState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
+			CGameInfo::GetInstance()->PrevState = 2;
+		}
+		break;
+	case CPlanet::TYPE::JUNGLE:
+	case CPlanet::TYPE::JUNGLE_TUTORIAL:
+		if (cJunglePlanet->getIsOnShip()) {
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+			cout << "Loading ShipCombatState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
+			CGameInfo::GetInstance()->PrevState = 2;
+		}
+		break;
+	case CPlanet::TYPE::TERRESTRIAL:
+	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
+		if (cTerrestrialPlanet->getIsOnShip()) {
+			// Reset the CKeyboardController
+			CKeyboardController::GetInstance()->Reset();
+
+			// Load the menu state
+			cout << "Loading ShipCombatState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
+			CGameInfo::GetInstance()->PrevState = 2;
+		}
 		break;
 	default:
 		return false;

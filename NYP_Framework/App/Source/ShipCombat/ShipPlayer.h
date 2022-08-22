@@ -41,6 +41,9 @@
 // Include InventoryManager
 #include "../App/Source/Scene2D/InventoryManager.h"
 
+// Include ShipInventoryManager
+#include "InventoryManagerShip.h"
+
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
@@ -54,9 +57,6 @@ public:
 
 	// Init
 	bool Init(void);
-
-	// Reset & respawn
-	bool ResetRespawn(void);
 
 	// Reset
 	bool Reset(void);
@@ -123,6 +123,9 @@ protected:
 
 	// Updates the player's health and number of lives
 	void UpdateHealthLives(void);
+
+	// Let player interact with the map
+	void InteractWithMap(void);
 
 	// Physics
 	CPhysics2D cPhysics2D;

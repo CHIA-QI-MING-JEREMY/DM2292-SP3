@@ -15,6 +15,11 @@ class CGameInfo : public CSingletonTemplate<CGameInfo>
 	friend CSingletonTemplate<CGameInfo>;
 public:
 	CPlanet* selectedPlanet;
+	int PrevState = 0;
+	bool initInventory = false;
+	bool initPlanets = false;
+	glm::vec2 currentPlanetPos = glm::vec2(-1, -1);
+	std::vector<int> planetList;
 
 protected:
 	// Constructor

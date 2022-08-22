@@ -287,6 +287,11 @@ int CPlanet::getType(void)
 	return this->type;
 }
 
+glm::vec2 CPlanet::getPos(void)
+{
+	return vec2Index;
+}
+
 void CPlanet::SetScale(float newScale)
 {
 	this->scale = newScale;

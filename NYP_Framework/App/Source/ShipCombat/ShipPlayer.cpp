@@ -18,6 +18,7 @@ using namespace std;
 // Include the Map2D as we will use it to check the player's movements and actions
 #include "../App/Source/Scene2D/Map2D.h"
 #include "Primitives/MeshBuilder.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -139,6 +140,16 @@ bool CShipPlayer::Init(void)
 
 	// Play idle animation as default
 	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+
+	// Get the handler to the CInventoryManager instance
+	cInventoryManager = CInventoryManager::GetInstance();
+	// Add a lives icon as one of the inventory items
+	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
+	// Add a health icon as one of the inventory items
+	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -367,6 +378,7 @@ void CShipPlayer::Update(const double dElapsedTime)
 
 	// Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
+	InteractWithMap();
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
@@ -524,6 +536,23 @@ void CShipPlayer::UpdateHealthLives(void)
 	{
 		// Player loses the game
 		CGameManager::GetInstance()->bPlayerLost = true;
+	}
+}
+
+void CShipPlayer::InteractWithMap(void)
+{
+
+	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
+	{
+	case 597:
+		// Update health and lives
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		// Check if a life is lost
+		cInventoryItem->Remove(1);
+		UpdateHealthLives();
+		break;
+	default:
+		break;
 	}
 }
 

@@ -71,6 +71,7 @@ public:
 	void setPlanetInfo(CPlanet* cPlanet);
 	bool isShowPanel;
 	bool StartCombat;
+	bool isButtonHover;
 
 protected:
 	// Constructor

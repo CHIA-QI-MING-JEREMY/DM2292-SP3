@@ -97,6 +97,7 @@ public:
 	bool getVisibility(void);
 	void SetType(TYPE type);
 	int getType(void);
+	glm::vec2 getPos(void);
 
 	const char* planetName;
 	bool hasExplored;

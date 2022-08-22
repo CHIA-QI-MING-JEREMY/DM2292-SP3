@@ -70,6 +70,7 @@ bool CPlanetSelectionState::Update(const double dElapsedTime)
 		// Load the menu state
 		cout << "Loading ShipCombatState" << endl;
 		CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
+		CGameInfo::GetInstance()->PrevState = 1;
 	}
 	
 	if (CKeyboardController::GetInstance()->IsKeyReleased(GLFW_KEY_ESCAPE))
