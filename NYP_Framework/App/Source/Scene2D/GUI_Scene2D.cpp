@@ -5,6 +5,7 @@
  Date: May 2021
  */
 #include "GUI_Scene2D.h"
+#include "System\ImageLoader.h"
 
 #include <iostream>
 using namespace std;
@@ -84,11 +85,17 @@ bool CGUI_Scene2D::Init(void)
 	//// Show the mouse pointer
 	//glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
+	CImageLoader* il = CImageLoader::GetInstance();
+	AcceptButtonData.fileName = "Image\\GUI\\tick.png";
+	AcceptButtonData.textureID = il->LoadTextureGetID(AcceptButtonData.fileName.c_str(), false);
+
 	// Initialise the CInventoryManagerPlanet
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 	lState = false;
 
 	m_fProgressBar = 0.0f;
+	goOnShip = false;
+	showExitPanel = false;
 
 	return true;
 }
@@ -112,6 +119,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	{
 		return;
 	}
+
+	float buttonWidth = 25;
+	float buttonHeight = 25;
 
 	// Create an invisible window which covers the entire OpenGL window
 	ImGui::Begin("Invisible window", NULL, window_flags);
@@ -172,6 +182,35 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
 		cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
 	ImGui::End();
+
+	if (showExitPanel) {
+		ImGuiWindowFlags ExitWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Exit Panel", NULL, ExitWindowFlags);
+		ImGui::SetWindowPos(ImVec2(blockPosition.x + cSettings->iWindowWidth * 0.05f,
+			blockPosition.y - cSettings->iWindowHeight * 0.1f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+		// planet information
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Go Back to Ship?");
+		ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "This action cannot be undone.");
+		ImGui::NewLine();
+		// Add codes for Start button here
+		if (ImGui::ImageButton((ImTextureID)AcceptButtonData.textureID,
+			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		{
+			goOnShip = true;
+			showExitPanel = false;
+		}
+
+		ImGui::End();
+	}
 
 	if (planetNum == 2)
 	{
@@ -289,6 +328,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::PopStyleColor();
 	}
 	ImGui::End();
+	ImGui::EndFrame();
 }
 
 
@@ -324,4 +364,24 @@ void CGUI_Scene2D::setPlanetNum(int num)
 int CGUI_Scene2D::getPlanetNum(void)
 {
 	return planetNum;
+}
+
+bool CGUI_Scene2D::getGoOnShip(void)
+{
+	return goOnShip;
+}
+
+bool CGUI_Scene2D::getShowExitPanel(void)
+{
+	return showExitPanel;
+}
+
+void CGUI_Scene2D::setShowExitPanel(bool newSet)
+{
+	showExitPanel = newSet;
+}
+
+void CGUI_Scene2D::setBlockPosition(glm::vec2 blockPos)
+{
+	blockPosition = blockPos;
 }

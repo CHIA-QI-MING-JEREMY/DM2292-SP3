@@ -971,3 +971,8 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 
 	cPlayer2D->ResetRespawn(); // spawn player at the right starting location
 }
+
+bool TerrestrialPlanet::getIsOnShip(void)
+{
+	return cGUI_Scene2D->getGoOnShip();
+}

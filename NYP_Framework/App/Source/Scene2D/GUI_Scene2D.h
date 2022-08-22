@@ -69,6 +69,11 @@ public:
 	void setPlanetNum(int num);
 	int getPlanetNum(void);
 
+	bool getGoOnShip(void);
+	bool getShowExitPanel(void);
+	void setShowExitPanel(bool newSet);
+	void setBlockPosition(glm::vec2 blockPos);
+
 protected:
 	// Constructor
 	CGUI_Scene2D(void);
@@ -96,7 +101,19 @@ protected:
 	// The handler containing the instance of CInventoryItem
 	CInventoryItemPlanet* cInventoryItemPlanet;
 
+	struct ButtonData
+	{
+		std::string fileName;
+		unsigned textureID;
+	};
+
+	ButtonData AcceptButtonData;
+	ButtonData RejectButtonData;
+
 	bool lState;
+	bool goOnShip;
+	bool showExitPanel;
+	glm::vec2 blockPosition;
 private:
 	int planetNum;
 };

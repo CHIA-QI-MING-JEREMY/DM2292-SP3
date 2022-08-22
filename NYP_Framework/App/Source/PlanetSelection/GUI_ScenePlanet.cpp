@@ -65,7 +65,7 @@ bool CGUI_ScenePlanet::Init(void)
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	io.Fonts->AddFontFromFileTTF("Image/GUI/quaver.ttf", 10);
 	io.Fonts->Build();
-	io.WantCaptureMouse;
+	
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -92,6 +92,7 @@ bool CGUI_ScenePlanet::Init(void)
 	glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 	isShowPanel = false;
 	StartCombat = false;
+	isButtonHover = false;
 
 	return true;
 }
@@ -199,6 +200,8 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 			// To next scene
 			StartCombat = true;
 		}
+		// prevent clicking the background !!
+		isButtonHover = ImGui::IsItemHovered();
 		ImGui::End();
 	}
 }
