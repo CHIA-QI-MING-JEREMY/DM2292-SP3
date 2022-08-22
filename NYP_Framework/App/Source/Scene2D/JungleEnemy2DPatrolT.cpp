@@ -167,15 +167,33 @@ bool JEnemy2DPatrolT::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	//if it's the enemy at this position
-	if (vec2Index == glm::vec2(16, 20))
+	//for tutorial lvl
+	if (cMap2D->GetCurrentLevel() == 0)
 	{
-		waypoints = ConstructWaypointVector(waypoints, 130, 4);
+		/*//if it's the enemy at this position
+		if (vec2Index == glm::vec2(16, 20))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 130, 4);
+		}
+		else if (vec2Index == glm::vec2(16, 11))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 140, 4);
+		}*/
 	}
-	else if (vec2Index == glm::vec2(16, 11))
+	//for lvl 1
+	if (cMap2D->GetCurrentLevel() == 1)
 	{
-		waypoints = ConstructWaypointVector(waypoints, 140, 4);
+		//if it's the enemy at this position
+		if (vec2Index == glm::vec2(16, 20))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 130, 4);
+		}
+		else if (vec2Index == glm::vec2(16, 11))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 140, 4);
+		}
 	}
+	
 
 	// sets waypoint counter value
 	currentWaypointCounter = 0;
@@ -577,6 +595,8 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 	default:
 		break;
 	}
+
+	UpdateDirection();
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);

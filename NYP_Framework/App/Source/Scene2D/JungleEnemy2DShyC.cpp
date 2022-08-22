@@ -553,6 +553,8 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		}
 	}
 
+	UpdateDirection();
+
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
 
