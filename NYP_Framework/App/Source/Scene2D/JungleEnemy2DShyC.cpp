@@ -256,20 +256,17 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f)
 		{
-			//cout << "vec2Destination : " << vec2Destination.x 
-			//		<< ", " << vec2Destination.y << endl;
-			//cout << "vec2Direction : " << vec2Direction.x 
-			//		<< ", " << vec2Direction.y << endl;
-			//system("pause");
+			glm::vec2 startIndices;
+			if (vec2NumMicroSteps.x == 0)
+			{
+				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
+			}
+			else
+			{
+				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
+			}
 
-			// Attack
-			// Update direction to move towards for attack
-			//UpdateDirection();
-			/*cMap2D->PrintSelf();
-			cout << "StartPos: " << vec2Index.x << "," << vec2Index.y << endl;
-			cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " <<
-				cPlayer2D->vec2Index.y << endl;*/
-			auto path = cMap2D->PathFind(vec2Index,
+			auto path = cMap2D->PathFind(startIndices,
 				cPlayer2D->vec2Index,
 				heuristic::manhattan,
 				10);
