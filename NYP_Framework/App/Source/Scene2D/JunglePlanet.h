@@ -30,6 +30,7 @@
 // Include CEnemy2D
 #include "Enemy2D.h"
 #include "JungleEnemy2DVT.h"
+#include "JungleEnemy2DShyC.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"

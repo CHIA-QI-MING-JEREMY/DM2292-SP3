@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "TerrestrialEnemy2DSentry.h"
+#include "JungleEnemy2DShyC.h"
 
 #include <iostream>
 using namespace std;
@@ -28,15 +28,15 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-TEnemy2DSentry::TEnemy2DSentry(void)
+JEnemy2DShyC::JEnemy2DShyC(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, sCurrentFSM(FSM::IDLE)
+	, sCurrentFSM(FSM::CAMOUFLAGE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-	, camera2D(NULL)
+	//, camera2D(NULL)
 	, animatedSprites(NULL)
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
@@ -57,7 +57,7 @@ TEnemy2DSentry::TEnemy2DSentry(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-TEnemy2DSentry::~TEnemy2DSentry(void)
+JEnemy2DShyC::~JEnemy2DShyC(void)
 {
 	// Delete the quadMesh
 	if (quadMesh)
@@ -88,7 +88,7 @@ TEnemy2DSentry::~TEnemy2DSentry(void)
 /**
   @brief Initialise this instance
   */
-bool TEnemy2DSentry::Init(void)
+bool JEnemy2DShyC::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -103,7 +103,7 @@ bool TEnemy2DSentry::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1800, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1610, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -111,6 +111,7 @@ bool TEnemy2DSentry::Init(void)
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
+	spawnPoint = vec2Index; //set spawn point
 	// By default, microsteps should be zero
 	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
 
@@ -123,25 +124,28 @@ bool TEnemy2DSentry::Init(void)
 	//CS: Create the Quad Mesh using the mesh builder
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/SentrySpriteSheet.png", true);
+	// Load the enemy2D texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/SentrySpriteSheet.png" << endl;
+		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
 		return false;
 	}
 
-	// Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 6, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleR", 0, 3);
-	animatedSprites->AddAnimation("idleL", 6, 9);
-	animatedSprites->AddAnimation("runR", 12, 17);
-	animatedSprites->AddAnimation("runL", 18, 23);
-	animatedSprites->AddAnimation("attackR", 24, 26);
-	animatedSprites->AddAnimation("attackL", 27, 29);
-
-	// Play idle animation as default
-	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+	//CS: Create the animated spirte and setup the animation
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
+		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
+	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
+	animatedSprites->AddAnimation("right", 3, 5);
+	animatedSprites->AddAnimation("up", 6, 8);
+	animatedSprites->AddAnimation("left", 9, 11);
+	//CS: Play the "idle" animation as default
+	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//-1 --> repeats forever
+	//		settng it to say 1 will cause it to only repeat 1 time
+	//1.0f --> set time between frames as 1.0f
+	//		increasing this number will cause the animation to slowdown
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -156,27 +160,23 @@ bool TEnemy2DSentry::Init(void)
 	//Construct 100 inactive ammo and add into ammoList
 	for (int i = 0; i < 100; ++i)
 	{
-		CTEAmmoSentry* cEnemyAmmo2D = new CTEAmmoSentry();
+		CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
 		cEnemyAmmo2D->SetShader("Shader2D");
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	type = LONG_RANGE; //has ammo
-	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 1 hit to kill
+	type = DEFENCE; //has hunker to reduce damage
+	shootingDirection = LEFT; //setting direction for ammo shooting
+	previousHealth = maxHealth = health = 50; //takes 10 hits to kill
 
-	if (vec2Index == glm::vec2(12, 3))
-	{
-		waypoints = ConstructWaypointVector(waypoints, 300, 5);
-	}
-	else if (vec2Index == glm::vec2(2, 10))
-	{
-		waypoints = ConstructWaypointVector(waypoints, 305, 4);
-	}
+	flickerTimer = flickerTimerMax; //used to progress the flicker counter
+	flickerCounter = 0; //decides colour of enemy and when to explode
 
-	// sets waypoint counter value
-	currentWaypointCounter = 0;
-	maxWaypointCounter = waypoints.size();
+	attackCooldownCurrent = 3.0; //the cooldown that gets dt-ed away
+	attackCooldownMax = 3.0; //the overall cooldown duration, eg 5s
+	healingCooldown = 0.0; //timer between when the enemy heals when in new location
+
+	hunkering = false;
 
 	return true;
 }
@@ -184,7 +184,7 @@ bool TEnemy2DSentry::Init(void)
 /**
  @brief Update this instance
  */
-void TEnemy2DSentry::Update(const double dElapsedTime)
+void JEnemy2DShyC::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
@@ -195,72 +195,93 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 		health = maxHealth;
 	}
 
+	//attack cooldown
+	if (attackCooldownCurrent > 0) //if not at 0
+	{
+		attackCooldownCurrent -= dElapsedTime; //minus
+	}
+	else
+	{
+		attackCooldownCurrent = 0;
+	}
+
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
-	case IDLE:
-		if (vec2Direction.x > 0)
+	case CAMOUFLAGE:
+		//TEMP
+		runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0); //black
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
-			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
-		}
-		
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = PATROL;
+			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
+			cout << "Switching to Explode State" << endl;
+			break;
+		}
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f)
+		{
+			sCurrentFSM = AGGRO;
+			iFSMCounter = 0;
+			cout << "Switching to Aggro State" << endl;
+			break;
+		}
+		if (health != previousHealth) //was just attacked
+		{
+			sCurrentFSM = HUNKER;
+			iFSMCounter = 0;
+			cout << "Switching to Hunker State" << endl;
+			break;
 		}
 		iFSMCounter++;
 		break;
-	case PATROL:
-		if (vec2Index == waypoints[currentWaypointCounter])
+	case AGGRO:
+		//TEMP
+		runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
-			currentWaypointCounter++;
-			sCurrentFSM = IDLE;
-			cout << "Switching to Idle State" << endl;
+			sCurrentFSM = EXPLODE;
+			iFSMCounter = 0;
+			cout << "Switching to Explode State" << endl;
+			break;
 		}
+		if (health <= maxHealth / 2) //hunker once health gets too low
+		{
+			sCurrentFSM = HUNKER;
+			iFSMCounter = 0;
+			cout << "Switching to Hunker State" << endl;
+			break;
+		}
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f)
+		{
+			//cout << "vec2Destination : " << vec2Destination.x 
+			//		<< ", " << vec2Destination.y << endl;
+			//cout << "vec2Direction : " << vec2Direction.x 
+			//		<< ", " << vec2Direction.y << endl;
+			//system("pause");
 
-		if (vec2Direction.x > 0)
-		{
-			animatedSprites->PlayAnimation("runR", -1, 1.0f);
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("runL", -1, 1.0f);
-		}
-
-		if (currentWaypointCounter < maxWaypointCounter)
-		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
-			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-			}
-			
-			auto path = cMap2D->PathFind(startIndices,						// start pos
-										waypoints[currentWaypointCounter],	// target pos
-										heuristic::manhattan,				// heuristic
-										10);								// weight
+			// Attack
+			// Update direction to move towards for attack
+			//UpdateDirection();
+			/*cMap2D->PrintSelf();
+			cout << "StartPos: " << vec2Index.x << "," << vec2Index.y << endl;
+			cout << "TargetPos: " << cPlayer2D->vec2Index.x << ", " <<
+				cPlayer2D->vec2Index.y << endl;*/
+			auto path = cMap2D->PathFind(vec2Index,
+				cPlayer2D->vec2Index,
+				heuristic::manhattan,
+				10);
+			//cout << "=== Printing out the path ===" << endl;
 
 			// Calculate new destination
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
+				//std::cout << coord.x << "," << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					// Set a destination
 					vec2Destination = coord;
-					
 					// Calculate the direction between enemy2D and this destination
 					vec2Direction = vec2Destination - vec2Index;
 					bFirstPosition = false;
@@ -278,22 +299,251 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 					}
 				}
 			}
+
+			////to help with debugging
+			//cout << "vec2Destination : " << vec2Destination.x << ", "
+			//	<< vec2Destination.y << endl;
+			//cout << "vec2Direction : " << vec2Direction.x << ", "
+			//	<< vec2Direction.y << endl;
+			//system("pause");
+
+			// Update the Enemy2D's position for attack
+			UpdatePosition();
+
+			//say the enemy is unable to move but is still in attack mode, trying to move to the player
+			if (shootingDirection == LEFT && attackCooldownCurrent == 0)
+				//if player is to the left of the enemy
+				//and enemy is able to attack again
+			{
+				//if between them and the player is a burnable bush
+				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNABLE_BUSH)
+				{
+					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
+					attackCooldownCurrent = attackCooldownMax; //reset cooldown
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+				}
+				//if between them and the player is a burning or dissolving bush
+				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
+					cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::DISSOLVING_BUSH)
+				{
+					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0); //destroy bush and turn it to empty space
+					attackCooldownCurrent = attackCooldownMax; //reset cooldown
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+				}
+			}
+			else if (shootingDirection == RIGHT && attackCooldownCurrent == 0)
+				//if player is to the right of the enemy
+				//and enemy is able to attack again
+			{
+				//if between them and the player is a burnable bush
+				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNABLE_BUSH)
+				{
+					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
+					attackCooldownCurrent = attackCooldownMax; //reset cooldown
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+				}
+				//if between them and the player is a burning or dissolving bush
+				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNING_BUSH || 
+					cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::DISSOLVING_BUSH)
+				{
+					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0); //destroy bush and turn it to empty space
+					attackCooldownCurrent = attackCooldownMax; //reset cooldown
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+				}
+			}
 		}
 		else
 		{
-			currentWaypointCounter = 0;
+			sCurrentFSM = RETURN;
+			iFSMCounter = 0;
+			cout << "Switching to Return State" << endl;
 		}
+		iFSMCounter++;
+		break;
+	case HUNKER:
+		//TEMP
+		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); //green
+		hunkering = true;
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
+		{
+			sCurrentFSM = EXPLODE;
+			iFSMCounter = 0;
+			cout << "Switching to Explode State" << endl;
+			hunkering = false;
+			break;
+		}
+		if (health > maxHealth / 2 && //more than half health
+			cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //within aggro range
+		{
+			sCurrentFSM = AGGRO;
+			iFSMCounter = 0;
+			cout << "Switching to Aggro State" << endl;
+			hunkering = false;
+			break;
+		}
+		//if in hunker for a certain period of time without switching out
+		if (iFSMCounter > iMaxFSMCounter) 
+		{
+			//if too close to the spawn point
+			if (cPhysics2D.CalculateDistance(vec2Index, spawnPoint) < 0.5f)
+			{
+				sCurrentFSM = CAMOUFLAGE;
+				cout << "Switching to Camouflage State" << endl;
+			}
+			else
+			{
+				sCurrentFSM = RETURN;
+				cout << "Switching to Return State" << endl;
+			}
+			iFSMCounter = 0;
+			hunkering = false;
+			break;
+		}
+		iFSMCounter++;
+		break;
+	case RETURN:
+		//TEMP
+		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
+		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
+		{
+			sCurrentFSM = EXPLODE;
+			iFSMCounter = 0;
+			cout << "Switching to Explode State" << endl;
+		}
+		//if too close to the spawn point
+		else if (cPhysics2D.CalculateDistance(vec2Index, spawnPoint) < 0.5f)
+		{
+			sCurrentFSM = CAMOUFLAGE;
+			iFSMCounter = 0;
+			cout << "Switching to Camouflage State" << endl;
+		}
+		else //move back to spawnPoint
+		{
+			glm::vec2 startIndices;
+			if (vec2NumMicroSteps.x == 0)
+			{
+				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
+			}
+			else
+			{
+				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
+			}
 
-		UpdatePosition();
+			auto path = cMap2D->PathFind(startIndices,	// start pos
+				spawnPoint,								// target pos
+				heuristic::manhattan,					// heuristic
+				10);									// weight
+
+			// Calculate new destination
+			bool bFirstPosition = true;
+			for (const auto& coord : path)
+			{
+				//std::cout << coord.x << ", " << coord.y << "\n";
+				if (bFirstPosition == true)
+				{
+					// Set a destination
+					vec2Destination = coord;
+
+					// Calculate the direction between enemy2D and this destination
+					vec2Direction = vec2Destination - vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - vec2Destination) == vec2Direction)
+					{
+						// Set a destination
+						vec2Destination = coord;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+
+			UpdatePosition();
+		}
+		iFSMCounter++;
+		break;
+	case EXPLODE:
+		//still flickering through colours
+		if (flickerCounter < 7)
+		{
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
+
+			shootingDirection = DOWN; //to adjust where the sprite faces
+			flickerTimer -= dElapsedTime; //timer counting down
+			if (flickerTimer <= 0) //timer up
+			{
+				++flickerCounter; //increase counter
+				flickerTimer = flickerTimerMax; //reset timer
+			}
+
+			//decide which colour to be
+			if (flickerCounter % 2 == 0) //even
+			{
+				//CS: Change Colour
+				runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
+			}
+			else //odd
+			{
+				//CS: Change Colour
+				runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
+			}
+		}
+		//explode time
+		if (flickerCounter == 7)
+		{
+			//cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
+
+			++flickerCounter; //increase counter
+			flickerTimer = flickerTimerMax * 4; //reset timer
+		}
+		//countdown for AOE
+		if (flickerCounter == 8)
+		{
+			flickerTimer -= dElapsedTime; //timer counting down
+			for (int i = -1; i < 2; ++i) //added to y
+			{
+				for (int j = -1; j < 2; ++j) //added to x
+				{
+					//change empty space to the explosion tile --> damage player heavily upon collision, plus poison
+					if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 0)
+					{
+						cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, CMap2D::TILE_INDEX::POISON_EXPLOSION); //poison explosion
+					}
+				}
+			}
+
+			if (flickerTimer <= 0) //timer up
+			{
+				//change from explosions back to normal
+				for (int i = -1; i < 2; ++i) //added to y
+				{
+					for (int j = -1; j < 2; ++j) //added to x
+					{
+						//change explosion tile to empty space
+						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == CMap2D::TILE_INDEX::POISON_EXPLOSION) //poison explosion
+						{
+							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 0); //set to empty space
+						}
+					}
+				}
+				++flickerCounter; //increase counter
+				health = 0; //kill enemy
+			}
+		}
 		break;
 	default:
 		break;
 	}
 
 	//ammo beahviour
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
 		if (ammo->getActive())
 		{
 			ammo->Update(dElapsedTime);
@@ -311,30 +561,32 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 	InteractWithMap();
 
 	//update sprite animation to play depending on the direction enemy is facing
-	//if (shootingDirection == LEFT)
-	//{
-	//	//CS: Play the "left" animation
-	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
-	//}
-	//else if (shootingDirection == RIGHT)
-	//{
-	//	//CS: Play the "right" animation
-	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
-	//}
-	//else if (shootingDirection == UP)
-	//{
-	//	//CS: Play the "up" animation
-	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
-	//}
-	//else if (shootingDirection == DOWN)
-	//{
-	//	//CS: Play the "idle" animation
-	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	//}
+	if (shootingDirection == LEFT)
+	{
+		//CS: Play the "left" animation
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+	}
+	else if (shootingDirection == RIGHT)
+	{
+		//CS: Play the "right" animation
+		animatedSprites->PlayAnimation("right", -1, 1.0f);
+	}
+	else if (shootingDirection == UP)
+	{
+		//CS: Play the "up" animation
+		animatedSprites->PlayAnimation("up", -1, 1.0f);
+	}
+	else if (shootingDirection == DOWN)
+	{
+		//CS: Play the "idle" animation
+		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
 	animatedSprites->Update(dElapsedTime);
+
+	previousHealth = health; //keep track to know whether enemy was just attacked
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->ENEMY_MICRO_STEP_XAXIS);
@@ -344,7 +596,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void TEnemy2DSentry::PreRender(void)
+void JEnemy2DShyC::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -363,7 +615,7 @@ void TEnemy2DSentry::PreRender(void)
 /**
  @brief Render this instance
  */
-void TEnemy2DSentry::Render(void)
+void JEnemy2DShyC::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -382,11 +634,12 @@ void TEnemy2DSentry::Render(void)
 
 	glm::vec2 actualPos = IndexPos - cameraPos + offset;
 	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	actualPos.x += i32vec2NumMicroSteps.x * cSettings->ENEMY_MICRO_STEP_XAXIS;
-	actualPos.y += i32vec2NumMicroSteps.y * cSettings->ENEMY_MICRO_STEP_YAXIS;
+	actualPos.x += i32vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
+	actualPos.y += i32vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
 	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
+
 
 	// Update the shaders with the latest transform
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
@@ -403,9 +656,9 @@ void TEnemy2DSentry::Render(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//render enemy ammo
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
 		if (ammo->getActive())
 		{
 			ammo->PreRender();
@@ -419,7 +672,7 @@ void TEnemy2DSentry::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void TEnemy2DSentry::PostRender(void)
+void JEnemy2DShyC::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -433,7 +686,7 @@ void TEnemy2DSentry::PostRender(void)
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void TEnemy2DSentry::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void JEnemy2DShyC::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->vec2Index.x = iIndex_XAxis;
 	this->vec2Index.y = iIndex_YAxis;
@@ -444,7 +697,7 @@ void TEnemy2DSentry::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YA
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void TEnemy2DSentry::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void JEnemy2DShyC::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
@@ -454,7 +707,7 @@ void TEnemy2DSentry::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, con
  @brief Set the handle to cPlayer to this class instance
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void TEnemy2DSentry::SetPlayer2D(CPlayer2D* cPlayer2D)
+void JEnemy2DShyC::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -466,7 +719,7 @@ void TEnemy2DSentry::SetPlayer2D(CPlayer2D* cPlayer2D)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void TEnemy2DSentry::Constraint(DIRECTION eDirection)
+void JEnemy2DShyC::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -510,12 +763,12 @@ void TEnemy2DSentry::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
+bool JEnemy2DShyC::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
 		// If the new position is fully within a row, then check this row only
-		if (vec2NumMicroSteps.y == 0)
+		if (i32vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
 			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
@@ -524,11 +777,11 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 			}
 		}
 		// If the new position is between 2 rows, then check both rows as well
-		else if (vec2NumMicroSteps.y != 0)
+		else if (i32vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 ||
-				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600))
 			{
 				return false;
 			}
@@ -539,45 +792,42 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 		// If the new position is at the top row, then return true
 		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
 		{
-			vec2NumMicroSteps.x = 0;
+			i32vec2NumMicroSteps.x = 0;
 			return true;
 		}
+
 		// If the new position is fully within a row, then check this row only
-		if (vec2NumMicroSteps.y == 0)
+		if (i32vec2NumMicroSteps.y == 0)
 		{
-			if (vec2NumMicroSteps.x != 0)
+			// If the grid is not accessible, then return false
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
 			{
-				// If the grid is not accessible, then return false
-				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
 		// If the new position is between 2 rows, then check both rows as well
-		else if (vec2NumMicroSteps.y != 0)
+		else if (i32vec2NumMicroSteps.y != 0)
 		{
-			if (vec2NumMicroSteps.x != 0)
+			// If the 2 grids are not accessible, then return false
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
-				// If the 2 grids are not accessible, then return false
-				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 ||
-					cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600)
-				{
-					return false;
-				}
+				return false;
 			}
 		}
+
 	}
 	else if (eDirection == UP)
 	{
 		// If the new position is at the top row, then return true
 		if (vec2Index.y >= cSettings->NUM_TILES_YAXIS - 1)
 		{
-			vec2NumMicroSteps.y = 0;
+			i32vec2NumMicroSteps.y = 0;
 			return true;
 		}
+
 		// If the new position is fully within a column, then check this column only
-		if (vec2NumMicroSteps.x == 0)
+		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
 			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600)
@@ -586,11 +836,11 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 			}
 		}
 		// If the new position is between 2 columns, then check both columns as well
-		else if (vec2NumMicroSteps.x != 0)
+		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 ||
-				cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600)
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -599,7 +849,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 	else if (eDirection == DOWN)
 	{
 		// If the new position is fully within a column, then check this column only
-		if (vec2NumMicroSteps.x == 0)
+		if (i32vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
 			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600)
@@ -608,11 +858,11 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 			}
 		}
 		// If the new position is between 2 columns, then check both columns as well
-		else if (vec2NumMicroSteps.x != 0)
+		else if (i32vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 ||
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600)
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600))
 			{
 				return false;
 			}
@@ -627,7 +877,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool TEnemy2DSentry::IsMidAir(void)
+bool JEnemy2DShyC::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (vec2Index.y == 0)
@@ -644,7 +894,7 @@ bool TEnemy2DSentry::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
+void JEnemy2DShyC::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -750,11 +1000,10 @@ void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
 	}
 }
 
-// TO DO
 /**
  @brief Let enemy2D interact with the player.
  */
-bool TEnemy2DSentry::InteractWithPlayer(void)
+bool JEnemy2DShyC::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 	
@@ -765,21 +1014,39 @@ bool TEnemy2DSentry::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		/*
-		sCurrentFSM = IDLE;
-		iFSMCounter = 0;*/
+		cout << "Jungle Gotcha!" << endl;
 		return true;
 	}
 	return false;
 }
 
-// TO DO
 //enemy interact with map
-void TEnemy2DSentry::InteractWithMap(void)
+void JEnemy2DShyC::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	
+	case 50: //purple spring, same function as the black and white spring 
+	case 51: //black and white spring, launch the player repeatedly up into the sky at the rate of a double jump
+		cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
+		break;
+	case 53: //lava, same function as black and white lava
+	case 54: //black and white lava, depletes health
+		// Decrease the health by 2
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		health--;
+		break;
+	case 55: //ice water, same function as black and white ice water
+	case 56: //black and white ice water, restores health
+	case 57: //ice water + enemy waypoint
+	case 58: //ice water + enemy waypoint, BnW
+		// Increase the health by 2
+		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); //green
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SPLASH); //play watching in water sound
+		health++;
+		break;
+	case 99:
+		break;
 	default:
 		break;
 	}
@@ -788,7 +1055,7 @@ void TEnemy2DSentry::InteractWithMap(void)
 /**
  @brief Update the enemy's direction.
  */
-void TEnemy2DSentry::UpdateDirection(void)
+void JEnemy2DShyC::UpdateDirection(void)
 {
 	// Set the destination to the player
 	vec2Destination = cPlayer2D->vec2Index;
@@ -815,7 +1082,7 @@ void TEnemy2DSentry::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void TEnemy2DSentry::FlipHorizontalDirection(void)
+void JEnemy2DShyC::FlipHorizontalDirection(void)
 {
 	vec2Direction.x *= -1;
 }
@@ -823,7 +1090,7 @@ void TEnemy2DSentry::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void TEnemy2DSentry::UpdatePosition(void)
+void JEnemy2DShyC::UpdatePosition(void)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -842,6 +1109,7 @@ void TEnemy2DSentry::UpdatePosition(void)
 				vec2Index.x--;
 			}
 		}
+		shootingDirection = LEFT; //moving to the left
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
@@ -861,7 +1129,7 @@ void TEnemy2DSentry::UpdatePosition(void)
 		}
 
 		// Interact with the Player
-		//InteractWithPlayer();
+		InteractWithPlayer();
 	}
 	else if (vec2Direction.x > 0)
 	{
@@ -877,6 +1145,7 @@ void TEnemy2DSentry::UpdatePosition(void)
 				vec2Index.x++;
 			}
 		}
+		shootingDirection = RIGHT; //moving to the right
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
@@ -893,10 +1162,11 @@ void TEnemy2DSentry::UpdatePosition(void)
 		if (IsMidAir() == true)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+			shootingDirection = DOWN; //moving down
 		}
 
 		// Interact with the Player
-		//InteractWithPlayer();
+		InteractWithPlayer();
 	}
 
 	// if the player is above the enemy2D, then jump to attack
@@ -910,26 +1180,25 @@ void TEnemy2DSentry::UpdatePosition(void)
 	}
 }
 
-vector<glm::vec2> TEnemy2DSentry::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
+vector<glm::vec2> JEnemy2DShyC::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
 	for (int i = 0; i < numOfWaypoints; ++i)
 	{
 		waypointVector.push_back(cMap2D->GetTilePosition(startIndex + i));
 		// Erase the value of the waypoint in the arrMapInfo
 		cMap2D->SetMapInfo(waypointVector[i].y, waypointVector[i].x, 0);
-		cout << waypointVector.size() << endl;
 	}
 
 	return waypointVector;
 }
 
 //called whenever an ammo is needed to be shot
-CTEAmmoSentry* TEnemy2DSentry::FetchAmmo()
+CJEAmmoVT* JEnemy2DShyC::FetchAmmo()
 {
 	//Exercise 3a: Fetch a game object from m_goList and return it
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
 		if (ammo->getActive()) {
 			continue;
 		}
@@ -943,9 +1212,15 @@ CTEAmmoSentry* TEnemy2DSentry::FetchAmmo()
 	//Get Size before adding 10
 	int prevSize = ammoList.size();
 	for (int i = 0; i < 10; ++i) {
-		ammoList.push_back(new CTEAmmoSentry);
+		ammoList.push_back(new CJEAmmoVT);
 	}
 	ammoList.at(prevSize)->setActive(true);
 	return ammoList.at(prevSize);
 
+}
+
+//accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
+bool JEnemy2DShyC::getHunkering(void)
+{
+	return hunkering;
 }

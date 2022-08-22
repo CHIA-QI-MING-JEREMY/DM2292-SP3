@@ -186,11 +186,29 @@ bool TerrestrialPlanet::Init(void)
 			if (cTEnemy2DSentry->Init() == true)
 			{
 				cTEnemy2DSentry->SetPlayer2D(cPlayer2D);
-				enemies.push_back(cTEnemy2DSentry); //push each enemy into the individual enemy vector
+				enemies.push_back(cTEnemy2DSentry); //push each sentry into the individual enemy vector
 			}
 			else
 			{
-				// Break out of this loop if all enemies have been loaded
+				// Break out of this loop if all sentries have been loaded
+				break;
+			}
+		}
+
+		while (true)
+		{
+			TEnemy2DTurret* cTEnemy2DTurret = new TEnemy2DTurret();
+			// Pass shader to cEnemy2D
+			cTEnemy2DTurret->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cTEnemy2DTurret->Init() == true)
+			{
+				cTEnemy2DTurret->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DTurret); //push each turret into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all turrets have been loaded
 				break;
 			}
 		}
@@ -306,6 +324,117 @@ bool TerrestrialPlanet::Init(void)
 	toxicDamageDuration = maxToxicDamageDuration;
 
 	return true;
+}
+
+bool TerrestrialPlanet::isColourTrapped(glm::vec4 playerColour)
+{
+	int playerTileIndex = cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x);
+	int playerTileIndex_Right = cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1);
+	
+	// yellow check
+	if (playerColour == glm::vec4(1.0, 1.0, 0.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// red check
+	else if (playerColour == glm::vec4(1.0, 0.0, 0.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// green check
+	else if (playerColour == glm::vec4(0.0, 1.0, 0.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// blue check
+	else if (playerColour == glm::vec4(0.0, 0.0, 1.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+	// white check
+	else if (playerColour == glm::vec4(1.0, 1.0, 1.0, 1.0))
+	{
+		if (cPlayer2D->vec2NumMicroSteps.x != 0)
+		{
+			if (playerTileIndex_Right == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+				playerTileIndex_Right == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+				playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+			{
+				return true;
+			}
+		}
+
+		if (playerTileIndex == CMap2D::TILE_INDEX::YELLOW_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::RED_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::GREEN_TILE_SOLID ||
+			playerTileIndex == CMap2D::TILE_INDEX::BLUE_TILE_SOLID)
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -442,6 +571,12 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		isWhite = true;
 	}
 
+	if (isColourTrapped(cPlayer2D->GetColour()))
+	{
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(cInventoryItemPlanet->GetCount()); // remove all remaining health
+	}
+
 	// restores coloured orb count when the player walks over a checkpoint
 	if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) == CMap2D::TILE_INDEX::RED_FLAG)
 	{
@@ -508,6 +643,14 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet->Remove(10);
 			cout << "Health: " << cInventoryItemPlanet->GetCount() << endl;
 		}
+	}
+
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("AntidotePill");
+	if (cInventoryItemPlanet->GetCount() == cInventoryItemPlanet->GetMaxCount())
+	{
+		cInventoryItemPlanet->Remove(1);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
+		cInventoryItemPlanet->Remove(20);
 	}
 
 	// Call the cPlayer2D's update method before Map2D
@@ -808,7 +951,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2A); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "TerrestrialEAmmoSentry.h"
+#include "TerrestrialEAmmoTurret.h"
 
 #include <iostream>
 using namespace std;
@@ -22,7 +22,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has public access modifier to be used in player class
  */
-CTEAmmoSentry::CTEAmmoSentry()
+CTEAmmoTurret::CTEAmmoTurret()
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, animatedSprites(NULL)
@@ -49,7 +49,7 @@ CTEAmmoSentry::CTEAmmoSentry()
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CTEAmmoSentry::~CTEAmmoSentry(void)
+CTEAmmoTurret::~CTEAmmoTurret(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
@@ -71,7 +71,7 @@ CTEAmmoSentry::~CTEAmmoSentry(void)
 /**
   @brief Initialise this instance
   */
-bool CTEAmmoSentry::Init(void)
+bool CTEAmmoTurret::Init(void)
 {
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -140,7 +140,7 @@ bool CTEAmmoSentry::Init(void)
 /**
  @brief Update this instance
  */
-void CTEAmmoSentry::Update(const double dElapsedTime)
+void CTEAmmoTurret::Update(const double dElapsedTime)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -173,7 +173,7 @@ void CTEAmmoSentry::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CTEAmmoSentry::PreRender(void)
+void CTEAmmoTurret::PreRender(void)
 {
 	// Activate blending mode
 	glEnable(GL_BLEND);
@@ -186,7 +186,7 @@ void CTEAmmoSentry::PreRender(void)
 /**
  @brief Render this instance
  */
-void CTEAmmoSentry::Render(void)
+void CTEAmmoTurret::Render(void)
 {
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
@@ -227,7 +227,7 @@ void CTEAmmoSentry::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CTEAmmoSentry::PostRender(void)
+void CTEAmmoTurret::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
@@ -236,14 +236,14 @@ void CTEAmmoSentry::PostRender(void)
 //setting the ammo's information needed for its travel path:
 		//player location aka ammo OG location
 		//player direction aka direction for amo to move in
-void CTEAmmoSentry::setPath(const int spawnX, const int spawnY, const int eDirection)
+void CTEAmmoTurret::setPath(const int spawnX, const int spawnY, const int eDirection)
 {
 	vec2Index.x = spawnX;
 	vec2Index.y = spawnY;
 	direction = eDirection;
 }
 
-void CTEAmmoSentry::InteractWithMap(void)
+void CTEAmmoTurret::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -256,7 +256,7 @@ void CTEAmmoSentry::InteractWithMap(void)
 /**
  @brief Let enemy ammo interact with the player.
  */
-bool CTEAmmoSentry::InteractWithPlayer(void)
+bool CTEAmmoTurret::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 
@@ -279,7 +279,7 @@ bool CTEAmmoSentry::InteractWithPlayer(void)
 	return false;
 }
 
-bool CTEAmmoSentry::CheckPosition(void)
+bool CTEAmmoTurret::CheckPosition(void)
 {
 	if (direction == LEFT)
 	{
@@ -390,7 +390,7 @@ bool CTEAmmoSentry::CheckPosition(void)
 }
 
 // Shoot ammo, keep it moving after it is already created, used in player class
-void CTEAmmoSentry::ShootAmmo(void)
+void CTEAmmoTurret::ShootAmmo(void)
 {
 	//can only shoot left, right and up
 	if (direction == LEFT)
@@ -433,7 +433,7 @@ void CTEAmmoSentry::ShootAmmo(void)
 
 // return true if ammo hits window boundaries, used to delete
 	//uses ammo specific direction alrdy set in via constructor, used in player class
-bool CTEAmmoSentry::LimitReached(void)
+bool CTEAmmoTurret::LimitReached(void)
 {
 	//ammo can only be shot left, right and up
 	if (direction == LEFT)
@@ -473,13 +473,13 @@ bool CTEAmmoSentry::LimitReached(void)
 }
 
 //used to set active to render and check collision of ammo
-void CTEAmmoSentry::setActive(bool active)
+void CTEAmmoTurret::setActive(bool active)
 {
 	this->active = active;
 }
 
 //used to check if ammo is active before checking collision and rendering, etc
-bool CTEAmmoSentry::getActive(void)
+bool CTEAmmoTurret::getActive(void)
 {
 	return active;
 }

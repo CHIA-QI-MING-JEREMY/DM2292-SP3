@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "TerrestrialEnemy2DSentry.h"
+#include "TerrestrialEnemy2DTurret.h"
 
 #include <iostream>
 using namespace std;
@@ -28,12 +28,12 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-TEnemy2DSentry::TEnemy2DSentry(void)
+TEnemy2DTurret::TEnemy2DTurret(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, sCurrentFSM(FSM::IDLE)
+	, sCurrentFSM(FSM::HIDDEN)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
 	, camera2D(NULL)
@@ -57,7 +57,7 @@ TEnemy2DSentry::TEnemy2DSentry(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-TEnemy2DSentry::~TEnemy2DSentry(void)
+TEnemy2DTurret::~TEnemy2DTurret(void)
 {
 	// Delete the quadMesh
 	if (quadMesh)
@@ -88,7 +88,7 @@ TEnemy2DSentry::~TEnemy2DSentry(void)
 /**
   @brief Initialise this instance
   */
-bool TEnemy2DSentry::Init(void)
+bool TEnemy2DTurret::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -103,7 +103,7 @@ bool TEnemy2DSentry::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1800, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1801, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -124,24 +124,27 @@ bool TEnemy2DSentry::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/SentrySpriteSheet.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/SentrySpriteSheet.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade.png" << endl;
 		return false;
 	}
 
 	// Create the animated sprite and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 6, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("idleR", 0, 3);
-	animatedSprites->AddAnimation("idleL", 6, 9);
-	animatedSprites->AddAnimation("runR", 12, 17);
-	animatedSprites->AddAnimation("runL", 18, 23);
-	animatedSprites->AddAnimation("attackR", 24, 26);
-	animatedSprites->AddAnimation("attackL", 27, 29);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 8, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("hidden", 0, 0);
+	animatedSprites->AddAnimation("decloakR", 0, 7);
+	animatedSprites->AddAnimation("decloakL", 8, 15);
+	animatedSprites->AddAnimation("targetR", 16, 18);
+	animatedSprites->AddAnimation("targetL", 24, 26);
+	animatedSprites->AddAnimation("cloakR", 16, 23);
+	animatedSprites->AddAnimation("cloakL", 24, 31);
+	animatedSprites->AddAnimation("attackR", 34, 34);
+	animatedSprites->AddAnimation("attackL", 40, 42);
 
-	// Play idle animation as default
-	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+	// Play hidden animation as default
+	animatedSprites->PlayAnimation("hidden", -1, 1.0f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -156,7 +159,7 @@ bool TEnemy2DSentry::Init(void)
 	//Construct 100 inactive ammo and add into ammoList
 	for (int i = 0; i < 100; ++i)
 	{
-		CTEAmmoSentry* cEnemyAmmo2D = new CTEAmmoSentry();
+		CTEAmmoTurret* cEnemyAmmo2D = new CTEAmmoTurret();
 		cEnemyAmmo2D->SetShader("Shader2D");
 		ammoList.push_back(cEnemyAmmo2D);
 	}
@@ -165,18 +168,8 @@ bool TEnemy2DSentry::Init(void)
 	shootingDirection = RIGHT; //setting direction for ammo shooting
 	maxHealth = health = 25; //takes 1 hit to kill
 
-	if (vec2Index == glm::vec2(12, 3))
-	{
-		waypoints = ConstructWaypointVector(waypoints, 300, 5);
-	}
-	else if (vec2Index == glm::vec2(2, 10))
-	{
-		waypoints = ConstructWaypointVector(waypoints, 305, 4);
-	}
-
-	// sets waypoint counter value
-	currentWaypointCounter = 0;
-	maxWaypointCounter = waypoints.size();
+	isAlarmerActive = false;
+	isAlarmOn = false;
 
 	return true;
 }
@@ -184,7 +177,7 @@ bool TEnemy2DSentry::Init(void)
 /**
  @brief Update this instance
  */
-void TEnemy2DSentry::Update(const double dElapsedTime)
+void TEnemy2DTurret::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
@@ -199,101 +192,258 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
-	case IDLE:
+	case HIDDEN:
 		if (vec2Direction.x > 0)
 		{
-			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
+			//cout << "Play hidden anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
-			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
+			//cout << "Play hidden anim" << endl;
 		}
 		
+		if (isAlarmOn)
+		{
+			sCurrentFSM = ALERT_DECLOAK;
+			iFSMCounter = 0;
+			animatedSprites->Reset();
+			cout << "Switching to Alert_Decloak state" << endl;
+			break;
+		}
+
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 5.f)
+		{
+			sCurrentFSM = DECLOAK;
+			iFSMCounter = 0;
+			animatedSprites->Reset();
+			cout << "Switching to Decloak State" << endl;
+		}
+		break;
+	case DECLOAK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("decloakR", 0, 1.f);
+			//cout << "Play decloakR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("decloakL", 0, 1.f);
+			//cout << "Play decloakL anim" << endl;
+		}
+
 		if (iFSMCounter > iMaxFSMCounter)
 		{
-			sCurrentFSM = PATROL;
+			sCurrentFSM = TARGET;
 			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
+			cout << "Switching to Target State" << endl;
 		}
 		iFSMCounter++;
 		break;
-	case PATROL:
-		if (vec2Index == waypoints[currentWaypointCounter])
-		{
-			currentWaypointCounter++;
-			sCurrentFSM = IDLE;
-			cout << "Switching to Idle State" << endl;
-		}
-
+	case TARGET:
 		if (vec2Direction.x > 0)
 		{
-			animatedSprites->PlayAnimation("runR", -1, 1.0f);
+			animatedSprites->PlayAnimation("targetR", -1, 1.f);
+			//cout << "Play targetR anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
-			animatedSprites->PlayAnimation("runL", -1, 1.0f);
+			animatedSprites->PlayAnimation("targetL", -1, 1.f);
+			//cout << "Play targetL anim" << endl;
 		}
 
-		if (currentWaypointCounter < maxWaypointCounter)
+		if (isAlarmOn)
 		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
-			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-			}
-			
-			auto path = cMap2D->PathFind(startIndices,						// start pos
-										waypoints[currentWaypointCounter],	// target pos
-										heuristic::manhattan,				// heuristic
-										10);								// weight
-
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
-				if (bFirstPosition == true)
-				{
-					// Set a destination
-					vec2Destination = coord;
-					
-					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
-				}
-				else
-				{
-					if ((coord - vec2Destination) == vec2Direction)
-					{
-						// Set a destination
-						vec2Destination = coord;
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target state" << endl;
+			break;
 		}
-		else
+
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 7.f)
 		{
-			currentWaypointCounter = 0;
+			sCurrentFSM = CLOAK;
+			iFSMCounter = 0;
+			cout << "Switching to Cloak State" << endl;
+			break;
 		}
 
-		UpdatePosition();
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ATTACK;
+			iFSMCounter = 0;
+			cout << "Switching to Attack State" << endl;
+			break;
+		}
+		iFSMCounter++;
+		break;
+	case CLOAK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("cloakR", 0, 1.f);
+			//cout << "Play cloakR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("cloakL", 0, 1.f);
+			//cout << "Play cloakL anim" << endl;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = HIDDEN;
+			iFSMCounter = 0;
+			cout << "Switching to Hidden State" << endl;
+		}
+		iFSMCounter++;
+		break;
+	case ATTACK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("attackR", 0, 1.f);
+			//cout << "Play attackR anim" << endl;
+
+			shootingDirection = RIGHT;
+
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CTEAmmoTurret* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("attackL", 0, 1.f);
+			//cout << "Play attackL anim" << endl;
+
+			shootingDirection = LEFT;
+
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CTEAmmoTurret* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
+		}
+
+		// TO DO
+		// prevent enemy ammo from shooting more than once
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Target State" << endl;
+		}
+		iFSMCounter++;
+		break;
+	case ALERT_DECLOAK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("decloakR", 0, 0.5f);
+			//cout << "Play decloakR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("decloakL", 0, 0.5f);
+			//cout << "Play decloakL anim" << endl;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target State" << endl;
+		}
+		iFSMCounter += 2;
+		break;
+	case ALERT_TARGET:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("targetR", -1, 0.5f);
+			//cout << "Play targetR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("targetL", -1, 0.5f);
+			//cout << "Play targetL anim" << endl;
+		}
+
+		if (!isAlarmOn)
+		{
+			sCurrentFSM = TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Target state" << endl;
+			break;
+		}
+
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 9.f)
+		{
+			sCurrentFSM = ALERT_STANDBY;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Standby State" << endl;
+			break;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_ATTACK;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Attack State" << endl;
+			break;
+		}
+		iFSMCounter += 2;
+		break;
+	case ALERT_ATTACK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("attackR", -1, 1.f);
+			//cout << "Play attackR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("attackL", -1, 1.f);
+			//cout << "Play attackL anim" << endl;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target State" << endl;
+		}
+		iFSMCounter++;
+		break;
+	case ALERT_STANDBY:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("targetR", -1, 0.5f);
+			//cout << "Play targetR anim" << endl;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("targetL", -1, 0.5f);
+			//cout << "Play targetL anim" << endl;
+		}
+
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 9.f)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Alert_Target State" << endl;
+			break;
+		}
 		break;
 	default:
 		break;
 	}
 
 	//ammo beahviour
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CTEAmmoTurret*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CTEAmmoTurret* ammo = (CTEAmmoTurret*)*it;
 		if (ammo->getActive())
 		{
 			ammo->Update(dElapsedTime);
@@ -303,6 +453,8 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			}
 		}
 	}
+
+	UpdateDirection();
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -344,7 +496,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void TEnemy2DSentry::PreRender(void)
+void TEnemy2DTurret::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -363,7 +515,7 @@ void TEnemy2DSentry::PreRender(void)
 /**
  @brief Render this instance
  */
-void TEnemy2DSentry::Render(void)
+void TEnemy2DTurret::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -403,9 +555,9 @@ void TEnemy2DSentry::Render(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//render enemy ammo
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CTEAmmoTurret*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CTEAmmoTurret* ammo = (CTEAmmoTurret*)*it;
 		if (ammo->getActive())
 		{
 			ammo->PreRender();
@@ -419,7 +571,7 @@ void TEnemy2DSentry::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void TEnemy2DSentry::PostRender(void)
+void TEnemy2DTurret::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -433,7 +585,7 @@ void TEnemy2DSentry::PostRender(void)
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void TEnemy2DSentry::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void TEnemy2DTurret::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->vec2Index.x = iIndex_XAxis;
 	this->vec2Index.y = iIndex_YAxis;
@@ -444,7 +596,7 @@ void TEnemy2DSentry::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YA
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void TEnemy2DSentry::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void TEnemy2DTurret::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
@@ -454,7 +606,7 @@ void TEnemy2DSentry::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, con
  @brief Set the handle to cPlayer to this class instance
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void TEnemy2DSentry::SetPlayer2D(CPlayer2D* cPlayer2D)
+void TEnemy2DTurret::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -466,7 +618,7 @@ void TEnemy2DSentry::SetPlayer2D(CPlayer2D* cPlayer2D)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void TEnemy2DSentry::Constraint(DIRECTION eDirection)
+void TEnemy2DTurret::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -510,7 +662,7 @@ void TEnemy2DSentry::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
+bool TEnemy2DTurret::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -627,7 +779,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool TEnemy2DSentry::IsMidAir(void)
+bool TEnemy2DTurret::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (vec2Index.y == 0)
@@ -644,7 +796,7 @@ bool TEnemy2DSentry::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
+void TEnemy2DTurret::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -754,7 +906,7 @@ void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool TEnemy2DSentry::InteractWithPlayer(void)
+bool TEnemy2DTurret::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 	
@@ -775,7 +927,7 @@ bool TEnemy2DSentry::InteractWithPlayer(void)
 
 // TO DO
 //enemy interact with map
-void TEnemy2DSentry::InteractWithMap(void)
+void TEnemy2DTurret::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -788,7 +940,7 @@ void TEnemy2DSentry::InteractWithMap(void)
 /**
  @brief Update the enemy's direction.
  */
-void TEnemy2DSentry::UpdateDirection(void)
+void TEnemy2DTurret::UpdateDirection(void)
 {
 	// Set the destination to the player
 	vec2Destination = cPlayer2D->vec2Index;
@@ -815,7 +967,7 @@ void TEnemy2DSentry::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void TEnemy2DSentry::FlipHorizontalDirection(void)
+void TEnemy2DTurret::FlipHorizontalDirection(void)
 {
 	vec2Direction.x *= -1;
 }
@@ -823,7 +975,7 @@ void TEnemy2DSentry::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void TEnemy2DSentry::UpdatePosition(void)
+void TEnemy2DTurret::UpdatePosition(void)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -831,18 +983,6 @@ void TEnemy2DSentry::UpdatePosition(void)
 	// if the player is to the left or right of the enemy2D, then jump to attack
 	if (vec2Direction.x < 0)
 	{
-		// Move left
-		const int iOldIndex = vec2Index.x;
-		if (vec2Index.x >= 0)
-		{
-			i32vec2NumMicroSteps.x--;
-			if (i32vec2NumMicroSteps.x < 0)
-			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS) - 1;
-				vec2Index.x--;
-			}
-		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
 
@@ -865,19 +1005,6 @@ void TEnemy2DSentry::UpdatePosition(void)
 	}
 	else if (vec2Direction.x > 0)
 	{
-		// Move right
-		const int iOldIndex = vec2Index.x;
-		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
-		{
-			i32vec2NumMicroSteps.x++;
-
-			if (i32vec2NumMicroSteps.x >= cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS)
-			{
-				i32vec2NumMicroSteps.x = 0;
-				vec2Index.x++;
-			}
-		}
-
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
 
@@ -898,38 +1025,15 @@ void TEnemy2DSentry::UpdatePosition(void)
 		// Interact with the Player
 		//InteractWithPlayer();
 	}
-
-	// if the player is above the enemy2D, then jump to attack
-	if (vec2Direction.y > 0)
-	{
-		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
-		{
-			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
-		}
-	}
-}
-
-vector<glm::vec2> TEnemy2DSentry::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
-{
-	for (int i = 0; i < numOfWaypoints; ++i)
-	{
-		waypointVector.push_back(cMap2D->GetTilePosition(startIndex + i));
-		// Erase the value of the waypoint in the arrMapInfo
-		cMap2D->SetMapInfo(waypointVector[i].y, waypointVector[i].x, 0);
-		cout << waypointVector.size() << endl;
-	}
-
-	return waypointVector;
 }
 
 //called whenever an ammo is needed to be shot
-CTEAmmoSentry* TEnemy2DSentry::FetchAmmo()
+CTEAmmoTurret* TEnemy2DTurret::FetchAmmo()
 {
 	//Exercise 3a: Fetch a game object from m_goList and return it
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CTEAmmoTurret*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CTEAmmoTurret* ammo = (CTEAmmoTurret*)*it;
 		if (ammo->getActive()) {
 			continue;
 		}
@@ -943,7 +1047,7 @@ CTEAmmoSentry* TEnemy2DSentry::FetchAmmo()
 	//Get Size before adding 10
 	int prevSize = ammoList.size();
 	for (int i = 0; i < 10; ++i) {
-		ammoList.push_back(new CTEAmmoSentry);
+		ammoList.push_back(new CTEAmmoTurret);
 	}
 	ammoList.at(prevSize)->setActive(true);
 	return ammoList.at(prevSize);

@@ -207,30 +207,33 @@ bool CPlayer2D::Init(void)
 
 	//Jungle Planet
 	// Add a green orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/TerrestrialPlanet/Orb_Blue.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/Scene2D_BlueOrb.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/TerrestrialPlanet/Orb_Blue.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/Scene2D_BlueOrb.tga", 20, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/TerrestrialPlanet/Orb_Blue.tga", 20, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/Scene2D_BlueOrb.tga", 3, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/TerrestrialPlanet/Orb_Blue.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Terrestrial Planet
 	// Add a yellow orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/Scene2D_YellowOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("YellowOrb", "Image/TerrestrialPlanet/Orb_Yellow.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a red orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/Scene2D_RedOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RedOrb", "Image/TerrestrialPlanet/Orb_Red.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a blue orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/Scene2D_GreenOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("GreenOrb", "Image/TerrestrialPlanet/Orb_Green.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a green orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/Scene2D_BlueOrb.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BlueOrb", "Image/TerrestrialPlanet/Orb_Blue.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a toxicity level as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ToxicityLevel", "Image/Scene2D_YellowOrb.tga", 100, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("ToxicityLevel", "Image/TerrestrialPlanet/ToxicityLevel.tga", 100, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add an antidote pill as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("AntidotePill", "Image/TerrestrialPlanet/AntidotePill.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Load the sounds into CSoundController
@@ -504,6 +507,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cSoundController->PlaySoundByID(2);
 		}
 	}
+	//if (cKeyboardController->IsKeyPressed(GLFW_KEY_8)) {
+	//	cout << "KNOCKBACK" << endl;
+	//	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) {
+	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::KNOCKBACK);
+	//		cPhysics2D.SetInitialVelocity(glm::vec2(-3.f, 0.f));
+	//	}
+	//	UpdateKnockback(dElapsedTime);
+	//}
 
 
 	// resets player location at last visited checkpoint
@@ -1070,6 +1081,78 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 
 	return true;
 }
+
+
+//TO DO AFTER WE FINISH THE REST
+//void CPlayer2D::UpdateKnockback(const double dElapsedTime)
+//{
+//	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::KNOCKBACK)
+//	{
+//		// Update the elapsed time to the physics engine
+//		cPhysics2D.SetTime((float)dElapsedTime);
+//		// Call the physics engine update method to calculate the final velocity and displacement
+//		cPhysics2D.Update();
+//		// Get the displacement from the physics engine
+//		glm::vec2 v2Displacement = cPhysics2D.GetDisplacement();
+//
+//		// Store the current vec2Index.y
+//		int iIndex_XAxis_OLD = vec2Index.x;
+//
+//		// Translate the displacement from pixels to indices
+//		int iDisplacement_Microsteps = (int)(v2Displacement.x / cSettings->MICRO_STEP_XAXIS);
+//		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
+//		{
+//			vec2NumMicroSteps.x += iDisplacement_Microsteps;
+//			if (vec2NumMicroSteps.x > cSettings->NUM_STEPS_PER_TILE_XAXIS)
+//			{
+//				vec2NumMicroSteps.x -= cSettings->NUM_STEPS_PER_TILE_XAXIS;
+//				if (vec2NumMicroSteps.x < 0)
+//				{
+//					vec2NumMicroSteps.x = 0;
+//				}
+//				vec2Index.x--;
+//			}
+//		}
+//		// Constraint the player's position within the screen boundary
+//		if (vec2Index.x >= 0)
+//		{
+//			vec2NumMicroSteps.x--;
+//			if (vec2NumMicroSteps.x < 0)
+//			{
+//				vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
+//				vec2Index.x--;
+//			}
+//		}
+//		Constraint(LEFT);
+//		if (CheckPosition(LEFT) == false)
+//		{
+//			vec2Index = vec2OldIndex;
+//			vec2NumMicroSteps.x = 0;
+//			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+//		}
+//		// Calculate the new position to the down
+//		if (vec2Index.y >= 0)
+//		{
+//			vec2NumMicroSteps.y--;
+//			if (vec2NumMicroSteps.y < 0)
+//			{
+//				vec2NumMicroSteps.y = ((int)cSettings->NUM_STEPS_PER_TILE_YAXIS) - 1;
+//				vec2Index.y--;
+//			}
+//		}
+//		// Constraint the player's position within the screen 
+//		Constraint(DOWN);
+//
+//		if (CheckPosition(DOWN) == false)
+//		{
+//			vec2Index = vec2OldIndex;
+//			vec2NumMicroSteps.y = 0;
+//			cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+//		}
+//
+//	}
+//
+//}
 
 bool CPlayer2D::IsMidAir(void)
 {

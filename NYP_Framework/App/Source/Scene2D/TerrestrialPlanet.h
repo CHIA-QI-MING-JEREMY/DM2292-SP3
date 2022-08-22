@@ -30,6 +30,7 @@
 // Include CEnemy2D
 #include "Enemy2D.h"
 #include "TerrestrialEnemy2DSentry.h"
+#include "TerrestrialEnemy2DTurret.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"
@@ -56,6 +57,7 @@
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
 #include "TerrestrialEAmmoSentry.h"
+#include "TerrestrialEAmmoTurret.h"
 
 //include resources
 #include "Resource.h"
@@ -175,10 +177,13 @@ protected:
 	bool isGreenObtained;
 	bool isBlueObtained;
 
+	// Checks if player is trapped in coloured tiles
+	bool isColourTrapped(glm::vec4 playerColour);
+
 	// Checks if player is white
 	bool isWhite;
 
-	// Timers to increase toxiciity level and toxic damage
+	// Timers to increase toxicity level and toxic damage
 	double maxToxicityLevelDuration;
 	double toxicityLevelDuration;
 	double maxToxicDamageDuration;

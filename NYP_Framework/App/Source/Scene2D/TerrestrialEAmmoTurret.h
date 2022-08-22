@@ -1,5 +1,5 @@
 /**
- CAmmo2D
+ CEnemyAmmo2D
  @brief A class representing the player object
  By: Toh Da Jun
  Date: Mar 2020
@@ -35,27 +35,26 @@ class CMap2D;
 // Include Physics
 #include "Physics2D.h"
 
+//Include inventory related classes
+#include "InventoryManager.h"
+
+
+// Include InventoryManager
+#include "InventoryManagerPlanet.h"
+
 // Include Player2D
 #include "Player2D.h"
 
 //Include SoundController
 #include "..\SoundController\SoundController.h"
 
-// Include Camera2D
+// Include Camera
 #include "Primitives/Camera2D.h"
 
-// Include math.h
-#include <math.h>
+// Include enemy ammo
+#include "EnemyAmmo2D.h"
 
-// Include InventoryManager
-#include "InventoryManagerPlanet.h"
-
-//// Include enemies
-//#include "Enemy2D.h"
-//#include "MblEnemy2D.h"
-//#include "StationaryEnemy2D.h"
-
-class CResource : public CEntity2D
+class CTEAmmoTurret : public CEnemyAmmo2D
 {
 public:
 
@@ -75,43 +74,15 @@ public:
 	void PostRender(void);
 
 	// Constructor
-	CResource();
-	CResource(int type); //used to create a specific resource
+	CTEAmmoTurret();
 
 	// Destructor
-	virtual ~CResource(void);
+	virtual ~CTEAmmoTurret(void);
 
-	//enum to decide what resource is dropped
-	enum RESOURCE_TYPE 
-	{
-		//resource
-		SCRAP_METAL = 0,
-		BATTERY,
-		IRONWOOD,
-		ENERGY_QUARTZ,
-		ICE_CRYSTAL,
-		//Jungle Planet specific collectables
-		BURNABLE_BLOCKS,
-		VINE,
-		//Terrestrial Planet specific collectables
-		YELLOW_ORB,
-		RED_ORB,
-		GREEN_ORB,
-		BLUE_ORB,
-		ANTIDOTE_PILL,
-		//Snow Planet specific collectables
-		SHIELD,
-		BERSERK,
-		FREEZE,
-		FUR,
-		FUR_COAT,
-
-		NUM_RESOURCES
-	};
-
-	//sets its spawn location, including microsteps
-		//will fall to land on a platform in update where updatefall is called
-	void setPosition(glm::vec2 indexPos, glm::vec2 microStep);
+	//setting the ammo's information needed for its travel path:
+		//player location aka ammo OG location
+		//player direction aka direction for amo to move in
+	void setPath(const int spawnX, const int spawnY, const int eDirection);
 
 	enum DIRECTION
 	{
@@ -122,19 +93,25 @@ public:
 		NUM_DIRECTIONS
 	};
 
-	//let resource interact with the map
+	//let enemy emmo interact with the map
+	void InteractWithMap(void);
 	bool CheckPosition(void);
 
-	// Checks if the player is in mid-air
-	bool IsMidAir(void);
+	// Let enemy ammo interact with the player
+	bool InteractWithPlayer(void);
 
+	// Shoot ammo, keep it moving after it is already created, used in player class
+	void ShootAmmo(void);
 
 	// return true if ammo hits window boundaries, used to delete
 	//uses ammo specific direction alrdy set in via constructor, used in player class
 	bool LimitReached(void);
 
-	bool getCollected(void); //return collected
-		//if true means delete resource
+	//used to set active to render and check collision of ammo
+	void setActive(bool active);
+
+	//used to check if ammo is active before checking collision and rendering, etc
+	bool getActive(void);
 
 protected:
 	glm::vec2 vec2OldIndex;
@@ -142,8 +119,15 @@ protected:
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
 
+	// Handler to the camera instance
+	Camera2D* camera2D;
+
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
+
+	//For inventory
+	CInventoryManager* cInventoryManager;
+	CInventoryItem* cInventoryItem;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
@@ -152,37 +136,24 @@ protected:
 	CMesh* quadMesh;
 
 	//CS: Animated Sprite
-	//CSpriteAnimation* animatedSprites;
+	CSpriteAnimation* animatedSprites;
+
+	// Physics
+	CPhysics2D cPhysics2D;
 
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
 
-	// The handler containing the instance of the camera
-	Camera2D* camera2D;
-
-	// Physics
-	CPhysics2D cPhysics2D;
-	void UpdateFall(const double dElapsedTime);
-
-	// Inventory Manager
-	CInventoryManagerPlanet* cInventoryManagerPlanet;
-
-	// Inventory Item
-	CInventoryItemPlanet* cInventoryItemPlanet;
-
-	// Let resource interact with the player
-	bool InteractWithPlayer(void);
-
-	// resource's colour
+	// ammo's colour
 	glm::vec4 runtimeColour;
 
 	//direction determines how it will travel after shot
 	int direction;
 
-	//if collected == true, aka resource is collected, delete resource in scene
-	bool collected;
+	//if hit == true, aka ammo hit something, destroy ammo in player class
+	bool hit;
 
-	//determine which resource it is
-	int type;
+	// Determines whether or not to render it
+	bool active;
 };
 

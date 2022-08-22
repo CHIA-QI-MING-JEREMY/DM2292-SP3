@@ -185,6 +185,8 @@ protected:
 	// Checks for feasible position to move into
 	bool CheckPosition(DIRECTION eDirection);
 
+	void UpdateKnockback(const double dElapsedTime);
+
 	// Checks if the player is in mid-air
 	bool IsMidAir(void);
 	bool onRope;

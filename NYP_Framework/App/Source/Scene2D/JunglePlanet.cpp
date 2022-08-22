@@ -196,6 +196,24 @@ bool JunglePlanet::Init(void)
 			}
 		}
 
+		while (true)
+		{
+			JEnemy2DShyC* cJEnemy2DShyC = new JEnemy2DShyC();
+			// Pass shader to cEnemy2D
+			cJEnemy2DShyC->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cJEnemy2DShyC->Init() == true)
+			{
+				cJEnemy2DShyC->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cJEnemy2DShyC); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
+			}
+		}
+
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
 		/// <summary>
@@ -414,10 +432,33 @@ bool JunglePlanet::Update(const double dElapsedTime)
 			if (ammo->getActive())
 			{
 				//check if ammo hits enemy
-					//if it does, minus away the enemy's health & destory the ammo
+					//if it does, minus away the enemy's health & destroy the ammo
 				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
 				{
-					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25); //every hit takes off 25 HP
+					//if enemy can hunker, aka increase their own defence
+					if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::DEFENCE)
+					{
+						//if enemy can only take a max of 1 full power hit left, aka time to switch to explode mode, 
+							//enemy not allowed to take damage anymore
+							//so enemy can only take damage if enemy's health is above 5
+						if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() > 5)
+						{
+							//if enemy is hunkering, aka defence is up
+							if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHunkering())
+							{
+								enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 2); //every hit takes off 2 HP
+
+							}
+							else
+							{
+								enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
+							}
+						}
+					}
+					else //normal enemy in terms of damage taking
+					{
+						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
+					}
 					ammo->setActive(false);
 				}
 			}
@@ -827,6 +868,20 @@ void JunglePlanet::PlayerInteractWithMap(void)
 				poisonLevelIncreaseCooldown = poisonLevelIncreaseMaxCooldown; //reset poison level increase cooldown
 			}
 		}
+		break;
+	case CMap2D::TILE_INDEX::POISON_EXPLOSION: //same as poison sproute and fog but deals constant damage as well
+		if (poisonLevelIncreaseCooldown <= 0) //poison lvl increase cooldown up
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+			//if not at max poison lvl yet
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //increase poison level by 1
+				poisonLevelIncreaseCooldown = poisonLevelIncreaseMaxCooldown; //reset poison level increase cooldown
+			}
+		}
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(1); //deplete player's health
 		break;
 	case CMap2D::TILE_INDEX::RIVER_WATER:
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");

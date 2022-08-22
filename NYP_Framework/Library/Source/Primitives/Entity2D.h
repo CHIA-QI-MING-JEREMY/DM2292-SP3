@@ -61,19 +61,6 @@ public:
 	// The vec2 variable which stores the UV coordinates to render the Entity2D
 	glm::vec2 vec2UVCoordinate;
 
-	// A2 functions
-	// alarm functions
-	bool getAlarmerState();
-	void setAlarmerState(bool isAlarmerActive);
-	bool getAlarmState();
-	void setAlarmState(bool isAlarmOn);
-	glm::vec2 getAssignedAlarmBox();
-	void setAssignedAlarmBox(glm::vec2 alarmBoxLocation);
-
-	// health functions
-	int getHealth();
-	void setHealth(int health);
-
 protected:
 	// Name of Shader Program instance
 	std::string sShaderName;
@@ -92,15 +79,6 @@ protected:
 
 	// Settings
 	CSettings* cSettings;
-
-	// A2 variables
-	// alarm variables
-	bool isAlarmerActive;
-	bool isAlarmOn;
-	glm::vec2 assignedAlarmBox;
-
-	// health variables
-	int health;
 
 	// colour variables
 	glm::vec4 colour;

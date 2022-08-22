@@ -8,6 +8,7 @@ Interactables
 [Jungle Planet]
 2 : poison sprout
 3 : poison fog 
+4 : poison explosion
 10 : river water 
 20 : unbloomed bouncy bloom
 21 : bloomed bouncy bloom
@@ -19,6 +20,12 @@ Interactables
 35 : vine right corner (connects vine tied with rock to dangling vine)
 36 : vine dangling on the right of its left neighbour
 40 : spot to set moving leaves
+41 : transitional block used to switch moving leaf blocks
+50 : temporary "poof" teleportation effect left behind
+100 : first Vigilant Teleporter of the map's first waypoint
+101 : first Vigilant Teleporter of the map's second waypoint
+102 : first Vigilant Teleporter of the map's third waypoint
+103 : first Vigilant Teleporter of the map's fourth waypoint
 197 : burnable block collectable
 198 : vine collectable
 199 : ironwood
@@ -48,7 +55,8 @@ Interactables
 250 : alarm box
 251 : alarm light (off)
 252 : alarm light (on)
-299 : exit
+260 : antidote pill
+299 : exit door
 399 : energy quartz
 
 [Snow Planet]
@@ -100,6 +108,7 @@ Player : 1400
 Enemies
 [Jungle Planet]
 1600 : vigilant teleporter
+1610 : shy chaser
 
 [Terrestrial Planet]
 

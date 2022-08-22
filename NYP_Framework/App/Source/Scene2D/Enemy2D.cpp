@@ -154,8 +154,13 @@ bool CEnemy2D::Init(void)
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
-	// sets health
-	health = 50;
+	// sets health variables
+	maxHealth = health = 50;
+
+	// sets alarm variables
+	isAlarmerActive = false;
+	isAlarmOn = false;
+	assignedAlarmBox = glm::vec2(NULL, NULL);
 
 	type = CLOSE_COMBAT;
 
@@ -296,6 +301,42 @@ int CEnemy2D::getHealth()
 void CEnemy2D::setHealth(int health)
 {
 	this->health = health;
+}
+
+bool CEnemy2D::getAlarmerState()
+{
+	return isAlarmerActive;
+}
+
+void CEnemy2D::setAlarmerState(bool isAlarmerActive)
+{
+	this->isAlarmerActive = isAlarmerActive;
+}
+
+bool CEnemy2D::getAlarmState()
+{
+	return isAlarmOn;
+}
+
+void CEnemy2D::setAlarmState(bool isAlarmOn)
+{
+	this->isAlarmOn = isAlarmOn;
+}
+
+glm::vec2 CEnemy2D::getAssignedAlarmBox()
+{
+	return assignedAlarmBox;
+}
+
+void CEnemy2D::setAssignedAlarmBox(glm::vec2 alarmBoxLocation)
+{
+	assignedAlarmBox = alarmBoxLocation;
+}
+
+//accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
+bool CEnemy2D::getHunkering(void)
+{
+	return hunkering;
 }
 
 /**

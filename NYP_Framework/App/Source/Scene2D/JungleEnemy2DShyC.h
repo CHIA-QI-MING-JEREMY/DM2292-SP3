@@ -17,14 +17,14 @@
 // Include CEntity2D
 #include "Primitives/Entity2D.h"
 
+//Include SoundController
+#include "..\SoundController\SoundController.h"
+
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
 
 // Include Settings
 #include "GameControl\Settings.h"
-
-// Include AnimatedSprites
-#include "Primitives/SpriteAnimation.h"
 
 // Include Physics2D
 #include "Physics2D.h"
@@ -32,30 +32,27 @@ class CMap2D;
 // Include Player2D
 #include "Player2D.h"
 
-// Include InventoryManager
-#include "InventoryManager.h"
+//include ammo
+#include "EnemyAmmo2D.h"
+#include "JungleEAmmoVT.h"
 
+//include enemy base class
+#include "Enemy2D.h"
 
-// Include InventoryManager
-#include "InventoryManagerPlanet.h"
-
-// Include SoundController
-#include "..\SoundController\SoundController.h"
+// Include AnimatedSprites
+#include "Primitives/SpriteAnimation.h"
 
 // Include Camera
 #include "Primitives/Camera2D.h"
 
-//Include enemy ammo
-#include "EnemyAmmo2D.h"
-
-class CEnemy2D : public CEntity2D
+class JEnemy2DShyC : public CEnemy2D
 {
 public:
 	// Constructor
-	CEnemy2D(void);
+	JEnemy2DShyC(void);
 
 	// Destructor
-	virtual ~CEnemy2D(void);
+	virtual ~JEnemy2DShyC(void);
 
 	// Init
 	bool Init(void);
@@ -96,31 +93,6 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	//used to determine enemy behaviour in scene
-	enum ENEMYTYPE
-	{
-		CLOSE_COMBAT = 0,
-		LONG_RANGE,
-		DEFENCE,
-		SPECIAL,
-	};
-
-	// enemy type
-	int getType();
-
-	// health functions
-	int getHealth();
-	void setHealth(int health);
-
-	// alarm functions
-	bool getAlarmerState();
-	void setAlarmerState(bool isAlarmerActive);
-	bool getAlarmState();
-	void setAlarmState(bool isAlarmOn);
-	glm::vec2 getAssignedAlarmBox();
-	void setAssignedAlarmBox(glm::vec2 alarmBoxLocation);
-
-	//damage altering functions
 	bool getHunkering(void); //accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
 
 protected:
@@ -133,45 +105,49 @@ protected:
 		NUM_DIRECTIONS
 	};
 
-	//vector full of enemy's fired ammo
-	std::vector<CEnemyAmmo2D*> ammoList;
+	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
+
+	////vector full of enemy's fired ammo
+	std::vector<CJEAmmoVT*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	CEnemyAmmo2D* FetchAmmo(void);
+	CJEAmmoVT* FetchAmmo(void);
+
+	//CS: Animated Sprite
+	CSpriteAnimation* animatedSprites;
+
+	enum FSM
+	{
+		CAMOUFLAGE = 0,
+		AGGRO,
+		HUNKER,
+		RETURN,
+		EXPLODE,
+		NUM_FSM
+	};
+
+	int previousHealth; //keep track to know whether enemy was just attacked
+
+	double flickerTimer; //used to progress the flicker counter
+	const double flickerTimerMax = 0.5; //used to reset flicker counter
+	int flickerCounter; //decides colour of enemy and when to explode
 
 	glm::vec2 i32vec2OldIndex;
-
-	// CS: Animated Sprite
-	CSpriteAnimation* animatedSprites;
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
 
-	// Handler to the camera instance
-	Camera2D* camera2D;
-
 	// Handler to the CMap2D instance
 	CMap2D* cMap2D;
+
+	// Handler to the camera instance
+	Camera2D* camera2D;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
 
-	// The vec2 which stores the indices of the enemy2D in the Map2D
-	glm::vec2 i32vec2Index;
-
-	// The vec2 variable which stores The number of microsteps from the tile indices for the enemy2D. 
-	// A tile's width or height is in multiples of these microsteps
-	glm::vec2 i32vec2NumMicroSteps;
-
 	// The vec2 variable which stores the UV coordinates to render the enemy2D
 	glm::vec2 vec2UVCoordinate;
-
-	// The vec2 which stores the indices of the destination for enemy2D in the Map2D
-	glm::vec2 vec2Destination;
-	// The vec2 which stores the direction for enemy2D movement in the Map2D
-	glm::vec2 vec2Direction;
-
-	int type; //for the program to know whether ot not to print out ammo for the enemy
 
 	// Settings
 	CSettings* cSettings;
@@ -179,26 +155,36 @@ protected:
 	// Physics
 	CPhysics2D cPhysics2D;
 
+	// waypoint path
+	vector<glm::vec2> waypoints;
+	// waypoint counter
+	int currentWaypointCounter;
+	int maxWaypointCounter;
+
 	// Current color
 	glm::vec4 runtimeColour;
 
 	// Handle to the CPlayer2D
 	CPlayer2D* cPlayer2D;
 
-	// Inventory Manager
-	CInventoryManager* cInventoryManager;
-
-	// Inventory Item
-	CInventoryItem* cInventoryItem;
-
-	// Sound Controller
+	// Handler to the CSoundController
 	CSoundController* cSoundController;
+
+	// Current FSM
+	FSM sCurrentFSM;
 
 	// FSM counter - count how many frames it has been in this FSM
 	int iFSMCounter;
 
 	// Max count in a state
-	const int iMaxFSMCounter = 60;
+	const int iMaxFSMCounter = 160;
+
+	glm::vec2 spawnPoint; //point to return to using return, enemy's safe space
+
+	double attackCooldownCurrent; //the cooldown that gets dt-ed away
+	double attackCooldownMax; //the overall cooldown duration, eg 5s
+	double healingCooldown; //timer between when the enemy heals when in new location
+	const double healingMaxCooldown = 0.2; //can heal 1 HP every 0.5 second
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
@@ -212,11 +198,11 @@ protected:
 	// Update Jump or Fall
 	void UpdateJumpFall(const double dElapsedTime = 0.0166666666666667);
 
-	// Let enemy2D interact with the map
-	void InteractWithMap(void);
-
 	// Let enemy2D interact with the player
 	bool InteractWithPlayer(void);
+
+	//let enemy2D interact with the map
+	void InteractWithMap(void);
 
 	// Update direction
 	void UpdateDirection(void);
@@ -227,19 +213,11 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	// health variables
-	int health;
-	int maxHealth;
+	//// timer
+	//double attackTimer;
+	//double maxAttackTimer;
 
-	// alarm variables
-	bool isAlarmerActive;
-	bool isAlarmOn;
-	glm::vec2 assignedAlarmBox;
-
-	//damage reduction variables
-	bool hunkering; //used to check if damage dealt to enemy should be lessened or not
-
-	// colour variables
-	glm::vec4 colour;
+	//double warnTimer;
+	//double maxWarnTimer;
 };
 

@@ -126,6 +126,15 @@
     <ClCompile Include="Source\ShipCombat\InventoryManagerShip.cpp">
       <Filter>ShipCombat</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DTurret.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialEAmmoTurret.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\JungleEnemy2DShyC.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -172,6 +181,12 @@
       <Filter>ShipCombat</Filter>
     </ClInclude>
     <ClInclude Include="Source\ShipCombat\ShipPlayer.h">
+      <Filter>ShipCombat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShipCombat\InventoryItemShip.h">
+      <Filter>ShipCombat</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShipCombat\InventoryManagerShip.h">
       <Filter>ShipCombat</Filter>
     </ClInclude>
     <ClInclude Include="Source\SoundController\SoundController.h">
@@ -252,11 +267,14 @@
     <ClInclude Include="Source\GameStateManagement\GameInfo.h">
       <Filter>GameStateManagement</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ShipCombat\InventoryItemShip.h">
-      <Filter>ShipCombat</Filter>
+    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DTurret.h">
+      <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ShipCombat\InventoryManagerShip.h">
-      <Filter>ShipCombat</Filter>
+    <ClInclude Include="Source\Scene2D\TerrestrialEAmmoTurret.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JungleEnemy2DShyC.h">
+      <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

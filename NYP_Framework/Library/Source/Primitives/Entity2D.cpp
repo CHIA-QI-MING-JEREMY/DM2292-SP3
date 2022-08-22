@@ -36,14 +36,6 @@ CEntity2D::CEntity2D(void)
 
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
-
-	// A2 variables
-	// alarm variables
-	isAlarmerActive = false;
-	isAlarmOn = false;
-
-	// health variables
-	health = 100;
 }
 
 /**
@@ -183,44 +175,4 @@ void CEntity2D::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
-}
-
-bool CEntity2D::getAlarmerState()
-{
-	return isAlarmerActive;
-}
-
-void CEntity2D::setAlarmerState(bool isAlarmerActive)
-{
-	this->isAlarmerActive = isAlarmerActive;
-}
-
-bool CEntity2D::getAlarmState()
-{
-	return isAlarmOn;
-}
-
-void CEntity2D::setAlarmState(bool isAlarmOn)
-{
-	this->isAlarmOn = isAlarmOn;
-}
-
-int CEntity2D::getHealth()
-{
-	return health;
-}
-
-void CEntity2D::setHealth(int health)
-{
-	this->health = health;
-}
-
-glm::vec2 CEntity2D::getAssignedAlarmBox()
-{
-	return assignedAlarmBox;
-}
-
-void CEntity2D::setAssignedAlarmBox(glm::vec2 alarmBoxLocation)
-{
-	assignedAlarmBox = alarmBoxLocation;
 }
