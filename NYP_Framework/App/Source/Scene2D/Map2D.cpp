@@ -650,6 +650,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(BLUE_TILE_HOLLOW, iTextureID));
 	}
+	// Load the brown tile texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Brown_Hollow.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Brown_Hollow.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(BROWN_TILE_HOLLOW, iTextureID));
+	}
 	// Load rope textures
 	// Load post with rope coiled
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Rope_Post_Coiled.tga", true);
@@ -759,6 +771,129 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(RED_FLAG, iTextureID));
 	}
+	
+	// TO DOL FIND NEW SPIKES
+	// Load spikes up
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_SpikesUp.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SPIKES_UP, iTextureID));
+	}
+	// Load spikes left
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesLeft.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_SpikesLeft.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SPIKES_LEFT, iTextureID));
+	}
+	// Load spikes down
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesDown.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_SpikesDown.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SPIKES_DOWN, iTextureID));
+	}
+	// Load spikes right
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesRight.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_SpikesRight.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SPIKES_RIGHT, iTextureID));
+	}
+
+	// Load alarm box
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmBox.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/AlarmBox.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ALARM_BOX, iTextureID));
+	}
+	// Load alarm light off
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmLight_Off.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/AlarmLight_Off.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ALARM_LIGHT_OFF, iTextureID));
+	}
+	// Load alarm light on
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmLight_On.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/AlarmLight_On.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(ALARM_LIGHT_ON, iTextureID));
+	}
+	// Load left switch
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Left.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Left.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_LEFT, iTextureID));
+	}
+	// Load right switch
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Right.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Right.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_RIGHT, iTextureID));
+	}
+	// Load the exit texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Exit.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/Scene2D_Exit.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(EXIT_DOOR, iTextureID));
+	}
 
 	/// <summary>
 	/// Snow Planet Interactables
@@ -823,6 +958,85 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(WATER_TOP, iTextureID));
 	}
+
+	/// <summary>
+	/// Terrestrial Planet Solid Blocks
+	/// </summary>
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_TILE_SOLID, iTextureID));
+	}
+	// Load the yellow tile texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Yellow.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Yellow.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(YELLOW_TILE_SOLID, iTextureID));
+	}
+	// Load the red tile texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Red.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Red.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(RED_TILE_SOLID, iTextureID));
+	}
+	// Load the green tile texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Green.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Green.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GREEN_TILE_SOLID, iTextureID));
+	}
+	// Load the blue tile texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Blue.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Blue.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(BLUE_TILE_SOLID, iTextureID));
+	}
+	// Load the brown tile texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Brown_Solid.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Brown_Solid.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(BROWN_TILE_SOLID, iTextureID));
+	}
+
+	/// <summary>
+	/// Snow Planet Solid Blocks
+	/// </summary>
 	//Load the snowtop texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/snowTop.tga", true);
 	if (iTextureID == 0)
@@ -894,169 +1108,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(ICE, iTextureID));
-	}
-	
-	/*
-	// Load spikes up
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_SpikesUp.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SPIKES_UP, iTextureID));
-	}
-	// Load spikes left
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesLeft.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_SpikesLeft.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SPIKES_LEFT, iTextureID));
-	}
-	// Load spikes down
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesDown.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_SpikesDown.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SPIKES_DOWN, iTextureID));
-	}
-	// Load spikes right
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesRight.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_SpikesRight.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SPIKES_RIGHT, iTextureID));
-	}
-	*/
-
-	// Load alarm box
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmBox.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/AlarmBox.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(ALARM_BOX, iTextureID));
-	}
-	// Load alarm light off
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmLight_Off.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/AlarmLight_Off.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(ALARM_LIGHT_OFF, iTextureID));
-	}
-	// Load alarm light on
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/AlarmLight_On.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/AlarmLight_On.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(ALARM_LIGHT_ON, iTextureID));
-	}
-	// Load the exit texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Exit.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/Scene2D_Exit.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(EXIT_DOOR, iTextureID));
-	}
-
-	/// <summary>
-	/// Terrestrial Planet Solid Blocks
-	/// </summary>
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(GROUND_TILE_SOLID, iTextureID));
-	}
-	// Load the yellow tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Yellow.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Yellow.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(YELLOW_TILE_SOLID, iTextureID));
-	}
-	// Load the red tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Red.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Red.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(RED_TILE_SOLID, iTextureID));
-	}
-	// Load the green tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Green.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Green.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(GREEN_TILE_SOLID, iTextureID));
-	}
-	// Load the blue tile texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Blue.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Blue.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(BLUE_TILE_SOLID, iTextureID));
 	}
 	
 	// Initialise the variables for AStar

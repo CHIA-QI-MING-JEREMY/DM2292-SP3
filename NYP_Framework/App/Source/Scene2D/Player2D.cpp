@@ -552,6 +552,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 	}
+
 	if (shootingDirection == LEFT) {
 		if (modeOfPlayer == SHIELD) {
 			animatedSprites->PlayAnimation("idleshieldL", -1, 1.0f);
@@ -807,24 +808,24 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_UP:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_LEFT:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_DOWN:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_RIGHT:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::EXIT_DOOR:
 		// Game has been completed

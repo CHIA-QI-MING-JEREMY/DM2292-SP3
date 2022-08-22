@@ -37,10 +37,11 @@ Interactables
 199 : ironwood
 
 [Terrestrial Planet]
-201 : yellow tile hollow
-202 : red tile hollow
-203 : green tile hollow
-204 : blue tile hollow
+201 : yellow tile (hollow)
+202 : red tile (hollow)
+203 : green tile (hollow)
+204 : blue tile (hollow)
+205 : brown tile (hollow)
 210 : rope post (coiled)
 211 : rope post (uncoiled left)
 212 : rope corner (left)
@@ -62,7 +63,10 @@ Interactables
 251 : alarm light (off)
 252 : alarm light (on)
 260 : antidote pill
+270 : switch (left)
+271 : switch (right)
 299 : exit door
+300-398 : waypoints
 399 : energy quartz
 
 [Snow Planet]
@@ -97,11 +101,12 @@ Solid Blocks
 641 : stone blocks that right button 1 will make disappear
 
 [Terrestrial Planet]
-800 : ground tile solid
-801 : yellow tile solid
-802 : red tile solid
-803 : green tile solid
-804 : blue tile solid
+800 : ground tile (solid)
+801 : yellow tile (solid)
+802 : red tile (solid)
+803 : green tile (solid)
+804 : blue tile (solid)
+805 : brown tile (solid)
 
 [Snow Planet]
 1000: regular ground with snow (top snow)
