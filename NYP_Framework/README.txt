@@ -71,7 +71,11 @@ Interactables
 402: power-up shield
 403: power-up berserk
 404: power-up freeze water shard
-598: water
+405: ice rope top
+406: ice rope mid
+407: ice rope bot
+595: water top
+596: water
 599 : ice crystal
 
 

@@ -151,7 +151,7 @@ protected:
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
 	bool isZoomedIn = false;
-
+	void PlayerInteractWithMap(void);
 	// Constructor
 	SnowPlanet(void);
 	// Destructor
