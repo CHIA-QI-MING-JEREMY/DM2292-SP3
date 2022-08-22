@@ -209,3 +209,11 @@ void CGameStateManager::OffPauseGameState(void)
 {
 	pauseGameState = nullptr;
 }
+
+bool CGameStateManager::hasPauseGameState(void)
+{
+	if (pauseGameState)
+		return true;
+	
+	return false;
+}

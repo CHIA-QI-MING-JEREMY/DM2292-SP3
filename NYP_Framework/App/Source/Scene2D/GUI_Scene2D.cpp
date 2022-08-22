@@ -10,6 +10,8 @@
 #include <iostream>
 using namespace std;
 
+#include "../GameStateManagement/GameStateManager.h"
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -161,8 +163,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::End();
 
 	// Render the Lives
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
 	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
 		ImGuiWindowFlags_NoTitleBar |
 		ImGuiWindowFlags_NoMove |
 		ImGuiWindowFlags_NoResize |
@@ -182,6 +184,8 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
 		cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
 	ImGui::End();
+	ImGui::PopStyleColor();
+
 
 	if (showExitPanel) {
 		ImGuiWindowFlags ExitWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -327,8 +331,100 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 		ImGui::PopStyleColor();
 	}
+	else if (planetNum == 3) {
+	// Render the temp Level
+	ImGuiWindowFlags tempWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoBackground |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("temperature", NULL, tempWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+		cSettings->iWindowHeight * 0.125f));
+	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
+	ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+		ImVec2(cInventoryItemPlanet->vec2Size.x* relativeScale_x,
+			cInventoryItemPlanet->vec2Size.y* relativeScale_y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::SameLine();
+	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.53f, 0.81f, 0.92f, 1.0f));
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+	ImGui::ProgressBar(cInventoryItemPlanet->GetCount(), ImVec2(100.0f *
+		relativeScale_x, 20.0f * relativeScale_y), "50C");
+	ImGui::PopStyleColor();
+	ImGui::PopStyleColor();
 	ImGui::End();
-	ImGui::EndFrame();
+	// Render the inventory items
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+	ImGuiWindowFlags berserkWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("berserk", NULL, berserkWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
+	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
+	ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+		ImVec2(cInventoryItemPlanet->vec2Size.x* relativeScale_x, cInventoryItemPlanet->vec2Size.y* relativeScale_y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::SameLine();
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d",
+		cInventoryItemPlanet->GetCount());
+	ImGui::End();
+	ImGui::PopStyleColor();
+
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+	ImGuiWindowFlags freezeWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("freeze", NULL, freezeWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.155f, cSettings->iWindowHeight * 0.9f));
+	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
+	ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+		ImVec2(cInventoryItemPlanet->vec2Size.x* relativeScale_x, cInventoryItemPlanet->vec2Size.y* relativeScale_y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::SameLine();
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d",
+		cInventoryItemPlanet->GetCount());
+	ImGui::End();
+	ImGui::PopStyleColor();
+
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+	ImGuiWindowFlags shieldWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+	ImGui::Begin("shield", NULL, shieldWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.28f, cSettings->iWindowHeight * 0.9f));
+	ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
+	ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+		ImVec2(cInventoryItemPlanet->vec2Size.x* relativeScale_x, cInventoryItemPlanet->vec2Size.y* relativeScale_y),
+		ImVec2(0, 1), ImVec2(1, 0));
+	ImGui::SameLine();
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d",
+		cInventoryItemPlanet->GetCount());
+	ImGui::End();
+	ImGui::PopStyleColor();
+}
+	ImGui::End();
+	if (CGameStateManager::GetInstance()->hasPauseGameState() == false)
+		ImGui::EndFrame();
 }
 
 

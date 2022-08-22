@@ -52,7 +52,6 @@ CInventoryState::CInventoryState(void)
  */
 CInventoryState::~CInventoryState(void)
 {
-
 }
 
 /**
@@ -60,6 +59,9 @@ CInventoryState::~CInventoryState(void)
  */
 bool CInventoryState::Init(void)
 {
+
+	CShaderManager::GetInstance()->Use("Shader2D");
+	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -72,8 +74,6 @@ bool CInventoryState::Init(void)
 	background->Init();
 	cout << "CInventoryState::Init()\n" << endl;
 
-	CShaderManager::GetInstance()->Use("Shader2D");
-	//CShaderManager::GetInstance()->activeShader->setInt("texture1", 0);
 
 	// Load the images for buttons
 	CImageLoader* il = CImageLoader::GetInstance();
@@ -104,6 +104,10 @@ bool CInventoryState::Init(void)
 bool CInventoryState::Update(const double dElapsedTime)
 {
 
+	// Start the Dear ImGui frame
+	//ImGui_ImplOpenGL3_NewFrame();
+	//ImGui_ImplGlfw_NewFrame();
+	//ImGui::NewFrame();
 	const float relativeScale_x = cSettings->iWindowWidth / 800.0f;
 	const float relativeScale_y = cSettings->iWindowHeight / 600.0f;
 	float buttonWidth = cSettings->iWindowWidth / 8.f;
@@ -354,9 +358,9 @@ bool CInventoryState::Update(const double dElapsedTime)
 					}
 				}
 			}
-			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
-				cInventoryItemPlanet->GetCount());
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+			//	cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
 		
@@ -422,7 +426,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			{
 				// Reset the CKeyboardController
 				CKeyboardController::GetInstance()->Reset();
-
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
 				if (cInventoryItemPlanet->GetCount() > 0) {
 					cInventoryItemPlanet->Remove(1);
@@ -432,9 +435,9 @@ bool CInventoryState::Update(const double dElapsedTime)
 					}
 				}
 			}
-			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
-				cInventoryItemPlanet->GetCount());
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+			//	cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
 
@@ -511,15 +514,13 @@ bool CInventoryState::Update(const double dElapsedTime)
 					}
 				}
 			}
-			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
-				cInventoryItemPlanet->GetCount());
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+			//	cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
-
 	}
-
-
+//	ImGui::EndFrame();
 	return true;
 }
 
