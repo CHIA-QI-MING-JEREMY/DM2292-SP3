@@ -131,89 +131,91 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SetWindowSize(ImVec2((float)cSettings->iWindowWidth, (float)cSettings->iWindowHeight));
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 
-	// Display the FPS
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
+	if (CGameStateManager::GetInstance()->hasPauseGameState() == false) {
+		// Display the FPS
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
 
-	// Render the Health
-	ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoBackground |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Health", NULL, healthWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-		cSettings->iWindowHeight * 0.05f));
-	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
-	ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
-		ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,
-			cInventoryItemPlanet->vec2Size.y * relativeScale_y),
-		ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::SameLine();
-	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
-	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-	ImGui::ProgressBar(cInventoryItemPlanet->GetCount() /
-		(float)cInventoryItemPlanet->GetMaxCount(), ImVec2(100.0f *
-			relativeScale_x, 20.0f * relativeScale_y));
-	ImGui::PopStyleColor();
-	ImGui::PopStyleColor();
-	ImGui::End();
-
-	// Render the Lives
-	ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
-	ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		ImGuiWindowFlags_NoTitleBar |
-		ImGuiWindowFlags_NoMove |
-		ImGuiWindowFlags_NoResize |
-		ImGuiWindowFlags_NoCollapse |
-		ImGuiWindowFlags_NoScrollbar;
-	ImGui::Begin("Lives", NULL, livesWindowFlags);
-	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.85f,
-		cSettings->iWindowHeight * 0.02f));
-	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
-	ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
-		ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,
-			cInventoryItemPlanet->vec2Size.y * relativeScale_y),
-		ImVec2(0, 1), ImVec2(1, 0));
-	ImGui::SameLine();
-	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
-		cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
-	ImGui::End();
-	ImGui::PopStyleColor();
-
-
-	if (showExitPanel) {
-		ImGuiWindowFlags ExitWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		// Render the Health
+		ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
 			ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
-		ImGui::Begin("Exit Panel", NULL, ExitWindowFlags);
-		ImGui::SetWindowPos(ImVec2(blockPosition.x + cSettings->iWindowWidth * 0.05f,
-			blockPosition.y - cSettings->iWindowHeight * 0.1f));
-		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
-
-		// planet information
+		ImGui::Begin("Health", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.05f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Go Back to Ship?");
-		ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "This action cannot be undone.");
-		ImGui::NewLine();
-		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)AcceptButtonData.textureID,
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
-			goOnShip = true;
-			showExitPanel = false;
-		}
-
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,
+				cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+		ImGui::ProgressBar(cInventoryItemPlanet->GetCount() /
+			(float)cInventoryItemPlanet->GetMaxCount(), ImVec2(100.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
 		ImGui::End();
+
+		// Render the Lives
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		ImGuiWindowFlags livesWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Lives", NULL, livesWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.85f,
+			cSettings->iWindowHeight * 0.02f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,
+				cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
+			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		ImGui::End();
+		ImGui::PopStyleColor();
+
+
+		if (showExitPanel) {
+			ImGuiWindowFlags ExitWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+			ImGui::Begin("Exit Panel", NULL, ExitWindowFlags);
+			ImGui::SetWindowPos(ImVec2(blockPosition.x + cSettings->iWindowWidth * 0.05f,
+				blockPosition.y - cSettings->iWindowHeight * 0.1f));
+			ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+			// planet information
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Go Back to Ship?");
+			ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "This action cannot be undone.");
+			ImGui::NewLine();
+			// Add codes for Start button here
+			if (ImGui::ImageButton((ImTextureID)AcceptButtonData.textureID,
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+			{
+				goOnShip = true;
+				showExitPanel = false;
+			}
+
+			ImGui::End();
+		}
 	}
 
 	if (planetNum == 2)
@@ -331,7 +333,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 		ImGui::PopStyleColor();
 	}
-	else if (planetNum == 3) {
+	else if (planetNum == 3 && CGameStateManager::GetInstance()->hasPauseGameState() == false) {
 	// Render the temp Level
 	ImGuiWindowFlags tempWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
