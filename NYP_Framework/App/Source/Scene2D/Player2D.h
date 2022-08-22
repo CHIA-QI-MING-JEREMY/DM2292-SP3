@@ -127,6 +127,8 @@ public:
 	void setModeOfPlayer(int a);
 	MODE MODE;
 
+	glm::vec2 getCPIndex(void);
+
 protected:
 	glm::vec2 vec2OldIndex;
 

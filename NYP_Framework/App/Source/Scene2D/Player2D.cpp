@@ -255,8 +255,6 @@ bool CPlayer2D::Init(void)
 	// variables
 	onRope = false;
 
-	vec2CPIndex = vec2Index;
-
 	isAttacking = false;
 	attackDirection = RIGHT;
 	maxAttackTimer = 1.25;
@@ -533,18 +531,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//	UpdateKnockback(dElapsedTime);
 	//}
 
-
-	// resets player location at last visited checkpoint
-	//if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
-	//{
-	//	vec2Index = vec2CPIndex;
-	//	vec2NumMicroSteps.x = 0;
-
-	//	// reduce the lives by 1
-	//	cInventoryItem = cInventoryManager->GetItem("Lives");
-	//	cInventoryItem->Remove(1);
-	//}
-
 	// create ammo
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_E))
 	{
@@ -809,16 +795,16 @@ void CPlayer2D::InteractWithMap(void)
 		vec2CPIndex = vec2Index;
 
 		// restores player health
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		break;
 	case CMap2D::TILE_INDEX::RED_FLAG:
 		// sets CPIndex to checkpoint player just visited
 		vec2CPIndex = vec2Index;
 
 		// restores player health
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_UP:
 		// decrease health by 1
@@ -1275,6 +1261,11 @@ int CPlayer2D::getModeOfPlayer()
 void CPlayer2D::setModeOfPlayer(int a)
 {
 	modeOfPlayer = a;
+}
+
+glm::vec2 CPlayer2D::getCPIndex(void)
+{
+	return vec2CPIndex;
 }
 
 bool CPlayer2D::getPlayerAttackStatus()
