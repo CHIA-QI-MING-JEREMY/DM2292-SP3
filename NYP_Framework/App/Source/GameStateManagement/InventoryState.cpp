@@ -154,7 +154,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		// Create a window called "Hello, world!" and append into it.
 		ImGui::Begin("BatteryText", NULL, TextBattwindow_flags);
 		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
-			CSettings::GetInstance()->iWindowHeight / 5.5));	// Set the top-left of the window at (10,10)
+			CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -304,12 +304,12 @@ bool CInventoryState::Update(const double dElapsedTime)
 			// Create a window called "Hello, world!" and append into it.
 			ImGui::Begin("Icetext", NULL, IceTextwindow_flags);
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
-				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+				CSettings::GetInstance()->iWindowHeight / 5.5));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Crystals:%d",
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Crystal:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -382,7 +382,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			// Create a window called "Hello, world!" and append into it.
 			ImGui::Begin("Irontext", NULL, IronTextwindow_flags);
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
-				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+				CSettings::GetInstance()->iWindowHeight / 5.5));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -460,7 +460,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			// Create a window called "Hello, world!" and append into it.
 			ImGui::Begin("energytext", NULL, EnergyTextwindow_flags);
 			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
-				CSettings::GetInstance()->iWindowHeight / 3.8));	// Set the top-left of the window at (10,10)
+				CSettings::GetInstance()->iWindowHeight / 5.5));	// Set the top-left of the window at (10,10)
 			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
