@@ -252,7 +252,7 @@ bool CScenePlanet::Init(void)
 				PlanetSelected = otherPlanets->second;
 			}
 
-			if (glm::abs(otherPlanets->second->vec2Index.x - PlanetSelected->vec2Index.x) < 7) {
+			if (glm::abs(otherPlanets->second->vec2Index.x - PlanetSelected->vec2Index.x) < 6) {
 				otherPlanets->second->SetVisibility(true);
 			}
 			else {
@@ -294,7 +294,6 @@ bool CScenePlanet::Update(const double dElapsedTime)
 
 	// mouse Click
 	auto& io = ImGui::GetIO();
-	std::cout << (bool)cGUI_ScenePlanet->isButtonHover << "\n";
 	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB) && !lState && !cGUI_ScenePlanet->isButtonHover) {
 		lState = true;
 		glm::vec2 blockSelected = camera2D->getBlockSelected();

@@ -502,6 +502,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 	{
 		onRope = false;
 	}
+	else
+	{
+		onRope = true;
+	}
 
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE) && onRope == false)
 	{
@@ -637,8 +641,8 @@ void CPlayer2D::Render(void)
 
 	glm::vec2 actualPos = IndexPos - cameraPos + offset;
 	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
-	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
+	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS * camera2D->getZoom();
+	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS * camera2D->getZoom();  
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
 	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
@@ -758,6 +762,12 @@ void CPlayer2D::InteractWithMap(void)
 			{
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
+
+				for (int tileIndex = 300; tileIndex < 400; ++tileIndex)
+				{
+					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_CORNER_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
+					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
+				}
 			}
 		}
 		// runs if there is empty space on the right of the post
@@ -776,6 +786,12 @@ void CPlayer2D::InteractWithMap(void)
 			{
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
+
+				for (int tileIndex = 300; tileIndex < 400; ++tileIndex)
+				{
+					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
+					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
+				}
 			}
 		}
 		break;
