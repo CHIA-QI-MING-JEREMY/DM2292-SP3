@@ -339,6 +339,18 @@ bool CEnemy2D::getHunkering(void)
 	return hunkering;
 }
 
+//check if need to check to put other enemies in alert state
+bool CEnemy2D::getNoisy(void)
+{
+	return noisy;
+}
+
+//set alert to true to get specific enemy to go into en_route state
+void CEnemy2D::setAlert(bool alert)
+{
+	alerted = alert;
+}
+
 /**
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check

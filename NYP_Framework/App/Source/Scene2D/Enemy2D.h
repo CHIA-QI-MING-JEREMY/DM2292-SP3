@@ -102,6 +102,7 @@ public:
 		CLOSE_COMBAT = 0,
 		LONG_RANGE,
 		DEFENCE,
+		COMMUNITY,
 		SPECIAL,
 	};
 
@@ -120,8 +121,10 @@ public:
 	glm::vec2 getAssignedAlarmBox();
 	void setAssignedAlarmBox(glm::vec2 alarmBoxLocation);
 
-	//damage altering functions
+	//triggering enemy specific functions
 	bool getHunkering(void); //accessed in scene to check if damage dealt to enemy by player's ammo should be lessened or not
+	bool getNoisy(void); //check if need to check to put other enemies in alert state
+	void setAlert(bool alert = true); //set alert to true to get specific enemy to go into en_route state
 
 protected:
 	enum DIRECTION
@@ -236,8 +239,10 @@ protected:
 	bool isAlarmOn;
 	glm::vec2 assignedAlarmBox;
 
-	//damage reduction variables
+	//triggering enemy specific behaviour variables
 	bool hunkering; //used to check if damage dealt to enemy should be lessened or not
+	bool noisy; //used to check if enemy is in noisy mode
+	bool alerted; //used to set enemy into en_route mode if near an enemy in noisy mode
 
 	// colour variables
 	glm::vec4 colour;

@@ -93,6 +93,9 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	bool getNoisy(void); //check if need to check to put other enemies in alert state
+	void setAlert(bool alert = true); //set alert to true to get specific enemy to go into en_route state
+
 protected:
 	enum DIRECTION
 	{
@@ -122,9 +125,13 @@ protected:
 		TELEPORT,
 		WANDER,
 		SHOOT,
-		RETURN,
 		RECOVER,
 		EXPLODE,
+
+		PARTOL,
+		NOISY,
+		EN_ROUTE,
+		RETURN,
 		NUM_FSM
 	};
 

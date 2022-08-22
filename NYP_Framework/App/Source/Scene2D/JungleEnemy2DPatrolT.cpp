@@ -167,24 +167,20 @@ bool JEnemy2DPatrolT::Init(void)
 	//if it's the enemy at this position
 	if (vec2Index == glm::vec2(4, 4))
 	{
-		waypoints = ConstructWaypointVector(waypoints, 100, 4);
+		waypoints = ConstructWaypointVector(waypoints, 130, 4);
 	}
 
 	// sets waypoint counter value
 	currentWaypointCounter = 0;
 	maxWaypointCounter = waypoints.size();
 
-	type = LONG_RANGE; //has ammo
+	type = COMMUNITY; //effects more of its own kind
 	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 50; //takes 10 hits to kill
 
 	flickerTimer = 0.5; //used to progress the flicker counter
 	flickerTimerMax = 0.5; //used to reset flicker counter
 	flickerCounter = 0; //decides colour of enemy and when to explode
-
-	//make sure both vectors start off empty
-	enemysTeleportationResidue.clear(); //a vector of locations where this enemy left behind teleportation residue
-	enemysTResidueCooldown.clear(); //timer for how long the residue will last
 
 	healingCooldown = 0.0; //timer between when the enemy heals when in new location
 
@@ -205,28 +201,26 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		health = maxHealth;
 	}
 
-	//check if there are any existing teleporattion residue left behind by this enemy
-		//deplete their cooldowns if so
-	for (int i = 0; i < enemysTeleportationResidue.size(); ++i)
-	{
-		enemysTResidueCooldown[i] -= dElapsedTime; //deplete specific cooldown
-
-		if (enemysTResidueCooldown[i] <= 0.0) //if cooldown is up
-		{
-			//remove poof effect
-			cMap2D->SetMapInfo(enemysTeleportationResidue[i].y, enemysTeleportationResidue[i].x, 0);
-
-			//remove the removed teleportation residue's location from the vector
-			enemysTeleportationResidue.erase(enemysTeleportationResidue.begin() + i); 
-			//as well as its cooldown timer
-			enemysTResidueCooldown.erase(enemysTResidueCooldown.begin() + i);
-		}
-	}
-
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
+	case IDLE:
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 7.0f)
+		{
+			sCurrentFSM = NOISY;
+			iFSMCounter = 0;
+			cout << "Switching to Noisy State" << endl;
+			break;
+		}
+		if (alerted) //if near a noisy patrol team enemy
+		{
+			sCurrentFSM = EN_ROUTE;
+			iFSMCounter = 0;
+			cout << "Switching to En Route State" << endl;
+		}
+		iFSMCounter++;
+		break;
 	case TELEPORT:
 		++currentWaypointCounter; //increase the enemy's current waypoint count
 			//if pointing at the spot beyond the last waypoint index, set current back to first
@@ -234,11 +228,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			currentWaypointCounter = 0;
 		}
-
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::TELEPORTATION_RESIDUE); //leave behind a "poof" effect before teleporting
-		enemysTeleportationResidue.push_back(vec2Index); //push the poof's location into vector of poof locations
-		enemysTResidueCooldown.push_back(enemysTResidueMaxCooldown); //starts its own cooldown
-
+		
 		vec2Index = waypoints[currentWaypointCounter]; //teleport the enemy to the way point
 		if (health <= 15) //if health is low, switch to recover
 		{
@@ -539,21 +529,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			healingCooldown = healingMaxCooldown; //reset healing cooldown
 		}
 		healingCooldown -= dElapsedTime; //deplete healing cooldown
-		iFSMCounter++;
-		break;
-	case IDLE:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-		{
-			sCurrentFSM = SHOOT;
-			iFSMCounter = 0;
-			cout << "Switching to Attack State" << endl;
-		}
-		if (health <= 5)
-		{
-			sCurrentFSM = EXPLODE;
-			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
-		}
 		iFSMCounter++;
 		break;
 	case SHOOT:
@@ -922,6 +897,18 @@ void JEnemy2DPatrolT::PostRender(void)
 
 	// Disable blending
 	glDisable(GL_BLEND);
+}
+
+//check if need to check to put other enemies in alert state
+bool JEnemy2DPatrolT::getNoisy(void)
+{
+	return noisy;
+}
+
+//set alert to true to get specific enemy to go into en_route state
+void JEnemy2DPatrolT::setAlert(bool alert)
+{
+	alerted = alert;
 }
 
 /**
