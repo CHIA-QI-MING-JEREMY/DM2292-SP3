@@ -628,8 +628,8 @@ void CPlayer2D::Render(void)
 
 	glm::vec2 actualPos = IndexPos - cameraPos + offset;
 	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS;
-	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS;
+	actualPos.x += vec2NumMicroSteps.x * cSettings->MICRO_STEP_XAXIS * camera2D->getZoom();
+	actualPos.y += vec2NumMicroSteps.y * cSettings->MICRO_STEP_YAXIS * camera2D->getZoom();  
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
 	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));

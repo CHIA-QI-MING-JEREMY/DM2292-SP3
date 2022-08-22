@@ -179,6 +179,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 			cout << "Loading ShipCombatState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
 			CGameInfo::GetInstance()->PrevState = 2;
+			
 		}
 		break;
 	case CPlanet::TYPE::JUNGLE:
