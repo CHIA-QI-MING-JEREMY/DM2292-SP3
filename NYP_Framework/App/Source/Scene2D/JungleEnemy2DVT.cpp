@@ -174,7 +174,7 @@ bool JEnemy2DVT::Init(void)
 	currentWaypointCounter = 0;
 	maxWaypointCounter = waypoints.size();
 
-	type = LONG_RANGE; //has ammo
+	type = TELEPORTABLE; //has teleportation residue
 	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 50; //takes 10 hits to kill
 
@@ -203,6 +203,20 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 	if (health > maxHealth)
 	{
 		health = maxHealth;
+	}
+
+	//if dead, remove all teleportation residue
+	if (health <= 0)
+	{
+		for (int i = 0; i < enemysTeleportationResidue.size(); ++i)
+		{
+			//remove poof effect
+			cMap2D->SetMapInfo(enemysTeleportationResidue[i].y, enemysTeleportationResidue[i].x, 0);
+		}
+
+		enemysTeleportationResidue.clear();
+		enemysTResidueCooldown.clear();
+		return;
 	}
 
 	//check if there are any existing teleporattion residue left behind by this enemy

@@ -214,6 +214,24 @@ bool JunglePlanet::Init(void)
 			}
 		}
 
+		while (true)
+		{
+			JEnemy2DPatrolT* cJEnemy2DPatrolT = new JEnemy2DPatrolT();
+			// Pass shader to cEnemy2D
+			cJEnemy2DPatrolT->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cJEnemy2DPatrolT->Init() == true)
+			{
+				cJEnemy2DPatrolT->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cJEnemy2DPatrolT); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
+			}
+		}
+
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
 		/// <summary>
@@ -424,6 +442,29 @@ bool JunglePlanet::Update(const double dElapsedTime)
 
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 
+		//for patrol team, aka community based enemies
+			//if it is in noisy mode (aka getNoisy is true), check all other community enemies to see if they are near this noisy enemy
+			//if they are near and not in noisy mode, set alert to be true
+		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::COMMUNITY &&
+			enemyVectors[cMap2D->GetCurrentLevel()][i]->getNoisy())
+		{
+			//check all other enemies
+			for (unsigned int j = 0; j < enemyVectors[cMap2D->GetCurrentLevel()].size(); j++)
+			{
+				//if is a community enemy and not the current enemy 
+				if (enemyVectors[cMap2D->GetCurrentLevel()][j]->getType() == CEnemy2D::ENEMYTYPE::COMMUNITY &&
+					enemyVectors[cMap2D->GetCurrentLevel()][j] != enemyVectors[cMap2D->GetCurrentLevel()][i])
+				{
+					//if this other enemy is near the current enemy
+					if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, 
+						enemyVectors[cMap2D->GetCurrentLevel()][j]->vec2Index) < 6.0f)
+					{
+						enemyVectors[cMap2D->GetCurrentLevel()][j]->setAlert(); //send it into en_route state
+					}
+				}
+			}
+		}
+
 		//player ammo collision check with enemy
 		std::vector<CAmmo2D*> ammoList = cPlayer2D->getAmmoList();
 		for (std::vector<CAmmo2D*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
@@ -508,6 +549,12 @@ bool JunglePlanet::Update(const double dElapsedTime)
 					//set resource's position where enemy's position is
 				res->SetShader("Shader2D_Colour"); //set shader
 				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+			}
+
+			//if enemy has teleportation residue, call its update to delete the residue before deleting it
+			if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::TELEPORTABLE)
+			{
+ 				enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 			}
 
 			delete enemyVectors[cMap2D->GetCurrentLevel()][i];
