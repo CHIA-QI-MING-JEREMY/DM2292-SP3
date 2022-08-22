@@ -124,10 +124,10 @@ bool TEnemy2DTurret::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_TileFade.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_BrickFade.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_TileFade.png" << endl;
 		return false;
 	}
 
@@ -141,7 +141,7 @@ bool TEnemy2DTurret::Init(void)
 	animatedSprites->AddAnimation("cloakR", 16, 23);
 	animatedSprites->AddAnimation("cloakL", 24, 31);
 	animatedSprites->AddAnimation("attackR", 34, 34);
-	animatedSprites->AddAnimation("attackL", 40, 42);
+	animatedSprites->AddAnimation("attackL", 42, 42);
 
 	// Play hidden animation as default
 	animatedSprites->PlayAnimation("hidden", -1, 1.0f);
@@ -171,6 +171,9 @@ bool TEnemy2DTurret::Init(void)
 	isAlarmerActive = false;
 	isAlarmOn = false;
 
+	maxAttackTimer = 0.21;
+	attackTimer = 0;
+
 	return true;
 }
 
@@ -193,6 +196,7 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case HIDDEN:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
@@ -203,7 +207,7 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
 			//cout << "Play hidden anim" << endl;
 		}
-		
+
 		if (isAlarmOn)
 		{
 			sCurrentFSM = ALERT_DECLOAK;
@@ -219,9 +223,12 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			iFSMCounter = 0;
 			animatedSprites->Reset();
 			cout << "Switching to Decloak State" << endl;
+			break;
 		}
 		break;
+	}
 	case DECLOAK:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("decloakR", 0, 1.f);
@@ -235,13 +242,63 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 
 		if (iFSMCounter > iMaxFSMCounter)
 		{
-			sCurrentFSM = TARGET;
+			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			cout << "Switching to Target State" << endl;
+			maxAttackTimer = 0.21;
+			attackTimer = 0;
+			cout << "Switching to Attack State" << endl;
+			break;
 		}
 		iFSMCounter++;
 		break;
+	}
+	case ATTACK:
+	{
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("attackR", 0, 1.f);
+			//cout << "Play attackR anim" << endl;
+
+			shootingDirection = RIGHT;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("attackL", 0, 1.f);
+			//cout << "Play attackL anim" << endl;
+
+			shootingDirection = LEFT;
+		}
+
+		if (attackTimer <= 0)
+		{
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CTEAmmoTurret* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			ammo->setIsAlerted(false);
+			cout << "Bam!" << shootingDirection << endl;
+
+			attackTimer = maxAttackTimer;
+		}
+		else
+		{
+			attackTimer -= dElapsedTime;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = TARGET;
+			iFSMCounter = 0;
+			attackTimer = 0;
+			cout << "Switching to Target State" << endl;
+			break;
+		}
+		iFSMCounter++;
+		break;
+	}
 	case TARGET:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("targetR", -1, 1.f);
@@ -273,12 +330,16 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
+			maxAttackTimer = 0.21;
+			attackTimer = 0;
 			cout << "Switching to Attack State" << endl;
 			break;
 		}
 		iFSMCounter++;
 		break;
+	}
 	case CLOAK:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("cloakR", 0, 1.f);
@@ -298,48 +359,9 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
-	case ATTACK:
-		if (vec2Direction.x > 0)
-		{
-			animatedSprites->PlayAnimation("attackR", 0, 1.f);
-			//cout << "Play attackR anim" << endl;
-
-			shootingDirection = RIGHT;
-
-			// Shoot enemy ammo!
-			//shoot ammo in accordance to the direction enemy is facing
-			CTEAmmoTurret* ammo = FetchAmmo();
-			ammo->setActive(true);
-			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			cout << "Bam!" << shootingDirection << endl;
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("attackL", 0, 1.f);
-			//cout << "Play attackL anim" << endl;
-
-			shootingDirection = LEFT;
-
-			// Shoot enemy ammo!
-			//shoot ammo in accordance to the direction enemy is facing
-			CTEAmmoTurret* ammo = FetchAmmo();
-			ammo->setActive(true);
-			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			cout << "Bam!" << shootingDirection << endl;
-		}
-
-		// TO DO
-		// prevent enemy ammo from shooting more than once
-
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = TARGET;
-			iFSMCounter = 0;
-			cout << "Switching to Target State" << endl;
-		}
-		iFSMCounter++;
-		break;
+	}
 	case ALERT_DECLOAK:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("decloakR", 0, 0.5f);
@@ -353,13 +375,60 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 
 		if (iFSMCounter > iMaxFSMCounter)
 		{
-			sCurrentFSM = ALERT_TARGET;
+			sCurrentFSM = ALERT_ATTACK;
 			iFSMCounter = 0;
-			cout << "Switching to Alert_Target State" << endl;
+			maxAttackTimer = 0.11;
+			attackTimer = 0;
+			cout << "Switching to Alert_Attack State" << endl;
 		}
 		iFSMCounter += 2;
 		break;
+	}
+	case ALERT_ATTACK:
+		if (vec2Direction.x > 0)
+		{
+			animatedSprites->PlayAnimation("attackR", 0, 1.f);
+			//cout << "Play attackR anim" << endl;
+
+			shootingDirection = RIGHT;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			animatedSprites->PlayAnimation("attackL", 0, 1.f);
+			//cout << "Play attackL anim" << endl;
+
+			shootingDirection = LEFT;
+		}
+
+		if (attackTimer <= 0)
+		{
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CTEAmmoTurret* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			ammo->setIsAlerted(true);
+			cout << "Bam!" << shootingDirection << endl;
+
+			attackTimer = maxAttackTimer;
+		}
+		else
+		{
+			attackTimer -= dElapsedTime;
+		}
+
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = ALERT_TARGET;
+			iFSMCounter = 0;
+			attackTimer = 0;
+			cout << "Switching to Alert_Target State" << endl;
+			break;
+		}
+		iFSMCounter++;
+		break;
 	case ALERT_TARGET:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("targetR", -1, 0.5f);
@@ -391,32 +460,16 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ALERT_ATTACK;
 			iFSMCounter = 0;
+			maxAttackTimer = 0.11;
+			attackTimer = 0;
 			cout << "Switching to Alert_Attack State" << endl;
 			break;
 		}
 		iFSMCounter += 2;
 		break;
-	case ALERT_ATTACK:
-		if (vec2Direction.x > 0)
-		{
-			animatedSprites->PlayAnimation("attackR", -1, 1.f);
-			//cout << "Play attackR anim" << endl;
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("attackL", -1, 1.f);
-			//cout << "Play attackL anim" << endl;
-		}
-
-		if (iFSMCounter > iMaxFSMCounter)
-		{
-			sCurrentFSM = ALERT_TARGET;
-			iFSMCounter = 0;
-			cout << "Switching to Alert_Target State" << endl;
-		}
-		iFSMCounter++;
-		break;
+	}
 	case ALERT_STANDBY:
+	{
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("targetR", -1, 0.5f);
@@ -428,6 +481,14 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			//cout << "Play targetL anim" << endl;
 		}
 
+		if (!isAlarmOn)
+		{
+			sCurrentFSM = TARGET;
+			iFSMCounter = 0;
+			cout << "Switching to Target State" << endl;
+			break;
+		}
+
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 9.f)
 		{
 			sCurrentFSM = ALERT_TARGET;
@@ -436,6 +497,7 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			break;
 		}
 		break;
+	}
 	default:
 		break;
 	}

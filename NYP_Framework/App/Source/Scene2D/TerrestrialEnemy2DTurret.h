@@ -195,11 +195,8 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	//// timer
-	//double attackTimer;
-	//double maxAttackTimer;
-
-	//double warnTimer;
-	//double maxWarnTimer;
+	// timer
+	double attackTimer;
+	double maxAttackTimer;
 };
 

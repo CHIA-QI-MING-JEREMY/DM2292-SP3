@@ -113,6 +113,9 @@ public:
 	//used to check if ammo is active before checking collision and rendering, etc
 	bool getActive(void);
 
+	bool getIsAlerted(void);
+	void setIsAlerted(bool isAlarmOn);
+
 protected:
 	glm::vec2 vec2OldIndex;
 
@@ -128,6 +131,8 @@ protected:
 	//For inventory
 	CInventoryManager* cInventoryManager;
 	CInventoryItem* cInventoryItem;
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	CInventoryItemPlanet* cInventoryItemPlanet;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
@@ -155,5 +160,7 @@ protected:
 
 	// Determines whether or not to render it
 	bool active;
+
+	bool isAlerted;
 };
 
