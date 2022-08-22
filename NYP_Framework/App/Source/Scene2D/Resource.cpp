@@ -787,6 +787,69 @@ bool CResource::InteractWithPlayer(void)
 			}
 			break;
 		}
+		// Snow Planet
+		case SHIELD:
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
+			std::cout << "COLLECTED SHIELD POWER UP" << std::endl;
+			cInventoryItemPlanet->Add(1); //add 1 shield power up
+			collected = true; //delete in scene
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case BERSERK:
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
+			std::cout << "COLLECTED BERSERK POWER UP" << std::endl;
+			cInventoryItemPlanet->Add(1); //add 1 berserk power up
+			collected = true; //delete in scene
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case FREEZE:
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
+			std::cout << "COLLECTED FREEZE POWER UP" << std::endl;
+			cInventoryItemPlanet->Add(1); //add 1 freeze power up
+			collected = true; //delete in scene
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case FUR:
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
+			if (cInventoryItemPlanet->GetCount() != 50)
+			{
+				std::cout << "COLLECTED FUR" << std::endl;
+				collected = true; //delete in scene
+				cInventoryItemPlanet->Add(15);
+
+				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			}
+			else
+			{
+				std::cout << "FUR NOT NEEDED, MAX TEMP REACHED" << std::endl;
+			}
+			break;
+		}
+		case FUR_COAT:
+		{
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
+			if (cInventoryItemPlanet->GetCount() != 50)
+			{
+				std::cout << "COLLECTED FUR COAT" << std::endl;
+				collected = true; //delete in scene
+				cInventoryItemPlanet->Add(10);
+
+				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			}
+			else
+			{
+				std::cout << "FUR COAT NOT NEEDED, MAX TEMP REACHED" << std::endl;
+			}
+			break;
+		}
 		default:
 			break;
 		}
