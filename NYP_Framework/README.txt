@@ -110,6 +110,12 @@ Solid Blocks
 803 : green tile (solid)
 804 : blue tile (solid)
 805 : brown tile (solid)
+810 : ground wire corner (bottom left)
+811 : ground wire corner (bottom right)
+812 : ground wire corner (top left)
+813 : ground wire corner (top right)
+814 : ground wire length (horizontal)
+815 : ground wire length (vertical)
 
 [Snow Planet]
 1000: regular ground with snow (top snow)

@@ -1034,6 +1034,78 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(BROWN_TILE_SOLID, iTextureID));
 	}
+	// Load the ground wire corner bottom left texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_BotL.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_BotL.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_CORNER_BOT_L, iTextureID));
+	}
+	// Load the ground wire corner bottom right texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_BotR.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_BotR.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_CORNER_BOT_R, iTextureID));
+	}
+	// Load the ground wire corner top left texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_TopL.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_TopL.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_CORNER_TOP_L, iTextureID));
+	}
+	// Load the ground wire corner top right texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_TopR.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground_Wire_Corner_TopR.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_CORNER_TOP_R, iTextureID));
+	}
+	// Load the ground wire length horizontal texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground_Wire_Length_Hor.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground_Wire_Length_Hor.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_LENGTH_HOR, iTextureID));
+	}
+	// Load the ground wire length vertical texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground_Wire_Length_Ver.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground_Wire_Length_Ver.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_LENGTH_VER, iTextureID));
+	}
 
 	/// <summary>
 	/// Snow Planet Solid Blocks
