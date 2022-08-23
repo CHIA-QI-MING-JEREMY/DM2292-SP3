@@ -22,8 +22,6 @@ using namespace std;
 CGUI_SceneCombat::CGUI_SceneCombat(void)
 	: cSettings(NULL)
 	, window_flags(0)
-	, cInventoryManager(NULL)
-	, cInventoryItem(NULL)
 {
 }
 
@@ -32,11 +30,8 @@ CGUI_SceneCombat::CGUI_SceneCombat(void)
  */
 CGUI_SceneCombat::~CGUI_SceneCombat(void)
 {
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
+
+	cInventoryManager = NULL;
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();

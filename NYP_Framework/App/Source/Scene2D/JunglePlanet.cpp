@@ -10,6 +10,7 @@ using namespace std;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 #include "System\filesystem.h"
 
@@ -300,6 +301,9 @@ bool JunglePlanet::Init(void)
 		//dictates how badly affected the player is by poison
 		//poison level 0 means the player has not been poisoned
 	cInventoryItemPlanet->Remove(cInventoryItemPlanet->GetCount()); //set poison level to 0
+
+	// Get the handler for the cInventoryManager
+	cInventoryManager = CGameInfo::GetInstance()->ImportIM();
 
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -1136,4 +1140,52 @@ void JunglePlanet::DecideLevel(bool tutorial)
 bool JunglePlanet::getIsOnShip(void)
 {
 	return cGUI_Scene2D->getGoOnShip();
+}
+
+void JunglePlanet::SetResourcesBack(void)
+{
+
+	if (cInventoryManagerPlanet->Check("ScrapMetal")) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
+		if (cInventoryManager->Check("ScrapMetal")) {
+			cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
+			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager\n";
+		}
+	}
+	else {
+		std::cout << "Item does not exist in inventory manager planet \n";
+	}
+	
+	if (cInventoryManagerPlanet->Check("Battery")) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
+		if (cInventoryManager->Check("Battery")) {
+			cInventoryItem = cInventoryManager->GetItem("Battery");
+			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager\n";
+		}
+	}
+	else {
+		std::cout << "Item does not exist in inventory manager planet \n";
+	}
+
+	if (cInventoryManagerPlanet->Check("Ironwood")) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
+		if (cInventoryManager->Check("Ironwood")) {
+			cInventoryItem = cInventoryManager->GetItem("Ironwood");
+			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager\n";
+		}
+	}
+	else {
+		std::cout << "Item does not exist in inventory manager planet \n";
+	}
+
+	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 }

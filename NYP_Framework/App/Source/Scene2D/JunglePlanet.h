@@ -91,6 +91,7 @@ public:
 	void DecideLevel(bool tutorial);
 
 	bool getIsOnShip(void);
+	void SetResourcesBack(void);
 
 protected:
 	// The handler containing the instance of the 2D Map
@@ -128,10 +129,11 @@ protected:
 
 	// Inventory Manager
 	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	CInventoryManager* cInventoryManager;
 
 	// Inventory Item
 	CInventoryItemPlanet* cInventoryItemPlanet;
-
+	CInventoryItem* cInventoryItem;
 
 	// A transformation matrix for controlling where to render the entities
 	glm::mat4 transform;
