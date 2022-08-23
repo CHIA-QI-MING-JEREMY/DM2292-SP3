@@ -118,7 +118,6 @@ protected:
 		PATROL=1,
 		ATTACK = 2,
 		FEAR=3,
-		STUPID = 4,
 		NUM_FSM
 	};
 

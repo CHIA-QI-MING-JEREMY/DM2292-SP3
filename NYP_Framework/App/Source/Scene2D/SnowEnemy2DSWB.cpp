@@ -407,18 +407,7 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 			}
 			UpdatePosition();
 		}
-
-		if (vec2Index == fearpathway)
-		{
-			sCurrentFSM = STUPID;
-			iFSMCounter = 0;
-			break;
-		}
-
 		iFSMCounter++;
-		break;
-	case STUPID:
-		cout << health << endl;
 		break;
 	default:
 		break;
