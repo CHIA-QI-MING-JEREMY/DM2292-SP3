@@ -129,18 +129,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
 	}
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(1000, iTextureID));
-	}
-
 	/// <summary>
 	/// JUNGLE PLANET INTERACTABLES
 	/// </summary>

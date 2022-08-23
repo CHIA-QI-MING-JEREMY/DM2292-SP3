@@ -329,12 +329,12 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	}
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
-		if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount()>0) {
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_Q) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount()>0) {
 			cInventoryItemPlanet->Remove(1);
 			cout << "Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::SHIELD);
 		}
-		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount() > 0) {
+		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_Q) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount() > 0) {
 			cInventoryItemPlanet->Remove(1);
 			cout << "Berserk Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERKSHIELD);
@@ -438,6 +438,14 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_F8))
 	{
 		cMap2D->SetCurrentLevel(1);
+	}
+	if (CMap2D::TILE_INDEX::ICE == cMap2D->GetMapInfo(cPlayer2D->vec2Index.y-1,cPlayer2D->vec2Index.x)) {
+		CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS = 6.0;
+		CSettings::GetInstance()->MICRO_STEP_XAXIS = 0.01041667f;
+	}
+	else {
+		CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS = 8.0;
+		CSettings::GetInstance()->MICRO_STEP_XAXIS = 0.0078125f;
 	}
 
 	//// Checks if alarm is active
