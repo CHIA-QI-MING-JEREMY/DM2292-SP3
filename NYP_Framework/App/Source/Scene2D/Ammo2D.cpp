@@ -278,6 +278,10 @@ void CAmmo2D::InteractWithMap(void)
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 15, 16, 18, 29);
 			}
+			else if (vec2Index == glm::vec2(7, 3))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 3, 5, 19, 20);
+			}
 		}
 		break;
 	case CMap2D::TILE_INDEX::SWITCH_RIGHT:
@@ -294,6 +298,10 @@ void CAmmo2D::InteractWithMap(void)
 			if (vec2Index == glm::vec2(17, 16))
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 15, 16, 18, 29);
+			}
+			else if (vec2Index == glm::vec2(7, 3))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 3, 5, 19, 20);
 			}
 		}
 		break;
@@ -338,8 +346,10 @@ bool CAmmo2D::CheckPosition(void)
 		// If the new position is fully within a row, then check this row only
 		if (vec2NumMicroSteps.y == 0)
 		{
+			cout << cSettings->NUM_STEPS_PER_TILE_XAXIS - 1 << endl;
+
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610 && vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS - 2.f)
 			{
 				return false;
 			}
