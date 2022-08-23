@@ -6,6 +6,7 @@
  */
 #include "GUI_Scene2D.h"
 #include "System\ImageLoader.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 #include <iostream>
 using namespace std;
@@ -19,8 +20,6 @@ CGUI_Scene2D::CGUI_Scene2D(void)
 	: cSettings(NULL)
 	, window_flags(0)
 	, m_fProgressBar(0.0f)
-	, cInventoryManager(NULL)
-	, cInventoryItem(NULL)
 	, cInventoryManagerPlanet(NULL)
 	, cInventoryItemPlanet(NULL)
 {
@@ -31,16 +30,13 @@ CGUI_Scene2D::CGUI_Scene2D(void)
  */
 CGUI_Scene2D::~CGUI_Scene2D(void)
 {
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
 	if (cInventoryManagerPlanet)
 	{
 		cInventoryManagerPlanet->Destroy();
 		cInventoryManagerPlanet = NULL;
 	}
+
+	cInventoryManager = NULL;
 
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
@@ -93,6 +89,7 @@ bool CGUI_Scene2D::Init(void)
 
 	// Initialise the CInventoryManagerPlanet
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+	cInventoryManager = CGameInfo::GetInstance()->ImportIM();
 	lState = false;
 
 	m_fProgressBar = 0.0f;
@@ -145,6 +142,26 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
+		/*ImGui::Begin("Health", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.05f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItem = cInventoryManager->GetItem("Health");
+		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
+			ImVec2(cInventoryItem->vec2Size.x * relativeScale_x,
+				cInventoryItem->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+		ImGui::ProgressBar(cInventoryItem->GetCount() /
+			(float)cInventoryItem->GetMaxCount(), ImVec2(100.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();*/
+
 		ImGui::Begin("Health", NULL, healthWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.05f));
