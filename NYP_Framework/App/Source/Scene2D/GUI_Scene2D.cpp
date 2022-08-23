@@ -99,8 +99,7 @@ bool CGUI_Scene2D::Init(void)
 	goOnShip = false;
 	showExitPanel = false;
 
-	//tutorialPopupJungle = NONE;
-	tutorialPopupJungle = 1;
+	tutorialPopupJungle = NONE;
 
 	return true;
 }
@@ -223,22 +222,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	if (planetNum == 1 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
 	{
-		//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
-		//ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		//	ImGuiWindowFlags_NoTitleBar |
-		//	ImGuiWindowFlags_NoMove |
-		//	ImGuiWindowFlags_NoResize |
-		//	ImGuiWindowFlags_NoCollapse |
-		//	ImGuiWindowFlags_NoScrollbar;
-		//ImGui::Begin("textPopup", NULL, textPopupFlags);
-		//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.5f,
-		//	cSettings->iWindowHeight * 0.5f));
-		//ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
-		//ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Hello");
-		//ImGui::End();
-		//ImGui::PopStyleColor();
-
 		// Render the Poison Level
 		ImGuiWindowFlags poisonWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoBackground |
@@ -351,14 +334,122 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			switch (tutorialPopupJungle)
 			{
 			case CHECKPOINT:
-				//information
+				//header
 				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
+				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoints to set \nrespawn points");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoints to set respawn\npoint \nTouching checkpoints restores health\nto full");
 				ImGui::NewLine();
+				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to give 1 life to respawn \nHealth will be reset to 100%");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case SHOOT:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shooting");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shoot fireballs up, down, left or \nright \nFace the direction you want to shoot\nin");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "WASD to change which direction to \nface \nPress E to shoot");
+				break;
+			case BURNABLE:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Bushes");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Hit a bush with fireballs \n\n1st hit sets the bush on fire \n2nd destroys the bush \n\nEnemies can dissolve and destroy \nbushes too");
+				break;
+			case RESOURCE:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Resources");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "You can only collect 5 resources \nto bring back to the ship \n\nYou can destroy resources you don't \nwant from your inventory");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "I to toggle inventory"); 
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Left click a resource to destroy it");
+				break;
+			case POISON:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Poison Levels (PL)");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Purple objects are poisonous \n\nPoisonous objects increase your PL \nThere is a short cooldown between \nchanges in PL \n\nYou take damage periodically when \npoisoned\n\nPL 1: -3 health/5 sec \nPL 2: -5 health/4 sec \nPL 3: -10 health/3 sec");
+				break;
+			case SWITCHES:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Buttons");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Hit a button with fireballs to \nactivate it \n\nActivated buttons can open or build \nstone pathways");
+				break;
+			case RIVER_WATER:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "River Water");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "You regain health standing in river \nwater \n\nYou can collect river water \nCollected river water can be used to\nheal and decrease poison level by 1\n\nUsing river water ignores the \ncooldown in poison level changes");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Q to collect and use river water"); 
+				break;
+			case VINE:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Vines");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Collect vines to tie around rocks \n\nMakes it easier to climb back up");
+				break;
+			case BUSHES:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Placing Bushes");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Collect bushes to place down \n\nPlace bushes up, down, left or right\nFace the spot where you want to \nplace a bush \n\nPlaced bushes CANNOT be retrieved");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "WASD to change what spot you're \nfacing \nPress G to place a bush");
+				break;
+			case BOUNCY_BLOOM:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Bounce Flowers");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Use river water to make these \nflowers bloom \n\nThese flowers act as springs when \nbloomed");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Q to use river water on flower");
+				break;
+			case ROCK:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Deploying Vines");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Collected vines can be tied around \nrocks \n\nTied vines extend to the ground \nVines can be climbed up and down \n\nDeployed vines CANNOT be retrieved");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "F to tie vine around rock \nWS to climb up and down vines"); 
 				break;
 			default:
 				break;
