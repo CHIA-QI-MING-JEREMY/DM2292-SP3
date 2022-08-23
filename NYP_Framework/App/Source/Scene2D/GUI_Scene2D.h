@@ -80,9 +80,9 @@ public:
 	enum JUNGLE_TUTORIAL_POPUP
 	{
 		NONE = 0,
-		CHECKPOINT, //triggered onceplayer hits first checkpoint
+		CHECKPOINT, //triggered once player hits first checkpoint
 		SHOOT, //triggered at the first set of bushes to destory with shooting
-		BUNRABLE, //triggered whenever player burns a bush
+		BURNABLE, //triggered whenever player burns a bush
 		RESOURCE, //triggered every time player collects an item
 		POISON, //triggered by the first poison sprout hit (hardcoded)
 		SWITCHES, //triggered the first time the player hits a switch
