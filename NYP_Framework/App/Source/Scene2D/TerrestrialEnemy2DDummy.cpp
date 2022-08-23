@@ -103,7 +103,7 @@ bool TEnemy2DDummy::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1801, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1803, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -124,16 +124,17 @@ bool TEnemy2DDummy::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_TileFade.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/DummySpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_TileFade.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/DummySpriteSheet.png" << endl;
 		return false;
 	}
 
 	// Create the animated sprite and setup the animation
 	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 8, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	animatedSprites->AddAnimation("hidden", 0, 0);
+	animatedSprites->AddAnimation("hiddenR", 0, 0);
+	animatedSprites->AddAnimation("hiddenL", 8, 8);
 	animatedSprites->AddAnimation("decloakR", 0, 7);
 	animatedSprites->AddAnimation("decloakL", 8, 15);
 	animatedSprites->AddAnimation("targetR", 16, 18);
@@ -144,7 +145,7 @@ bool TEnemy2DDummy::Init(void)
 	animatedSprites->AddAnimation("attackL", 42, 42);
 
 	// Play hidden animation as default
-	animatedSprites->PlayAnimation("hidden", -1, 1.0f);
+	animatedSprites->PlayAnimation("hiddenR", -1, 1.0f);
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
@@ -199,13 +200,13 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 	{
 		if (vec2Direction.x > 0)
 		{
-			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
-			//cout << "Play hidden anim" << endl;
+			animatedSprites->PlayAnimation("hiddenR", -1, 1.0f);
+			//cout << "Play hiddenR anim" << endl;
 		}
 		else if (vec2Direction.x < 0)
 		{
-			animatedSprites->PlayAnimation("hidden", -1, 1.0f);
-			//cout << "Play hidden anim" << endl;
+			animatedSprites->PlayAnimation("hiddenL", -1, 1.0f);
+			//cout << "Play hiddenL anim" << endl;
 		}
 
 		if (isAlarmOn)
