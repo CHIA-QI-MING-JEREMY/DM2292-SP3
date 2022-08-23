@@ -79,7 +79,7 @@ Interactables
 505: ice rope top
 506: ice rope mid
 507: ice rope bot
-510-520: sign (tutorial)
+510-530: sign (tutorial)
 595: water top
 596: water
 599 : ice crystal
