@@ -93,6 +93,9 @@ bool CTEAmmoTurret::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 
@@ -116,8 +119,7 @@ bool CTEAmmoTurret::Init(void)
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
-		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
 	animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
 	//CS: Play the "idle" animation as default
@@ -133,6 +135,8 @@ bool CTEAmmoTurret::Init(void)
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+
+	isAlerted = false;
 
 	return true;
 }
@@ -267,9 +271,19 @@ bool CTEAmmoTurret::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		// Decrease the health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(5);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+
+		// remove 10 health
+		if (!isAlerted)
+		{
+			cInventoryItemPlanet->Remove(10);
+		}
+		// remove 15 health
+		else
+		{
+			cInventoryItemPlanet->Remove(15);
+		}
+		
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
@@ -482,4 +496,14 @@ void CTEAmmoTurret::setActive(bool active)
 bool CTEAmmoTurret::getActive(void)
 {
 	return active;
+}
+
+bool CTEAmmoTurret::getIsAlerted(void)
+{
+	return isAlerted;
+}
+
+void CTEAmmoTurret::setIsAlerted(bool isAlarmOn)
+{
+	isAlerted = isAlarmOn;
 }

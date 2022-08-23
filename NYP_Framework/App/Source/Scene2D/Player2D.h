@@ -98,6 +98,7 @@ public:
 		BLUE,
 		PURPLE,
 		PINK,
+		SKYBLUE,
 		NUM_COLOURS
 	};
 
@@ -125,6 +126,8 @@ public:
 	int getModeOfPlayer();
 	void setModeOfPlayer(int a);
 	MODE MODE;
+
+	glm::vec2 getCPIndex(void);
 
 protected:
 	glm::vec2 vec2OldIndex;

@@ -241,6 +241,7 @@ void CAmmo2D::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
+	// Jungle Planet
 	case CMap2D::TILE_INDEX::BURNABLE_BUSH: //burnable bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::BURNING_BUSH); //turn to burning bush
 		hit = true;
@@ -251,6 +252,44 @@ void CAmmo2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); //turn to empty space
 		hit = true;
 		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
+		break;
+	case CMap2D::TILE_INDEX::DOWN_BUTTON_1:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DOWN_BUTTON_PRESSED); //deactivate button
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::DOWN_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		break;
+	case CMap2D::TILE_INDEX::RIGHT_BUTTON_1:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::RIGHT_BUTTON_PRESSED); //deactivate button
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RIGHT_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		break;
+
+	// Terrestrial Planet
+	case CMap2D::TILE_INDEX::SWITCH_LEFT:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_RIGHT); // change to left switch
+
+		hit = true;
+
+		// different behaviour for different levels
+		if (cMap2D->GetCurrentLevel() == 0)
+		{
+			if (vec2Index == glm::vec2(28, 21))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 20, 21, 18, 28);
+			}
+		}
+		break;
+	case CMap2D::TILE_INDEX::SWITCH_RIGHT:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_LEFT); // change to right switch
+
+		hit = true;
+
+		// different behaviour for different levels
+		if (cMap2D->GetCurrentLevel() == 0)
+		{
+			if (vec2Index == glm::vec2(28, 21))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 20, 21, 18, 28);
+			}
+		}
 		break;
 	default:
 		break;

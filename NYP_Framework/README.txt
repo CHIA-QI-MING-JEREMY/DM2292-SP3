@@ -22,6 +22,12 @@ Interactables
 40 : spot to set moving leaves
 41 : transitional block used to switch moving leaf blocks
 50 : temporary "poof" teleportation effect left behind
+51 : down button pressed
+52 : up button pressed
+53 : right button pressed
+54 : left button pressed
+60 : down button 1
+61 : right button 1
 100 : first Vigilant Teleporter of the map's first waypoint
 101 : first Vigilant Teleporter of the map's second waypoint
 102 : first Vigilant Teleporter of the map's third waypoint
@@ -31,10 +37,11 @@ Interactables
 199 : ironwood
 
 [Terrestrial Planet]
-201 : yellow tile hollow
-202 : red tile hollow
-203 : green tile hollow
-204 : blue tile hollow
+201 : yellow tile (hollow)
+202 : red tile (hollow)
+203 : green tile (hollow)
+204 : blue tile (hollow)
+205 : brown tile (hollow)
 210 : rope post (coiled)
 211 : rope post (uncoiled left)
 212 : rope corner (left)
@@ -56,7 +63,10 @@ Interactables
 251 : alarm light (off)
 252 : alarm light (on)
 260 : antidote pill
+270 : switch (left)
+271 : switch (right)
 299 : exit door
+300-398 : waypoints
 399 : energy quartz
 
 [Snow Planet]
@@ -65,7 +75,11 @@ Interactables
 402: power-up shield
 403: power-up berserk
 404: power-up freeze water shard
-598: water
+405: ice rope top
+406: ice rope mid
+407: ice rope bot
+595: water top
+596: water
 599 : ice crystal
 
 
@@ -78,13 +92,21 @@ Solid Blocks
 611 : grass ground top left rounded corner
 612 : grass ground top right rounded corner
 620 : moving leaves
+621 : leaves
+622 : ironwood tree trunk
+630 : stone ground
+631 : stone ground grassy
+632 : stone ground mossy
+640 : stone blocks that down button 1 will make disappear
+641 : stone blocks that right button 1 will make disappear
 
 [Terrestrial Planet]
-800 : ground tile solid
-801 : yellow tile solid
-802 : red tile solid
-803 : green tile solid
-804 : blue tile solid
+800 : ground tile (solid)
+801 : yellow tile (solid)
+802 : red tile (solid)
+803 : green tile (solid)
+804 : blue tile (solid)
+805 : brown tile (solid)
 
 [Snow Planet]
 1000: regular ground with snow (top snow)

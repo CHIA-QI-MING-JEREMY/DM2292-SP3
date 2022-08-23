@@ -134,10 +134,10 @@ protected:
 	glm::mat4 transform;
 
 	// Add your variables and methods here.
-	vector<glm::vec2> alarmBoxVector;
-	bool isAlarmActive;
-	double maxAlarmTimer;
-	double alarmTimer;
+	//vector<glm::vec2> alarmBoxVector;
+	//bool isAlarmActive;
+	//double maxAlarmTimer;
+	//double alarmTimer;
 
 	enum LEVELS
 	{
@@ -151,7 +151,7 @@ protected:
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
 	bool isZoomedIn = false;
-
+	void PlayerInteractWithMap(void);
 	// Constructor
 	SnowPlanet(void);
 	// Destructor
@@ -159,5 +159,9 @@ protected:
 private:
 	float turnBerserkTimer;
 	float turnBerserkOffTimer;
+	float tempDropTimer;
+	float tempTimer;
+	float healthDropTimer;
+	float healthTimer;
 };
 

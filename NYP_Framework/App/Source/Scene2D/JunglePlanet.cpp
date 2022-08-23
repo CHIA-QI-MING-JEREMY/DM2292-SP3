@@ -440,16 +440,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	// as we want to capture the updates before Map2D update
 	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
-		//// informs all enemies that the alarm has been activated
-		//if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer > 0.0)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
-		//}
-		//else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer == maxAlarmTimer)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
-		//}
-
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 
 		//for patrol team, aka community based enemies
@@ -518,31 +508,45 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
-			//if this isn't the last enemy in this level
-			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
+			//in the tutorial level, all enemies are guaranteed to drop resources
+			if (cMap2D->GetCurrentLevel() == TUTORIAL)
 			{
-				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
-				srand(static_cast<unsigned> (time(0)));
-				int resourceType = rand() % 20;
-				std::cout << resourceType << std::endl;
-				if (resourceType < 4) //0 1 2 3
+				//if this isn't the last enemy in this level
+				if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
 				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
-					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-					//set resource's position where enemy's position is
-					res->SetShader("Shader2D_Colour"); //set shader
-					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					//40% chance to drop scrap metal, 40% chance to drop battery, 20% chance to drop ironwood
+					srand(static_cast<unsigned> (time(0)));
+					int resourceType = rand() % 10;
+					std::cout << resourceType << std::endl;
+					if (resourceType < 4) //0 1 2 3
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType < 8) //4 5 6 7
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else //8 9 
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
 				}
-				else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+				//if this is the last enemy
+				else if (enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
 				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
-					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-					//set resource's position where enemy's position is
-					res->SetShader("Shader2D_Colour"); //set shader
-					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
-				}
-				else if (resourceType > 16 && resourceType < 19) //17 18
-				{
+					//confirm drop an ironwood
 					CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
 					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 					//set resource's position where enemy's position is
@@ -550,16 +554,52 @@ bool JunglePlanet::Update(const double dElapsedTime)
 					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
 				}
 			}
-			//if this is the last enemy
-			else if(enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
+			else
 			{
-				//confirm drop an ironwood
-				CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
-				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+				//if this isn't the last enemy in this level
+				if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
+				{
+					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
+					srand(static_cast<unsigned> (time(0)));
+					int resourceType = rand() % 20;
+					std::cout << resourceType << std::endl;
+					if (resourceType < 4) //0 1 2 3
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType > 16 && resourceType < 19) //17 18
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+				}
+				//if this is the last enemy
+				else if (enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
+				{
+					//confirm drop an ironwood
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::IRONWOOD); //create new ironwood resource
+					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 					//set resource's position where enemy's position is
-				res->SetShader("Shader2D_Colour"); //set shader
-				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					res->SetShader("Shader2D_Colour"); //set shader
+					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				}
 			}
+			
 
 			//if enemy has teleportation residue, call its update to delete the residue before deleting it
 			if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::TELEPORTABLE)
@@ -596,7 +636,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM)
 	{
 		//if the player tries to use the river water
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
 			//if the player has river water
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
@@ -641,6 +681,16 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		swayingLeavesCooldown = swayingLeavesMaxCooldown; //reset cooldown
 	}
 
+	// resets player location at last visited checkpoint
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+	{
+		cPlayer2D->vec2Index = cPlayer2D->getCPIndex();
+		cPlayer2D->vec2NumMicroSteps.x = 0;
+
+		// reduce the lives by 1
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		cInventoryItemPlanet->Remove(1);
+	}
 
 	//if player has burnable blocks to put down, put down in the direction the player is facing
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
@@ -963,7 +1013,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 
 		//can pick up river water
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
 			//if river water inventory not full yet
@@ -976,7 +1026,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		break;
 	case CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM: 
 		//can make bouncy bloom bloom if using river water on it while standing on it
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
 			//if player has river water
@@ -990,7 +1040,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		break;
 	case CMap2D::TILE_INDEX::ROCK:
 		//if player wants to tie a vine to the rock
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
 			//if player has a vine

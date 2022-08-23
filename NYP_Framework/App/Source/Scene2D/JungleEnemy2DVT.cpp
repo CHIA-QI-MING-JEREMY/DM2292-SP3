@@ -164,12 +164,25 @@ bool JEnemy2DVT::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	//if it's the enemy at this position
-	if (vec2Index == glm::vec2(4, 4))
+	//for tutorial lvl
+	if (cMap2D->GetCurrentLevel() == 0)
 	{
-		waypoints = ConstructWaypointVector(waypoints, 100, 4);
+		//if it's the enemy at this position
+		if (vec2Index == glm::vec2(30, 8))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 100, 2);
+		}
 	}
-
+	//for lvl 1
+	if (cMap2D->GetCurrentLevel() == 1)
+	{
+		//if it's the enemy at this position
+		if (vec2Index == glm::vec2(4, 4))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 100, 4);
+		}
+	}
+	
 	// sets waypoint counter value
 	currentWaypointCounter = 0;
 	maxWaypointCounter = waypoints.size();
@@ -812,6 +825,8 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			}
 		}
 	}
+
+	UpdateDirection();
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);

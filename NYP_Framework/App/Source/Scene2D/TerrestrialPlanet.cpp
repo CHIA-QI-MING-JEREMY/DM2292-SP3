@@ -242,7 +242,7 @@ bool TerrestrialPlanet::Init(void)
 
 	}
 
-	cMap2D->SetCurrentLevel(2); //reset level
+	cMap2D->SetCurrentLevel(0); //reset level
 
 	cPlayer2D->ResetRespawn();
 
@@ -316,6 +316,9 @@ bool TerrestrialPlanet::Init(void)
 	isRedObtained = false;
 	isGreenObtained = false;
 	isBlueObtained = false;
+
+	maxColourSwitchTimer = 1.0;
+	colourSwitchTimer = 0.0;
 
 	isWhite = true;
 	maxToxicityLevelDuration = 2.0;
@@ -484,13 +487,24 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		isBlueObtained = true;
 	}
 
-	// allows player to change the colour of the character
+	// allows player to change the colour of the character (only after 1s cooldown between switches)
 	// coloured tiles will be replaced accordingly
 	// coloured orb count decreases
+	cout << colourSwitchTimer << endl;
+	
+	if (colourSwitchTimer > 0.0)
+	{
+		colourSwitchTimer -= dElapsedTime;
+	}
+	else
+	{
+		colourSwitchTimer = 0.0;
+	}
+
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_1))
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
-		if (cInventoryItemPlanet->GetCount() == 1)
+		if (cInventoryItemPlanet->GetCount() == 1 && colourSwitchTimer == 0.0)
 		{
 			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_SOLID, CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW); // allow player to walk through yellow tiles
 			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_HOLLOW, CMap2D::TILE_INDEX::RED_TILE_SOLID); // dont allow player to walk through red tiles
@@ -502,10 +516,12 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from yellow orb counter
 
+			colourSwitchTimer = maxColourSwitchTimer;
+
 			isWhite = false;
 		}
 	}
-	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_2))
+	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_2) && colourSwitchTimer == 0.0)
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
@@ -520,10 +536,12 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from red orb counter
 
+			colourSwitchTimer = maxColourSwitchTimer;
+
 			isWhite = false;
 		}
 	}
-	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_3))
+	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_3) && colourSwitchTimer == 0.0)
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
@@ -538,10 +556,12 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from green orb counter
 
+			colourSwitchTimer = maxColourSwitchTimer;
+
 			isWhite = false;
 		}
 	}
-	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_4))
+	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_4) && colourSwitchTimer == 0.0)
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
 		if (cInventoryItemPlanet->GetCount() == 1)
@@ -556,10 +576,12 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
 			cInventoryItemPlanet->Remove(1); // subtract 1 from blue orb counter
 
+			colourSwitchTimer = maxColourSwitchTimer;
+
 			isWhite = false;
 		}
 	}
-	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_5))
+	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_5) && colourSwitchTimer == 0.0)
 	{
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::YELLOW_TILE_HOLLOW, CMap2D::TILE_INDEX::YELLOW_TILE_SOLID); // dont allow player to walk through yellow tiles
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_TILE_HOLLOW, CMap2D::TILE_INDEX::RED_TILE_SOLID); // dont allow player to walk through red tiles
@@ -567,6 +589,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BLUE_TILE_HOLLOW, CMap2D::TILE_INDEX::BLUE_TILE_SOLID); // dont allow player to walk through blue tiles
 
 		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE); // change player colour to white
+
+		colourSwitchTimer = maxColourSwitchTimer;
 
 		isWhite = true;
 	}
@@ -651,6 +675,17 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet->Remove(1);
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
 		cInventoryItemPlanet->Remove(20);
+	}
+
+	// resets player location at last visited checkpoint
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+	{
+		cPlayer2D->vec2Index = cPlayer2D->getCPIndex();
+		cPlayer2D->vec2NumMicroSteps.x = 0;
+
+		// reduce the lives by 1
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		cInventoryItemPlanet->Remove(1);
 	}
 
 	// Call the cPlayer2D's update method before Map2D
@@ -951,7 +986,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2A); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

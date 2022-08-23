@@ -13,6 +13,7 @@ using namespace std;
 
 #include "System\filesystem.h"
 
+
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
@@ -102,6 +103,10 @@ SnowPlanet::~SnowPlanet(void)
 */
 bool SnowPlanet::Init(void)
 {
+	healthDropTimer = 3.f;
+	healthTimer = 0.f;
+	tempTimer = 0.f;
+	tempDropTimer = 5.0f;
 	turnBerserkOffTimer = 5.f;
 	turnBerserkTimer = 0.f;
 	// Include Shader Manager
@@ -289,9 +294,9 @@ bool SnowPlanet::Init(void)
 	cSoundController->PlaySoundByID(5); // plays BGM on repeat
 
 	// variables
-	isAlarmActive = false;
-	maxAlarmTimer = 10.0;
-	alarmTimer = 0.0;
+	//isAlarmActive = false;
+	//maxAlarmTimer = 10.0;
+	//alarmTimer = 0.0;
 
 	return true;
 }
@@ -316,25 +321,38 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	//		cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
 	//	}
 	//}
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
+	if (cInventoryItemPlanet->GetCount() > 0 && cKeyboardController->IsKeyReleased(GLFW_KEY_F)) {
+		cInventoryItemPlanet->Remove(1);
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER, CMap2D::TILE_INDEX::ICE);
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER_TOP, CMap2D::TILE_INDEX::ICE);
+	}
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
-		if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount()>0) {
+			cInventoryItemPlanet->Remove(1);
 			cout << "Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::SHIELD);
 		}
-		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK) {
+		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount() > 0) {
+			cInventoryItemPlanet->Remove(1);
 			cout << "Berserk Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERKSHIELD);
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
 		}
 	}
 	if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
 		if (cKeyboardController->IsKeyReleased(GLFW_KEY_G)) {
-			cout << "Turning to Berserk Mode" << endl;
-			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
-			cInventoryItemPlanet->Add(15);
-			if (cInventoryItemPlanet->GetCount() > cInventoryItemPlanet->GetMaxCount()) {
-				cInventoryItemPlanet->setCount(cInventoryItemPlanet->GetMaxCount());
+			if (cInventoryItemPlanet->GetCount() > 0) {
+				cInventoryItemPlanet->Remove(1);
+				cout << "Turning to Berserk Mode" << endl;
+				cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+				cInventoryItemPlanet->Add(15);
+				if (cInventoryItemPlanet->GetCount() > cInventoryItemPlanet->GetMaxCount()) {
+					cInventoryItemPlanet->setCount(cInventoryItemPlanet->GetMaxCount());
+				}
 			}
 		}
 	}
@@ -350,6 +368,31 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::NORMAL) {
 		turnBerserkOffTimer = 5.0f;
 		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+	}
+	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
+	if (tempDropTimer >= tempTimer && cInventoryItemPlanet->GetCount() > 0) {
+		tempDropTimer -= dElapsedTime;
+	}
+	if (tempDropTimer < tempTimer && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+		if (cInventoryItemPlanet->GetCount() > 0) {
+			cInventoryItemPlanet->Remove(3);
+		}
+		else if (cInventoryItemPlanet->GetCount() <= 0) {
+			cInventoryItemPlanet->setCount(0);
+		}
+		tempDropTimer = 5.0f;
+	}
+	if (cInventoryItemPlanet->GetCount() <= 0) {
+		healthDropTimer -= dElapsedTime;
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::SKYBLUE);
+	}
+	else if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+		cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
+	}
+	if (healthDropTimer < healthTimer && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(5);
+		healthDropTimer = 3.f;
 	}
 	// mouse Position demo
 	// zoom demo
@@ -447,8 +490,14 @@ bool SnowPlanet::Update(const double dElapsedTime)
 					//if it does, minus away the enemy's health & destory the ammo
 				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
 				{
-					enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
-					ammo->setActive(false);
+					if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
+						ammo->setActive(false);
+					}
+					else if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK || cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERKSHIELD) {
+						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 10); //every hit takes off 10 HP
+						ammo->setActive(false);
+					}
 				}
 			}
 		}
@@ -519,6 +568,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		}
 	}
 
+	PlayerInteractWithMap();
 	// Call the Map2D's update method
 	cMap2D->Update(dElapsedTime);
 
@@ -689,6 +739,20 @@ void SnowPlanet::Render(void)
  */
 void SnowPlanet::PostRender(void)
 {
+}
+
+void SnowPlanet::PlayerInteractWithMap(void)
+{
+	switch (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x))
+	{
+	case CMap2D::TILE_INDEX::WATER_TOP:
+	case CMap2D::TILE_INDEX::WATER:
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(1);
+		break;
+	default:
+		break;
+	}
 }
 
 //to decide which map, aka which level to render

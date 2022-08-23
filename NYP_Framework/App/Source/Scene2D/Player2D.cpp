@@ -119,6 +119,8 @@ bool CPlayer2D::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
+	vec2CPIndex = vec2Index; //set first respawn point to original spawn point
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	
@@ -237,7 +239,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//SnowPlanet
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Temperature", "Image/SnowPlanet/temp.tga", 50, 50);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Temperature", "Image/SnowPlanet/temp.tga", 30, 30);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("berserk", "Image/SnowPlanet/berserkpowerup.tga",10,0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
@@ -245,13 +247,15 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("shield", "Image/SnowPlanet/shieldpowerup.tga", 10, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("fur", "Image/SnowPlanet/fur.tga", 100, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("furcoat", "Image/SnowPlanet/furcoat.tga", 100, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
 	// variables
 	onRope = false;
-
-	vec2CPIndex = vec2Index;
 
 	isAttacking = false;
 	attackDirection = RIGHT;
@@ -529,18 +533,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 	//	UpdateKnockback(dElapsedTime);
 	//}
 
-
-	// resets player location at last visited checkpoint
-	//if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
-	//{
-	//	vec2Index = vec2CPIndex;
-	//	vec2NumMicroSteps.x = 0;
-
-	//	// reduce the lives by 1
-	//	cInventoryItem = cInventoryManager->GetItem("Lives");
-	//	cInventoryItem->Remove(1);
-	//}
-
 	// create ammo
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_E))
 	{
@@ -562,6 +554,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			}
 		}
 	}
+
 	if (shootingDirection == LEFT) {
 		if (modeOfPlayer == SHIELD) {
 			animatedSprites->PlayAnimation("idleshieldL", -1, 1.0f);
@@ -805,36 +798,36 @@ void CPlayer2D::InteractWithMap(void)
 		vec2CPIndex = vec2Index;
 
 		// restores player health
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		break;
 	case CMap2D::TILE_INDEX::RED_FLAG:
 		// sets CPIndex to checkpoint player just visited
 		vec2CPIndex = vec2Index;
 
 		// restores player health
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->iItemCount = cInventoryItem->GetMaxCount();
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_UP:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_LEFT:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_DOWN:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_RIGHT:
-		// decrease health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(1);
+		// decrease health by 3
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(3);
 		break;
 	case CMap2D::TILE_INDEX::EXIT_DOOR:
 		// Game has been completed
@@ -1249,6 +1242,9 @@ void CPlayer2D::SetColour(COLOUR colour)
 	case PINK:
 		runtimeColour = glm::vec4(1.0, 0.5, 0.5, 1.0); // PINK
 		break;
+	case SKYBLUE:
+		runtimeColour = glm::vec4(0.53f, 0.81f, 0.92f, 1.0f); // SKYBLUE
+		break;
 	default:
 		cout << "Unknown Colour." << endl;
 		break;
@@ -1268,6 +1264,11 @@ int CPlayer2D::getModeOfPlayer()
 void CPlayer2D::setModeOfPlayer(int a)
 {
 	modeOfPlayer = a;
+}
+
+glm::vec2 CPlayer2D::getCPIndex(void)
+{
+	return vec2CPIndex;
 }
 
 bool CPlayer2D::getPlayerAttackStatus()

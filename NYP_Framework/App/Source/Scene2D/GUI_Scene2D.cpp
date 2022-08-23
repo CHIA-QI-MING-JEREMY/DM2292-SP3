@@ -220,6 +220,22 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 
 	if (planetNum == 2 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
 	{
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("textPopup", NULL, textPopupFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.5f,
+			cSettings->iWindowHeight * 0.5f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "Hello");
+		ImGui::End();
+		ImGui::PopStyleColor();
+
 		// Render the Toxicity Level
 		ImGuiWindowFlags toxicityWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoBackground |
@@ -355,8 +371,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SameLine();
 	ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.53f, 0.81f, 0.92f, 1.0f));
 	ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-	ImGui::ProgressBar(cInventoryItemPlanet->GetCount(), ImVec2(100.0f *
-		relativeScale_x, 20.0f * relativeScale_y), "50C");
+	ImGui::ProgressBar(cInventoryItemPlanet->GetCount()/
+			(float)cInventoryItemPlanet->GetMaxCount(), ImVec2(100.0f *
+		relativeScale_x, 20.0f * relativeScale_y)," ");
 	ImGui::PopStyleColor();
 	ImGui::PopStyleColor();
 	ImGui::End();

@@ -180,6 +180,10 @@ protected:
 	// Checks if player is trapped in coloured tiles
 	bool isColourTrapped(glm::vec4 playerColour);
 
+	// Checks how long ago player last switched colour
+	double maxColourSwitchTimer;
+	double colourSwitchTimer;
+
 	// Checks if player is white
 	bool isWhite;
 
