@@ -760,7 +760,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(RED_FLAG, iTextureID));
 	}
 	
-	// TO DOL FIND NEW SPIKES
+	// TO DO: FIND NEW SPIKES
 	// Load spikes up
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
 	if (iTextureID == 0)

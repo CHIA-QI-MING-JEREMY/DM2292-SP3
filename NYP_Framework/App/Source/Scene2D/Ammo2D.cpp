@@ -264,13 +264,16 @@ void CAmmo2D::InteractWithMap(void)
 
 	// Terrestrial Planet
 	case CMap2D::TILE_INDEX::SWITCH_LEFT:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_RIGHT); // change to left switch
+		// change to left switch
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_RIGHT);
 
+		// destroys the bullet
 		hit = true;
 
 		// different behaviour for different levels
 		if (cMap2D->GetCurrentLevel() == 0)
 		{
+			// different tiles replaced for different switches
 			if (vec2Index == glm::vec2(28, 21))
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 20, 21, 18, 28);
@@ -278,13 +281,16 @@ void CAmmo2D::InteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::SWITCH_RIGHT:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_LEFT); // change to right switch
+		// change to right switch
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_LEFT);
 
+		// destroys the bullet
 		hit = true;
 
 		// different behaviour for different levels
 		if (cMap2D->GetCurrentLevel() == 0)
 		{
+			// different tiles replaced for different switches
 			if (vec2Index == glm::vec2(28, 21))
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 20, 21, 18, 28);
