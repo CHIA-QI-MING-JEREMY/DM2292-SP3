@@ -118,6 +118,7 @@ protected:
 		PATROL=1,
 		ATTACK = 2,
 		FEAR=3,
+		STUPID = 4,
 		NUM_FSM
 	};
 
@@ -125,6 +126,7 @@ protected:
 	vector<glm::vec2>pathway;
 	int currentPathwayCounter;
 	int maxPathwayCounter;
+	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
 
 	glm::vec2 fearpathway;
 

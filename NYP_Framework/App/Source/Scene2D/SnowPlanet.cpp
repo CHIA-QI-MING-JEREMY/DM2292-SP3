@@ -512,7 +512,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
 						ammo->setActive(false);
 					}
-					else if (cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK || cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERKSHIELD) {
+					else {
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 10); //every hit takes off 10 HP
 						ammo->setActive(false);
 					}
@@ -526,29 +526,38 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			//if this isn't the last enemy in this level
 			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
 			{
-				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ice crystal
-				srand(static_cast<unsigned> (time(0)));
-				int resourceType = rand() % 20;
-				std::cout << resourceType << std::endl;
-				if (resourceType < 4) //0 1 2 3
-				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
-					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-					//set resource's position where enemy's position is
-					res->SetShader("Shader2D_Colour"); //set shader
-					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() != CEnemy2D::ENEMYTYPE::BROWN) {
+					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ice crystal
+					srand(static_cast<unsigned> (time(0)));
+					int resourceType = rand() % 20;
+					std::cout << resourceType << std::endl;
+					if (resourceType < 4) //0 1 2 3
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType > 16 && resourceType < 19) //17 18
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::ICE_CRYSTAL); //create new ironwood resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
 				}
-				else if (resourceType > 7 && resourceType < 12) //8 9 10 11
-				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
-					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-					//set resource's position where enemy's position is
-					res->SetShader("Shader2D_Colour"); //set shader
-					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
-				}
-				else if (resourceType > 16 && resourceType < 19) //17 18
-				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::ICE_CRYSTAL); //create new ironwood resource
+				else {
+					CResource* res = new CResource(CResource::RESOURCE_TYPE::FUR); //create new fur resource
 					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 					//set resource's position where enemy's position is
 					res->SetShader("Shader2D_Colour"); //set shader
@@ -617,20 +626,20 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		}
 	}
 
-	// Player Attacks (TO DO)
-	if (cPlayer2D->getPlayerAttackStatus())
-	{
-		for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-		{
-			if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
-			{
-				int remainingHealth = enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25;
-				cout << remainingHealth << endl;
-				enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(remainingHealth);
-			}
-		}
-		cPlayer2D->setPlayerAttackStatus(false);
-	}
+	//// Player Attacks (TO DO)
+	//if (cPlayer2D->getPlayerAttackStatus())
+	//{
+	//	for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
+	//	{
+	//		if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
+	//		{
+	//			int remainingHealth = enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25;
+	//			cout << remainingHealth << endl;
+	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(remainingHealth);
+	//		}
+	//	}
+	//	cPlayer2D->setPlayerAttackStatus(false);
+	//}
 
 	// Call the cGUI_Scene2D's update method
 	cGUI_Scene2D->Update(dElapsedTime);

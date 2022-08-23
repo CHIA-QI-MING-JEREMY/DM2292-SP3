@@ -105,6 +105,7 @@ public:
 		DEFENCE,
 		COMMUNITY,
 		SPECIAL,
+		BROWN,
 	};
 
 	// enemy type

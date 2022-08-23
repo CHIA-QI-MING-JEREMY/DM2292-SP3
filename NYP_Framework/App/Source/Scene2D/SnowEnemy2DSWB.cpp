@@ -168,7 +168,7 @@ bool SnowEnemy2DSWB::Init(void)
 	//	ammoList.push_back(cEnemyAmmo2D);
 	//}
 
-//	type = LONG_RANGE; //has ammo
+	type = BROWN;
 //	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 25; //takes 5 hits to kill
 
@@ -182,6 +182,31 @@ bool SnowEnemy2DSWB::Init(void)
 	//	pathway.push_back(glm::vec2(14, 5));
 	//	fearpathway = (glm::vec2(20, 1));
 	//}
+
+		// sets waypoints based on the level
+	//TUTORIAL
+	if (cMap2D->GetCurrentLevel() == 0)
+	{
+		// sets waypoints based on the enemy spawn location
+		if (vec2Index == glm::vec2(5, 15))
+		{
+			pathway.push_back(glm::vec2(5, 15));
+			pathway = ConstructWaypointVector(pathway, 400, 1);
+			fearpathway = glm::vec2(8,15);
+		}
+		else if (vec2Index == glm::vec2(17, 15))
+		{
+			pathway.push_back(glm::vec2(17, 15));
+			pathway = ConstructWaypointVector(pathway, 401, 1);
+			fearpathway = glm::vec2(20, 11);
+		}
+		else if (vec2Index == glm::vec2(17, 6))
+		{
+			pathway.push_back(glm::vec2(17, 6));
+			pathway = ConstructWaypointVector(pathway, 402, 1);
+			fearpathway = glm::vec2(20, 1);
+		}
+	}
 	currentPathwayCounter = 0;
 	maxPathwayCounter = pathway.size();
 
@@ -207,16 +232,24 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case IDLE:
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0){
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		}
 		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
 			cout << "Switching to Patrol State" << endl;
+			break;
 		}
 		if (health < 10) {
 			sCurrentFSM = FEAR;
 			iFSMCounter = 0;
 			cout << "Switching to Fear State" << endl;
+			break;
 		}
 		iFSMCounter++;
 		break;
@@ -224,7 +257,7 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0) {
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
-		else {
+		else if (vec2Direction.x < 0) {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -232,23 +265,20 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 			cout << "Switching to Attack State" << endl;
+			break;
 		}
 		if (iFSMCounter > iMaxFSMCounter)
 		{
 			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
-			if (vec2Direction.x > 0) {
-				animatedSprites->PlayAnimation("idleR", -1, 1.0f);
-			}
-			else {
-				animatedSprites->PlayAnimation("idleL", -1, 1.0f);
-			}
 			cout << "Switching to Idle State" << endl;
+			break;
 		}
 		if (health < 10) {
 			sCurrentFSM = FEAR;
 			iFSMCounter = 0;
 			cout << "Switching to Fear State" << endl;
+			break;
 		}
 		else {
 			if (vec2Index == pathway[currentPathwayCounter]) {
@@ -293,7 +323,7 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0) {
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
-		else {
+		else if (vec2Direction.x < 0) {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -331,6 +361,7 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 				sCurrentFSM = PATROL;
 				iFSMCounter = 0;
 				cout << "Switching to Patrol State" << endl;
+				break;
 			}
 			iFSMCounter++;
 		}
@@ -338,13 +369,15 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 			sCurrentFSM = FEAR;
 			iFSMCounter = 0;
 			cout << "Switching to Fear State" << endl;
+			break;
 		}
 		break;
 	case FEAR:
+
 		if (vec2Direction.x > 0) {
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
-		else {
+		else if (vec2Direction.x < 0) {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (health < 10) {
@@ -374,7 +407,18 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 			}
 			UpdatePosition();
 		}
+
+		if (vec2Index == fearpathway)
+		{
+			sCurrentFSM = STUPID;
+			iFSMCounter = 0;
+			break;
+		}
+
 		iFSMCounter++;
+		break;
+	case STUPID:
+		cout << health << endl;
 		break;
 	default:
 		break;
@@ -531,6 +575,8 @@ void SnowEnemy2DSWB::SetPlayer2D(CPlayer2D* cPlayer2D)
 	// Update the enemy's direction
 	UpdateDirection();
 }
+
+
 
 /**
  @brief Constraint the enemy2D's position within a boundary
@@ -1032,3 +1078,14 @@ void SnowEnemy2DSWB::UpdatePosition(void)
 //	return ammoList.at(prevSize);
 //
 //}
+vector<glm::vec2> SnowEnemy2DSWB::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
+{
+	for (int i = 0; i < numOfWaypoints; ++i)
+	{
+		waypointVector.push_back(cMap2D->GetTilePosition(startIndex + i));
+		// Erase the value of the waypoint in the arrMapInfo
+		cMap2D->SetMapInfo(waypointVector[i].y, waypointVector[i].x, 0);
+		cout << waypointVector.size() << endl;
+	}
+	return waypointVector;
+}

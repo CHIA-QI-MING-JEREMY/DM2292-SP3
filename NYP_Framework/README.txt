@@ -71,7 +71,8 @@ Interactables
 399 : energy quartz
 
 [Snow Planet]
-400-499:waypoints
+400-488:waypoints
+489-499: sign (tutorial)
 500: fur
 501: fur coat
 502: power-up shield
@@ -80,7 +81,6 @@ Interactables
 505: ice rope top
 506: ice rope mid
 507: ice rope bot
-510-530: sign (tutorial)
 595: water top
 596: water
 599 : ice crystal
