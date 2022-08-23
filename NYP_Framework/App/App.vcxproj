@@ -56,6 +56,8 @@
     <ClInclude Include="Source\ShipCombat\InventoryItemShip.h" />
     <ClInclude Include="Source\ShipCombat\InventoryManagerShip.h" />
     <ClInclude Include="Source\ShipCombat\SceneCombat.h" />
+    <ClInclude Include="Source\ShipCombat\Ship.h" />
+    <ClInclude Include="Source\ShipCombat\ShipEnemy.h" />
     <ClInclude Include="Source\ShipCombat\ShipPlayer.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />
@@ -105,6 +107,8 @@
     <ClCompile Include="Source\ShipCombat\InventoryItemShip.cpp" />
     <ClCompile Include="Source\ShipCombat\InventoryManagerShip.cpp" />
     <ClCompile Include="Source\ShipCombat\SceneCombat.cpp" />
+    <ClCompile Include="Source\ShipCombat\Ship.cpp" />
+    <ClCompile Include="Source\ShipCombat\ShipEnemy.cpp" />
     <ClCompile Include="Source\ShipCombat\ShipPlayer.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />

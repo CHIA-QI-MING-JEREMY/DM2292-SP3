@@ -93,6 +93,7 @@ bool CGUI_SceneCombat::Init(void)
 	// Decoration
 	PlayerBarTextureID = il->LoadTextureGetID("Image/GUI/PlayerBar.png", false);
 	BitTextureID = il->LoadTextureGetID("Image/GUI/ProgressBit.png", false);
+	ProgressBarTextureID = il->LoadTextureGetID("Image/GUI/ShipProgressBar.png", false);
 
 	// Show the mouse pointer
 	glfwSetInputMode(CSettings::GetInstance()->pWindow, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -187,6 +188,30 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 
 		ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(10, 14));
+		ImGui::SameLine();
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+	}
+
+	ImGui::Begin("Damage", NULL, healthWindowFlags);
+	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.7f * relativeScale_x),
+		cSettings->iWindowHeight * (0.01f * relativeScale_y)));
+	ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+	ImGui::Text("Damage");
+	ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205, 25));
+	ImGui::End();
+
+	// how. do i. get rid. of the border.
+	cInventoryItem = cInventoryManager->GetItem("Damage");
+	int damCount = cInventoryItem->GetCount();
+	for (int i = 0; i < int(damCount / floor(cInventoryItem->GetMaxCount() / 15)); i++) {
+		ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.71f,
+			cSettings->iWindowHeight * 0.05f));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+		ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5, 14));
 		ImGui::SameLine();
 		ImGui::GetOverlayDrawList();
 		ImGui::End();

@@ -109,6 +109,7 @@ protected:
 	ButtonData RejectButtonData;
 	unsigned PlayerBarTextureID;
 	unsigned BitTextureID;
+	unsigned ProgressBarTextureID;
 
 	// The handler containing the instance of CInventoryManager
 	CInventoryManager* cInventoryManager;
