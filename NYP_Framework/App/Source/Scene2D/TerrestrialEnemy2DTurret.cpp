@@ -124,10 +124,10 @@ bool TEnemy2DTurret::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_TileFade.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_Tile_Fade.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_TileFade.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_Tile_Fade.png" << endl;
 		return false;
 	}
 
