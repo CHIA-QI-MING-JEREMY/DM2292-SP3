@@ -99,7 +99,8 @@ bool CGUI_Scene2D::Init(void)
 	goOnShip = false;
 	showExitPanel = false;
 
-	tutorialPopupJungle = NONE;
+	//tutorialPopupJungle = NONE;
+	tutorialPopupJungle = 1;
 
 	return true;
 }
@@ -329,6 +330,34 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
 		ImGui::End();
 		ImGui::PopStyleColor();
+
+		//tutorial popups
+		if (tutorialPopupJungle > 0) //there is a pop up
+		{
+			//popup window
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+			ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+			ImGui::Begin("textPopup", NULL, textPopupFlags);
+			ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+				cSettings->iWindowHeight * 0.5f));
+			ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
+
+			//information
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
+			ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoints to set \nrespawn points");
+			ImGui::NewLine();
+			ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press ");
+			ImGui::End();
+			ImGui::PopStyleColor();
+		}
 	}
 	else if (planetNum == 2 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
 	{
