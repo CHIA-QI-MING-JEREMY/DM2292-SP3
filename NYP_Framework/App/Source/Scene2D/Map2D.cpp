@@ -747,11 +747,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(ROPE_LENGTH_RIGHT, iTextureID));
 	}
-	// Load black flag
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Flag_Black.tga", true);
+	// Load droopy black flag
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Flag_Black_Droopy.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/Flag_Black.tga" << endl;
+		cout << "Unable to load Image/Flag_Black_Droopy.tga" << endl;
 		return false;
 	}
 	else
@@ -759,11 +759,11 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(BLACK_FLAG, iTextureID));
 	}
-	// Load red flag
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Flag_Red.tga", true);
+	// Load flying red flag
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Flag_Red_Flying.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/Flag_Red.tga" << endl;
+		cout << "Unable to load Image/Flag_Red_Flying.tga" << endl;
 		return false;
 	}
 	else
