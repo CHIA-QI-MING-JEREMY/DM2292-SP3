@@ -356,7 +356,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoints to set respawn\npoint \nTouching checkpoints restores health\nto full");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoint to set respawn\npoint \nTouching checkpoints restores health\nto full \n\nOnly 1 checkpoint can be active at 1\ntime \nActivating a new checkpoint \ndeactivates all others");
 				ImGui::NewLine();
 				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);

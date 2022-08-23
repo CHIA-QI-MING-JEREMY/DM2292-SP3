@@ -103,9 +103,6 @@ protected:
 	// The handler containing the instance of the camera
 	Camera2D* camera2D;
 
-	// A vector containing the instance of CEnemy2Ds
-	//vector<CEntity2D*> enemyVector;
-
 	// Vector containing vectors of the enemies for each map
 	vector<vector<CEnemy2D*>> enemyVectors;
 
@@ -187,6 +184,9 @@ protected:
 
 	double swayingLeavesCooldown; //cooldown to switch leaves with its alt positions
 	const double swayingLeavesMaxCooldown = 1; //flicker every 1 second
+
+	bool triggeredPlaceableBushPopUp; //so placeable bush pop up only gets triggered once before it is overridden
+	bool triggeredVinePopUp; //so placeable bush pop up only gets triggered once before it is overridden
 
 	// Let player interact with the map
 	void PlayerInteractWithMap(void);
