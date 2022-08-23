@@ -347,14 +347,23 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				cSettings->iWindowHeight * 0.5f));
 			ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
 
-			//information
-			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
-			ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoints to set \nrespawn points");
-			ImGui::NewLine();
-			ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press ");
+			//different popup text for different popups
+			switch (tutorialPopupJungle)
+			{
+			case CHECKPOINT:
+				//information
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoints to set \nrespawn points");
+				ImGui::NewLine();
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to give 1 life to respawn \nHealth will be reset to 100%");
+				break;
+			default:
+				break;
+			}
+			
 			ImGui::End();
 			ImGui::PopStyleColor();
 		}
