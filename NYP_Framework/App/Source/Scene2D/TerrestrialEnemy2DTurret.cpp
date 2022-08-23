@@ -103,7 +103,7 @@ bool TEnemy2DTurret::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1801, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1802, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -124,10 +124,10 @@ bool TEnemy2DTurret::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet_Tile_Fade.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet_Tile_Fade.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/TurretSpriteSheet.png" << endl;
 		return false;
 	}
 

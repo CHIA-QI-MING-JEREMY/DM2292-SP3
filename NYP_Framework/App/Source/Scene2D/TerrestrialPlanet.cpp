@@ -213,6 +213,24 @@ bool TerrestrialPlanet::Init(void)
 			}
 		}
 
+		while (true)
+		{
+			TEnemy2DDummy* cTEnemy2DDummy = new TEnemy2DDummy();
+			// Pass shader to cEnemy2D
+			cTEnemy2DDummy->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cTEnemy2DDummy->Init() == true)
+			{
+				cTEnemy2DDummy->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DDummy); //push each turret into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all turrets have been loaded
+				break;
+			}
+		}
+
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
 		/// <summary>
