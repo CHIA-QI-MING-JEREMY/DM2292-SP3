@@ -31,6 +31,7 @@
 #include "Enemy2D.h"
 #include "TerrestrialEnemy2DSentry.h"
 #include "TerrestrialEnemy2DTurret.h"
+#include "TerrestrialEnemy2DDummy.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"
@@ -58,6 +59,7 @@
 #include "EnemyAmmo2D.h"
 #include "TerrestrialEAmmoSentry.h"
 #include "TerrestrialEAmmoTurret.h"
+#include "TerrestrialEAmmoDummy.h"
 
 //include resources
 #include "Resource.h"
