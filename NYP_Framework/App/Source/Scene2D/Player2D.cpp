@@ -208,14 +208,17 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//Jungle Planet
-	// Add a green orb as one of the inventory items
+	// Add a poison level as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/GUI/Poison.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a river water as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/GUI/RiverWater.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a burnable blocks as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/JunglePlanet/BurnableBushBlocks_Bundle.tga", 20, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/JunglePlanet/Vine_Collectable.tga", 3, 0);
+	// Add a vines as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Vine", "Image/GUI/Vine.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	// Terrestrial Planet
