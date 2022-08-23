@@ -762,10 +762,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	
 	// TO DO: FIND NEW SPIKES
 	// Load spikes up
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Spikes_Up.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_SpikesUp.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Spikes_Up.tga" << endl;
 		return false;
 	}
 	else
@@ -774,10 +774,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(SPIKES_UP, iTextureID));
 	}
 	// Load spikes left
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesLeft.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Spikes_Left.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_SpikesLeft.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Spikes_Left.tga" << endl;
 		return false;
 	}
 	else
@@ -786,10 +786,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(SPIKES_LEFT, iTextureID));
 	}
 	// Load spikes down
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesDown.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Spikes_Down.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_SpikesDown.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Spikes_Down.tga" << endl;
 		return false;
 	}
 	else
@@ -798,10 +798,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(SPIKES_DOWN, iTextureID));
 	}
 	// Load spikes right
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesRight.tga", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Spikes_Right.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/Scene2D_SpikesRight.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Spikes_Right.tga" << endl;
 		return false;
 	}
 	else
