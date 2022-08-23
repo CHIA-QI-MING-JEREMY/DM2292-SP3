@@ -410,7 +410,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || 
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT ||
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
-			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT)
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE)
 
 		{
 			// Calculate the new position to the up
@@ -445,7 +448,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_LEFT ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_RIGHT) ||
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT))
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT)||
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE))
 		{
 			if (vec2NumMicroSteps.y != 0 || vec2Index.y - 1 != cMap2D->FindGround(vec2Index.y, vec2Index.x))
 			{
@@ -502,7 +508,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_CORNER_LEFT &&
 		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_LEFT &&
 		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_CORNER_RIGHT &&
-		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_RIGHT)
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_RIGHT &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_TOP_ICE &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE)
 	{
 		onRope = false;
 	}
