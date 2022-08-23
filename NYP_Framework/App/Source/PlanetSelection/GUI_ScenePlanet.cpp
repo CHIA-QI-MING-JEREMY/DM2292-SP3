@@ -24,7 +24,6 @@ CGUI_ScenePlanet::CGUI_ScenePlanet(void)
 	: cSettings(NULL)
 	, window_flags(0)
 	, cPlanet(NULL)
-	, cInventoryManager(NULL)
 	, cInventoryItem(NULL)
 {
 }
@@ -34,12 +33,6 @@ CGUI_ScenePlanet::CGUI_ScenePlanet(void)
  */
 CGUI_ScenePlanet::~CGUI_ScenePlanet(void)
 {
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
-
 	// Cleanup
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
@@ -47,6 +40,8 @@ CGUI_ScenePlanet::~CGUI_ScenePlanet(void)
 
 	// We won't delete this since it was created elsewhere
 	cSettings = NULL;
+
+	cInventoryManager = NULL;
 }
 
 /**

@@ -45,12 +45,9 @@ CShip::CShip(void)
  */
 CShip::~CShip(void)
 {
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
-	
+
+	cInventoryManager = NULL;
+
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
 

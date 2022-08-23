@@ -10,6 +10,7 @@ using namespace std;
 
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 #include "System\filesystem.h"
 
@@ -301,6 +302,9 @@ bool JunglePlanet::Init(void)
 		//poison level 0 means the player has not been poisoned
 	cInventoryItemPlanet->Remove(cInventoryItemPlanet->GetCount()); //set poison level to 0
 
+	// Get the handler for the cInventoryManager
+	cInventoryManager = CGameInfo::GetInstance()->ImportIM();
+
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
 
@@ -358,6 +362,9 @@ bool JunglePlanet::Init(void)
 
 	swayingLeavesCooldown = swayingLeavesMaxCooldown; //cooldown to switch leaves with its alt positions
 
+	triggeredPlaceableBushPopUp = false; //so placeable bush pop up only gets triggered once before it is overridden
+	triggeredVinePopUp = false; //so placeable bush pop up only gets triggered once before it is overridden
+
 	return true;
 }
 
@@ -367,6 +374,14 @@ bool JunglePlanet::Init(void)
 bool JunglePlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(1);
+
+	//if not showing vine or bushes pop up (since those 2 are only set once and meant to disappear only after being overriden
+	if (cGUI_Scene2D->getTutorialPopupJungle() != CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BUSHES &&
+		cGUI_Scene2D->getTutorialPopupJungle() != CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::VINE)
+	{
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::NONE); //remove pop ups by default
+	}
+
 	// mouse Position demo
 	// zoom demo
 	if (!isZoomedIn && cKeyboardController->IsKeyPressed('X')) {
@@ -413,29 +428,72 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	{
 		cMap2D->SetCurrentLevel(1);
 	}
-	
-	//// Checks if alarm is active
-	//if (!isAlarmActive)
-	//{
-	//	unsigned int uiRow = -1;
-	//	unsigned int uiCol = -1;
-	//	if (cMap2D->FindValue(52, uiRow, uiCol))
-	//	{
-	//		isAlarmActive = true;
-	//		alarmTimer = maxAlarmTimer;
-	//	}
-	//}
 
-	//if (alarmTimer <= 0.0)
-	//{
-	//	alarmTimer = maxAlarmTimer;
-	//	isAlarmActive = false;
-	//	cMap2D->ReplaceTiles(52, 51);
-	//}
-	//else
-	//{
-	//	alarmTimer -= dElapsedTime;
-	//}
+	PlayerInteractWithMap(); //called before tutorial lvl pop ups so they can override what is decided in playerinteract with map
+
+	
+
+	//triggeredPlaceableBushPopUp
+
+	//Tutorial lvl pop ups
+	if (cMap2D->GetCurrentLevel() == TUTORIAL)
+	{
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
+		//if player has picked up burnable blocks
+		if (!triggeredPlaceableBushPopUp && cInventoryItemPlanet->GetCount() > 0) //only triggered once then gets overridden
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BUSHES); //trigger bush pop up
+			triggeredPlaceableBushPopUp = true;
+		}
+
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
+		//if player has picked up vines
+		if (!triggeredVinePopUp && cInventoryItemPlanet->GetCount() > 0) //only triggered once then gets overridden
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::VINE); //trigger vines pop up
+			triggeredVinePopUp = true;
+		}
+
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+		//if player poisoned by first poison sprout
+		if (cInventoryItemPlanet->GetCount() > 0 &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 8.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP).y < 2) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::POISON); //trigger poison pop up
+		}
+
+		//if hit the first button (button now pressed) and near the shoot invisible pop up trigger point
+		if (cMap2D->FindAllTiles(CMap2D::TILE_INDEX::DOWN_BUTTON_PRESSED).size() > 0 &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 9.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP).y < 2) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::SWITCHES); //trigger button pop up
+		}
+
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+		//if collected 1 resource and near the shoot invisible pop up trigger point
+		if (cInventoryItemPlanet->GetCount() > 0 &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 6.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP).y < 2) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::RESOURCE); //trigger resource pop up
+		}
+
+		//if hit a bush wth ammo (set the bush on fire) and near the shoot invisible pop up trigger point
+		if (cMap2D->FindAllTiles(CMap2D::TILE_INDEX::BURNING_BUSH).size() > 0 &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 3.f)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BURNABLE); //trigger burnable bush pop up
+		}
+
+		//if player at the first checkpoint
+		if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) == CMap2D::TILE_INDEX::RED_FLAG &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 3.f)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint popup
+		}
+	}
 
 	// Call all of the cEnemy2D's update methods before Map2D
 	// as we want to capture the updates before Map2D update
@@ -627,8 +685,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 			resourceVectors[cMap2D->GetCurrentLevel()].erase(resourceVectors[cMap2D->GetCurrentLevel()].begin() + i);
 		}
 	}
-
-	PlayerInteractWithMap();
 
 	//if player is not in river water, F will be used to use the river water instead of collect it
 		//and instead of using it on an unbloomed bouncy bloom
@@ -992,6 +1048,8 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		cInventoryItemPlanet->Remove(1); //deplete player's health
 		break;
 	case CMap2D::TILE_INDEX::RIVER_WATER:
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::RIVER_WATER); //trigger river water pop up
+
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Add(1); //increase health by 1 for every frame in river water
 
@@ -1026,6 +1084,8 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM: 
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BOUNCY_BLOOM); //trigger bouncy bloom pop up
+
 		//can make bouncy bloom bloom if using river water on it while standing on it
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
@@ -1040,6 +1100,8 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::ROCK:
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::ROCK); //trigger rock pop up
+
 		//if player wants to tie a vine to the rock
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
 		{
@@ -1095,6 +1157,13 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			}
 		}
 		break;
+	case CMap2D::TILE_INDEX::SHOOTING_POPUP:
+		//Tutorial lvl pop up
+		if (cMap2D->GetCurrentLevel() == TUTORIAL)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::SHOOT); //shooting pop up
+		}
+		break;
 	default:
 		break;
 	}
@@ -1107,6 +1176,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	if (tutorial)
 	{
 		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
 	{
@@ -1130,4 +1200,52 @@ void JunglePlanet::DecideLevel(bool tutorial)
 bool JunglePlanet::getIsOnShip(void)
 {
 	return cGUI_Scene2D->getGoOnShip();
+}
+
+void JunglePlanet::SetResourcesBack(void)
+{
+
+	if (cInventoryManagerPlanet->Check("ScrapMetal")) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
+		if (cInventoryManager->Check("ScrapMetal")) {
+			cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
+			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager\n";
+		}
+	}
+	else {
+		std::cout << "Item does not exist in inventory manager planet \n";
+	}
+	
+	if (cInventoryManagerPlanet->Check("Battery")) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
+		if (cInventoryManager->Check("Battery")) {
+			cInventoryItem = cInventoryManager->GetItem("Battery");
+			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager\n";
+		}
+	}
+	else {
+		std::cout << "Item does not exist in inventory manager planet \n";
+	}
+
+	if (cInventoryManagerPlanet->Check("Ironwood")) {
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
+		if (cInventoryManager->Check("Ironwood")) {
+			cInventoryItem = cInventoryManager->GetItem("Ironwood");
+			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager\n";
+		}
+	}
+	else {
+		std::cout << "Item does not exist in inventory manager planet \n";
+	}
+
+	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 }

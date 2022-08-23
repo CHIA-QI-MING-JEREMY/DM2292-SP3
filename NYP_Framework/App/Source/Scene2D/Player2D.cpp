@@ -49,16 +49,13 @@ CPlayer2D::CPlayer2D(void)
  */
 CPlayer2D::~CPlayer2D(void)
 {
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
 	if (cInventoryManagerPlanet)
 	{
 		cInventoryManagerPlanet->Destroy();
 		cInventoryManagerPlanet = NULL;
 	}
+
+	cInventoryManager = NULL;
 
 	// Delete the CAnimationSprites
 	if (animatedSprites)
@@ -169,14 +166,18 @@ bool CPlayer2D::Init(void)
 	SetColour(WHITE);
 
 	// Get the handler to the CInventoryManager instance
-	cInventoryManager = CInventoryManager::GetInstance();
-	// Add a lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryManager = CGameInfo::GetInstance()->ImportIM();
 
-	// Add a health icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	if (cInventoryManager->Check("Lives") == false) {
+		// Add a lives icon as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	if (cInventoryManager->Check("Health") == false) {
+		// Add a health icon as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
 
 	// Get the handler to the CInventoryManager instance
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
@@ -606,6 +607,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	// Update the animated sprite
 	animatedSprites->Update(dElapsedTime);
+
+	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
@@ -1289,6 +1292,18 @@ int CPlayer2D::getPlayerAttackDirection()
 {
 	return attackDirection;
 }
+
+////used in ammo
+//void CPlayer2D::setBushTutorial(bool trigger)
+//{
+//	bushTutorial = trigger;
+//}
+//
+////to render tutorial popup about burnable bush, set in ammo
+//bool CPlayer2D::getBushTutorial(void)
+//{
+//	return bushTutorial;
+//}
 
 //called whenever an ammo is needed ot be shot
 CAmmo2D* CPlayer2D::FetchAmmo()

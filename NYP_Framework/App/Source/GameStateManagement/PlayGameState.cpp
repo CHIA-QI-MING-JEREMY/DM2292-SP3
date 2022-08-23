@@ -187,6 +187,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		if (cJunglePlanet->getIsOnShip()) {
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
+			cJunglePlanet->SetResourcesBack();
 
 			// Load the menu state
 			cout << "Loading ShipCombatState" << endl;

@@ -26,6 +26,7 @@ Interactables
 52 : up button pressed
 53 : right button pressed
 54 : left button pressed
+55 : invisible trigger for shooting pop up
 60 : down button 1
 61 : right button 1
 100 : first Vigilant Teleporter of the map's first waypoint
@@ -135,6 +136,10 @@ Enemies
 1610 : shy chaser
 
 [Terrestrial Planet]
+1800 : Sentry
+1801 : Veteran
+1802 : Turret
+1803 : Dummy
 
 [Snow Planet]
 2000: Snow Wolf Brown

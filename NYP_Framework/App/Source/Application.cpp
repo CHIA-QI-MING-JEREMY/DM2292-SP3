@@ -42,6 +42,7 @@
 #include "GameStateManagement/InventoryState.h"
 #include "GameStateManagement/PlanetSelection.h"
 #include "GameStateManagement/ShipCombat.h"
+#include "GameStateManagement/GameInfo.h"
 
 // Add your include files here
 
@@ -236,6 +237,9 @@ bool Application::Init(void)
 	// Add the shaders to the ShaderManager
 	CShaderManager::GetInstance()->Add("Shader2D", "Shader//Shader2D.vs", "Shader//Shader2D.fs");
 	CShaderManager::GetInstance()->Add("Shader2D_Colour", "Shader//Shader2D_Colour.vs", "Shader//Shader2D_Colour.fs");
+
+	// Set the Game Info class
+	CGameInfo::GetInstance();
 
 	// Initialise the CFPSCounter instance
 	cFPSCounter = CFPSCounter::GetInstance();
