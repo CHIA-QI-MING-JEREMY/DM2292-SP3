@@ -1097,6 +1097,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(ICE, iTextureID));
 	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/sign.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/sign.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGN, iTextureID));
+	}
 	
 	// Initialise the variables for AStar
 	m_weight = 1;

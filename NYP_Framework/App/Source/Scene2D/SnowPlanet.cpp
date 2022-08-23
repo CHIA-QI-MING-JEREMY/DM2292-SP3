@@ -327,6 +327,16 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER, CMap2D::TILE_INDEX::ICE);
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER_TOP, CMap2D::TILE_INDEX::ICE);
 	}
+	// resets player location at last visited checkpoint
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+	{
+		cPlayer2D->vec2Index = cPlayer2D->getCPIndex();
+		cPlayer2D->vec2NumMicroSteps.x = 0;
+
+		// reduce the lives by 1
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		cInventoryItemPlanet->Remove(1);
+	}
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
 		if (cKeyboardController->IsKeyReleased(GLFW_KEY_Q) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount()>0) {
