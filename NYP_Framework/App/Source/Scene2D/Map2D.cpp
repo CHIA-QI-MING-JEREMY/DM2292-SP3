@@ -1146,6 +1146,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(SIGNINTRO4, iTextureID));
 	}
 	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/sign.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/sign.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNINTRO5, iTextureID));
+	}
+	//Load the sign texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/signteach.tga", true);
 	if (iTextureID == 0)
 	{
@@ -1699,7 +1711,7 @@ void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
 	{
 		// ensures Terrestrial and Snow waypoints do not render
 		if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value < 300) ||
-			(arrMapInfo[uiCurLevel][uiRow][uiCol].value > 500) )
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value > 499) )
 		{
 			glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
 

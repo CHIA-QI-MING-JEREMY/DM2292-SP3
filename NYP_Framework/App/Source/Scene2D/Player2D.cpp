@@ -850,6 +850,10 @@ void CPlayer2D::UpdateHealthLives(void)
 		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		// But we reduce the lives by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 3) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
+			cInventoryItemPlanet->setCount(cInventoryItemPlanet->GetMaxCount());
+		}
 		cInventoryItemPlanet->Remove(1);
 		// Respawn player back at last visited checkpoint
 		vec2Index = vec2CPIndex;
