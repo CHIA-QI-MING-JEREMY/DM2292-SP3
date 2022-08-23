@@ -118,6 +118,8 @@ bool CPlayer2D::Init(void)
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
+	vec2CPIndex = vec2Index; //set first respawn point to original spawn point
+
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	

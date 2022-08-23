@@ -437,16 +437,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	// as we want to capture the updates before Map2D update
 	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
-		//// informs all enemies that the alarm has been activated
-		//if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer > 0.0)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
-		//}
-		//else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer == maxAlarmTimer)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
-		//}
-
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 
 		//for patrol team, aka community based enemies
@@ -643,7 +633,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM)
 	{
 		//if the player tries to use the river water
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
 			//if the player has river water
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
@@ -688,6 +678,16 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		swayingLeavesCooldown = swayingLeavesMaxCooldown; //reset cooldown
 	}
 
+	// resets player location at last visited checkpoint
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+	{
+		cPlayer2D->vec2Index = cPlayer2D->getCPIndex();
+		cPlayer2D->vec2NumMicroSteps.x = 0;
+
+		// reduce the lives by 1
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		cInventoryItemPlanet->Remove(1);
+	}
 
 	//if player has burnable blocks to put down, put down in the direction the player is facing
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_G))
@@ -1010,7 +1010,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 
 		//can pick up river water
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
 			//if river water inventory not full yet
@@ -1023,7 +1023,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		break;
 	case CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM: 
 		//can make bouncy bloom bloom if using river water on it while standing on it
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
 			//if player has river water
@@ -1037,7 +1037,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		break;
 	case CMap2D::TILE_INDEX::ROCK:
 		//if player wants to tie a vine to the rock
-		if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
 			//if player has a vine
