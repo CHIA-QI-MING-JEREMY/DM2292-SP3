@@ -209,9 +209,9 @@ bool CPlayer2D::Init(void)
 
 	//Jungle Planet
 	// Add a green orb as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/TerrestrialPlanet/Orb_Blue.tga", 3, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PoisonLevel", "Image/GUI/Poison.tga", 3, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/TerrestrialPlanet/Orb_Blue.tga", 5, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("RiverWater", "Image/GUI/RiverWater.tga", 5, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("BurnableBlocks", "Image/JunglePlanet/BurnableBushBlocks_Bundle.tga", 20, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
