@@ -41,11 +41,6 @@ class CMap2D;
 // Include Camera2D
 #include "Primitives/Camera2D.h"
 
-//// Include enemies
-//#include "Enemy2D.h"
-//#include "MblEnemy2D.h"
-//#include "StationaryEnemy2D.h"
-
 class CAmmo2D : public CEntity2D
 {
 public:

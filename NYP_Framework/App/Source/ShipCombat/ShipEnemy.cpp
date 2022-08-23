@@ -44,13 +44,10 @@ CShipEnemy::CShipEnemy(void)
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
 CShipEnemy::~CShipEnemy(void)
-{
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
-	
+{	
+
+	cInventoryManager = NULL;
+
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
 

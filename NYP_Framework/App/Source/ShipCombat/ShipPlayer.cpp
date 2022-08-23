@@ -48,11 +48,7 @@ CShipPlayer::CShipPlayer(void)
  */
 CShipPlayer::~CShipPlayer(void)
 {
-	if (cInventoryManager)
-	{
-		cInventoryManager->Destroy();
-		cInventoryManager = NULL;
-	}
+	cInventoryManager = NULL;
 
 	// Delete the CAnimationSprites
 	if (animatedSprites)
@@ -142,18 +138,60 @@ bool CShipPlayer::Init(void)
 	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 
 	// Get the handler to the CInventoryManager instance
-	cInventoryManager = CInventoryManager::GetInstance();
-	// Add a lives icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	cInventoryManager = CGameInfo::GetInstance()->ImportIM();
 
-	// Add a health icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	if (cInventoryManager->Check("Lives") == false) {
+		// Add a lives icon as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Lives", "Image/Scene2D_Lives.tga", 3, 3);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	if (cInventoryManager->Check("Health") == false) {
+		// Add a health icon as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	if (cInventoryManager->Check("Damage") == false) {
+		// Add a damage icon as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Damage", "Image/Scene2D_Health.tga", 150, 150);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
 
-	// Add a damage icon as one of the inventory items
-	cInventoryItem = cInventoryManager->Add("Damage", "Image/Scene2D_Health.tga", 150, 150);
-	cInventoryItem->vec2Size = glm::vec2(25, 25);
+	// Resources
+	
+	if (cInventoryManager->Check("ScrapMetal") == false) {
+		// Add a scrap metal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("ScrapMetal", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	else {
+		std::cout << cInventoryManager->GetItem("ScrapMetal")->GetCount() << "\n";
+	}
+	if (cInventoryManager->Check("Battery") == false) {
+		// Add a battery as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Battery", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	else {
+		std::cout << cInventoryManager->GetItem("Battery")->GetCount() << "\n";
+	}
+	if (cInventoryManager->Check("Ironwood") == false) {
+		// Add a ironwood as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Ironwood", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	else {
+		std::cout << cInventoryManager->GetItem("Ironwood")->GetCount() << "\n";
+	}
+	if (cInventoryManager->Check("EnergyQuartz") == false) {
+		// Add a energy quartz as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("EnergyQuartz", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	if (cInventoryManager->Check("IceCrystal") == false) {
+		// Add a ice crystal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("IceCrystal", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
@@ -384,6 +422,7 @@ void CShipPlayer::Update(const double dElapsedTime)
 	animatedSprites->Update(dElapsedTime);
 	InteractWithMap();
 
+
 	// Update the UV Coordinates
 	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->MICRO_STEP_XAXIS);
 	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y*cSettings->MICRO_STEP_YAXIS);
@@ -541,6 +580,8 @@ void CShipPlayer::UpdateHealthLives(void)
 		// Player loses the game
 		CGameManager::GetInstance()->bPlayerLost = true;
 	}
+
+	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 }
 
 void CShipPlayer::InteractWithMap(void)
