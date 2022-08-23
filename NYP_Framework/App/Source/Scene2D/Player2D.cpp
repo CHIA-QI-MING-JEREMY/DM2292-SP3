@@ -19,6 +19,7 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 #include "GUI_Scene2D.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -166,7 +167,6 @@ bool CPlayer2D::Init(void)
 
 	//CS: Init the color to white
 	SetColour(WHITE);
-
 
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();

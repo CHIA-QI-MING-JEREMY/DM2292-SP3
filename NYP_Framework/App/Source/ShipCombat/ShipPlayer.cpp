@@ -151,6 +151,10 @@ bool CShipPlayer::Init(void)
 	cInventoryItem = cInventoryManager->Add("Health", "Image/Scene2D_Health.tga", 100, 100);
 	cInventoryItem->vec2Size = glm::vec2(25, 25);
 
+	// Add a damage icon as one of the inventory items
+	cInventoryItem = cInventoryManager->Add("Damage", "Image/Scene2D_Health.tga", 150, 150);
+	cInventoryItem->vec2Size = glm::vec2(25, 25);
+
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 

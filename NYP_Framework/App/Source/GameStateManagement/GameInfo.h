@@ -9,7 +9,7 @@ Used for passing data in between states
 #include <string>
 #include "../App/Source/PlanetSelection/ScenePlanet.h"
 #include "../App/Source/PlanetSelection/Planet.h"
-#include "../App/Source/Scene2D/InventoryItem.h"
+#include "../App/Source/Scene2D/InventoryManager.h"
 
 class CGameInfo : public CSingletonTemplate<CGameInfo>
 {
@@ -19,9 +19,9 @@ public:
 	int PrevState = 0;
 	bool initInventory = false;
 	bool initPlanets = false;
+	int nebulaSize = 3;
 	glm::vec2 currentPlanetPos = glm::vec2(-1, -1);
 	std::vector<int> planetList;
-	std::vector<CInventoryItem*> items;
 
 protected:
 	// Constructor

@@ -111,6 +111,8 @@ protected:
 	CPlanet* PlanetSelected;
 	CPlanet* nebula;
 	bool lState;
+	float nebulaSize;
+	float realSize;
 
 	// Constructor
 	CScenePlanet(void);

@@ -5,6 +5,7 @@
  Date: Mar 2020
  */
 #include <iostream>
+#include "math.h"
 	using namespace std;
 
 // Include Shader Manager
@@ -237,9 +238,18 @@ bool CScenePlanet::Init(void)
 
 	if (CGameInfo::GetInstance()->initPlanets == false) {
 		CGameInfo::GetInstance()->initPlanets = true;
+		realSize = nebulaSize = 5;
+		nebula->SetScale(nebulaSize);
+		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 	}
 	else {
 		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
+
+		realSize = nebulaSize = CGameInfo::GetInstance()->nebulaSize;
+		nebulaSize += rand() % 10 + 1;
+		std::cout << nebulaSize << "\n";
+		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
+
 		while (otherPlanets != planetVector.end()) {
 			if (otherPlanets->second->vec2Index.x == 0) {
 				otherPlanets++;
@@ -257,6 +267,13 @@ bool CScenePlanet::Init(void)
 			}
 			else {
 				otherPlanets->second->SetVisibility(false);
+			}
+
+			if (otherPlanets->second->vec2Index.x <= int((nebulaSize - 3) / 2)) {
+				// Add lose condition
+
+				otherPlanets->second->SetVisibility(false);
+				cMap2D->SetMapInfo(otherPlanets->second->vec2Index.y, otherPlanets->second->vec2Index.x, 598, true);
 			}
 			otherPlanets++;
 		}
@@ -280,10 +297,17 @@ bool CScenePlanet::Init(void)
 */
 bool CScenePlanet::Update(const double dElapsedTime)
 {
- 	if (cGUI_ScenePlanet->StartCombat) {
-		gotoPlanet = PlanetSelected;
-		CGameInfo::GetInstance()->selectedPlanet = PlanetSelected;
-		StartCombat = true;
+ 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_ENTER)) {
+		if (PlanetSelected->getVisibility() == true) {
+			gotoPlanet = PlanetSelected;
+			CGameInfo::GetInstance()->selectedPlanet = PlanetSelected;
+			StartCombat = true;
+		}
+	}
+
+	if (nebulaSize != realSize) {
+		camera2D->lerp(realSize, nebulaSize, 0.01f);
+		nebula->SetScale(realSize);
 	}
 
 	// mouse Position demo

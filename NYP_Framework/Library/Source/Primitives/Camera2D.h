@@ -58,6 +58,10 @@ public:
 	float amplitude = 5.0f;
 	float adjustAmplitudePerSecond = -1.0f;
 
+	float lerp(float x, float y, float t) {
+		return x * (1.f - t) + y * t;
+	}
+
 private:
 	glm::vec2 pos;
 	glm::vec2 targetPos;
@@ -72,8 +76,4 @@ private:
 	glm::vec2 vMousePosConvertedRatio;
 	glm::vec2 vMousePosWorldSpace;
 	glm::vec2 vMousePosRelativeToCamera;
-
-	float lerp(float x, float y, float t) {
-		return x * (1.f - t) + y * t;
-	}
 };

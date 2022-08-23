@@ -12,6 +12,7 @@
 #include "System\ImageLoader.h"
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 #include <iostream>
 using namespace std;
@@ -181,24 +182,16 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 
 	}
 
-	{
+	if (cPlanet->getVisibility() == true) {
 		// Create a window called "Hello, world!" and append into it.
-		ImGui::Begin("Main Menu", NULL, window_flags);
-		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth * 0.8,
+		ImGui::Begin("Enter", NULL, window_flags);
+		ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth * 0.3,
 			CSettings::GetInstance()->iWindowHeight * 0.85));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+		ImGui::SetWindowFontScale(2.5f * relativeScale_y);
 
-		ImGui::Image((ImTextureID)StartCombatButtonData.textureID, ImVec2(buttonWidth * relativeScale_x, buttonHeight * relativeScale_y));
+		ImGui::Text("Press 'Enter' to go to planet.");
 
-		// prevent clicking the background !!
-		isButtonHover = ImGui::IsItemHovered();
-
-		std::cout << isButtonHover << "\n";
-
-		if (ImGui::IsItemClicked()) {
-			std::cout << "Clicked\n";
-			StartCombat = true;
-		}
 		ImGui::End();
 	}
 
