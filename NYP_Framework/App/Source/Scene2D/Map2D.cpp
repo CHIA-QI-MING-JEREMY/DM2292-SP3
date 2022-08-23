@@ -380,6 +380,19 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			MapOfTextureIDs.insert(pair<int, int>(LEFT_BUTTON_PRESSED, iTextureID));
 		}
 
+		//invisible tile for shooting pop up trigger in tutorial
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Hidden.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Hidden.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(SHOOTING_POPUP, iTextureID));
+		}
+
 
 		//down button 1
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Down.tga", true);

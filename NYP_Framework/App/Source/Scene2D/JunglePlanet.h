@@ -186,7 +186,6 @@ protected:
 	double swayingLeavesCooldown; //cooldown to switch leaves with its alt positions
 	const double swayingLeavesMaxCooldown = 1; //flicker every 1 second
 
-
 	// Let player interact with the map
 	void PlayerInteractWithMap(void);
 

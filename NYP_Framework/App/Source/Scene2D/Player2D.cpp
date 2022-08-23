@@ -1290,6 +1290,18 @@ int CPlayer2D::getPlayerAttackDirection()
 	return attackDirection;
 }
 
+////used in ammo
+//void CPlayer2D::setBushTutorial(bool trigger)
+//{
+//	bushTutorial = trigger;
+//}
+//
+////to render tutorial popup about burnable bush, set in ammo
+//bool CPlayer2D::getBushTutorial(void)
+//{
+//	return bushTutorial;
+//}
+
 //called whenever an ammo is needed ot be shot
 CAmmo2D* CPlayer2D::FetchAmmo()
 {

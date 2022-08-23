@@ -26,6 +26,7 @@ Interactables
 52 : up button pressed
 53 : right button pressed
 54 : left button pressed
+55 : invisible trigger for shooting pop up
 60 : down button 1
 61 : right button 1
 100 : first Vigilant Teleporter of the map's first waypoint

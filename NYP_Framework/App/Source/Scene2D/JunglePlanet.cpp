@@ -367,6 +367,9 @@ bool JunglePlanet::Init(void)
 bool JunglePlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(1);
+
+	cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::NONE); //remove pop ups by default
+
 	// mouse Position demo
 	// zoom demo
 	if (!isZoomedIn && cKeyboardController->IsKeyPressed('X')) {
@@ -413,29 +416,26 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	{
 		cMap2D->SetCurrentLevel(1);
 	}
-	
-	//// Checks if alarm is active
-	//if (!isAlarmActive)
-	//{
-	//	unsigned int uiRow = -1;
-	//	unsigned int uiCol = -1;
-	//	if (cMap2D->FindValue(52, uiRow, uiCol))
-	//	{
-	//		isAlarmActive = true;
-	//		alarmTimer = maxAlarmTimer;
-	//	}
-	//}
 
-	//if (alarmTimer <= 0.0)
-	//{
-	//	alarmTimer = maxAlarmTimer;
-	//	isAlarmActive = false;
-	//	cMap2D->ReplaceTiles(52, 51);
-	//}
-	//else
-	//{
-	//	alarmTimer -= dElapsedTime;
-	//}
+	//Tutorial lvl pop ups
+	if (cMap2D->GetCurrentLevel() == TUTORIAL)
+	{
+		//if player at the first checkpoint
+		if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) == CMap2D::TILE_INDEX::RED_FLAG &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 3.f)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint popup
+		}
+
+		//if hit a bush wth ammo (set the bush on fire) and near the shoot invisible pop up trigger point
+		if (cMap2D->FindAllTiles(CMap2D::TILE_INDEX::BURNING_BUSH).size() > 0 &&
+			cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SHOOTING_POPUP)) < 3.f)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BURNABLE); //trigger burnable bush pop up
+		}
+	}
+
+	PlayerInteractWithMap();
 
 	// Call all of the cEnemy2D's update methods before Map2D
 	// as we want to capture the updates before Map2D update
@@ -627,8 +627,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 			resourceVectors[cMap2D->GetCurrentLevel()].erase(resourceVectors[cMap2D->GetCurrentLevel()].begin() + i);
 		}
 	}
-
-	PlayerInteractWithMap();
 
 	//if player is not in river water, F will be used to use the river water instead of collect it
 		//and instead of using it on an unbloomed bouncy bloom
@@ -1095,6 +1093,13 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			}
 		}
 		break;
+	case CMap2D::TILE_INDEX::SHOOTING_POPUP:
+		//Tutorial lvl pop up
+		if (cMap2D->GetCurrentLevel() == TUTORIAL)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::SHOOT); //shooting pop up
+		}
+		break;
 	default:
 		break;
 	}
@@ -1107,6 +1112,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	if (tutorial)
 	{
 		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
 	{
