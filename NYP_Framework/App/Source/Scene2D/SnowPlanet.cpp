@@ -327,14 +327,24 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER, CMap2D::TILE_INDEX::ICE);
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER_TOP, CMap2D::TILE_INDEX::ICE);
 	}
+	// resets player location at last visited checkpoint
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
+	{
+		cPlayer2D->vec2Index = cPlayer2D->getCPIndex();
+		cPlayer2D->vec2NumMicroSteps.x = 0;
+
+		// reduce the lives by 1
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+		cInventoryItemPlanet->Remove(1);
+	}
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
-		if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount()>0) {
+		if (cKeyboardController->IsKeyReleased(GLFW_KEY_Q) && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount()>0) {
 			cInventoryItemPlanet->Remove(1);
 			cout << "Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::SHIELD);
 		}
-		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_R) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount() > 0) {
+		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_Q) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount() > 0) {
 			cInventoryItemPlanet->Remove(1);
 			cout << "Berserk Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERKSHIELD);
@@ -405,18 +415,22 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		isZoomedIn = false;
 	}
 
-	if (cGUI_Scene2D->getShowExitPanel() == false) {
-		// mouse Position demo
-		glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
-		camPos = glm::normalize(camPos);
-		camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x * 2, cPlayer2D->vec2Index.y + camPos.y * 2);
+	float mouseDist;
 
-		camera2D->setTargetPos(camPos);
-		camera2D->Update(dElapsedTime);
+	if (cGUI_Scene2D->getShowExitPanel() == false) {
+		mouseDist = 2.0f;
 	}
 	else {
-		camera2D->setTargetPos(cPlayer2D->vec2Index);
+		mouseDist = 0.3f;
 	}
+
+	// mouse Position demo
+	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
+	camPos = glm::normalize(camPos);
+	camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x * mouseDist, cPlayer2D->vec2Index.y + camPos.y * mouseDist);
+
+	camera2D->setTargetPos(camPos);
+	camera2D->Update(dElapsedTime);
 
 	// click test
 	if (CMouseController::GetInstance()->IsButtonDown(CMouseController::BUTTON_TYPE::LMB)) {
@@ -434,6 +448,14 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_F8))
 	{
 		cMap2D->SetCurrentLevel(1);
+	}
+	if (CMap2D::TILE_INDEX::ICE == cMap2D->GetMapInfo(cPlayer2D->vec2Index.y-1,cPlayer2D->vec2Index.x)) {
+		CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS = 6.0;
+		CSettings::GetInstance()->MICRO_STEP_XAXIS = 0.01041667f;
+	}
+	else {
+		CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS = 8.0;
+		CSettings::GetInstance()->MICRO_STEP_XAXIS = 0.0078125f;
 	}
 
 	//// Checks if alarm is active

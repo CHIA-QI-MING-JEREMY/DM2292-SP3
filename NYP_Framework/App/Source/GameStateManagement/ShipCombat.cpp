@@ -12,6 +12,7 @@
 
 // Include CGameStateManager
 #include "GameStateManager.h"
+#include "../App/Source/Scene2D/InventoryManager.h"
 #include "GameInfo.h"
 
 // Include CKeyboardController

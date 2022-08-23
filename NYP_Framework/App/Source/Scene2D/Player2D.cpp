@@ -19,6 +19,7 @@ using namespace std;
 #include "Map2D.h"
 #include "Primitives/MeshBuilder.h"
 #include "GUI_Scene2D.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -166,7 +167,6 @@ bool CPlayer2D::Init(void)
 
 	//CS: Init the color to white
 	SetColour(WHITE);
-
 
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
@@ -410,7 +410,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || 
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT ||
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
-			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT)
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE ||
+			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE)
 
 		{
 			// Calculate the new position to the up
@@ -445,7 +448,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_LEFT ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_RIGHT) ||
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT))
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT)||
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE ||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE))
 		{
 			if (vec2NumMicroSteps.y != 0 || vec2Index.y - 1 != cMap2D->FindGround(vec2Index.y, vec2Index.x))
 			{
@@ -502,7 +508,10 @@ void CPlayer2D::Update(const double dElapsedTime)
 		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_CORNER_LEFT &&
 		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_LEFT &&
 		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_CORNER_RIGHT &&
-		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_RIGHT)
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::VINE_RIGHT &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_TOP_ICE &&
+		cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) != CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE)
 	{
 		onRope = false;
 	}
@@ -755,12 +764,6 @@ void CPlayer2D::InteractWithMap(void)
 			{
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
-
-				for (int tileIndex = 300; tileIndex < 400; ++tileIndex)
-				{
-					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_CORNER_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
-					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
-				}
 			}
 		}
 		// runs if there is empty space on the right of the post
@@ -779,12 +782,6 @@ void CPlayer2D::InteractWithMap(void)
 			{
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
-
-				for (int tileIndex = 300; tileIndex < 400; ++tileIndex)
-				{
-					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
-					cMap2D->ReplaceTiles(tileIndex, CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
-				}
 			}
 		}
 		break;

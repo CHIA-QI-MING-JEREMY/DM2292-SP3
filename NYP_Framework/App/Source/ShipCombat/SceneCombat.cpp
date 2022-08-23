@@ -159,11 +159,21 @@ bool CSceneCombat::Update(const double dElapsedTime)
 {
 	//cGUI_Scene2D->setPlanetNum(1);
 	// mouse Position demo
-	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - (cPlayer2D->vec2Index.x + cPlayer2D->vec2NumMicroSteps.x / CSettings::GetInstance()->NUM_STEPS_PER_TILE_XAXIS), camera2D->getMousePosition().y - (cPlayer2D->vec2Index.y + cPlayer2D->vec2NumMicroSteps.y / CSettings::GetInstance()->NUM_STEPS_PER_TILE_YAXIS));
-	camPos = glm::normalize(camPos);
-	camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x, cPlayer2D->vec2Index.y + camPos.y);
 	cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(blockSelected).x, camera2D->getBlockPositionWindow(blockSelected).y);
 
+	float mouseDist;
+
+	if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::noShow) {
+		mouseDist = 1.f;
+	}
+	else {
+		mouseDist = 0.3f;
+	}
+
+	// mouse Position demo
+	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
+	camPos = glm::normalize(camPos);
+	camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x * mouseDist, cPlayer2D->vec2Index.y + camPos.y * mouseDist);
 	camera2D->setTargetPos(camPos);
 	camera2D->Update(dElapsedTime);
 	TimeElapsed += 0.0167;
@@ -184,6 +194,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 	// resolve if changes to gui are made
 	if (cGUI_SceneCombat->makeChanges && cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showRepair) {
 		cMap2D->SetMapInfo(blockSelected.y, blockSelected.x, 598);
+		CInventoryItem* item = CInventoryManager::GetInstance()->GetItem("Damage");
+		item->Add(10);
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 		cGUI_SceneCombat->makeChanges = false;
 	}
@@ -351,6 +363,9 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 void CSceneCombat::SetDamage(glm::vec2 position)
 {
 	if (camera2D->noiseOn == false) {
+		CInventoryItem* item = CInventoryManager::GetInstance()->GetItem("Damage");
+		item->Remove(10);
+
 		camera2D->noiseOn = true;
 		NoiseStartTime = TimeElapsed;
 		cMap2D->SetMapInfo(position.y, position.x, 597);

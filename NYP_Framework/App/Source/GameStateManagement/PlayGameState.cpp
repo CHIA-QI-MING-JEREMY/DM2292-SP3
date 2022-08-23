@@ -11,6 +11,7 @@
 
 // Include CGameStateManager
 #include "GameStateManager.h"
+#include "../App/Source/Scene2D/InventoryManager.h"
 
 // Include CKeyboardController
 #include "Inputs/KeyboardController.h"
@@ -179,7 +180,6 @@ bool CPlayGameState::Update(const double dElapsedTime)
 			cout << "Loading ShipCombatState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("ShipCombatState");
 			CGameInfo::GetInstance()->PrevState = 2;
-			
 		}
 		break;
 	case CPlanet::TYPE::JUNGLE:

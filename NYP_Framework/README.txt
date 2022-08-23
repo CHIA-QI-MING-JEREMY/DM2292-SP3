@@ -70,14 +70,16 @@ Interactables
 399 : energy quartz
 
 [Snow Planet]
-400: fur
-401: fur coat
-402: power-up shield
-403: power-up berserk
-404: power-up freeze water shard
-405: ice rope top
-406: ice rope mid
-407: ice rope bot
+400-499:waypoints
+500: fur
+501: fur coat
+502: power-up shield
+503: power-up berserk
+504: power-up freeze water shard
+505: ice rope top
+506: ice rope mid
+507: ice rope bot
+510-520: sign (tutorial)
 595: water top
 596: water
 599 : ice crystal

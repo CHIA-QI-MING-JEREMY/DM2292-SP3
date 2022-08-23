@@ -47,8 +47,10 @@
     <ClInclude Include="Source\Scene2D\SnowEAmmo.h" />
     <ClInclude Include="Source\Scene2D\SnowEnemy2DSWB.h" />
     <ClInclude Include="Source\Scene2D\SnowPlanet.h" />
+    <ClInclude Include="Source\Scene2D\TerrestrialEAmmoDummy.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEAmmoSentry.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEAmmoTurret.h" />
+    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DDummy.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DSentry.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DTurret.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h" />
@@ -56,6 +58,8 @@
     <ClInclude Include="Source\ShipCombat\InventoryItemShip.h" />
     <ClInclude Include="Source\ShipCombat\InventoryManagerShip.h" />
     <ClInclude Include="Source\ShipCombat\SceneCombat.h" />
+    <ClInclude Include="Source\ShipCombat\Ship.h" />
+    <ClInclude Include="Source\ShipCombat\ShipEnemy.h" />
     <ClInclude Include="Source\ShipCombat\ShipPlayer.h" />
     <ClInclude Include="Source\SoundController\SoundController.h" />
     <ClInclude Include="Source\SoundController\SoundInfo.h" />
@@ -96,8 +100,10 @@
     <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp" />
     <ClCompile Include="Source\Scene2D\SnowEnemy2DSWB.cpp" />
     <ClCompile Include="Source\Scene2D\SnowPlanet.cpp" />
+    <ClCompile Include="Source\Scene2D\TerrestrialEAmmoDummy.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEAmmoSentry.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEAmmoTurret.cpp" />
+    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DDummy.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DSentry.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DTurret.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp" />
@@ -105,6 +111,8 @@
     <ClCompile Include="Source\ShipCombat\InventoryItemShip.cpp" />
     <ClCompile Include="Source\ShipCombat\InventoryManagerShip.cpp" />
     <ClCompile Include="Source\ShipCombat\SceneCombat.cpp" />
+    <ClCompile Include="Source\ShipCombat\Ship.cpp" />
+    <ClCompile Include="Source\ShipCombat\ShipEnemy.cpp" />
     <ClCompile Include="Source\ShipCombat\ShipPlayer.cpp" />
     <ClCompile Include="Source\SoundController\SoundController.cpp" />
     <ClCompile Include="Source\SoundController\SoundInfo.cpp" />

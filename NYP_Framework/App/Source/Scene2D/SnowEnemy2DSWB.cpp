@@ -176,12 +176,12 @@ bool SnowEnemy2DSWB::Init(void)
 	//flickerTimerMax = 0.5; //used to reset flicker counter
 	//flickerCounter = 0; //decides colour of enemy and when to explode
 
-	if (vec2Index.x == 11 && vec2Index.y == 1) {
-		pathway.push_back(glm::vec2(11, 1));
-		pathway.push_back(glm::vec2(18, 2));
-		pathway.push_back(glm::vec2(14, 5));
-		fearpathway = (glm::vec2(20, 1));
-	}
+	//if (vec2Index.x == 11 && vec2Index.y == 1) {
+	//	pathway.push_back(glm::vec2(11, 1));
+	//	pathway.push_back(glm::vec2(18, 2));
+	//	pathway.push_back(glm::vec2(14, 5));
+	//	fearpathway = (glm::vec2(20, 1));
+	//}
 	currentPathwayCounter = 0;
 	maxPathwayCounter = pathway.size();
 

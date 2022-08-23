@@ -165,8 +165,10 @@ bool TEnemy2DSentry::Init(void)
 	shootingDirection = RIGHT; //setting direction for ammo shooting
 	maxHealth = health = 25; //takes 1 hit to kill
 
+	// sets waypoints based on the level
 	if (cMap2D->GetCurrentLevel() == 2)
 	{
+		// sets waypoints based on the enemy spawn location
 		if (vec2Index == glm::vec2(12, 3))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 300, 5);

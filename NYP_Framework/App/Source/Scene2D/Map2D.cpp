@@ -129,18 +129,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(100, iTextureID));
 	}
 
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Tile_Ground.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Tile_Ground.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(1000, iTextureID));
-	}
-
 	/// <summary>
 	/// JUNGLE PLANET INTERACTABLES
 	/// </summary>
@@ -772,7 +760,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(RED_FLAG, iTextureID));
 	}
 	
-	// TO DOL FIND NEW SPIKES
+	// TO DO: FIND NEW SPIKES
 	// Load spikes up
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_SpikesUp.tga", true);
 	if (iTextureID == 0)
@@ -1108,6 +1096,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(ICE, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/sign.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/sign.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGN, iTextureID));
 	}
 	
 	// Initialise the variables for AStar

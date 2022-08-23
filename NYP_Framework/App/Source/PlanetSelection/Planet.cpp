@@ -74,7 +74,7 @@ bool CPlanet::Init(void)
 	cSettings = CSettings::GetInstance();
 	// Get the handler to the Camera2D instance
 	camera2D = Camera2D::GetInstance();
-	
+
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
