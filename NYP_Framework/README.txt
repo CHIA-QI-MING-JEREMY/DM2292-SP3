@@ -135,6 +135,10 @@ Enemies
 1610 : shy chaser
 
 [Terrestrial Planet]
+1800 : Sentry
+1801 : Veteran
+1802 : Turret
+1803 : Dummy
 
 [Snow Planet]
 2000: Snow Wolf Brown
