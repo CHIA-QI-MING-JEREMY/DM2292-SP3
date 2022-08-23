@@ -1107,7 +1107,103 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SIGN, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(SIGNINTRO1, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/sign.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/sign.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNINTRO2, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/sign.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/sign.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNINTRO3, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/sign.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/sign.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNINTRO4, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/signteach.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/signteach.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNTUT1, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/signteach.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/signteach.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNTUT2, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/signteach.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/signteach.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNTUT3, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/signteach.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/signteach.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNTUT4, iTextureID));
+	}
+	//Load the sign texture
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/signteach.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/SnowPlanet/signteach.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SIGNTUT5, iTextureID));
 	}
 	
 	// Initialise the variables for AStar
@@ -1601,9 +1697,9 @@ void CMap2D::RenderTile(const unsigned int uiRow, const unsigned int uiCol)
 	if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value > 0) && 
 		(arrMapInfo[uiCurLevel][uiRow][uiCol].value < 1400))
 	{
-		// ensures Terrestrial waypoints do not render
+		// ensures Terrestrial and Snow waypoints do not render
 		if ((arrMapInfo[uiCurLevel][uiRow][uiCol].value < 300) ||
-			(arrMapInfo[uiCurLevel][uiRow][uiCol].value >= 400))
+			(arrMapInfo[uiCurLevel][uiRow][uiCol].value > 500) )
 		{
 			glBindTexture(GL_TEXTURE_2D, MapOfTextureIDs.at(arrMapInfo[uiCurLevel][uiRow][uiCol].value));
 
