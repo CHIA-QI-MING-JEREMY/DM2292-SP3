@@ -47,8 +47,10 @@
     <ClInclude Include="Source\Scene2D\SnowEAmmo.h" />
     <ClInclude Include="Source\Scene2D\SnowEnemy2DSWB.h" />
     <ClInclude Include="Source\Scene2D\SnowPlanet.h" />
+    <ClInclude Include="Source\Scene2D\TerrestrialEAmmoDummy.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEAmmoSentry.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEAmmoTurret.h" />
+    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DDummy.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DSentry.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DTurret.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h" />
@@ -98,8 +100,10 @@
     <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp" />
     <ClCompile Include="Source\Scene2D\SnowEnemy2DSWB.cpp" />
     <ClCompile Include="Source\Scene2D\SnowPlanet.cpp" />
+    <ClCompile Include="Source\Scene2D\TerrestrialEAmmoDummy.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEAmmoSentry.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEAmmoTurret.cpp" />
+    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DDummy.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DSentry.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DTurret.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp" />
