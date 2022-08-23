@@ -56,6 +56,12 @@ void CInventoryItem::Remove(const int iNumItems)
 		iItemCount = 0;
 }
 
+void CInventoryItem::Set(const int iNumItems)
+{
+	iItemCount = iNumItems;
+	glm::clamp(iItemCount, 0, iItemMaxCount);
+}
+
 /**
 @brief Get the number of items from this class instance
 */

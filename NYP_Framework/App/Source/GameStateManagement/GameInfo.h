@@ -22,15 +22,29 @@ public:
 	int nebulaSize = 3;
 	glm::vec2 currentPlanetPos = glm::vec2(-1, -1);
 	std::vector<int> planetList;
+	CInventoryManager* cInventoryManager;
+
+	void ExportIM(CInventoryManager* newIM) {
+		cInventoryManager = newIM;
+	}
+
+	CInventoryManager* ImportIM(void) {
+		return cInventoryManager;
+	}
+
 
 protected:
 	// Constructor
 	CGameInfo() : selectedPlanet(NULL) {
-
+		cInventoryManager = CInventoryManager::GetInstance();
 	}
 	// Destructor
 	~CGameInfo() {
-
+		if (cInventoryManager)
+		{
+			cInventoryManager->Destroy();
+			cInventoryManager = NULL;
+		}
 	}
 
 };
