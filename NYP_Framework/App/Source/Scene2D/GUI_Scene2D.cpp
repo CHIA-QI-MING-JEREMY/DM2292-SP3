@@ -99,6 +99,8 @@ bool CGUI_Scene2D::Init(void)
 	goOnShip = false;
 	showExitPanel = false;
 
+	tutorialPopupJungle = NONE;
+
 	return true;
 }
 
@@ -218,7 +220,117 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		}
 	}
 
-	if (planetNum == 2 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
+	if (planetNum == 1 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
+	{
+		//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		//ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		//	ImGuiWindowFlags_NoTitleBar |
+		//	ImGuiWindowFlags_NoMove |
+		//	ImGuiWindowFlags_NoResize |
+		//	ImGuiWindowFlags_NoCollapse |
+		//	ImGuiWindowFlags_NoScrollbar;
+		//ImGui::Begin("textPopup", NULL, textPopupFlags);
+		//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.5f,
+		//	cSettings->iWindowHeight * 0.5f));
+		//ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
+		//ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Hello");
+		//ImGui::End();
+		//ImGui::PopStyleColor();
+
+		// Render the Poison Level
+		ImGuiWindowFlags poisonWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("PoisonLevel", NULL, poisonWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.125f));
+		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,
+				cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+		ImGui::ProgressBar(cInventoryItemPlanet->GetCount() /
+			(float)cInventoryItemPlanet->GetMaxCount(), ImVec2(100.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+		ImGui::End();
+
+		// Render the inventory items
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		ImGuiWindowFlags riverWaterWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("RiverWater", NULL, riverWaterWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.03f, cSettings->iWindowHeight * 0.9f));
+		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x, cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
+			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		ImGui::End();
+		ImGui::PopStyleColor();
+
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		ImGuiWindowFlags vineWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("Vine", NULL, vineWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.155f, cSettings->iWindowHeight * 0.9f));
+		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x, cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
+			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		ImGui::End();
+		ImGui::PopStyleColor();
+
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		ImGuiWindowFlags bBlocksWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("BurnableBlocks", NULL, bBlocksWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.28f, cSettings->iWindowHeight * 0.9f));
+		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x, cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
+			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		ImGui::End();
+		ImGui::PopStyleColor();
+	}
+	else if (planetNum == 2 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
 	{
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
 		ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
@@ -499,4 +611,14 @@ void CGUI_Scene2D::setShowExitPanel(bool newSet)
 void CGUI_Scene2D::setBlockPosition(glm::vec2 blockPos)
 {
 	blockPosition = blockPos;
+}
+
+int CGUI_Scene2D::getTutorialPopupJungle(void)
+{
+	return tutorialPopupJungle;
+}
+
+void CGUI_Scene2D::setTutorialPopupJungle(int index)
+{
+	tutorialPopupJungle = index;
 }

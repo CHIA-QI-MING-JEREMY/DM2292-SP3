@@ -74,17 +74,23 @@ public:
 	void setShowExitPanel(bool newSet);
 	void setBlockPosition(glm::vec2 blockPos);
 
+	int getTutorialPopupJungle(void);
+	void setTutorialPopupJungle(int index);
+
 	enum JUNGLE_TUTORIAL_POPUP
 	{
 		NONE = 0,
 		CHECKPOINT, //triggered onceplayer hits first checkpoint
 		SHOOT, //triggered at the first set of bushes to destory with shooting
+		BUNRABLE, //triggered whenever player burns a bush
 		RESOURCE, //triggered every time player collects an item
 		POISON, //triggered by the first poison sprout hit (hardcoded)
+		SWITCHES, //triggered the first time the player hits a switch
 		RIVER_WATER, //triggered when in river water
 		VINE, //triggered when player collects vine --> OVERRIDEN BY OTHERS THAT TRIGGER AFTER
 		BUSHES, //triggered when player collects burnable blocks --> OVERRIDEN BY OTHERS THAT TRIGGER AFTER
 		BOUNCY_BLOOM, //triggered everytime player collides with unbloomed bouncy bloom
+		ROCK, //triggered when player collides with a rock with on vine on it
 		NUM_JT_POPUP
 	};
 
