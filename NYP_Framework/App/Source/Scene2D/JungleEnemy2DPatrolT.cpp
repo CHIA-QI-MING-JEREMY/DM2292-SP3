@@ -127,23 +127,30 @@ bool JEnemy2DPatrolT::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/PatrolTeamSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
+		cout << "Unable to load Image/JunglePlanet/PatrolTeamSpriteSheet.png" << endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(7, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
-	animatedSprites->AddAnimation("right", 3, 5);
+	animatedSprites->AddAnimation("idle", 0, 0); //idle
+	animatedSprites->AddAnimation("movingL", 1, 4); //4 images for animation, index 1 to 4, walking left, 0.5f speed
+	animatedSprites->AddAnimation("movingR", 5, 8); //walking right, 0.5f speed
+	animatedSprites->AddAnimation("noisyL", 9, 12); //noisy left, 0.75f speed
+	animatedSprites->AddAnimation("noisyR", 13, 16); //noisy right, 0.75f speed
+	animatedSprites->AddAnimation("enrouteL", 17, 20); //en_route left, 0.5f speed
+	animatedSprites->AddAnimation("enrouteR", 21, 24); //en_route right, 0.5f speed
+
+	/*animatedSprites->AddAnimation("right", 3, 5);
 	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);
+	animatedSprites->AddAnimation("left", 9, 11);*/
 	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	animatedSprites->PlayAnimation("idle", -1, 0.5f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
 	//1.0f --> set time between frames as 1.0f
@@ -191,6 +198,15 @@ bool JEnemy2DPatrolT::Init(void)
 		else if (vec2Index == glm::vec2(16, 11))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 140, 4);
+		}
+	}
+	//for lvl 2
+	if (cMap2D->GetCurrentLevel() == 2)
+	{
+		//if it's the enemy at this position
+		if (vec2Index == glm::vec2(4, 4))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 100, 4);
 		}
 	}
 	
@@ -245,8 +261,8 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case IDLE:
-		//TEMP
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
+		//Play the "idle" animation
+		animatedSprites->PlayAnimation("idle", -1, 1.f);
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
 		{
 			sCurrentFSM = NOISY;
@@ -272,8 +288,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case PATROL:
-		//TEMP
-		runtimeColour = glm::vec4(0.0, 0.0, 1.0, 1.0); //blue
 		//set way point to get to
 			//if pointing at the spot beyond the last waypoint index, set current back to first
 		if (currentWaypointCounter == maxWaypointCounter)
@@ -351,8 +365,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case NOISY:
-		//TEMP
-		runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
 		noisy = true; //used to let other enemies know this enemy is in noisy mode
 			//follow player and attack
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
@@ -454,8 +466,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case EN_ROUTE:
-		//TEMP
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //blank
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
 		{
 			sCurrentFSM = NOISY;
@@ -520,8 +530,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case RETURN:
-		//TEMP
-		runtimeColour = glm::vec4(0.0, 1.0, 1.0, 1.0); //?
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
 		{
 			sCurrentFSM = NOISY;
@@ -604,27 +612,27 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 	// Interact with the Map
 	InteractWithMap();
 
-	//update sprite animation to play depending on the direction enemy is facing
-	if (shootingDirection == LEFT)
-	{
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
-	else if (shootingDirection == RIGHT)
-	{
-		//CS: Play the "right" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
-	else if (shootingDirection == UP)
-	{
-		//CS: Play the "up" animation
-		animatedSprites->PlayAnimation("up", -1, 1.0f);
-	}
-	else if (shootingDirection == DOWN)
-	{
-		//CS: Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	}
+	////update sprite animation to play depending on the direction enemy is facing
+	//if (shootingDirection == LEFT)
+	//{
+	//	//CS: Play the "left" animation
+	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
+	//}
+	//else if (shootingDirection == RIGHT)
+	//{
+	//	//CS: Play the "right" animation
+	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
+	//}
+	//else if (shootingDirection == UP)
+	//{
+	//	//CS: Play the "up" animation
+	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
+	//}
+	//else if (shootingDirection == DOWN)
+	//{
+	//	//CS: Play the "idle" animation
+	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -1161,6 +1169,23 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 		}
 		shootingDirection = LEFT; //moving to the left
 
+		//set animation based on state
+		if (sCurrentFSM == PATROL)
+		{
+			//Play the "moving left" animation
+			animatedSprites->PlayAnimation("movingL", -1, 0.5f);
+		}
+		else if (sCurrentFSM == NOISY)
+		{
+			//Play the "noisy left" animation
+			animatedSprites->PlayAnimation("noisyL", -1, 0.75f);
+		}
+		else if (sCurrentFSM == EN_ROUTE)
+		{
+			//Play the "en route left" animation
+			animatedSprites->PlayAnimation("enrouteL", -1, 0.5f);
+		}
+
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
 
@@ -1196,6 +1221,23 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 			}
 		}
 		shootingDirection = RIGHT; //moving to the right
+
+		//set animation based on state
+		if (sCurrentFSM == PATROL)
+		{
+			//Play the "moving right" animation
+			animatedSprites->PlayAnimation("movingR", -1, 0.5f);
+		}
+		else if (sCurrentFSM == NOISY)
+		{
+			//Play the "noisy right" animation
+			animatedSprites->PlayAnimation("noisyR", -1, 0.75f);
+		}
+		else if (sCurrentFSM == EN_ROUTE)
+		{
+			//Play the "en route right" animation
+			animatedSprites->PlayAnimation("enrouteR", -1, 0.5f);
+		}
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
