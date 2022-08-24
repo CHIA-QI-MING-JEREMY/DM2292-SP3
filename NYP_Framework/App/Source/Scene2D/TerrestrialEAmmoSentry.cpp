@@ -483,3 +483,13 @@ bool CTEAmmoSentry::getActive(void)
 {
 	return active;
 }
+
+bool CTEAmmoSentry::getIsAlerted(void)
+{
+	return isAlerted;
+}
+
+void CTEAmmoSentry::setIsAlerted(bool isAlarmOn)
+{
+	isAlerted = isAlarmOn;
+}

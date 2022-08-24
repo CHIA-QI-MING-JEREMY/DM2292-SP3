@@ -113,6 +113,10 @@ public:
 	//used to check if ammo is active before checking collision and rendering, etc
 	bool getActive(void);
 
+	// checks for enemy alerted status
+	bool getIsAlerted(void);
+	void setIsAlerted(bool isAlarmOn);
+
 protected:
 	glm::vec2 vec2OldIndex;
 
@@ -155,5 +159,8 @@ protected:
 
 	// Determines whether or not to render it
 	bool active;
+
+	// Determines if enemy is alerted
+	bool isAlerted;
 };
 
