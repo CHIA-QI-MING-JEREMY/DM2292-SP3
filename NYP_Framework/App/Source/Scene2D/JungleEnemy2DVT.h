@@ -116,15 +116,12 @@ protected:
 
 	enum FSM
 	{
-		IDLE = 0,
-		RELOAD = 1,
-		ATTACK = 2,
-		TELEPORT,
+		TELEPORT = 0,
 		WANDER,
 		SHOOT,
+		RELOAD,	
 		RETURN,
 		RECOVER,
-		EXPLODE,
 		NUM_FSM
 	};
 
