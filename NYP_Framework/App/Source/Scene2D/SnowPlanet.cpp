@@ -125,26 +125,26 @@ bool SnowPlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_SnowMap_LevelTutorial.csv", TUTORIAL) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_Tutorial.csv", TUTORIAL) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Snow Map Tutorial Level" << endl;
 		return false;
 	}
 	// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", LEVEL1) == false)
-	//{
-	//	// The loading of a map has failed. Return false
-	//	cout << "Failed to load Jungle Map Level 01" << endl;
-	//	return false;
-	//}
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_01.csv", LEVEL1) == false)
+	{
+		// The loading of a map has failed. Return false
+		cout << "Failed to load Snow Map Level 01" << endl;
+		return false;
+	}
 	//// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02A.csv", LEVEL2A) == false)
-	//{
-	//	// The loading of a map has failed. Return false
-	//	cout << "Failed to load Jungle Map Level 02A" << endl;
-	//	return false;
-	//}
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_02.csv", LEVEL2) == false)
+	{
+		// The loading of a map has failed. Return false
+		cout << "Failed to load Jungle Map Level 02" << endl;
+		return false;
+	}
 	//// Load the map into an array
 	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02B.csv", LEVEL2B) == false)
 	//{
@@ -307,6 +307,65 @@ bool SnowPlanet::Init(void)
 bool SnowPlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(3);
+	if (cMap2D->GetCurrentLevel() == TUTORIAL)
+	{
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO1)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO1).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO1);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO2)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO2).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO2);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO3)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO3).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO3);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO4)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO4).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO4);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO5)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO5).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO5);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT1)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT1).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT1);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT2)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT2).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT2);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT3)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT3).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT3);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT4)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT4).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT4);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT5)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT5).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT5);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT6)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT6).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT6);
+		}
+	}
+
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::NORMAL && turnBerserkOffTimer==5.0f) {
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
 			cout << "Switching back to NORMAL player mode" << endl;
