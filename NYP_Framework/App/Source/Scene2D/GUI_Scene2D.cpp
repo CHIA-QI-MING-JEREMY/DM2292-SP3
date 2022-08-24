@@ -608,6 +608,164 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::PopStyleColor();
 	}
 	else if (planetNum == 3 && CGameStateManager::GetInstance()->hasPauseGameState() == false) {
+
+	//tutorial popups
+		if (tutorialPopupSnow > 0) //there is a pop up
+		{
+			//popup window
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+			ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+			ImGui::Begin("textPopup", NULL, textPopupFlags);
+			ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+				cSettings->iWindowHeight * 0.5f));
+			ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
+
+			//different popup text for different popups
+			switch (tutorialPopupSnow)
+			{
+			case SIGNINTRO1:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Welcome to the Snow Planet's tutorial!");
+				ImGui::NewLine();
+				////controls instructions
+				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case SIGNINTRO2:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There are a few things you need to know\nbefore you start your adventure\non this planet.");
+				ImGui::NewLine();
+				////controls instructions
+				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case SIGNINTRO3:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "First, you have a temperature bar at the top left of your screen\nthat you have to maintain in order to prevent yourself from freezing to death.\nThere are two ways to gain back your temperature,\neither by picking up fur coats around the map\nor killing brown wolves and collecting their fur.");
+				ImGui::NewLine();
+				////controls instructions
+				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case SIGNINTRO4:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There will be power-ups which you can collect\nthroughout the level which will help with your progression\nin the level itself.\n(Berserk, Shield, Freeze Water)");
+				ImGui::NewLine();
+				////controls instructions
+				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case SIGNINTRO5:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "You will have a limit of 5 inventory space items to collect your resources\n(Common:Battery,Scrap Metal) & (Level Specific:Ice Crystal).\nNote that powerups do not count as part of the inventory space\nso feel free to collect as many as you want!");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Pressing 'I' allows you to access your inventory space\nand left clicking on a resource removes 1 of the resource from your bag space.");
+				break;
+			case SIGNTUT1:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Ropes");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Climb ropes to move up and down.");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Pressing 'W' and 'S' allows you to move up and down.");
+				break;
+			case SIGNTUT2:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoint to set respawn\npoint \nTouching checkpoints restores health\nto full \n\nOnly 1 checkpoint can be active at 1\ntime \nActivating a new checkpoint \ndeactivates all others");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case SIGNTUT3:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Ice Shard");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Water damages you but ice does not.\nIce allows you to walk faster!");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press F to freeze all water in map");
+				break;
+			case SIGNTUT4:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Fur & Fur Coat");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Both furcoats and fur allow you to increase your body temperature.\nKilling brown wolves will drop their fur\nwhile furcoats will be laid out across the level.");
+				ImGui::NewLine();
+				//controls instructions
+				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press F to freeze all water in map");
+				break;
+			case SIGNTUT5:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Berserk Mode");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "It allows you to do twice the damage to enemies,\nheals you for 15 health\nand allows you to walk around with a shield\nif you activate your shield while in berserk mode.");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press G to activate berserk mode");
+				break;
+			case SIGNTUT6:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shield Mode");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There is no time limit for shield if you are in normal mode,\n but if you walk, the shield will stop.\n If you are in berserk mode, you can activate your shield\n and walk around with it with a time limit\n of it being as long as the berserk mode is active.");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press Q to to activate shield mode");
+				break;
+			default:
+				break;
+			}
+			ImGui::End();
+			ImGui::PopStyleColor();
+		}
 	// Render the temp Level
 	ImGuiWindowFlags tempWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 		ImGuiWindowFlags_NoBackground |
@@ -767,4 +925,14 @@ int CGUI_Scene2D::getTutorialPopupJungle(void)
 void CGUI_Scene2D::setTutorialPopupJungle(int index)
 {
 	tutorialPopupJungle = index;
+}
+
+int CGUI_Scene2D::getTutorialPopupSnow(void)
+{
+	return tutorialPopupSnow;
+}
+
+void CGUI_Scene2D::setTutorialPopupSnow(int index)
+{
+	tutorialPopupSnow = index;
 }
