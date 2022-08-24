@@ -1034,8 +1034,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	else //randomise between level 1 and 2
 	{
 		//random between 2 numbers to set us Scrap metal or battery
-			//according to which number type is set to, load which texture
-		srand(static_cast<unsigned> (time(0)));
+		//according to which number type is set to, load which texture
 		int randomState = rand() % 100;
 		if (randomState < 50)
 		{
