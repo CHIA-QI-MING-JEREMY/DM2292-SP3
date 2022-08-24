@@ -861,7 +861,7 @@ void SnowPlanet::DecideLevel(bool tutorial)
 		}
 		else
 		{
-			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
+			cMap2D->SetCurrentLevel(LEVEL2); //level 2
 		}
 	}
 	cPlayer2D->ResetRespawn();
