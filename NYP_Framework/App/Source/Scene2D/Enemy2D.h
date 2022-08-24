@@ -99,13 +99,23 @@ public:
 	//used to determine enemy behaviour in scene
 	enum ENEMYTYPE
 	{
+		// general enemies
 		CLOSE_COMBAT = 0,
 		LONG_RANGE,
+
+		// jungle specific enemies
 		TELEPORTABLE,
 		DEFENCE,
 		COMMUNITY,
 		SPECIAL,
+
+		// terrestrial specific enemies
+		KEYHOLDER,
+
+		// snow specific enemies
 		BROWN,
+
+		NUM_ENEMIES
 	};
 
 	// enemy type

@@ -165,9 +165,9 @@ bool TEnemy2DDummy::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	type = LONG_RANGE; //has ammo
-	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 1 hit to kill
+	type = KEYHOLDER; // drops a key upon being killed
+	shootingDirection = RIGHT; // setting direction for ammo shooting
+	maxHealth = health = 25; // takes 1 hit to kill
 
 	isAlarmerActive = false;
 	isAlarmOn = false;
