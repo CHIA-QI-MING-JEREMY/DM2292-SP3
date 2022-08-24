@@ -272,9 +272,6 @@ bool CPlayer2D::Init(void)
 	// sounds
 	hasLanded = false;
 
-	// initialises random by time
-	srand(static_cast<unsigned> (time(0)));
-
 	return true;
 }
 

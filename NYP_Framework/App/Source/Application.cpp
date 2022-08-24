@@ -257,6 +257,9 @@ bool Application::Init(void)
 	// Set the active scene
 	CGameStateManager::GetInstance()->SetActiveGameState("IntroState");
 
+	// initialises random by time
+	srand(static_cast<unsigned> (time(0)));
+
 	return true;
 }
 
