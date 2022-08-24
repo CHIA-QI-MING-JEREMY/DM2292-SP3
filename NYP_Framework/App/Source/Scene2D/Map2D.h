@@ -167,6 +167,7 @@ public:
 		ANTIDOTE_PILL = 260,
 		SWITCH_LEFT = 270,
 		SWITCH_RIGHT = 271,
+		KEY_PURPLE = 280,
 		EXIT_DOOR = 299,
 		ENERGY_QUARTZ = 399,
 		GROUND_TILE_SOLID = 800,
@@ -181,6 +182,7 @@ public:
 		GROUND_WIRE_CORNER_TOP_R = 813,
 		GROUND_WIRE_LENGTH_HOR = 814,
 		GROUND_WIRE_LENGTH_VER = 815,
+		DOOR_LOCKED_PURPLE = 820,
 
 		// snow planet
 		SIGNINTRO1 = 499,
@@ -211,7 +213,8 @@ public:
 		BOTTOM_SNOW=1003,
 		NO_SNOW=1004,
 		ICE=1100,
-		NUM_TILES,
+
+		NUM_TILES
 	};
 
 	// Set the specifications of the map

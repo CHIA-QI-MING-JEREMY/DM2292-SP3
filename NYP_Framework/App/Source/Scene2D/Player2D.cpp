@@ -241,6 +241,9 @@ bool CPlayer2D::Init(void)
 	// Add an antidote pill as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("AntidotePill", "Image/TerrestrialPlanet/AntidotePill.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	// Add a purple key as one of the inventory items
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PurpleKey", "Image/TerrestrialPlanet/Key_Purple.tga", 1, 0);
+	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//SnowPlanet
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Temperature", "Image/SnowPlanet/temp.tga", 30, 30);

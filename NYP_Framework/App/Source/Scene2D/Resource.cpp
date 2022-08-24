@@ -204,10 +204,16 @@ if (type == NUM_RESOURCES)
 	{
 		type = BLUE_ORB;
 	}
+	// index for antidote pill
 	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ANTIDOTE_PILL, uiRow, uiCol))
 	{
 		type = ANTIDOTE_PILL;
 	}
+	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::KEY_PURPLE, uiRow, uiCol))
+	{
+		type = PURPLE_KEY;
+	}
+
 	//snow planet
 	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR, uiRow, uiCol)) {
 		type = FUR;
@@ -377,6 +383,19 @@ if (type == NUM_RESOURCES)
 		}
 		break;
 	}
+	case PURPLE_KEY:
+	{
+		// Load the key texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Purple.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/TerrestrialPlanet/Key_Purple.tga" << endl;
+			return false;
+		}
+		break;
+	}
+
+	// Snow Planet
 	case FUR:
 	{
 		//Load Fur texture
@@ -787,6 +806,15 @@ bool CResource::InteractWithPlayer(void)
 			}
 			break;
 		}
+		case PURPLE_KEY:
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
+			cInventoryItemPlanet->Add(1);
+			collected = true;
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+		}
+
 		// Snow Planet
 		case SHIELD:
 		{

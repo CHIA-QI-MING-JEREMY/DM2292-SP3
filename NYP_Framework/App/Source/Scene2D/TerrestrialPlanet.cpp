@@ -778,47 +778,69 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
-			//if this isn't the last enemy in this level
-			if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
+			if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER)
 			{
-				//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop energy quartz
-				srand(static_cast<unsigned> (time(0)));
-				int resourceType = rand() % 20;
-				std::cout << resourceType << std::endl;
-				if (resourceType < 4) //0 1 2 3
+				CResource* res = new CResource(CResource::RESOURCE_TYPE::PURPLE_KEY); //create new key resource
+				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+				//set resource's position where enemy's position is
+				res->SetShader("Shader2D_Colour"); //set shader
+				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+			}
+			else
+			{
+				int numOfKeyholders = 0;
+				int numOfEnemies = enemyVectors[cMap2D->GetCurrentLevel()].size();
+				
+				for (unsigned int j = 0; j < numOfEnemies; j++)
 				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
-					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-					//set resource's position where enemy's position is
-					res->SetShader("Shader2D_Colour"); //set shader
-					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					if (enemyVectors[cMap2D->GetCurrentLevel()][j]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER)
+					{
+						numOfKeyholders++;
+					}
 				}
-				else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+				
+				// if only 1 non keyholder is left
+				if (numOfKeyholders == numOfEnemies - 1)
 				{
-					CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
-					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-					//set resource's position where enemy's position is
-					res->SetShader("Shader2D_Colour"); //set shader
-					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
-				}
-				else if (resourceType > 16 && resourceType < 19) //17 18
-				{
+					//confirm drop an energy quartz
 					CResource* res = new CResource(CResource::RESOURCE_TYPE::ENERGY_QUARTZ); //create new energy quartz resource
 					res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 					//set resource's position where enemy's position is
 					res->SetShader("Shader2D_Colour"); //set shader
 					resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
 				}
-			}
-			//if this is the last enemy
-			else if (enemyVectors[cMap2D->GetCurrentLevel()].size() == 1)
-			{
-				//confirm drop an energy quartz
-				CResource* res = new CResource(CResource::RESOURCE_TYPE::ENERGY_QUARTZ); //create new energy quartz resource
-				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
-				//set resource's position where enemy's position is
-				res->SetShader("Shader2D_Colour"); //set shader
-				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+				// if there are more than 1 non keyholders left
+				else
+				{
+					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop energy quartz
+					srand(static_cast<unsigned> (time(0)));
+					int resourceType = rand() % 20;
+					std::cout << resourceType << std::endl;
+					if (resourceType < 4) //0 1 2 3
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType > 7 && resourceType < 12) //8 9 10 11
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::BATTERY); //create new battery resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+					else if (resourceType > 16 && resourceType < 19) //17 18
+					{
+						CResource* res = new CResource(CResource::RESOURCE_TYPE::ENERGY_QUARTZ); //create new energy quartz resource
+						res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+						//set resource's position where enemy's position is
+						res->SetShader("Shader2D_Colour"); //set shader
+						resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+					}
+				}
 			}
 
 			delete enemyVectors[cMap2D->GetCurrentLevel()][i];
