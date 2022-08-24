@@ -34,7 +34,6 @@ class CMap2D;
 
 //include ammo
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
 
 //include enemy base class
 #include "Enemy2D.h"
@@ -226,5 +225,6 @@ protected:
 	float shieldTimer;
 	int shieldCount;
 	int healCount;
+	float attackTimer;
 };
 
