@@ -658,7 +658,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "First, you have a temperature bar at the top left of your screen\nthat you have to maintain in order to prevent yourself from freezing to death.\nThere are two ways to gain back your temperature,\neither by picking up fur coats around the map\nor killing brown wolves and collecting their fur.");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "First, you have a temperature bar\nat the top left of your screen\nthat you have to maintain\nin order to prevent yourself from freezing to death.\nThere are two ways to gain back your temperature,\neither by picking up fur coats around the map\nor killing brown wolves and collecting their fur.");
 				ImGui::NewLine();
 				////controls instructions
 				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
@@ -670,7 +670,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There will be power-ups which you can collect\nthroughout the level which will help with your progression\nin the level itself.\n(Berserk, Shield, Freeze Water)");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There will be power-ups which you can collect\nthroughout the level which will\nhelp with your progression\nin the level itself.\n(Berserk, Shield, Freeze Water)");
 				ImGui::NewLine();
 				////controls instructions
 				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);
@@ -682,11 +682,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Introduction");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "You will have a limit of 5 inventory space items to collect your resources\n(Common:Battery,Scrap Metal) & (Level Specific:Ice Crystal).\nNote that powerups do not count as part of the inventory space\nso feel free to collect as many as you want!");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "You will have a limit of 5\ninventory space items to\ncollect your resources\n(Common:Battery,Scrap Metal) & (Level Specific:Ice Crystal).\nNote that powerups do not count as\npart of the inventory space\nso feel free to collect as many\nas you want!");
 				ImGui::NewLine();
 				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Pressing 'I' allows you to access your inventory space\nand left clicking on a resource removes 1 of the resource from your bag space.");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Pressing 'I' allows you to access your inventory space\nand left clicking on a resource removes 1\nof the resource from your bag space.");
 				break;
 			case SIGNTUT1:
 				//header
@@ -754,7 +754,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shield Mode");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There is no time limit for shield if you are in normal mode,\n but if you walk, the shield will stop.\n If you are in berserk mode, you can activate your shield\n and walk around with it with a time limit\n of it being as long as the berserk mode is active.");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There is no time limit for shield.\nIf you are in normal mode,\nbut if you walk, the shield will stop.\nIf you are in berserk mode, you can activate your shield\nand walk around with it with a time limit\n of it being as long as the berserk\nmode is active.");
 				ImGui::NewLine();
 				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);

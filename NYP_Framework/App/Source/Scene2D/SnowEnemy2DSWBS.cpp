@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "SnowEnemy2DSWW.h"
+#include "SnowEnemy2DSWBS.h"
 
 #include <iostream>
 using namespace std;
@@ -28,7 +28,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-SnowEnemy2DSWW::SnowEnemy2DSWW(void)
+SnowEnemy2DSWBS::SnowEnemy2DSWBS(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
@@ -57,7 +57,7 @@ SnowEnemy2DSWW::SnowEnemy2DSWW(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-SnowEnemy2DSWW::~SnowEnemy2DSWW(void)
+SnowEnemy2DSWBS::~SnowEnemy2DSWBS(void)
 {
 	// Delete the quadMesh
 	if (quadMesh)
@@ -88,7 +88,7 @@ SnowEnemy2DSWW::~SnowEnemy2DSWW(void)
 /**
   @brief Initialise this instance
   */
-bool SnowEnemy2DSWW::Init(void)
+bool SnowEnemy2DSWBS::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -103,7 +103,7 @@ bool SnowEnemy2DSWW::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(2001, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(2002, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -126,10 +126,10 @@ bool SnowEnemy2DSWW::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/wolfwhite.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/wolfboss.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/wolfwhite.png" << endl;
+		cout << "Unable to load Image/wolfboss.png" << endl;
 		return false;
 	}
 
@@ -171,18 +171,16 @@ bool SnowEnemy2DSWW::Init(void)
 	//	ammoList.push_back(cEnemyAmmo2D);
 	//}
 
-	type = WHITE;
+	type = BOSS;
 //	shootingDirection = LEFT; //setting direction for ammo shooting
-	maxHealth = health = 30; //takes 6 hits to kill
+	maxHealth = health = 50; //takes 10 hits to kill
 	shieldTimer = 2.0f;
 	shieldCount = 1;
 	healCount = 1;
+	healFearCount = 1;
 	boolTimer = 1.f;
 	attackHit = false;
 
-	//flickerTimer = 0.5; //used to progress the flicker counter
-	//flickerTimerMax = 0.5; //used to reset flicker counter
-	//flickerCounter = 0; //decides colour of enemy and when to explode
 
 	//if (vec2Index.x == 11 && vec2Index.y == 1) {
 	//	pathway.push_back(glm::vec2(11, 1));
@@ -224,7 +222,7 @@ bool SnowEnemy2DSWW::Init(void)
 /**
  @brief Update this instance
  */
-void SnowEnemy2DSWW::Update(const double dElapsedTime)
+void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
@@ -241,6 +239,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		attackHit = false;
 		boolTimer = 1.f;
 	}
+	cout << health << endl;
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
@@ -248,19 +247,21 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 	case IDLE:
 		if (attackHit) {
 			if (vec2Direction.x > 0) {
+				runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 				animatedSprites->PlayAnimation("biteR", -1, 1.0f);
 			}
 			else {
+				runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 				animatedSprites->PlayAnimation("biteL", -1, 1.0f);
 			}
 		}
 		else {
 			if (vec2Direction.x > 0) {
-				runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+				runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 				animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 			}
 			else if (vec2Direction.x < 0) {
-				runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+				runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 				animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 			}
 		}
@@ -271,7 +272,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Patrol State" << endl;
 			break;
 		}
-		if (health <= 20 && health >15 && shieldCount > 0) {
+		if (health <= 40 && health >35 && shieldCount > 0) {
 			sCurrentFSM = SHIELD;
 			iFSMCounter = 0;
 			cout << "Switching to Shield State" << endl;
@@ -283,7 +284,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Fear State" << endl;
 			break;
 		}
-		if (health <= 5 && healCount > 0) {
+		if (health <= 30 && health > 25 && healCount > 0) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
@@ -293,11 +294,11 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	case PATROL:
 		if (vec2Direction.x > 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -314,7 +315,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Idle State" << endl;
 			break;
 		}
-		if (health <= 20 && health > 15 && shieldCount>0) {
+		if (health <= 40 && health > 35 && shieldCount > 0) {
 			sCurrentFSM = SHIELD;
 			iFSMCounter = 0;
 			cout << "Switching to Shield State" << endl;
@@ -326,7 +327,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Fear State" << endl;
 			break;
 		}
-		if (health <= 5 && healCount > 0) {
+		if (health <= 30 && health > 25 && healCount > 0) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
@@ -373,11 +374,11 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	case ATTACK:
 		if (vec2Direction.x > 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -419,7 +420,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		if (health <= 20 && health > 15 && shieldCount > 0) {
+		if (health <= 40 && health > 35 && shieldCount > 0) {
 			sCurrentFSM = SHIELD;
 			iFSMCounter = 0;
 			cout << "Switching to Shield State" << endl;
@@ -431,7 +432,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Fear State" << endl;
 			break;
 		}
-		if (health <= 5 && healCount > 0) {
+		if (health <= 30 && health > 25 && healCount > 0) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
@@ -440,11 +441,11 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	case SHIELD:
 		if (vec2Direction.x > 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("shieldR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("shieldL", -1, 1.0f);
 		}
 		shieldActivated=true;
@@ -463,20 +464,14 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 
 	case FEAR:
 		if (vec2Direction.x > 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
-			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
-		if (health <= 5 && healCount > 0) {
-			sCurrentFSM = HEAL;
-			iFSMCounter = 0;
-			cout << "Switching to Heal State" << endl;
-			break;
-		}
-		else {
+		if (health<=10 && health>5) {
 			auto path = cMap2D->PathFind(vec2Index,
 				fearpathway,
 				heuristic::manhattan,
@@ -513,15 +508,17 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	case FEARIDLE:
 		if (vec2Direction.x > 0) {
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
+			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 		}
-		if (health <= 5 && healCount > 0) {
-			sCurrentFSM = HEAL;
+		if (health <= 5 && healFearCount > 0) {
+			sCurrentFSM = FEARHEAL;
 			iFSMCounter = 0;
-			cout << "Switching to Heal State" << endl;
+			cout << "Switching to Heal Fear State" << endl;
 			break;
 		}
 		iFSMCounter++;
@@ -550,6 +547,34 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
+	case FEARHEAL:
+		if (vec2Direction.x > 0) {
+			if (healFearCount > 0) {
+				runtimeColour = glm::vec4(1.f, 0.5f, 0.5f, 1.f);
+			}
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0) {
+			if (healFearCount > 0) {
+				runtimeColour = glm::vec4(1.f, 0.5f, 0.5f, 1.f);
+			}
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		}
+		if (healFearCount > 0) {
+			health =maxHealth;
+			healFearCount -= 1;
+			healCount += 1;
+			shieldCount += 1;
+			shieldTimer = 2.0f;
+		}
+		if (healFearCount <= 0 && iFSMCounter > iMaxFSMCounter) {
+			sCurrentFSM = PATROL;
+			iFSMCounter = 0;
+			cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
+		}
+		iFSMCounter++;
+		break;
+
 	default:
 		break;
 	}
@@ -587,7 +612,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void SnowEnemy2DSWW::PreRender(void)
+void SnowEnemy2DSWBS::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -606,7 +631,7 @@ void SnowEnemy2DSWW::PreRender(void)
 /**
  @brief Render this instance
  */
-void SnowEnemy2DSWW::Render(void)
+void SnowEnemy2DSWBS::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -663,7 +688,7 @@ void SnowEnemy2DSWW::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void SnowEnemy2DSWW::PostRender(void)
+void SnowEnemy2DSWBS::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -677,7 +702,7 @@ void SnowEnemy2DSWW::PostRender(void)
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void SnowEnemy2DSWW::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void SnowEnemy2DSWBS::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->vec2Index.x = iIndex_XAxis;
 	this->vec2Index.y = iIndex_YAxis;
@@ -688,7 +713,7 @@ void SnowEnemy2DSWW::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YA
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void SnowEnemy2DSWW::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void SnowEnemy2DSWBS::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
@@ -698,7 +723,7 @@ void SnowEnemy2DSWW::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, con
  @brief Set the handle to cPlayer to this class instance
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void SnowEnemy2DSWW::SetPlayer2D(CPlayer2D* cPlayer2D)
+void SnowEnemy2DSWBS::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -706,12 +731,12 @@ void SnowEnemy2DSWW::SetPlayer2D(CPlayer2D* cPlayer2D)
 	UpdateDirection();
 }
 
-bool SnowEnemy2DSWW::getShieldActivated()
+bool SnowEnemy2DSWBS::getShieldActivated()
 {
 	return shieldActivated;
 }
 
-void SnowEnemy2DSWW::setShieldActivated(bool s)
+void SnowEnemy2DSWBS::setShieldActivated(bool s)
 {
 	shieldActivated = s;
 }
@@ -722,7 +747,7 @@ void SnowEnemy2DSWW::setShieldActivated(bool s)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void SnowEnemy2DSWW::Constraint(DIRECTION eDirection)
+void SnowEnemy2DSWBS::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -766,7 +791,7 @@ void SnowEnemy2DSWW::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool SnowEnemy2DSWW::CheckPosition(DIRECTION eDirection)
+bool SnowEnemy2DSWBS::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -879,7 +904,7 @@ bool SnowEnemy2DSWW::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool SnowEnemy2DSWW::IsMidAir(void)
+bool SnowEnemy2DSWBS::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (vec2Index.y == 0)
@@ -896,7 +921,7 @@ bool SnowEnemy2DSWW::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void SnowEnemy2DSWW::UpdateJumpFall(const double dElapsedTime)
+void SnowEnemy2DSWBS::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -1005,7 +1030,7 @@ void SnowEnemy2DSWW::UpdateJumpFall(const double dElapsedTime)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool SnowEnemy2DSWW::InteractWithPlayer(void)
+bool SnowEnemy2DSWBS::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 	
@@ -1023,7 +1048,7 @@ bool SnowEnemy2DSWW::InteractWithPlayer(void)
 		iFSMCounter = 0;
 		if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::SHIELD) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
-			cInventoryItemPlanet->Remove(2);
+			cInventoryItemPlanet->Remove(3);
 		}
 		return true;
 	}
@@ -1031,7 +1056,7 @@ bool SnowEnemy2DSWW::InteractWithPlayer(void)
 }
 
 //enemy interact with map
-void SnowEnemy2DSWW::InteractWithMap(void)
+void SnowEnemy2DSWBS::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -1065,7 +1090,7 @@ void SnowEnemy2DSWW::InteractWithMap(void)
 /**
  @brief Update the enemy's direction.
  */
-void SnowEnemy2DSWW::UpdateDirection(void)
+void SnowEnemy2DSWBS::UpdateDirection(void)
 {
 	// Set the destination to the player
 	vec2Destination = cPlayer2D->vec2Index;
@@ -1092,7 +1117,7 @@ void SnowEnemy2DSWW::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void SnowEnemy2DSWW::FlipHorizontalDirection(void)
+void SnowEnemy2DSWBS::FlipHorizontalDirection(void)
 {
 	vec2Direction.x *= -1;
 }
@@ -1100,7 +1125,7 @@ void SnowEnemy2DSWW::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void SnowEnemy2DSWW::UpdatePosition(void)
+void SnowEnemy2DSWBS::UpdatePosition(void)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -1188,7 +1213,7 @@ void SnowEnemy2DSWW::UpdatePosition(void)
 }
 
 //called whenever an ammo is needed to be shot
-//CJEAmmoVT* SnowEnemy2DSWW::FetchAmmo()
+//CJEAmmoVT* SnowEnemy2DSWBS::FetchAmmo()
 //{
 //	//Exercise 3a: Fetch a game object from m_goList and return it
 //	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
@@ -1213,7 +1238,7 @@ void SnowEnemy2DSWW::UpdatePosition(void)
 //	return ammoList.at(prevSize);
 //
 //}
-vector<glm::vec2> SnowEnemy2DSWW::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
+vector<glm::vec2> SnowEnemy2DSWBS::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
 	for (int i = 0; i < numOfWaypoints; ++i)
 	{
