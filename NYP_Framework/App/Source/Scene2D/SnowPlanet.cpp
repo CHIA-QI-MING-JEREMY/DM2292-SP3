@@ -132,19 +132,19 @@ bool SnowPlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_01.csv", LEVEL1) == false)
-	//{
-	//	// The loading of a map has failed. Return false
-	//	cout << "Failed to load Jungle Map Level 01" << endl;
-	//	return false;
-	//}
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_01.csv", LEVEL1) == false)
+	{
+		// The loading of a map has failed. Return false
+		cout << "Failed to load Snow Map Level 01" << endl;
+		return false;
+	}
 	//// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02A.csv", LEVEL2A) == false)
-	//{
-	//	// The loading of a map has failed. Return false
-	//	cout << "Failed to load Jungle Map Level 02A" << endl;
-	//	return false;
-	//}
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_02.csv", LEVEL2) == false)
+	{
+		// The loading of a map has failed. Return false
+		cout << "Failed to load Jungle Map Level 02" << endl;
+		return false;
+	}
 	//// Load the map into an array
 	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02B.csv", LEVEL2B) == false)
 	//{
