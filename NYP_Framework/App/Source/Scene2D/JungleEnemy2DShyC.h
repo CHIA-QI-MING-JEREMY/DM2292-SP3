@@ -34,7 +34,7 @@ class CMap2D;
 
 //include ammo
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
+#include "JungleEAmmo.h"
 
 //include enemy base class
 #include "Enemy2D.h"
@@ -108,10 +108,10 @@ protected:
 	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
 
 	////vector full of enemy's fired ammo
-	std::vector<CJEAmmoVT*> ammoList;
+	std::vector<CJEAmmo*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	CJEAmmoVT* FetchAmmo(void);
+	CJEAmmo* FetchAmmo(void);
 
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;

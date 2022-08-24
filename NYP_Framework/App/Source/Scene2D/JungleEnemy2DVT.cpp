@@ -161,7 +161,7 @@ bool JEnemy2DVT::Init(void)
 	//Construct 100 inactive ammo and add into ammoList
 	for (int i = 0; i < 100; ++i)
 	{
-		CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
+		CJEAmmo* cEnemyAmmo2D = new CJEAmmo();
 		cEnemyAmmo2D->SetShader("Shader2D");
 		ammoList.push_back(cEnemyAmmo2D);
 	}
@@ -513,7 +513,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 
 			// Shoot enemy ammo!
 			//shoot ammo in accordance to the direction enemy is facing
-			CJEAmmoVT* ammo = FetchAmmo();
+			CJEAmmo* ammo = FetchAmmo();
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			cout << "Bam!" << shootingDirection << endl;
@@ -725,9 +725,9 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 	}
 
 	//ammo beahviour
-	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CJEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+		CJEAmmo* ammo = (CJEAmmo*)*it;
 		if (ammo->getActive())
 		{
 			ammo->Update(dElapsedTime);
@@ -840,9 +840,9 @@ void JEnemy2DVT::Render(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//render enemy ammo
-	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CJEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+		CJEAmmo* ammo = (CJEAmmo*)*it;
 		if (ammo->getActive())
 		{
 			ammo->PreRender();
@@ -1383,12 +1383,12 @@ vector<glm::vec2> JEnemy2DVT::ConstructWaypointVector(vector<glm::vec2> waypoint
 }
 
 //called whenever an ammo is needed to be shot
-CJEAmmoVT* JEnemy2DVT::FetchAmmo()
+CJEAmmo* JEnemy2DVT::FetchAmmo()
 {
 	//Exercise 3a: Fetch a game object from m_goList and return it
-	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CJEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+		CJEAmmo* ammo = (CJEAmmo*)*it;
 		if (ammo->getActive()) {
 			continue;
 		}
@@ -1402,7 +1402,7 @@ CJEAmmoVT* JEnemy2DVT::FetchAmmo()
 	//Get Size before adding 10
 	int prevSize = ammoList.size();
 	for (int i = 0; i < 10; ++i) {
-		ammoList.push_back(new CJEAmmoVT);
+		ammoList.push_back(new CJEAmmo);
 	}
 	ammoList.at(prevSize)->setActive(true);
 	return ammoList.at(prevSize);
