@@ -271,6 +271,9 @@ bool CTEAmmoDummy::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(1);
+		
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
