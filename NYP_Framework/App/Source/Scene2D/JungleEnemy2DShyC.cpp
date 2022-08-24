@@ -128,26 +128,27 @@ bool JEnemy2DShyC::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/ShyChaserSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
+		cout << "Unable to load Image/JunglePlanet/ShyChaserSpriteSheet.png" << endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(3, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
-	animatedSprites->AddAnimation("right", 3, 5);
-	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);
+	animatedSprites->AddAnimation("idle", 0, 3); //4 images for animation, index 0 to 3
+	animatedSprites->AddAnimation("movingL", 4, 5);
+	animatedSprites->AddAnimation("hunkerL", 6, 7);
+	animatedSprites->AddAnimation("hunkerR", 8, 9);
+	animatedSprites->AddAnimation("movingR", 10, 11);
 	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	animatedSprites->PlayAnimation("idle", -1, 2.0f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
-	//1.0f --> set time between frames as 1.0f
+	//2.0f --> set time between frames as 2.0f
 	//		increasing this number will cause the animation to slowdown
 
 	//CS: Init the color to white
@@ -212,8 +213,8 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case CAMOUFLAGE:
-		//TEMP
-		runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0); //black
+		//Play the "idle" animation
+		animatedSprites->PlayAnimation("idle", -1, 2.0f);
 		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
 			sCurrentFSM = EXPLODE;
@@ -238,8 +239,6 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case AGGRO:
-		//TEMP
-		runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
 		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
 			sCurrentFSM = EXPLODE;
@@ -270,13 +269,11 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				cPlayer2D->vec2Index,
 				heuristic::manhattan,
 				10);
-			//cout << "=== Printing out the path ===" << endl;
 
 			// Calculate new destination
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << "," << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					// Set a destination
@@ -298,13 +295,6 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 					}
 				}
 			}
-
-			////to help with debugging
-			//cout << "vec2Destination : " << vec2Destination.x << ", "
-			//	<< vec2Destination.y << endl;
-			//cout << "vec2Direction : " << vec2Direction.x << ", "
-			//	<< vec2Direction.y << endl;
-			//system("pause");
 
 			// Update the Enemy2D's position for attack
 			UpdatePosition();
@@ -360,9 +350,17 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case HUNKER:
-		//TEMP
-		runtimeColour = glm::vec4(0.0, 0.0, 1.0, 1.0); //blue
 		hunkering = true;
+		if (shootingDirection == RIGHT) //if it was previously facing right
+		{
+			//Play the "hunker right" animation
+			animatedSprites->PlayAnimation("hunkerR", 1, 1.0f);
+		}
+		else //facing any other direction
+		{
+			//Play the "hunker left" animation
+			animatedSprites->PlayAnimation("hunkerL", 1, 1.0f);
+		}
 		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
 			sCurrentFSM = EXPLODE;
@@ -401,8 +399,6 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case RETURN:
-		//TEMP
-		runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
 		if (health <= 5) //i can only take a max of 1 hit left, switch to explode mode
 		{
 			sCurrentFSM = EXPLODE;
@@ -437,7 +433,6 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					// Set a destination
@@ -471,7 +466,9 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
 
-			shootingDirection = DOWN; //to adjust where the sprite faces
+			//Play the "hunker left" animation
+			animatedSprites->PlayAnimation("hunkerL", 1, 1.0f);
+
 			flickerTimer -= dElapsedTime; //timer counting down
 			if (flickerTimer <= 0) //timer up
 			{
@@ -560,28 +557,6 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 
 	// Interact with the Map
 	InteractWithMap();
-
-	//update sprite animation to play depending on the direction enemy is facing
-	if (shootingDirection == LEFT)
-	{
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
-	else if (shootingDirection == RIGHT)
-	{
-		//CS: Play the "right" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
-	else if (shootingDirection == UP)
-	{
-		//CS: Play the "up" animation
-		animatedSprites->PlayAnimation("up", -1, 1.0f);
-	}
-	else if (shootingDirection == DOWN)
-	{
-		//CS: Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -1121,6 +1096,8 @@ void JEnemy2DShyC::UpdatePosition(void)
 			}
 		}
 		shootingDirection = LEFT; //moving to the left
+		//Play the "moving left" animation
+		animatedSprites->PlayAnimation("movingL", -1, 1.0f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
@@ -1157,6 +1134,8 @@ void JEnemy2DShyC::UpdatePosition(void)
 			}
 		}
 		shootingDirection = RIGHT; //moving to the right
+		//Play the "moving right" animation
+		animatedSprites->PlayAnimation("movingR", -1, 1.0f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
