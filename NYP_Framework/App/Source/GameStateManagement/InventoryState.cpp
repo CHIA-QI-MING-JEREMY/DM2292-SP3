@@ -198,6 +198,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 	Batterywindow_flags |= ImGuiWindowFlags_NoMove;
 	Batterywindow_flags |= ImGuiWindowFlags_NoCollapse;
 	Batterywindow_flags |= ImGuiWindowFlags_NoNav;
+	Batterywindow_flags |= ImGuiWindowFlags_NoResize;
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 	{
@@ -245,6 +246,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 	ScrapMetalwindow_flags |= ImGuiWindowFlags_NoMove;
 	ScrapMetalwindow_flags |= ImGuiWindowFlags_NoCollapse;
 	ScrapMetalwindow_flags |= ImGuiWindowFlags_NoNav;
+	ScrapMetalwindow_flags |= ImGuiWindowFlags_NoResize;
 
 
 	// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
@@ -322,6 +324,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		Icewindow_flags |= ImGuiWindowFlags_NoMove;
 		Icewindow_flags |= ImGuiWindowFlags_NoCollapse;
 		Icewindow_flags |= ImGuiWindowFlags_NoNav;
+		Icewindow_flags |= ImGuiWindowFlags_NoResize;
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
@@ -400,6 +403,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		Ironwindow_flags |= ImGuiWindowFlags_NoMove;
 		Ironwindow_flags |= ImGuiWindowFlags_NoCollapse;
 		Ironwindow_flags |= ImGuiWindowFlags_NoNav;
+		Ironwindow_flags |= ImGuiWindowFlags_NoResize;
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
@@ -476,7 +480,8 @@ bool CInventoryState::Update(const double dElapsedTime)
 		RiverWaterwindow_flags |= ImGuiWindowFlags_NoBackground;
 		RiverWaterwindow_flags |= ImGuiWindowFlags_NoMove;
 		RiverWaterwindow_flags |= ImGuiWindowFlags_NoCollapse;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoNav;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoNav;	
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoResize;
 		{
 			static float f = 0.0f;
 			static int counter = 0;
