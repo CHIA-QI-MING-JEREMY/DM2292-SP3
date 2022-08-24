@@ -114,6 +114,8 @@ public:
 
 		// snow specific enemies
 		BROWN,
+		WHITE,
+		BOSS,
 
 		NUM_ENEMIES
 	};

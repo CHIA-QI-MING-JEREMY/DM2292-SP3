@@ -118,6 +118,8 @@ protected:
 		PATROL=1,
 		ATTACK = 2,
 		FEAR=3,
+		SHIELD=4,
+		HEAL=5,
 		NUM_FSM
 	};
 
@@ -219,5 +221,6 @@ protected:
 
 	//double warnTimer;
 	//double maxWarnTimer;
+	float shieldTimer;
 };
 
