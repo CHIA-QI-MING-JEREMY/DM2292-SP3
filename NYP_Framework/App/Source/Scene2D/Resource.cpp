@@ -145,7 +145,6 @@ if (type == NUM_RESOURCES)
 	{
 		//random between 2 numbers to set us Scrap metal or battery
 		//according to which number type is set to, load which texture
-		srand(static_cast<unsigned> (time(0)));
 		int randomState = rand() % 100;
 		if (randomState < 50)
 		{
@@ -809,10 +808,12 @@ bool CResource::InteractWithPlayer(void)
 		case PURPLE_KEY:
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
+			std::cout << "COLLECTED PURPLE KEY" << std::endl;
 			cInventoryItemPlanet->Add(1);
 			collected = true;
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
 		}
 
 		// Snow Planet

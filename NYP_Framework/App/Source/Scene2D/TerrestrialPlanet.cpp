@@ -508,7 +508,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 	// allows player to change the colour of the character (only after 1s cooldown between switches)
 	// coloured tiles will be replaced accordingly
 	// coloured orb count decreases
-	cout << colourSwitchTimer << endl;
+	
+	// cout << colourSwitchTimer << endl;
 	
 	if (colourSwitchTimer > 0.0)
 	{
@@ -703,7 +704,10 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 
 		// reduce the lives by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
-		cInventoryItemPlanet->Remove(1);
+		if (cMap2D->GetCurrentLevel() != 0 || cInventoryItemPlanet->GetCount() > 1)
+		{
+			cInventoryItemPlanet->Remove(1);
+		}
 	}
 
 	// Call the cPlayer2D's update method before Map2D
@@ -813,7 +817,6 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 				else
 				{
 					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop energy quartz
-					srand(static_cast<unsigned> (time(0)));
 					int resourceType = rand() % 20;
 					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3

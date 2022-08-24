@@ -242,7 +242,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("AntidotePill", "Image/TerrestrialPlanet/AntidotePill.tga", 1, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	// Add a purple key as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PurpleKey", "Image/TerrestrialPlanet/Key_Purple.tga", 1, 0);
+	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PurpleKey", "Image/TerrestrialPlanet/Key_Purple.tga", 9, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//SnowPlanet
@@ -271,6 +271,9 @@ bool CPlayer2D::Init(void)
 
 	// sounds
 	hasLanded = false;
+
+	// initialises random by time
+	srand(static_cast<unsigned> (time(0)));
 
 	return true;
 }
@@ -749,6 +752,25 @@ void CPlayer2D::InteractWithMap(void)
 		CGUI_Scene2D::GetInstance()->setShowExitPanel(false);
 	}
 
+	vector<glm::vec2> doorsVector = cMap2D->FindAllTiles(820);
+
+	for (int i = 0; i < doorsVector.size(); ++i)
+	{
+		if (cMap2D->GetMapInfo(doorsVector[i].y, doorsVector[i].x) == CMap2D::TILE_INDEX::DOOR_LOCKED_PURPLE)
+		{
+			if (vec2Index.x - 1 == doorsVector[i].x || vec2Index.x + 1 == doorsVector[i].x)
+			{
+				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
+				if (cInventoryItemPlanet->GetCount() >= 1)
+				{
+					cMap2D->SetMapInfo(doorsVector[i].y, doorsVector[i].x, 0);
+					cInventoryItemPlanet->Remove(1);
+					cout << cInventoryItemPlanet->GetCount() << endl;
+				}
+			}
+		}
+	}
+
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
 	case CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM: //player gets launched into the air
@@ -856,11 +878,17 @@ void CPlayer2D::UpdateHealthLives(void)
 		cInventoryItemPlanet->iItemCount = cInventoryItemPlanet->GetMaxCount();
 		// But we reduce the lives by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
+
 		if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 3) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
 			cInventoryItemPlanet->setCount(cInventoryItemPlanet->GetMaxCount());
 		}
-		cInventoryItemPlanet->Remove(1);
+
+		if (cMap2D->GetCurrentLevel() != 0 || cInventoryItemPlanet->GetCount() > 1)
+		{
+			cInventoryItemPlanet->Remove(1);
+		}
+
 		// Respawn player back at last visited checkpoint
 		vec2Index = vec2CPIndex;
 		vec2NumMicroSteps.x = 0;
