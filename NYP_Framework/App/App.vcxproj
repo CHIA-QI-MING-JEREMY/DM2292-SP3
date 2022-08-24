@@ -47,6 +47,7 @@
     <ClInclude Include="Source\Scene2D\Resource.h" />
     <ClInclude Include="Source\Scene2D\SnowEAmmo.h" />
     <ClInclude Include="Source\Scene2D\SnowEnemy2DSWB.h" />
+    <ClInclude Include="Source\Scene2D\SnowEnemy2DSWBS.h" />
     <ClInclude Include="Source\Scene2D\SnowEnemy2DSWW.h" />
     <ClInclude Include="Source\Scene2D\SnowPlanet.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEAmmoDummy.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="Source\Scene2D\Resource.cpp" />
     <ClCompile Include="Source\Scene2D\SnowEAmmo.cpp" />
     <ClCompile Include="Source\Scene2D\SnowEnemy2DSWB.cpp" />
+    <ClCompile Include="Source\Scene2D\SnowEnemy2DSWBS.cpp" />
     <ClCompile Include="Source\Scene2D\SnowEnemy2DSWW.cpp" />
     <ClCompile Include="Source\Scene2D\SnowPlanet.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEAmmoDummy.cpp" />

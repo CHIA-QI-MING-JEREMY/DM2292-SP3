@@ -44,14 +44,14 @@ class CMap2D;
 // Include Camera
 #include "Primitives/Camera2D.h"
 
-class SnowEnemy2DSWW : public CEnemy2D
+class SnowEnemy2DSWBS : public CEnemy2D
 {
 public:
 	// Constructor
-	SnowEnemy2DSWW(void);
+	SnowEnemy2DSWBS(void);
 
 	// Destructor
-	virtual ~SnowEnemy2DSWW(void);
+	virtual ~SnowEnemy2DSWBS(void);
 
 	// Init
 	bool Init(void);
@@ -122,6 +122,8 @@ protected:
 		FEARIDLE=4,
 		SHIELD=5,
 		HEAL=6,
+		FEARHEAL=7,
+		SHOOT=8,
 		NUM_FSM
 	};
 
@@ -226,6 +228,7 @@ protected:
 	float shieldTimer;
 	int shieldCount;
 	int healCount;
+	int healFearCount;
 	bool attackHit;
 	float boolTimer;
 };

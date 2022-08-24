@@ -221,6 +221,23 @@ bool SnowPlanet::Init(void)
 				break;
 			}
 		}
+		while (true)
+		{
+			SnowEnemy2DSWBS* snowEnemy2DSWBS = new SnowEnemy2DSWBS();
+			// Pass shader to cEnemy2D
+			snowEnemy2DSWBS->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (snowEnemy2DSWBS->Init() == true)
+			{
+				snowEnemy2DSWBS->SetPlayer2D(cPlayer2D);
+				enemies.push_back(snowEnemy2DSWBS); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
+			}
+		}
 
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
@@ -588,7 +605,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 					//if it does, minus away the enemy's health & destory the ammo
 				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
 				{
-					if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getShieldActivated() && enemyVectors[cMap2D->GetCurrentLevel()][i]->getType()==CEnemy2D::ENEMYTYPE::WHITE) {
+					if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getShieldActivated() && enemyVectors[cMap2D->GetCurrentLevel()][i]->getType()!=CEnemy2D::ENEMYTYPE::BROWN) {
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 0); //every hit takes off 0 HP
 						ammo->setActive(false);
 					}

@@ -226,17 +226,33 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	{
 		health = maxHealth;
 	}
-
+	if (attackHit) {
+		boolTimer -= dElapsedTime;
+	}
+	if (boolTimer <= 0.f) {
+		attackHit = false;
+		boolTimer = 1.f;
+	}
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
 	case IDLE:
-		if (vec2Direction.x > 0) {
-			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		if (attackHit) {
+			if (vec2Direction.x > 0) {
+				animatedSprites->PlayAnimation("biteR", -1, 1.0f);
+			}
+			else {
+				animatedSprites->PlayAnimation("biteL", -1, 1.0f);
+			}
 		}
-		else if (vec2Direction.x < 0){
-			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		else {
+			if (vec2Direction.x > 0) {
+				animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+			}
+			else if (vec2Direction.x < 0) {
+				animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+			}
 		}
 		if (iFSMCounter > iMaxFSMCounter)
 		{
@@ -406,6 +422,21 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 				}
 			}
 			UpdatePosition();
+		}
+		if (vec2Index == fearpathway) {
+			sCurrentFSM = FEARIDLE;
+			iFSMCounter = 0;
+			cout << "Switching to Fear Idle State" << endl;
+			break;
+		}
+		iFSMCounter++;
+		break;
+	case FEARIDLE:
+		if (vec2Direction.x > 0) {
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0) {
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 		}
 		iFSMCounter++;
 		break;
@@ -865,16 +896,11 @@ bool SnowEnemy2DSWB::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
+		attackHit = true;
 		cout << "Snow Gotcha!" << endl;
 		// Since the player has been caught, then reset the FSM
 		sCurrentFSM = IDLE;
 		iFSMCounter = 0;
-		if (vec2Direction.x > 0) {
-			animatedSprites->PlayAnimation("biteR", -1, 1.0f);
-		}
-		else {
-			animatedSprites->PlayAnimation("biteL", -1, 1.0f);
-		}
 		if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::SHIELD) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(1);

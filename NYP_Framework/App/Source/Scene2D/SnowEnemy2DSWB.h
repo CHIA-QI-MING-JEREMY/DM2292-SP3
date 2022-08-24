@@ -117,6 +117,7 @@ protected:
 		PATROL=1,
 		ATTACK = 2,
 		FEAR=3,
+		FEARIDLE=4,
 		NUM_FSM
 	};
 
@@ -218,5 +219,7 @@ protected:
 
 	//double warnTimer;
 	//double maxWarnTimer;
+	bool attackHit;
+	float boolTimer;
 };
 
