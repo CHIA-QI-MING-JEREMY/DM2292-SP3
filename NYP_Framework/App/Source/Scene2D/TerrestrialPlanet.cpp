@@ -704,7 +704,7 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 
 		// reduce the lives by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
-		if (cMap2D->GetCurrentLevel() != 0 || cInventoryItemPlanet->GetCount() > 1)
+		if (cMap2D->GetCurrentLevel() != TUTORIAL || cInventoryItemPlanet->GetCount() > 1)
 		{
 			cInventoryItemPlanet->Remove(1);
 		}
