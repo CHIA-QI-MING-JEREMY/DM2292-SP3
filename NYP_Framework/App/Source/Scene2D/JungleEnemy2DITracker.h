@@ -45,14 +45,14 @@ class CMap2D;
 // Include Camera
 #include "Primitives/Camera2D.h"
 
-class JEnemy2DPatrolT : public CEnemy2D
+class JEnemy2DITracker : public CEnemy2D
 {
 public:
 	// Constructor
-	JEnemy2DPatrolT(void);
+	JEnemy2DITracker(void);
 
 	// Destructor
-	virtual ~JEnemy2DPatrolT(void);
+	virtual ~JEnemy2DITracker(void);
 
 	// Init
 	bool Init(void);
@@ -93,9 +93,6 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
-	bool getNoisy(void); //check if need to check to put other enemies in alert state
-	void setAlert(bool alert = true); //set alert to true to get specific enemy to go into en_route state
-
 protected:
 	enum DIRECTION
 	{
@@ -119,19 +116,13 @@ protected:
 
 	enum FSM
 	{
-		IDLE = 0,
-		RELOAD = 1,
-		ATTACK = 2,
-		TELEPORT,
-		WANDER,
-		SHOOT,
-		RECOVER,
-		EXPLODE,
-
-		PATROL,
-		NOISY,
-		EN_ROUTE,
-		RETURN,
+		TRACK = 0,
+		SHOOT, //shoot, even if in mid air, if player is within range
+		RELOAD, //pause between ammo shooting
+		ATTACK, //close combat attack
+		RETREAT, //find a designated healing spot to return to
+		REST, //stay in healing spot and rest
+		IDLE,
 		NUM_FSM
 	};
 
@@ -190,17 +181,17 @@ protected:
 
 	// Max count in a state
 	const int iMaxFSMCounter = 60;
-	const int iEnRouteMaxFSMCounter = 300;
+	const int iWanderReturnMaxFSMCounter = 300;
 
 	vector<glm::vec2> enemysTeleportationResidue; //a vector of locations where this enemy left behind teleportation residue
 	vector<double> enemysTResidueCooldown; //timer for how long the residue will last
 	const double enemysTResidueMaxCooldown = 3.0; //poof effects last for 3 seconds before disappearing
 
-	double attackCooldownCurrent; //the cooldown that gets dt-ed away
-	const double attackCooldownMax = 3.0; //the overall cooldown duration, eg 5s
-
 	double healingCooldown; //timer between when the enemy heals when in new location
 	const double healingMaxCooldown = 0.2; //can heal 1 HP every 0.5 second
+
+	double attackCooldownCurrent; //the cooldown that gets dt-ed away
+	const double attackCooldownMax = 2.0; //the overall cooldown duration, eg 5s
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);

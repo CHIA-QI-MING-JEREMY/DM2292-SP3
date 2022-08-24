@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "JungleEnemy2DPatrolT.h"
+#include "JungleEnemy2DITracker.h"
 
 #include <iostream>
 using namespace std;
@@ -28,12 +28,12 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-JEnemy2DPatrolT::JEnemy2DPatrolT(void)
+JEnemy2DITracker::JEnemy2DITracker(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
 	, cPlayer2D(NULL)
-	, sCurrentFSM(FSM::PATROL)
+	, sCurrentFSM(FSM::TRACK)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
 	//, camera2D(NULL)
@@ -57,7 +57,7 @@ JEnemy2DPatrolT::JEnemy2DPatrolT(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-JEnemy2DPatrolT::~JEnemy2DPatrolT(void)
+JEnemy2DITracker::~JEnemy2DITracker(void)
 {
 	// Delete the quadMesh
 	if (quadMesh)
@@ -88,7 +88,7 @@ JEnemy2DPatrolT::~JEnemy2DPatrolT(void)
 /**
   @brief Initialise this instance
   */
-bool JEnemy2DPatrolT::Init(void)
+bool JEnemy2DITracker::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -103,7 +103,7 @@ bool JEnemy2DPatrolT::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1620, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1630, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -127,30 +127,24 @@ bool JEnemy2DPatrolT::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/PatrolTeamSpriteSheet.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/JunglePlanet/PatrolTeamSpriteSheet.png" << endl;
+		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(7, 4,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 0); //idle
-	animatedSprites->AddAnimation("movingL", 1, 4); //4 images for animation, index 1 to 4, walking left, 0.5f speed
-	animatedSprites->AddAnimation("movingR", 5, 8); //walking right, 0.5f speed
-	animatedSprites->AddAnimation("noisyL", 9, 12); //noisy left, 0.75f speed
-	animatedSprites->AddAnimation("noisyR", 13, 16); //noisy right, 0.75f speed
-	animatedSprites->AddAnimation("enrouteL", 17, 20); //en_route left, 0.5f speed
-	animatedSprites->AddAnimation("enrouteR", 21, 24); //en_route right, 0.5f speed
-
-	/*animatedSprites->AddAnimation("right", 3, 5);
+	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
+	animatedSprites->AddAnimation("right", 3, 5);
 	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);*/
+	animatedSprites->AddAnimation("left", 9, 11);
+
 	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 0.5f);
+	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
 	//1.0f --> set time between frames as 1.0f
@@ -174,51 +168,20 @@ bool JEnemy2DPatrolT::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	//for tutorial lvl
-	if (cMap2D->GetCurrentLevel() == 0)
-	{
-		/*//if it's the enemy at this position
-		if (vec2Index == glm::vec2(16, 20))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 130, 4);
-		}
-		else if (vec2Index == glm::vec2(16, 11))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 140, 4);
-		}*/
-	}
-	//for lvl 1
-	if (cMap2D->GetCurrentLevel() == 1)
-	{
-		//if it's the enemy at this position
-		if (vec2Index == glm::vec2(16, 20))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 130, 4);
-		}
-		else if (vec2Index == glm::vec2(16, 11))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 140, 4);
-		}
-	}
-	
-
-	// sets waypoint counter value
-	currentWaypointCounter = 0;
-	maxWaypointCounter = waypoints.size();
-
-	type = COMMUNITY; //effects more of its own kind
+	type = SPECIAL; 
 	shootingDirection = LEFT; //setting direction for ammo shooting
-	maxHealth = health = 50; //takes 10 hits to kill
+	maxHealth = health = 75; //takes 15 hits to kill
 
 	flickerTimer = 0.5; //used to progress the flicker counter
 	flickerTimerMax = 0.5; //used to reset flicker counter
 	flickerCounter = 0; //decides colour of enemy and when to explode
 
-	attackCooldownCurrent = attackCooldownMax; //the cooldown that gets dt-ed away
-	healingCooldown = 0.0; //timer between when the enemy heals when in new location
+	//make sure both vectors start off empty
+	enemysTeleportationResidue.clear(); //a vector of locations where this enemy left behind teleportation residue
+	enemysTResidueCooldown.clear(); //timer for how long the residue will last
 
-	noisy = false;
-	alerted = false;
+	attackCooldownCurrent = 2.0; //the cooldown that gets dt-ed away
+	healingCooldown = 0.0; //timer between when the enemy heals when in new location
 
 	return true;
 }
@@ -226,7 +189,7 @@ bool JEnemy2DPatrolT::Init(void)
 /**
  @brief Update this instance
  */
-void JEnemy2DPatrolT::Update(const double dElapsedTime)
+void JEnemy2DITracker::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
@@ -237,128 +200,127 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		health = maxHealth;
 	}
 
-	//attack cooldown
-	if (attackCooldownCurrent > 0) //if not at 0
+	if (healingCooldown > 0.0)
+	{
+		healingCooldown -= dElapsedTime; //deplete healing cooldown
+	}
+	else
+	{
+		healingCooldown = 0.0;
+	}
+
+	//attack cooldown, only for close combat attack
+	if (attackCooldownCurrent > 0.0) //if not at 0
 	{
 		attackCooldownCurrent -= dElapsedTime; //minus
 	}
 	else
 	{
-		attackCooldownCurrent = 0;
+		attackCooldownCurrent = 0.0;
 	}
 
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
 	{
-	case IDLE:
-		//Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.f);
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
+	case TRACK:
+		//if health too low, retreat
+		if (health < maxHealth / 5)
 		{
-			sCurrentFSM = NOISY;
+			sCurrentFSM = RETREAT;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
+			cout << "Switching to Retreat State" << endl;
 			break;
 		}
-		if (alerted) //if near a noisy patrol team enemy
+		//if within close combat attack range
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.5f)
 		{
-			sCurrentFSM = EN_ROUTE;
+			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			cout << "Switching to En Route State" << endl;
+			cout << "Switching to Attack State" << endl;
 			break;
 		}
-		if (iFSMCounter > iMaxFSMCounter) //been in idle for too long
+		//if within shooting range (only checked if not within close combat attack range
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f &&
+			(vec2Index.y == cPlayer2D->vec2Index.y || // player is left or right of the enemy
+				vec2Index.x == cPlayer2D->vec2Index.x)) // player is above or below the enemy
 		{
-			sCurrentFSM = PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
-			++currentWaypointCounter; //increase the enemy's current waypoint count
-			break;
-		}
-		iFSMCounter++;
-		break;
-	case PATROL:
-		//set way point to get to
-			//if pointing at the spot beyond the last waypoint index, set current back to first
-		if (currentWaypointCounter == maxWaypointCounter)
-		{
-			currentWaypointCounter = 0;
-		}
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
-		{
-			sCurrentFSM = NOISY;
-			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
-			break;
-		}
-		if (alerted) //if near a noisy patrol team enemy
-		{
-			sCurrentFSM = EN_ROUTE;
-			iFSMCounter = 0;
-			cout << "Switching to En Route State" << endl;
-			break;
-		}
-		if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) < 0.5f) //close to current waypoint
-		{
-			sCurrentFSM = IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;
-		}
-		//pathfind to waypoint
-		else 
-		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
+			bool pathClear = true; //only set to false if there is an impassable tile
+			if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
+				//if player is on same position as enemy, uses this checking instead of the one below
 			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-			}
-
-			auto path = cMap2D->PathFind(startIndices,// start pos
-				waypoints[currentWaypointCounter],	// target pos
-				heuristic::manhattan,				// heuristic
-				10);								// weight
-
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
-				if (bFirstPosition == true)
+				// check if player's x is larger than or smaller than enemy's x
+				// if is larger, direction is right
+				// if is smaller, direction is left
+				if (cPlayer2D->vec2Index.x > vec2Index.x)
 				{
-					// Set a destination
-					vec2Destination = coord;
-
-					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
+					//check if the path to the right is clear
+					for (int i = 0; i <= (cPlayer2D->vec2Index.x - vec2Index.x); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
 				}
 				else
 				{
-					if ((coord - vec2Destination) == vec2Direction)
+					//check if the path to the left is clear
+					for (int i = 0; i <= (vec2Index.x - cPlayer2D->vec2Index.x); ++i)
 					{
-						// Set a destination
-						vec2Destination = coord;
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
 					}
-					else
+				}
+			}
+			else if (vec2Index.x == cPlayer2D->vec2Index.x ||
+				vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
+				vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
+			{
+				// check if player's y is larger than or smaller than enemy's y
+				// if is larger, direction is up
+				// if is smaller, direction is down
+				if (cPlayer2D->vec2Index.y > vec2Index.y)
+				{
+					//check if the path upward is clear
+					for (int i = 0; i <= (cPlayer2D->vec2Index.y - vec2Index.y); ++i)
 					{
-						break;
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+				}
+				else
+				{
+					//check if the path down is clear
+					for (int i = 0; i <= (vec2Index.y - cPlayer2D->vec2Index.y); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
 					}
 				}
 			}
 
-			UpdatePosition();
+			//only change into SHOOT state if path is clear
+			if (pathClear)
+			{
+				sCurrentFSM = SHOOT;
+				iFSMCounter = 0;
+				cout << "Switching to Shooting State" << endl;
+				break;
+			}
+
 		}
-		iFSMCounter++;
-		break;
-	case NOISY:
-		noisy = true; //used to let other enemies know this enemy is in noisy mode
-			//follow player and attack
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
+		//normal tracking code, triggers if no break is triggered above
 		{
 			glm::vec2 startIndices;
 			if (vec2NumMicroSteps.x == 0)
@@ -379,7 +341,239 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << "," << coord.y << "\n";
+				if (bFirstPosition == true)
+				{
+					// Set a destination
+					vec2Destination = coord;
+					// Calculate the direction between enemy2D and this destination
+					vec2Direction = vec2Destination - vec2Index;
+					bFirstPosition = false;
+				}
+				else
+				{
+					if ((coord - vec2Destination) == vec2Direction)
+					{
+						// Set a destination
+						vec2Destination = coord;
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+
+			// Update the Enemy2D's position for attack
+			UpdatePosition();
+		}
+		break;
+	case SHOOT:
+		//if health too low, retreat
+		if (health < maxHealth / 5)
+		{
+			sCurrentFSM = RETREAT;
+			iFSMCounter = 0;
+			cout << "Switching to Retreat State" << endl;
+			break;
+		}
+		//if within shooting range
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 10.0f)
+		{
+			// Update direction to face and shoot in
+			if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
+				//if player is on same position as enemy, uses this checking instead of the one below
+			{
+				// check if player's x is larger than or smaller than enemy's x
+				// if is larger, direction is right
+				// if is smaller, direction is left
+				if (cPlayer2D->vec2Index.x > vec2Index.x)
+				{
+					//check if the path to the right is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (cPlayer2D->vec2Index.x - vec2Index.x); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = RIGHT; //setting direction for ammo shooting
+					}
+					else
+					{
+						sCurrentFSM = TRACK;
+						cout << "Switching to Track State" << endl;
+						break;
+					}
+
+				}
+				else
+				{
+					//check if the path to the left is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (vec2Index.x - cPlayer2D->vec2Index.x); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = LEFT; //setting direction for ammo shooting
+					}
+					else
+					{
+						sCurrentFSM = TRACK;
+						cout << "Switching to Track State" << endl;
+						break;
+					}
+				}
+
+			}
+			else if (vec2Index.x == cPlayer2D->vec2Index.x ||
+				vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
+				vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
+			{
+				// check if player's y is larger than or smaller than enemy's y
+				// if is larger, direction is up
+				// if is smaller, direction is down
+				if (cPlayer2D->vec2Index.y > vec2Index.y)
+				{
+					//check if the path upward is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (cPlayer2D->vec2Index.y - vec2Index.y); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = UP; //setting direction for ammo shooting
+					}
+					else
+					{
+						sCurrentFSM = TRACK;
+						cout << "Switching to Track State" << endl;
+						break;
+					}
+				}
+				else
+				{
+					//check if the path down is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (vec2Index.y - cPlayer2D->vec2Index.y); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = DOWN; //setting direction for ammo shooting
+					}
+					else
+					{
+						sCurrentFSM = TRACK;
+						cout << "Switching to Track State" << endl;
+						break;
+					}
+				}
+			}
+
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CJEAmmo* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
+
+			sCurrentFSM = RELOAD;
+			cout << "Switching to Reload State" << endl;
+		}
+		else
+		{
+			sCurrentFSM = TRACK;
+			cout << "Switching to Track State" << endl;
+		}
+		break;
+
+	case IDLE:
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+		{
+			sCurrentFSM = ATTACK;
+			iFSMCounter = 0;
+			cout << "Switching to Attack State" << endl;
+		}
+		iFSMCounter++;
+		break;
+	case RELOAD:
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			//if health too low, retreat
+			if (health < maxHealth / 5)
+			{
+				sCurrentFSM = RETREAT;
+				iFSMCounter = 0;
+				cout << "Switching to Retreat State" << endl;
+				break;
+			}
+			else
+			{
+				sCurrentFSM = TRACK;
+				iFSMCounter = 0;
+				cout << "Switching to Track State" << endl;
+			}
+		}
+		iFSMCounter++;
+		break;
+	case ATTACK:
+		//if health too low, retreat
+		if (health < maxHealth / 5)
+		{
+			sCurrentFSM = RETREAT;
+			iFSMCounter = 0;
+			cout << "Switching to Retreat State" << endl;
+			break;
+		}
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+		{
+			glm::vec2 startIndices;
+			if (vec2NumMicroSteps.x == 0)
+			{
+				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
+			}
+			else
+			{
+				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
+			}
+
+			auto path = cMap2D->PathFind(startIndices,
+				cPlayer2D->vec2Index,
+				heuristic::manhattan,
+				10);
+
+			// Calculate new destination
+			bool bFirstPosition = true;
+			for (const auto& coord : path)
+			{
 				if (bFirstPosition == true)
 				{
 					// Set a destination
@@ -449,27 +643,23 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		}
 		else
 		{
-			sCurrentFSM = RETURN;
-			iFSMCounter = 0;
-			cout << "Switching to Return State" << endl;
-			noisy = false;
+			if (iFSMCounter > iMaxFSMCounter)
+			{
+				sCurrentFSM = TRACK;
+				iFSMCounter = 0;
+				cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
+				cout << "Switching to Track State" << endl;
+			}
+			iFSMCounter++;
 		}
-		iFSMCounter++;
 		break;
-	case EN_ROUTE:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
+	case RETREAT:
+		//if enemy is within a certain dist of its destination
+		if (cPhysics2D.CalculateDistance(vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::ENEMY_WAYPOINT_RIVER_WATER)) < 1.0f)
 		{
-			sCurrentFSM = NOISY;
+			sCurrentFSM = REST;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
-			alerted = false;
-		}
-		else if (iFSMCounter > iEnRouteMaxFSMCounter) //been in en_route for too long with no changes
-		{
-			sCurrentFSM = RETURN;
-			iFSMCounter = 0;
-			cout << "Switching to Return State" << endl;
-			alerted = false;
+			cout << "Switching to REST State" << endl;
 		}
 		else
 		{
@@ -484,22 +674,21 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			}
 
 			auto path = cMap2D->PathFind(startIndices,
-				cPlayer2D->vec2Index,
+				cMap2D->GetTilePosition(CMap2D::TILE_INDEX::ENEMY_WAYPOINT_RIVER_WATER),
 				heuristic::manhattan,
 				10);
 
 			// Calculate new destination
-			bool bFirstPosition = true;
+			bool bFirstPosition2 = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << "," << coord.y << "\n";
-				if (bFirstPosition == true)
+				if (bFirstPosition2 == true)
 				{
 					// Set a destination
 					vec2Destination = coord;
 					// Calculate the direction between enemy2D and this destination
 					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
+					bFirstPosition2 = false;
 				}
 				else
 				{
@@ -518,81 +707,121 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			// Update the Enemy2D's position for attack
 			UpdatePosition();
 		}
-		iFSMCounter++;
 		break;
-	case RETURN:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
+	case REST:
+		//can leave rest state if sufficiently healed if player is around
+		if (health > maxHealth / 2 && //sufficiently healed
+			cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.5f) //player within range
 		{
-			sCurrentFSM = NOISY;
+			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
-			break;
+			cout << "Switching to ATTACK State" << endl;
 		}
-		if (alerted) //if near a noisy patrol team enemy
+		//can leave rest state if sufficiently healed if player is around
+		if (health > maxHealth / 2 && //sufficiently healed
+			cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 15.0f &&
+			(vec2Index.y == cPlayer2D->vec2Index.y || // player is left or right of the enemy
+				vec2Index.x == cPlayer2D->vec2Index.x)) // player is above or below the enemy
 		{
-			sCurrentFSM = EN_ROUTE;
-			iFSMCounter = 0;
-			cout << "Switching to En Route State" << endl;
-			break;
-		}
-		//if too close to the current waypoint
-		if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) < 0.5f)
-		{
-			sCurrentFSM = IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;
-		}
-		else //move back to waypoint
-		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
+			bool pathClear = true; //only set to false if there is an impassable tile
+			if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
+				//if player is on same position as enemy, uses this checking instead of the one below
 			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-			}
-
-			auto path = cMap2D->PathFind(startIndices,	// start pos
-				waypoints[currentWaypointCounter],		// target pos
-				heuristic::manhattan,					// heuristic
-				10);									// weight
-
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
-				if (bFirstPosition == true)
+				// check if player's x is larger than or smaller than enemy's x
+				// if is larger, direction is right
+				// if is smaller, direction is left
+				if (cPlayer2D->vec2Index.x > vec2Index.x)
 				{
-					// Set a destination
-					vec2Destination = coord;
-
-					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
+					//check if the path to the right is clear
+					for (int i = 0; i <= (cPlayer2D->vec2Index.x - vec2Index.x); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
 				}
 				else
 				{
-					if ((coord - vec2Destination) == vec2Direction)
+					//check if the path to the left is clear
+					for (int i = 0; i <= (vec2Index.x - cPlayer2D->vec2Index.x); ++i)
 					{
-						// Set a destination
-						vec2Destination = coord;
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
 					}
-					else
+				}
+			}
+			else if (vec2Index.x == cPlayer2D->vec2Index.x ||
+				vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
+				vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
+			{
+				// check if player's y is larger than or smaller than enemy's y
+				// if is larger, direction is up
+				// if is smaller, direction is down
+				if (cPlayer2D->vec2Index.y > vec2Index.y)
+				{
+					//check if the path upward is clear
+					for (int i = 0; i <= (cPlayer2D->vec2Index.y - vec2Index.y); ++i)
 					{
-						break;
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+				}
+				else
+				{
+					//check if the path down is clear
+					for (int i = 0; i <= (vec2Index.y - cPlayer2D->vec2Index.y); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
 					}
 				}
 			}
 
-			UpdatePosition();
+			//only change into SHOOT state if path is clear
+			if (pathClear)
+			{
+				sCurrentFSM = SHOOT;
+				iFSMCounter = 0;
+				cout << "Switching to Shooting State" << endl;
+				break;
+			}
+
 		}
-		iFSMCounter++;
+		if (health >= maxHealth) //fully healed
+		{
+			health = maxHealth;
+			sCurrentFSM = TRACK;
+			iFSMCounter = 0;
+			cout << "Switching to TRACK State" << endl;
+		}
 		break;
 	default:
 		break;
+	}
+
+	//ammo beahviour
+	for (std::vector<CJEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CJEAmmo* ammo = (CJEAmmo*)*it;
+		if (ammo->getActive())
+		{
+			ammo->Update(dElapsedTime);
+			if (ammo->LimitReached())
+			{
+				ammo->setActive(false);
+			}
+		}
 	}
 
 	UpdateDirection();
@@ -603,27 +832,27 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 	// Interact with the Map
 	InteractWithMap();
 
-	////update sprite animation to play depending on the direction enemy is facing
-	//if (shootingDirection == LEFT)
-	//{
-	//	//CS: Play the "left" animation
-	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
-	//}
-	//else if (shootingDirection == RIGHT)
-	//{
-	//	//CS: Play the "right" animation
-	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
-	//}
-	//else if (shootingDirection == UP)
-	//{
-	//	//CS: Play the "up" animation
-	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
-	//}
-	//else if (shootingDirection == DOWN)
-	//{
-	//	//CS: Play the "idle" animation
-	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	//}
+	//update sprite animation to play depending on the direction enemy is facing
+	if (shootingDirection == LEFT)
+	{
+		//CS: Play the "left" animation
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+	}
+	else if (shootingDirection == RIGHT)
+	{
+		//CS: Play the "right" animation
+		animatedSprites->PlayAnimation("right", -1, 1.0f);
+	}
+	else if (shootingDirection == UP)
+	{
+		//CS: Play the "up" animation
+		animatedSprites->PlayAnimation("up", -1, 1.0f);
+	}
+	else if (shootingDirection == DOWN)
+	{
+		//CS: Play the "idle" animation
+		animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -637,7 +866,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void JEnemy2DPatrolT::PreRender(void)
+void JEnemy2DITracker::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -656,7 +885,7 @@ void JEnemy2DPatrolT::PreRender(void)
 /**
  @brief Render this instance
  */
-void JEnemy2DPatrolT::Render(void)
+void JEnemy2DITracker::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -695,12 +924,25 @@ void JEnemy2DPatrolT::Render(void)
 	animatedSprites->Render();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	//render enemy ammo
+	for (std::vector<CJEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CJEAmmo* ammo = (CJEAmmo*)*it;
+		if (ammo->getActive())
+		{
+			ammo->PreRender();
+			ammo->Render();
+			ammo->PostRender();
+		}
+	}
+
 }
 
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void JEnemy2DPatrolT::PostRender(void)
+void JEnemy2DITracker::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -709,24 +951,12 @@ void JEnemy2DPatrolT::PostRender(void)
 	glDisable(GL_BLEND);
 }
 
-//check if need to check to put other enemies in alert state
-bool JEnemy2DPatrolT::getNoisy(void)
-{
-	return noisy;
-}
-
-//set alert to true to get specific enemy to go into en_route state
-void JEnemy2DPatrolT::setAlert(bool alert)
-{
-	alerted = alert;
-}
-
 /**
 @brief Set the indices of the enemy2D
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void JEnemy2DPatrolT::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void JEnemy2DITracker::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->vec2Index.x = iIndex_XAxis;
 	this->vec2Index.y = iIndex_YAxis;
@@ -737,7 +967,7 @@ void JEnemy2DPatrolT::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_Y
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void JEnemy2DPatrolT::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void JEnemy2DITracker::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
@@ -747,7 +977,7 @@ void JEnemy2DPatrolT::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, co
  @brief Set the handle to cPlayer to this class instance
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void JEnemy2DPatrolT::SetPlayer2D(CPlayer2D* cPlayer2D)
+void JEnemy2DITracker::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -759,7 +989,7 @@ void JEnemy2DPatrolT::SetPlayer2D(CPlayer2D* cPlayer2D)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void JEnemy2DPatrolT::Constraint(DIRECTION eDirection)
+void JEnemy2DITracker::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -803,7 +1033,7 @@ void JEnemy2DPatrolT::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool JEnemy2DPatrolT::CheckPosition(DIRECTION eDirection)
+bool JEnemy2DITracker::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -917,7 +1147,7 @@ bool JEnemy2DPatrolT::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool JEnemy2DPatrolT::IsMidAir(void)
+bool JEnemy2DITracker::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (vec2Index.y == 0)
@@ -934,7 +1164,7 @@ bool JEnemy2DPatrolT::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void JEnemy2DPatrolT::UpdateJumpFall(const double dElapsedTime)
+void JEnemy2DITracker::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -1043,7 +1273,7 @@ void JEnemy2DPatrolT::UpdateJumpFall(const double dElapsedTime)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool JEnemy2DPatrolT::InteractWithPlayer(void)
+bool JEnemy2DITracker::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 	
@@ -1054,49 +1284,42 @@ bool JEnemy2DPatrolT::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		//cout << "Patrol Team Gotcha!" << endl;
 		if (attackCooldownCurrent == 0)
 		{
-			// Decrease the health by 1
+			// Decrease the health by 2
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);
-			//cout << "Take that!" << endl;
-			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
 			attackCooldownCurrent = attackCooldownMax; //reset attack cooldown
+
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
+			//if not at max poison lvl yet
+			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
+			{
+				cInventoryItemPlanet->Add(1); //increase poison level by 1
+			}
 		}
+
 		return true;
 	}
 	return false;
 }
 
 //enemy interact with map
-void JEnemy2DPatrolT::InteractWithMap(void)
+void JEnemy2DITracker::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 50: //purple spring, same function as the black and white spring 
-	case 51: //black and white spring, launch the player repeatedly up into the sky at the rate of a double jump
-		cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
-		break;
-	case 53: //lava, same function as black and white lava
-	case 54: //black and white lava, depletes health
-		// Decrease the health by 2
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
-		health--;
-		break;
-	case 55: //ice water, same function as black and white ice water
-	case 56: //black and white ice water, restores health
-	case 57: //ice water + enemy waypoint
-	case 58: //ice water + enemy waypoint, BnW
-		// Increase the health by 2
-		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); //green
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SPLASH); //play watching in water sound
-		health++;
-		break;
-	case 99:
+	case CMap2D::TILE_INDEX::RIVER_WATER:
+	case CMap2D::TILE_INDEX::ENEMY_WAYPOINT_RIVER_WATER:
+		runtimeColour = glm::vec4(0.0f, 1.0f, 0.0f, 1.0f); //green colour to show healing
+		if (healingCooldown <= 0.0) //cooldown up
+		{
+			health += 5; //heal
+			healingCooldown = healingMaxCooldown; //reset healing cooldown
+		}
 		break;
 	default:
+		runtimeColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); //reset to white
 		break;
 	}
 }
@@ -1104,7 +1327,7 @@ void JEnemy2DPatrolT::InteractWithMap(void)
 /**
  @brief Update the enemy's direction.
  */
-void JEnemy2DPatrolT::UpdateDirection(void)
+void JEnemy2DITracker::UpdateDirection(void)
 {
 	// Set the destination to the player
 	vec2Destination = cPlayer2D->vec2Index;
@@ -1131,7 +1354,7 @@ void JEnemy2DPatrolT::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void JEnemy2DPatrolT::FlipHorizontalDirection(void)
+void JEnemy2DITracker::FlipHorizontalDirection(void)
 {
 	vec2Direction.x *= -1;
 }
@@ -1139,7 +1362,7 @@ void JEnemy2DPatrolT::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void JEnemy2DPatrolT::UpdatePosition(void)
+void JEnemy2DITracker::UpdatePosition(void)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -1160,22 +1383,8 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 		}
 		shootingDirection = LEFT; //moving to the left
 
-		//set animation based on state
-		if (sCurrentFSM == PATROL)
-		{
-			//Play the "moving left" animation
-			animatedSprites->PlayAnimation("movingL", -1, 0.5f);
-		}
-		else if (sCurrentFSM == NOISY)
-		{
-			//Play the "noisy left" animation
-			animatedSprites->PlayAnimation("noisyL", -1, 0.75f);
-		}
-		else if (sCurrentFSM == EN_ROUTE)
-		{
-			//Play the "en route left" animation
-			animatedSprites->PlayAnimation("enrouteL", -1, 0.5f);
-		}
+		//Play the "moving left" animation
+		animatedSprites->PlayAnimation("movingL", -1, 0.2f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
@@ -1213,22 +1422,8 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 		}
 		shootingDirection = RIGHT; //moving to the right
 
-		//set animation based on state
-		if (sCurrentFSM == PATROL)
-		{
-			//Play the "moving right" animation
-			animatedSprites->PlayAnimation("movingR", -1, 0.5f);
-		}
-		else if (sCurrentFSM == NOISY)
-		{
-			//Play the "noisy right" animation
-			animatedSprites->PlayAnimation("noisyR", -1, 0.75f);
-		}
-		else if (sCurrentFSM == EN_ROUTE)
-		{
-			//Play the "en route right" animation
-			animatedSprites->PlayAnimation("enrouteR", -1, 0.5f);
-		}
+		//Play the "moving right" animation
+		animatedSprites->PlayAnimation("movingR", -1, 0.2f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
@@ -1263,7 +1458,7 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 	}
 }
 
-vector<glm::vec2> JEnemy2DPatrolT::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
+vector<glm::vec2> JEnemy2DITracker::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
 	for (int i = 0; i < numOfWaypoints; ++i)
 	{
@@ -1276,7 +1471,7 @@ vector<glm::vec2> JEnemy2DPatrolT::ConstructWaypointVector(vector<glm::vec2> way
 }
 
 //called whenever an ammo is needed to be shot
-CJEAmmo* JEnemy2DPatrolT::FetchAmmo()
+CJEAmmo* JEnemy2DITracker::FetchAmmo()
 {
 	//Exercise 3a: Fetch a game object from m_goList and return it
 	for (std::vector<CJEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)

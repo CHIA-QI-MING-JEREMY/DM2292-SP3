@@ -34,7 +34,6 @@ class CMap2D;
 
 //include ammo
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
 
 //include enemy base class
 #include "Enemy2D.h"
@@ -92,6 +91,8 @@ public:
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
+	bool getShieldActivated();
+	void setShieldActivated(bool s);
 
 protected:
 	enum DIRECTION
@@ -222,5 +223,8 @@ protected:
 	//double warnTimer;
 	//double maxWarnTimer;
 	float shieldTimer;
+	int shieldCount;
+	int healCount;
+	float attackTimer;
 };
 

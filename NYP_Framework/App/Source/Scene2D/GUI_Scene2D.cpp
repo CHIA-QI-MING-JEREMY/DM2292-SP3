@@ -402,7 +402,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Poison Levels (PL)");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Purple objects are poisonous \n\nPoisonous objects increase your PL \nThere is a short cooldown between \nchanges in PL \n\nYou take damage periodically when \npoisoned\n\nPL 1: -3 health/5 sec \nPL 2: -5 health/4 sec \nPL 3: -10 health/3 sec");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Purple objects are poisonous \n\nPoisonous objects increase your PL \nThere is a short cooldown between \nchanges in PL by static objects\n\nYou take damage periodically when \npoisoned\n\nPL 1: -3 health/5 sec \nPL 2: -5 health/4 sec \nPL 3: -10 health/3 sec");
 				break;
 			case SWITCHES:
 				//header
@@ -730,7 +730,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Fur & Fur Coat");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Both furcoats and fur allow you to increase your body temperature.\nKilling brown wolves will drop their fur\nwhile furcoats will be laid out across the level.");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Both furcoats and fur allow you\nto increase your body temperature.\nKilling brown wolves will drop their fur\nwhile furcoats will be laid out across\nthe level.");
 				ImGui::NewLine();
 				//controls instructions
 				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);

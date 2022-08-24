@@ -10,6 +10,7 @@ Interactables
 3 : poison fog 
 4 : poison explosion
 10 : river water 
+11 : enemy (intelligent tracker) healing spot in river water
 20 : unbloomed bouncy bloom
 21 : bloomed bouncy bloom
 30 : rock (no vine)
@@ -140,6 +141,8 @@ Enemies
 [Jungle Planet]
 1600 : vigilant teleporter
 1610 : shy chaser
+1620 : patrol team
+1630 : intelligent tracker
 
 [Terrestrial Planet]
 1800 : Sentry

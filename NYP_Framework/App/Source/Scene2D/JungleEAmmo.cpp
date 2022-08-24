@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "JungleEAmmoVT.h"
+#include "JungleEAmmo.h"
 
 #include <iostream>
 using namespace std;
@@ -22,7 +22,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has public access modifier to be used in player class
  */
-CJEAmmoVT::CJEAmmoVT()
+CJEAmmo::CJEAmmo()
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, animatedSprites(NULL)
@@ -49,7 +49,7 @@ CJEAmmoVT::CJEAmmoVT()
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CJEAmmoVT::~CJEAmmoVT(void)
+CJEAmmo::~CJEAmmo(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
@@ -71,7 +71,7 @@ CJEAmmoVT::~CJEAmmoVT(void)
 /**
   @brief Initialise this instance
   */
-bool CJEAmmoVT::Init(void)
+bool CJEAmmo::Init(void)
 {
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -140,7 +140,7 @@ bool CJEAmmoVT::Init(void)
 /**
  @brief Update this instance
  */
-void CJEAmmoVT::Update(const double dElapsedTime)
+void CJEAmmo::Update(const double dElapsedTime)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -173,7 +173,7 @@ void CJEAmmoVT::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CJEAmmoVT::PreRender(void)
+void CJEAmmo::PreRender(void)
 {
 	// Activate blending mode
 	glEnable(GL_BLEND);
@@ -186,7 +186,7 @@ void CJEAmmoVT::PreRender(void)
 /**
  @brief Render this instance
  */
-void CJEAmmoVT::Render(void)
+void CJEAmmo::Render(void)
 {
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
@@ -253,7 +253,7 @@ void CJEAmmoVT::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CJEAmmoVT::PostRender(void)
+void CJEAmmo::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
@@ -262,14 +262,14 @@ void CJEAmmoVT::PostRender(void)
 //setting the ammo's information needed for its travel path:
 		//player location aka ammo OG location
 		//player direction aka direction for amo to move in
-void CJEAmmoVT::setPath(const int spawnX, const int spawnY, const int eDirection)
+void CJEAmmo::setPath(const int spawnX, const int spawnY, const int eDirection)
 {
 	vec2Index.x = spawnX;
 	vec2Index.y = spawnY;
 	direction = eDirection;
 }
 
-void CJEAmmoVT::InteractWithMap(void)
+void CJEAmmo::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -292,7 +292,7 @@ void CJEAmmoVT::InteractWithMap(void)
 /**
  @brief Let enemy ammo interact with the player.
  */
-bool CJEAmmoVT::InteractWithPlayer(void)
+bool CJEAmmo::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 
@@ -322,7 +322,7 @@ bool CJEAmmoVT::InteractWithPlayer(void)
 	return false;
 }
 
-bool CJEAmmoVT::CheckPosition(void)
+bool CJEAmmo::CheckPosition(void)
 {
 	if (direction == LEFT)
 	{
@@ -434,7 +434,7 @@ bool CJEAmmoVT::CheckPosition(void)
 }
 
 // Shoot ammo, keep it moving after it is already created, used in player class
-void CJEAmmoVT::ShootAmmo(void)
+void CJEAmmo::ShootAmmo(void)
 {
 	//can only shoot left, right and up
 	if (direction == LEFT)
@@ -477,7 +477,7 @@ void CJEAmmoVT::ShootAmmo(void)
 
 // return true if ammo hits window boundaries, used to delete
 	//uses ammo specific direction alrdy set in via constructor, used in player class
-bool CJEAmmoVT::LimitReached(void)
+bool CJEAmmo::LimitReached(void)
 {
 	//ammo can only be shot left, right and up
 	if (direction == LEFT)
@@ -517,13 +517,13 @@ bool CJEAmmoVT::LimitReached(void)
 }
 
 //used to set active to render and check collision of ammo
-void CJEAmmoVT::setActive(bool active)
+void CJEAmmo::setActive(bool active)
 {
 	this->active = active;
 }
 
 //used to check if ammo is active before checking collision and rendering, etc
-bool CJEAmmoVT::getActive(void)
+bool CJEAmmo::getActive(void)
 {
 	return active;
 }

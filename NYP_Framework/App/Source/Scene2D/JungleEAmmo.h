@@ -54,7 +54,7 @@ class CMap2D;
 // Include enemy ammo
 #include "EnemyAmmo2D.h"
 
-class CJEAmmoVT : public CEnemyAmmo2D
+class CJEAmmo : public CEnemyAmmo2D
 {
 public:
 
@@ -74,10 +74,10 @@ public:
 	void PostRender(void);
 
 	// Constructor
-	CJEAmmoVT();
+	CJEAmmo();
 
 	// Destructor
-	virtual ~CJEAmmoVT(void);
+	virtual ~CJEAmmo(void);
 
 	//setting the ammo's information needed for its travel path:
 		//player location aka ammo OG location

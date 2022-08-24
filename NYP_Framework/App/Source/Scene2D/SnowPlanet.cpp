@@ -204,6 +204,23 @@ bool SnowPlanet::Init(void)
 				break;
 			}
 		}
+		while (true)
+		{
+			SnowEnemy2DSWW* snowEnemy2DSWW = new SnowEnemy2DSWW();
+			// Pass shader to cEnemy2D
+			snowEnemy2DSWW->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (snowEnemy2DSWW->Init() == true)
+			{
+				snowEnemy2DSWW->SetPlayer2D(cPlayer2D);
+				enemies.push_back(snowEnemy2DSWW); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
+			}
+		}
 
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
@@ -307,6 +324,7 @@ bool SnowPlanet::Init(void)
 bool SnowPlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(3);
+	cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::NOTHING);
 	if (cMap2D->GetCurrentLevel() == TUTORIAL)
 	{
 		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO1)) < 2.f &&
@@ -394,7 +412,10 @@ bool SnowPlanet::Update(const double dElapsedTime)
 
 		// reduce the lives by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
-		cInventoryItemPlanet->Remove(1);
+		if (cMap2D->GetCurrentLevel() != TUTORIAL || cInventoryItemPlanet->GetCount() > 1)
+		{
+			cInventoryItemPlanet->Remove(1);
+		}
 	}
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::SHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
@@ -567,7 +588,11 @@ bool SnowPlanet::Update(const double dElapsedTime)
 					//if it does, minus away the enemy's health & destory the ammo
 				if (ammo->InteractWithEnemy(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index))
 				{
-					if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
+					if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getShieldActivated() && enemyVectors[cMap2D->GetCurrentLevel()][i]->getType()==CEnemy2D::ENEMYTYPE::WHITE) {
+						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 0); //every hit takes off 0 HP
+						ammo->setActive(false);
+					}
+					else if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
 						ammo->setActive(false);
 					}
@@ -587,7 +612,6 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			{
 				if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() != CEnemy2D::ENEMYTYPE::BROWN) {
 					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ice crystal
-					srand(static_cast<unsigned> (time(0)));
 					int resourceType = rand() % 20;
 					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
@@ -853,7 +877,6 @@ void SnowPlanet::DecideLevel(bool tutorial)
 	{
 		//random between 2 numbers to set us Scrap metal or battery
 			//according to which number type is set to, load which texture
-		srand(static_cast<unsigned> (time(0)));
 		int randomState = rand() % 100;
 		if (randomState < 50)
 		{

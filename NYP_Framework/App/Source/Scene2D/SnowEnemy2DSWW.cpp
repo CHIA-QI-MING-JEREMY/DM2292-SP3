@@ -154,6 +154,7 @@ bool SnowEnemy2DSWW::Init(void)
 
 	//CS: Init the color to white
 	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
+	shieldActivated = false;
 
 	// Set the Physics to fall status by default
 	cPhysics2D.Init();
@@ -174,6 +175,8 @@ bool SnowEnemy2DSWW::Init(void)
 //	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 30; //takes 6 hits to kill
 	shieldTimer = 2.0f;
+	shieldCount = 1;
+	healCount = 1;
 
 	//flickerTimer = 0.5; //used to progress the flicker counter
 	//flickerTimerMax = 0.5; //used to reset flicker counter
@@ -188,28 +191,28 @@ bool SnowEnemy2DSWW::Init(void)
 
 		// sets waypoints based on the level
 	//TUTORIAL
-	//if (cMap2D->GetCurrentLevel() == 0)
-	//{
-	//	// sets waypoints based on the enemy spawn location
-	//	if (vec2Index == glm::vec2(5, 15))
-	//	{
-	//		pathway.push_back(glm::vec2(5, 15));
-	//		pathway = ConstructWaypointVector(pathway, 400, 1);
-	//		fearpathway = glm::vec2(8,15);
-	//	}
-	//	else if (vec2Index == glm::vec2(17, 15))
-	//	{
-	//		pathway.push_back(glm::vec2(17, 15));
-	//		pathway = ConstructWaypointVector(pathway, 401, 1);
-	//		fearpathway = glm::vec2(20, 11);
-	//	}
-	//	else if (vec2Index == glm::vec2(17, 6))
-	//	{
-	//		pathway.push_back(glm::vec2(17, 6));
-	//		pathway = ConstructWaypointVector(pathway, 402, 1);
-	//		fearpathway = glm::vec2(20, 1);
-	//	}
-	//}
+	if (cMap2D->GetCurrentLevel() == 0)
+	{
+		// sets waypoints based on the enemy spawn location
+		if (vec2Index == glm::vec2(3, 1))
+		{
+			pathway.push_back(glm::vec2(3, 1));
+			//pathway = ConstructWaypointVector(pathway, 400, 1);
+			fearpathway = glm::vec2(8,1);
+		}
+		//else if (vec2Index == glm::vec2(17, 15))
+		//{
+		//	pathway.push_back(glm::vec2(17, 15));
+		//	pathway = ConstructWaypointVector(pathway, 401, 1);
+		//	fearpathway = glm::vec2(20, 11);
+		//}
+		//else if (vec2Index == glm::vec2(17, 6))
+		//{
+		//	pathway.push_back(glm::vec2(17, 6));
+		//	pathway = ConstructWaypointVector(pathway, 402, 1);
+		//	fearpathway = glm::vec2(20, 1);
+		//}
+	}
 	currentPathwayCounter = 0;
 	maxPathwayCounter = pathway.size();
 
@@ -236,9 +239,11 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 	{
 	case IDLE:
 		if (vec2Direction.x > 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0){
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 		}
 		if (iFSMCounter > iMaxFSMCounter)
@@ -248,7 +253,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Patrol State" << endl;
 			break;
 		}
-		if (health <= 20 && health >15) {
+		if (health <= 20 && health >15 && shieldCount > 0) {
 			sCurrentFSM = SHIELD;
 			iFSMCounter = 0;
 			cout << "Switching to Shield State" << endl;
@@ -260,7 +265,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Fear State" << endl;
 			break;
 		}
-		if (health < 5) {
+		if (health <= 5 && healCount > 0) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
@@ -270,9 +275,11 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	case PATROL:
 		if (vec2Direction.x > 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -289,7 +296,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Idle State" << endl;
 			break;
 		}
-		if (health <= 20 && health > 15) {
+		if (health <= 20 && health > 15 && shieldCount>0) {
 			sCurrentFSM = SHIELD;
 			iFSMCounter = 0;
 			cout << "Switching to Shield State" << endl;
@@ -301,7 +308,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Fear State" << endl;
 			break;
 		}
-		if (health < 5) {
+		if (health <= 5 && healCount > 0) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
@@ -348,9 +355,11 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	case ATTACK:
 		if (vec2Direction.x > 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -392,7 +401,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			}
 			iFSMCounter++;
 		}
-		if (health <= 20 && health > 15) {
+		if (health <= 20 && health > 15 && shieldCount > 0) {
 			sCurrentFSM = SHIELD;
 			iFSMCounter = 0;
 			cout << "Switching to Shield State" << endl;
@@ -404,7 +413,7 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 			cout << "Switching to Fear State" << endl;
 			break;
 		}
-		if (health < 5) {
+		if (health <= 5 && healCount > 0) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
@@ -412,12 +421,22 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		}
 		break;
 	case SHIELD:
-		cout << shieldTimer << endl;
+		if (vec2Direction.x > 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			animatedSprites->PlayAnimation("shieldR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
+			animatedSprites->PlayAnimation("shieldL", -1, 1.0f);
+		}
+		shieldActivated=true;
 		shieldTimer -= dElapsedTime;
 		if (shieldTimer <= 0.f) {
+			shieldCount -= 1;
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
-			shieldTimer = 2.0f;
+			shieldTimer = 0.f;
+			shieldActivated=false;
 			cout << "Switching to Patrol State" << endl;
 			break;
 		}
@@ -426,24 +445,20 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 
 	case FEAR:
 		if (vec2Direction.x > 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
 		}
 		else if (vec2Direction.x < 0) {
+			runtimeColour = glm::vec4(1.f, 1.0f, 1.f, 1.f);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
 		}
-		if (health < 5) {
+		if (health <= 5) {
 			sCurrentFSM = HEAL;
 			iFSMCounter = 0;
 			cout << "Switching to Heal State" << endl;
 			break;
 		}
-		if (health > 10) {
-			sCurrentFSM = PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
-			break;
-		}
-		if (health < 10) {
+		else {
 			auto path = cMap2D->PathFind(vec2Index,
 				fearpathway,
 				heuristic::manhattan,
@@ -473,8 +488,23 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case HEAL:
-		health += 10;
-		if (iFSMCounter > iMaxFSMCounter) {
+		if (vec2Direction.x > 0) {
+			if (healCount > 0) {
+				runtimeColour = glm::vec4(0.f, 1.0f, 0.f, 1.f);
+			}
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else if (vec2Direction.x < 0) {
+			if (healCount > 0) {
+				runtimeColour = glm::vec4(0.f, 1.0f, 0.f, 1.f);
+			}
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		}
+		if (healCount >0) {
+			health += 10;
+			healCount -= 1;
+		}
+		if (healCount <=0 && iFSMCounter > iMaxFSMCounter) {
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
 			cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
@@ -484,8 +514,8 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 	default:
 		break;
 	}
-	
-	//ammo beahviour
+
+	//ammo behaviour
 	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	//{
 	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
@@ -635,6 +665,16 @@ void SnowEnemy2DSWW::SetPlayer2D(CPlayer2D* cPlayer2D)
 
 	// Update the enemy's direction
 	UpdateDirection();
+}
+
+bool SnowEnemy2DSWW::getShieldActivated()
+{
+	return shieldActivated;
+}
+
+void SnowEnemy2DSWW::setShieldActivated(bool s)
+{
+	shieldActivated = s;
 }
 
 

@@ -30,6 +30,7 @@
 // Include CEnemy2D
 #include "Enemy2D.h"
 #include "SnowEnemy2DSWB.h"
+#include "SnowEnemy2DSWW.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"
@@ -57,7 +58,6 @@
 //include ammo
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
 
 //include resources
 #include "Resource.h"
