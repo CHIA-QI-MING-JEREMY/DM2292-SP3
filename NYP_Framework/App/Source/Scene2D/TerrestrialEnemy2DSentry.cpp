@@ -187,6 +187,9 @@ bool TEnemy2DSentry::Init(void)
 	currentWaypointCounter = 0;
 	maxWaypointCounter = waypoints.size();
 
+	isAlarmerActive = false;
+	isAlarmOn = false;
+
 	attackTimer = 0.0;
 
 	numFired = 0;
@@ -251,7 +254,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			break;
 		}
 
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index))
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.f)
 		{
 			int randomState = rand() % 100;
 			cout << randomState << endl;
@@ -289,7 +292,6 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 				sCurrentFSM = IDLE;
 				iFSMCounter = 0;
 				cout << "Switching to Idle State" << endl;
-				break;
 			}
 
 			if (vec2Direction.x > 0)
