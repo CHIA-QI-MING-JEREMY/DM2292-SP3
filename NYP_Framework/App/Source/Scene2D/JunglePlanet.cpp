@@ -1048,7 +1048,11 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		cInventoryItemPlanet->Remove(1); //deplete player's health
 		break;
 	case CMap2D::TILE_INDEX::RIVER_WATER:
-		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::RIVER_WATER); //trigger river water pop up
+		//pop up only appears in tutorial lvl
+		if (cMap2D->GetCurrentLevel() == TUTORIAL)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::RIVER_WATER); //trigger river water pop up
+		}
 
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Add(1); //increase health by 1 for every frame in river water
@@ -1084,7 +1088,11 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM: 
-		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BOUNCY_BLOOM); //trigger bouncy bloom pop up
+		//pop up only appears in tutorial lvl
+		if (cMap2D->GetCurrentLevel() == TUTORIAL)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BOUNCY_BLOOM); //trigger bouncy bloom pop up
+		}
 
 		//can make bouncy bloom bloom if using river water on it while standing on it
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_Q))
@@ -1100,7 +1108,11 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::ROCK:
-		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::ROCK); //trigger rock pop up
+		//pop up only appears in tutorial lvl
+		if (cMap2D->GetCurrentLevel() == TUTORIAL)
+		{
+			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::ROCK); //trigger rock pop up
+		}
 
 		//if player wants to tie a vine to the rock
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_F))
@@ -1158,7 +1170,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::SHOOTING_POPUP:
-		//Tutorial lvl pop up
+		//pop up only appears in tutorial lvl
 		if (cMap2D->GetCurrentLevel() == TUTORIAL)
 		{
 			cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::SHOOT); //shooting pop up
@@ -1175,7 +1187,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2A); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
 		//cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
