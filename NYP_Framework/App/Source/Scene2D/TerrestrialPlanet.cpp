@@ -264,21 +264,9 @@ bool TerrestrialPlanet::Init(void)
 
 	cPlayer2D->ResetRespawn();
 
-	//// create the alarm box vector
-	//alarmBoxVector.clear();
-	//alarmBoxVector = cMap2D->FindAllTiles(50);
-
-	//// assign alarm boxes to enemies (if applicable)
-	//for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-	//{
-	//	for (unsigned int j = 0; j < alarmBoxVector.size(); j++)
-	//	{
-	//		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index.y == alarmBoxVector[j].y)
-	//		{
-	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAssignedAlarmBox(alarmBoxVector[j]);
-	//		}
-	//	}
-	//}
+	// create the alarm box vector
+	alarmBoxVector.clear();
+	alarmBoxVector = cMap2D->FindAllTiles(250);
 
 	// Initialise the Physics
 	cPhysics2D.Init();
@@ -327,8 +315,7 @@ bool TerrestrialPlanet::Init(void)
 
 	// variables
 	isAlarmActive = false;
-	maxAlarmTimer = 10.0;
-	alarmTimer = 0.0;
+	alarmTimer = maxAlarmTimer;
 
 	isYellowObtained = false;
 	isRedObtained = false;
@@ -723,44 +710,74 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cMap2D->SetCurrentLevel(1);
 	}
 
-	//// Checks if alarm is active
-	//if (!isAlarmActive)
-	//{
-	//	unsigned int uiRow = -1;
-	//	unsigned int uiCol = -1;
-	//	if (cMap2D->FindValue(52, uiRow, uiCol))
-	//	{
-	//		isAlarmActive = true;
-	//		alarmTimer = maxAlarmTimer;
-	//	}
-	//}
-
-	//if (alarmTimer <= 0.0)
-	//{
-	//	alarmTimer = maxAlarmTimer;
-	//	isAlarmActive = false;
-	//	cMap2D->ReplaceTiles(52, 51);
-	//}
-	//else
-	//{
-	//	alarmTimer -= dElapsedTime;
-	//}
+	// Checks if alarm is active (alarm is changed in each enemy)
+	if (!isAlarmActive)
+	{
+		unsigned int uiRow = -1;
+		unsigned int uiCol = -1;
+		if (cMap2D->FindValue(CMap2D::TILE_INDEX::ALARM_LIGHT_ON, uiRow, uiCol))
+		{
+			isAlarmActive = true;
+			alarmTimer = maxAlarmTimer;
+		}
+	}
+	// counts down alarm timer if alarm is active and timer is more than 0
+	// turns off alarm if timer is 0 or less
+	else
+	{
+		// cycle thru all enemies to deactivate alarmer status (since alarm is already activated)
+		for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
+		{
+			// sets alarmer state to false for every enemy that has alarmer state at true
+			if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmerState())
+			{
+				enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmerState(false);
+			}
+		}
+		
+		if (alarmTimer > 0.0)
+		{
+			alarmTimer -= dElapsedTime;
+		}
+		else
+		{
+			alarmTimer = maxAlarmTimer;
+			isAlarmActive = false;
+			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::ALARM_LIGHT_ON, CMap2D::TILE_INDEX::ALARM_LIGHT_OFF);
+		}
+	}
 
 	// Call all of the cEnemy2D's update methods before Map2D
 	// as we want to capture the updates before Map2D update
 	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
-		//// informs all enemies that the alarm has been activated
-		//if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer > 0.0)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
-		//}
-		//else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer == maxAlarmTimer)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
-		//}
-
+		// updates all enemies
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
+
+		// informs all enemies that an enemy is going to activate the alarm
+		// if there is an enemy that is an alarmer (going to activate the alarm)
+		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmerState())
+		{
+			// cycle thru all enemies to make them aware that an alarmer is active
+			for (unsigned int j = 0; j < enemyVectors[cMap2D->GetCurrentLevel()].size(); j++)
+			{
+				// sets alarmer state to true for every enemy that has alarmer state at false
+				if (!enemyVectors[cMap2D->GetCurrentLevel()][j]->getAlarmerState())
+				{
+					enemyVectors[cMap2D->GetCurrentLevel()][j]->setAlarmerState(true);
+				}
+			}
+		}
+
+		// informs all enemies that the alarm has been activated
+		if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState())
+		{
+			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
+		}
+		else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState())
+		{
+			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
+		}
 
 		//player ammo collision check with enemy
 		std::vector<CAmmo2D*> ammoList = cPlayer2D->getAmmoList();

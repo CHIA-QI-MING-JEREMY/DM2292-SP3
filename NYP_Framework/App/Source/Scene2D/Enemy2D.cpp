@@ -161,6 +161,8 @@ bool CEnemy2D::Init(void)
 	isAlarmerActive = false;
 	isAlarmOn = false;
 	assignedAlarmBox = glm::vec2(NULL, NULL);
+
+	// sets shield variables
 	shieldActivated = false;
 
 	type = CLOSE_COMBAT;

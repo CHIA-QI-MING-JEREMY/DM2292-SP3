@@ -206,7 +206,7 @@ protected:
 
 	// attack timer
 	double attackTimer;
-	const double attackInterval = 0.33;
+	const double attackInterval = 0.4;
 	const double alertAttackInterval = 0.2;
 
 	// checks how many bullets have been fired
@@ -214,7 +214,10 @@ protected:
 	const int attackMagSize = 3;
 	const int alertAttackMagSize = 5;
 
-	//double warnTimer;
-	//double maxWarnTimer;
+	vector<glm::vec2>alarmBoxVector;
+	bool isAlarmBoxAssigned;
+	double warnTimer;
+	const double maxWarnTimer = 2.0;
+	float alarmBoxDistance;
 };
 

@@ -93,6 +93,9 @@ bool CTEAmmoSentry::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 
@@ -267,9 +270,19 @@ bool CTEAmmoSentry::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		// Decrease the health by 1
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		cInventoryItem->Remove(5);
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+
+		// remove 5 health
+		if (!isAlerted)
+		{
+			cInventoryItemPlanet->Remove(5);
+		}
+		// remove 6 health
+		else
+		{
+			cInventoryItemPlanet->Remove(6);
+		}
+
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once

@@ -152,7 +152,7 @@ protected:
 	// Add your variables and methods here.
 	vector<glm::vec2> alarmBoxVector;
 	bool isAlarmActive;
-	double maxAlarmTimer;
+	const double maxAlarmTimer = 10.0;
 	double alarmTimer;
 
 	enum LEVELS

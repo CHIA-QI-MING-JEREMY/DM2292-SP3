@@ -278,10 +278,10 @@ bool CTEAmmoTurret::InteractWithPlayer(void)
 		{
 			cInventoryItemPlanet->Remove(3);
 		}
-		// remove 4 health
+		// remove 3 health
 		else
 		{
-			cInventoryItemPlanet->Remove(4);
+			cInventoryItemPlanet->Remove(3);
 		}
 		
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
