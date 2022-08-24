@@ -200,15 +200,6 @@ bool JEnemy2DPatrolT::Init(void)
 			waypoints = ConstructWaypointVector(waypoints, 140, 4);
 		}
 	}
-	//for lvl 2
-	if (cMap2D->GetCurrentLevel() == 2)
-	{
-		//if it's the enemy at this position
-		if (vec2Index == glm::vec2(4, 4))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 100, 4);
-		}
-	}
 	
 
 	// sets waypoint counter value

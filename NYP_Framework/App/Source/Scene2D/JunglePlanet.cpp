@@ -574,7 +574,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
 				{
 					//40% chance to drop scrap metal, 40% chance to drop battery, 20% chance to drop ironwood
-					srand(static_cast<unsigned> (time(0)));
 					int resourceType = rand() % 10;
 					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
@@ -619,7 +618,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				if (enemyVectors[cMap2D->GetCurrentLevel()].size() > 1)
 				{
 					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
-					srand(static_cast<unsigned> (time(0)));
 					int resourceType = rand() % 20;
 					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
@@ -746,7 +744,10 @@ bool JunglePlanet::Update(const double dElapsedTime)
 
 		// reduce the lives by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Lives");
-		cInventoryItemPlanet->Remove(1);
+		if (cMap2D->GetCurrentLevel() != TUTORIAL || cInventoryItemPlanet->GetCount() > 1)
+		{
+			cInventoryItemPlanet->Remove(1);
+		}
 	}
 
 	//if player has burnable blocks to put down, put down in the direction the player is facing
@@ -1187,14 +1188,13 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
-		//cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
 	{
 		//random between 2 numbers to set us Scrap metal or battery
 			//according to which number type is set to, load which texture
-		srand(static_cast<unsigned> (time(0)));
 		int randomState = rand() % 100;
 		if (randomState < 50)
 		{
