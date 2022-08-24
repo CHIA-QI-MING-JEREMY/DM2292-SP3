@@ -32,6 +32,7 @@
 #include "JungleEnemy2DVT.h"
 #include "JungleEnemy2DShyC.h"
 #include "JungleEnemy2DPatrolT.h"
+#include "JungleEnemy2DITracker.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"

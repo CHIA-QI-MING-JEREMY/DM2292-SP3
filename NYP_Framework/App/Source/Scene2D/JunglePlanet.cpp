@@ -233,12 +233,29 @@ bool JunglePlanet::Init(void)
 			}
 		}
 
+		while (true)
+		{
+			JEnemy2DITracker* cJEnemy2DITracker = new JEnemy2DITracker();
+			// Pass shader to cEnemy2D
+			cJEnemy2DITracker->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cJEnemy2DITracker->Init() == true)
+			{
+				cJEnemy2DITracker->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cJEnemy2DITracker); //push each enemy into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all enemies have been loaded
+				break;
+			}
+		}
+
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
 		/// <summary>
 		/// RESOURCES
 		/// </summary>
-		
 		vector<CResource*> resources; //temporary vector to contain all the resources in this 1 map
 			//gets pushed into the resourceVectors vector once filled 
 		while (true)
@@ -266,22 +283,6 @@ bool JunglePlanet::Init(void)
 
 	//find new spawn location of player according to which map is loaded in
 	cPlayer2D->ResetRespawn(); //used if set current lvl used in init doesnt reset to first map
-
-	//// create the alarm box vector
-	//alarmBoxVector.clear();
-	//alarmBoxVector = cMap2D->FindAllTiles(50);
-
-	//// assign alarm boxes to enemies (if applicable)
-	//for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-	//{
-	//	for (unsigned int j = 0; j < alarmBoxVector.size(); j++)
-	//	{
-	//		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index.y == alarmBoxVector[j].y)
-	//		{
-	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAssignedAlarmBox(alarmBoxVector[j]);
-	//		}
-	//	}
-	//}
 
 	// Initialise the Physics
 	cPhysics2D.Init();
@@ -687,6 +688,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 	//if player is not in river water, F will be used to use the river water instead of collect it
 		//and instead of using it on an unbloomed bouncy bloom
 	if (cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::RIVER_WATER &&
+		cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::ENEMY_WAYPOINT_RIVER_WATER &&
 		cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::UNBLOOMED_BOUNCY_BLOOM &&
 		cMap2D->GetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x) != CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM)
 	{
@@ -1049,6 +1051,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 		cInventoryItemPlanet->Remove(1); //deplete player's health
 		break;
 	case CMap2D::TILE_INDEX::RIVER_WATER:
+	case CMap2D::TILE_INDEX::ENEMY_WAYPOINT_RIVER_WATER:
 		//pop up only appears in tutorial lvl
 		if (cMap2D->GetCurrentLevel() == TUTORIAL)
 		{

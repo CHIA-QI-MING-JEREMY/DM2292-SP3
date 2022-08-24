@@ -36,6 +36,7 @@
     <ClInclude Include="Source\Scene2D\InventoryManager.h" />
     <ClInclude Include="Source\Scene2D\InventoryManagerPlanet.h" />
     <ClInclude Include="Source\Scene2D\JungleEAmmoVT.h" />
+    <ClInclude Include="Source\Scene2D\JungleEnemy2DITracker.h" />
     <ClInclude Include="Source\Scene2D\JungleEnemy2DPatrolT.h" />
     <ClInclude Include="Source\Scene2D\JungleEnemy2DShyC.h" />
     <ClInclude Include="Source\Scene2D\JungleEnemy2DVT.h" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Source\Scene2D\InventoryManager.cpp" />
     <ClCompile Include="Source\Scene2D\InventoryManagerPlanet.cpp" />
     <ClCompile Include="Source\Scene2D\JungleEAmmoVT.cpp" />
+    <ClCompile Include="Source\Scene2D\JungleEnemy2DITracker.cpp" />
     <ClCompile Include="Source\Scene2D\JungleEnemy2DPatrolT.cpp" />
     <ClCompile Include="Source\Scene2D\JungleEnemy2DShyC.cpp" />
     <ClCompile Include="Source\Scene2D\JungleEnemy2DVT.cpp" />

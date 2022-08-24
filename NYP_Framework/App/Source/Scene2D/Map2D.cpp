@@ -182,6 +182,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(RIVER_WATER, iTextureID));
 		}
+		//eney waypoint river water tile
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/RiverWater.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/RiverWater.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(ENEMY_WAYPOINT_RIVER_WATER, iTextureID));
+		}
 
 		//unbloomed bouncy bloom tile
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/BouncyBloom_Unbloomed.tga", true);
