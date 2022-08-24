@@ -346,8 +346,6 @@ bool CAmmo2D::CheckPosition(void)
 		// If the new position is fully within a row, then check this row only
 		if (vec2NumMicroSteps.y == 0)
 		{
-			cout << cSettings->NUM_STEPS_PER_TILE_XAXIS - 1 << endl;
-
 			// If the grid is not accessible, then return false
 			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610 && vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS - 2.f)
 			{

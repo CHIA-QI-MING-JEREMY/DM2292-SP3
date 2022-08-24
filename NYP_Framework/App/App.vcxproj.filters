@@ -81,9 +81,6 @@
     <ClCompile Include="Source\Scene2D\InventoryManagerPlanet.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene2D\JungleEAmmoVT.cpp">
-      <Filter>Scene2D</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Scene2D\JungleEnemy2DVT.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
@@ -154,6 +151,9 @@
       <Filter>Scene2D</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene2D\JungleEnemy2DITracker.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\JungleEAmmo.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
   </ItemGroup>
@@ -246,9 +246,6 @@
     <ClInclude Include="Source\Scene2D\InventoryManagerPlanet.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene2D\JungleEAmmoVT.h">
-      <Filter>Scene2D</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Scene2D\JungleEnemy2DVT.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
@@ -316,6 +313,9 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\JungleEnemy2DITracker.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\JungleEAmmo.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>

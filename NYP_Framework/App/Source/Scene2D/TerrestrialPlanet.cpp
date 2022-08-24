@@ -129,17 +129,17 @@ bool TerrestrialPlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Terrestrial_02A.csv", LEVEL2A) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Terrestrial_02.csv", LEVEL2) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Terrestrial Map Level 02A" << endl;
+		cout << "Failed to load Terrestrial Map Level 02" << endl;
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Terrestrial_02B.csv", LEVEL2B) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Test.csv", TEST) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Terrestrial Map Level 02B" << endl;
+		cout << "Failed to load Map Test" << endl;
 		return false;
 	}
 
@@ -1029,7 +1029,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{
@@ -1042,7 +1042,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 		}
 		else
 		{
-			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
+			cMap2D->SetCurrentLevel(LEVEL2); //level 2
 		}
 	}
 

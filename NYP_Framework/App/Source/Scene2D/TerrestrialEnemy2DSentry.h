@@ -120,13 +120,13 @@ protected:
 		IDLE = 0,
 		PATROL = 1,
 		TRACK = 2,
-		ATTACK = 3,
+		SHOOT = 3,
 		WARN = 4,
 		ALARM_TRIGGER = 5,
 		ALERT_IDLE = 6,
 		ALERT_PATROL = 7,
 		ALERT_TRACK = 8,
-		ALERT_ATTACK = 9,
+		ALERT_SHOOT = 9,
 		NUM_FSM
 	};
 
@@ -204,9 +204,15 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	//// timer
-	//double attackTimer;
-	//double maxAttackTimer;
+	// attack timer
+	double attackTimer;
+	const double attackInterval = 0.33;
+	const double alertAttackInterval = 0.2;
+
+	// checks how many bullets have been fired
+	int numFired;
+	const int attackMagSize = 3;
+	const int alertAttackMagSize = 5;
 
 	//double warnTimer;
 	//double maxWarnTimer;

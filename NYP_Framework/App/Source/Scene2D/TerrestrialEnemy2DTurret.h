@@ -195,8 +195,14 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	// timer
+	// attack timer
 	double attackTimer;
-	double maxAttackTimer;
+	const double attackInterval = 0.2;
+	const double alertAttackInterval = 0.1;
+
+	// checks how many bullets have been fired
+	int numFired;
+	const int attackMagSize = 5;
+	const int alertAttackMagSize = 6;
 };
 

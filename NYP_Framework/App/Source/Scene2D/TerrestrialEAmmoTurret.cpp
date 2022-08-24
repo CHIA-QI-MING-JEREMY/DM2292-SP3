@@ -273,15 +273,15 @@ bool CTEAmmoTurret::InteractWithPlayer(void)
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 
-		// remove 10 health
+		// remove 3 health
 		if (!isAlerted)
 		{
-			cInventoryItemPlanet->Remove(10);
+			cInventoryItemPlanet->Remove(3);
 		}
-		// remove 15 health
+		// remove 4 health
 		else
 		{
-			cInventoryItemPlanet->Remove(15);
+			cInventoryItemPlanet->Remove(4);
 		}
 		
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise

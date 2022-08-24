@@ -58,7 +58,7 @@
 //include ammo
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
-#include "JungleEAmmoVT.h"
+#include "JungleEAmmo.h"
 
 //include resources
 #include "Resource.h"
