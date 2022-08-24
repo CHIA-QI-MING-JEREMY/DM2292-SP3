@@ -307,6 +307,65 @@ bool SnowPlanet::Init(void)
 bool SnowPlanet::Update(const double dElapsedTime)
 {
 	cGUI_Scene2D->setPlanetNum(3);
+	if (cMap2D->GetCurrentLevel() == TUTORIAL)
+	{
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO1)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO1).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO1);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO2)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO2).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO2);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO3)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO3).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO3);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO4)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO4).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO4);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO5)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNINTRO5).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNINTRO5);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT1)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT1).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT1);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT2)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT2).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT2);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT3)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT3).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT3);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT4)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT4).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT4);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT5)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT5).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT5);
+		}
+		if (cPhysics2D.CalculateDistance(cPlayer2D->vec2Index, cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT6)) < 2.f &&
+			cPlayer2D->vec2Index.y - cMap2D->GetTilePosition(CMap2D::TILE_INDEX::SIGNTUT6).y < 2.f) //player isn't much higher than the invisible pop up trigger point
+		{
+			cGUI_Scene2D->setTutorialPopupSnow(CGUI_Scene2D::SNOW_TUTORIAL_POPUP::SIGNTUT6);
+		}
+	}
+
 	if (cPlayer2D->getModeOfPlayer() !=CPlayer2D::MODE::NORMAL && turnBerserkOffTimer==5.0f) {
 		if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
 			cout << "Switching back to NORMAL player mode" << endl;

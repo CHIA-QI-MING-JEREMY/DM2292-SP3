@@ -77,6 +77,10 @@ public:
 	int getTutorialPopupJungle(void);
 	void setTutorialPopupJungle(int index);
 
+
+	int getTutorialPopupSnow(void);
+	void setTutorialPopupSnow(int index);
+
 	enum JUNGLE_TUTORIAL_POPUP
 	{
 		NONE = 0,
@@ -92,6 +96,22 @@ public:
 		BOUNCY_BLOOM, //triggered everytime player collides with unbloomed bouncy bloom
 		ROCK, //triggered when player collides with a rock with on vine on it
 		NUM_JT_POPUP
+	};
+	enum SNOW_TUTORIAL_POPUP
+	{
+		NOTHING = 0,
+		SIGNINTRO1,
+		SIGNINTRO2,
+		SIGNINTRO3,
+		SIGNINTRO4,
+		SIGNINTRO5,
+		SIGNTUT1,
+		SIGNTUT2,
+		SIGNTUT3,
+		SIGNTUT4,
+		SIGNTUT5,
+		SIGNTUT6,
+		NUM_ST_POPUP
 	};
 
 protected:
@@ -136,6 +156,7 @@ protected:
 	glm::vec2 blockPosition;
 
 	int tutorialPopupJungle; //index for which pop up to show in jungle tutorial
+	int tutorialPopupSnow; //index fo which pop up to show in snow tutorial
 private:
 	int planetNum;
 };
