@@ -172,8 +172,9 @@ bool TEnemy2DDummy::Init(void)
 	isAlarmerActive = false;
 	isAlarmOn = false;
 
-	maxAttackTimer = 0.21;
-	attackTimer = 0;
+	attackTimer = 0.0;
+
+	numFired = 0;
 
 	return true;
 }
@@ -245,7 +246,6 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			maxAttackTimer = 0.21;
 			attackTimer = 0;
 			cout << "Switching to Attack State" << endl;
 			break;
@@ -280,18 +280,20 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 			ammo->setIsAlerted(false);
 			cout << "Bam!" << shootingDirection << endl;
 
-			attackTimer = maxAttackTimer;
+			attackTimer = attackInterval;
+			numFired++;
 		}
 		else
 		{
 			attackTimer -= dElapsedTime;
 		}
 
-		if (iFSMCounter > iMaxFSMCounter)
+		if (numFired >= attackMagSize)
 		{
 			sCurrentFSM = TARGET;
 			iFSMCounter = 0;
 			attackTimer = 0;
+			numFired = 0;
 			cout << "Switching to Target State" << endl;
 			break;
 		}
@@ -331,7 +333,6 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			maxAttackTimer = 0.21;
 			attackTimer = 0;
 			cout << "Switching to Attack State" << endl;
 			break;
@@ -378,7 +379,6 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ALERT_ATTACK;
 			iFSMCounter = 0;
-			maxAttackTimer = 0.11;
 			attackTimer = 0;
 			cout << "Switching to Alert_Attack State" << endl;
 		}
@@ -411,22 +411,23 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 			ammo->setIsAlerted(true);
 			cout << "Bam!" << shootingDirection << endl;
 
-			attackTimer = maxAttackTimer;
+			attackTimer = alertAttackInterval;
+			numFired++;
 		}
 		else
 		{
 			attackTimer -= dElapsedTime;
 		}
 
-		if (iFSMCounter > iMaxFSMCounter)
+		if (numFired >= alertAttackMagSize)
 		{
 			sCurrentFSM = ALERT_TARGET;
 			iFSMCounter = 0;
 			attackTimer = 0;
+			numFired = 0;
 			cout << "Switching to Alert_Target State" << endl;
 			break;
 		}
-		iFSMCounter++;
 		break;
 	case ALERT_TARGET:
 	{
@@ -461,7 +462,6 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ALERT_ATTACK;
 			iFSMCounter = 0;
-			maxAttackTimer = 0.11;
 			attackTimer = 0;
 			cout << "Switching to Alert_Attack State" << endl;
 			break;
