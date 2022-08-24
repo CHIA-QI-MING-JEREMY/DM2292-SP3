@@ -730,7 +730,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Fur & Fur Coat");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Both furcoats and fur allow you to increase your body temperature.\nKilling brown wolves will drop their fur\nwhile furcoats will be laid out across the level.");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Both furcoats and fur allow you\nto increase your body temperature.\nKilling brown wolves will drop their fur\nwhile furcoats will be laid out across\nthe level.");
 				ImGui::NewLine();
 				//controls instructions
 				//ImGui::SetWindowFontScale(1.2f * relativeScale_y);

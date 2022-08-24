@@ -92,6 +92,8 @@ public:
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
+	bool getShieldActivated();
+	void setShieldActivated(bool s);
 
 protected:
 	enum DIRECTION
@@ -222,5 +224,7 @@ protected:
 	//double warnTimer;
 	//double maxWarnTimer;
 	float shieldTimer;
+	int shieldCount;
+	int healCount;
 };
 

@@ -161,6 +161,7 @@ bool CEnemy2D::Init(void)
 	isAlarmerActive = false;
 	isAlarmOn = false;
 	assignedAlarmBox = glm::vec2(NULL, NULL);
+	shieldActivated = false;
 
 	type = CLOSE_COMBAT;
 
@@ -285,6 +286,16 @@ void CEnemy2D::SetPlayer2D(CPlayer2D* cPlayer2D)
 
 	// Update the enemy's direction
 	UpdateDirection();
+}
+
+bool CEnemy2D::getShieldActivated()
+{
+	return shieldActivated;
+}
+
+void CEnemy2D::setShieldActivated(bool s)
+{
+	shieldActivated = s;
 }
 
 //return enemy "type" to scene to determine enemy n ammo behaviour

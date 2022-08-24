@@ -96,6 +96,9 @@ public:
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
 
+	bool getShieldActivated();
+	void setShieldActivated(bool s);
+
 	//used to determine enemy behaviour in scene
 	enum ENEMYTYPE
 	{
@@ -257,6 +260,8 @@ protected:
 	bool hunkering; //used to check if damage dealt to enemy should be lessened or not
 	bool noisy; //used to check if enemy is in noisy mode
 	bool alerted; //used to set enemy into en_route mode if near an enemy in noisy mode
+	
+	bool shieldActivated;
 
 	// colour variables
 	glm::vec4 colour;
