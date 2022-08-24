@@ -132,18 +132,17 @@ bool JEnemy2DVT::Init(void)
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(6, 4,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	//animatedSprites->AddAnimation("idle", 0, 4); //5 images for animation, index 0 to 4, walk right
-	//animatedSprites->AddAnimation("idle", 5, 9); //walk left, 0.2f speed
-	animatedSprites->AddAnimation("idle", 10, 12); //attack right, 0.75f speed
+	animatedSprites->AddAnimation("idle", 16, 17); //recovering (idle), 1.f speed
+	animatedSprites->AddAnimation("movingR", 0, 4); //5 images for animation, index 0 to 4, walk right, 0.2f speed
+	animatedSprites->AddAnimation("movingL", 5, 9); //walk left, 0.2f speed
+	animatedSprites->AddAnimation("attackingR", 10, 12); //attack right, 0.75f speed
+	animatedSprites->AddAnimation("attackingL", 13, 15); //attack left, 0.75f speed
 
-	/*animatedSprites->AddAnimation("right", 3, 5);
-	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);*/
 	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 0.75f);
+	animatedSprites->PlayAnimation("idle", -1, 1.f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
 	//1.0f --> set time between frames as 1.0f
@@ -294,13 +293,6 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case WANDER:
-		//if (health <= 15) //if health is low, switch to teleport (teleport then recover)
-		//{
-		//	sCurrentFSM = TELEPORT;
-		//	iFSMCounter = 0;
-		//	cout << "Switching to Teleport State" << endl;
-		//	break;
-		//}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f &&
 			(vec2Index.y == cPlayer2D->vec2Index.y || // player is left or right of the enemy
 				vec2Index.x == cPlayer2D->vec2Index.x)) // player is above or below the enemy
@@ -390,6 +382,161 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		UpdatePosition(); //move around a bit aimlessly
 		iFSMCounter++;
 		break;
+	case SHOOT:
+		if (health <= 5)
+		{
+			sCurrentFSM = RECOVER;
+			iFSMCounter = 0;
+			cout << "Switching to Recover State" << endl;
+			break;
+		}
+		//if within shooting range
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f)
+		{
+			// Update direction to face and shoot in
+			if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
+				//if player is on same position as enemy, uses this checking instead of the one below
+			{
+				// check if player's x is larger than or smaller than enemy's x
+				// if is larger, direction is right
+				// if is smaller, direction is left
+				if (cPlayer2D->vec2Index.x > vec2Index.x)
+				{
+					//check if the path to the right is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (cPlayer2D->vec2Index.x - vec2Index.x); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = RIGHT; //setting direction for ammo shooting
+						//Play the "attacking right" animation
+						animatedSprites->PlayAnimation("attackingR", -1, 0.75f);
+					}
+					else
+					{
+						sCurrentFSM = WANDER;
+						cout << "Switching to Wander State" << endl;
+						break;
+					}
+
+				}
+				else
+				{
+					//check if the path to the left is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (vec2Index.x - cPlayer2D->vec2Index.x); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - i) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = LEFT; //setting direction for ammo shooting
+						//Play the "attacking left" animation
+						animatedSprites->PlayAnimation("attackingL", -1, 0.75f);
+					}
+					else
+					{
+						sCurrentFSM = WANDER;
+						cout << "Switching to Wander State" << endl;
+						break;
+					}
+				}
+
+			}
+			else if (vec2Index.x == cPlayer2D->vec2Index.x ||
+				vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
+				vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
+			{
+				// check if player's y is larger than or smaller than enemy's y
+				// if is larger, direction is up
+				// if is smaller, direction is down
+				if (cPlayer2D->vec2Index.y > vec2Index.y)
+				{
+					//check if the path upward is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (cPlayer2D->vec2Index.y - vec2Index.y); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = UP; //setting direction for ammo shooting
+						//Play the "attacking right" animation
+						animatedSprites->PlayAnimation("attackingR", -1, 0.75f);
+					}
+					else
+					{
+						sCurrentFSM = WANDER;
+						cout << "Switching to Wander State" << endl;
+						break;
+					}
+				}
+				else
+				{
+					//check if the path down is clear
+					bool pathClear = true; //only set to false if there is an impassable tile
+					for (int i = 0; i <= (vec2Index.y - cPlayer2D->vec2Index.y); ++i)
+					{
+						//if the tile is impassable : 610 on
+						if (cMap2D->GetMapInfo(vec2Index.y - i, vec2Index.x) >= 610) //tile isnt a destoryable block
+						{
+							pathClear = false;
+						}
+					}
+
+					//only set to shoot if path is clear
+					if (pathClear)
+					{
+						shootingDirection = DOWN; //setting direction for ammo shooting
+						//Play the "attacking right" animation
+						animatedSprites->PlayAnimation("attackingR", -1, 0.75f);
+					}
+					else
+					{
+						sCurrentFSM = WANDER;
+						cout << "Switching to Wander State" << endl;
+						break;
+					}
+				}
+			}
+
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CJEAmmoVT* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
+
+			sCurrentFSM = RELOAD;
+			cout << "Switching to Reload State" << endl;
+		}
+		else
+		{
+			sCurrentFSM = WANDER;
+			iFSMCounter = 0;
+			cout << "Switching to Wander State" << endl;
+		}
+		break;
 	case RELOAD:
 		if (iFSMCounter > iMaxFSMCounter)
 		{
@@ -478,6 +625,8 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		iFSMCounter++;
 		break;
 	case RECOVER:
+		//Play the "idle" animation
+		animatedSprites->PlayAnimation("idle", -1, 1.f);
 		if (health >= maxHealth) //at full health
 		{
 			health = maxHealth; //max health
@@ -579,246 +728,6 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		}
 		healingCooldown -= dElapsedTime; //deplete healing cooldown
 		iFSMCounter++;
-		break;
-	case IDLE:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-		{
-			sCurrentFSM = SHOOT;
-			iFSMCounter = 0;
-			cout << "Switching to Attack State" << endl;
-		}
-		if (health <= 5)
-		{
-			sCurrentFSM = EXPLODE;
-			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
-		}
-		iFSMCounter++;
-		break;
-	case SHOOT:
-		if (health <= 5)
-		{
-			sCurrentFSM = RECOVER;
-			iFSMCounter = 0;
-			cout << "Switching to Recover State" << endl;
-			break;
-		}
-		//if within shooting range
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f)
-		{
-			// Update direction to face and shoot in
-			if (vec2Index.y == cPlayer2D->vec2Index.y) // player is left or right of the enemy
-				//if player is on same position as enemy, uses this checking instead of the one below
-			{
-				// check if player's x is larger than or smaller than enemy's x
-				// if is larger, direction is right
-				// if is smaller, direction is left
-				if (cPlayer2D->vec2Index.x > vec2Index.x)
-				{
-					//check if the path to the right is clear
-					bool pathClear = true; //only set to false if there is an impassable tile
-					for (int i = 0; i <= (cPlayer2D->vec2Index.x - vec2Index.x); ++i)
-					{
-						//if the tile is impassable : 610 on
-						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + i) >= 610) //tile isnt a destoryable block
-						{
-							pathClear = false;
-						}
-					}
-
-					//only set to shoot if path is clear
-					if (pathClear)
-					{
-						shootingDirection = RIGHT; //setting direction for ammo shooting
-					}
-					else
-					{
-						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
-						break;
-					}
-
-				}
-				else
-				{
-					//check if the path to the left is clear
-					bool pathClear = true; //only set to false if there is an impassable tile
-					for (int i = 0; i <= (vec2Index.x - cPlayer2D->vec2Index.x); ++i)
-					{
-						//if the tile is impassable : 610 on
-						if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - i) >= 610) //tile isnt a destoryable block
-						{
-							pathClear = false;
-						}
-					}
-
-					//only set to shoot if path is clear
-					if (pathClear)
-					{
-						shootingDirection = LEFT; //setting direction for ammo shooting
-					}
-					else
-					{
-						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
-						break;
-					}
-				}
-
-			}
-			else if (vec2Index.x == cPlayer2D->vec2Index.x ||
-				vec2Index.x - 1 == cPlayer2D->vec2Index.x ||
-				vec2Index.x + 1 == cPlayer2D->vec2Index.x) // player is above or below the enemy, with a small margin of error x wise
-			{
-				// check if player's y is larger than or smaller than enemy's y
-				// if is larger, direction is up
-				// if is smaller, direction is down
-				if (cPlayer2D->vec2Index.y > vec2Index.y)
-				{
-					//check if the path upward is clear
-					bool pathClear = true; //only set to false if there is an impassable tile
-					for (int i = 0; i <= (cPlayer2D->vec2Index.y - vec2Index.y); ++i)
-					{
-						//if the tile is impassable : 610 on
-						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x) >= 610) //tile isnt a destoryable block
-						{
-							pathClear = false;
-						}
-					}
-
-					//only set to shoot if path is clear
-					if (pathClear)
-					{
-						shootingDirection = UP; //setting direction for ammo shooting
-					}
-					else
-					{
-						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
-						break;
-					}
-				}
-				else
-				{
-					//check if the path down is clear
-					bool pathClear = true; //only set to false if there is an impassable tile
-					for (int i = 0; i <= (vec2Index.y - cPlayer2D->vec2Index.y); ++i)
-					{
-						//if the tile is impassable : 610 on
-						if (cMap2D->GetMapInfo(vec2Index.y - i, vec2Index.x) >= 610) //tile isnt a destoryable block
-						{
-							pathClear = false;
-						}
-					}
-
-					//only set to shoot if path is clear
-					if (pathClear)
-					{
-						shootingDirection = DOWN; //setting direction for ammo shooting
-					}
-					else
-					{
-						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
-						break;
-					}
-				}
-			}
-
-			// Shoot enemy ammo!
-			//shoot ammo in accordance to the direction enemy is facing
-			CJEAmmoVT* ammo = FetchAmmo();
-			ammo->setActive(true);
-			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			cout << "Bam!" << shootingDirection << endl;
-
-			sCurrentFSM = RELOAD;
-			cout << "Switching to Reload State" << endl;
-		}
-		else
-		{
-			sCurrentFSM = WANDER;
-			iFSMCounter = 0;
-			cout << "Switching to Wander State" << endl;
-		}
-		break;
-	case EXPLODE:
-		//still flickering through colours
-		if (flickerCounter < 7)
-		{
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
-
-			shootingDirection = DOWN; //to adjust where the sprite faces
-			flickerTimer -= dElapsedTime; //timer counting down
-			if (flickerTimer <= 0) //timer up
-			{
-				++flickerCounter; //increase counter
-				flickerTimer = flickerTimerMax; //reset timer
-			}
-
-			//decide which colour to be
-			if (flickerCounter % 2 == 0) //even
-			{
-				//CS: Change Colour
-				runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0); //white
-			}
-			else //odd
-			{
-				//CS: Change Colour
-				runtimeColour = glm::vec4(1.0, 0.0, 0.0, 1.0); //red
-			}
-		}
-		//explode time
-		if (flickerCounter == 7)
-		{
-			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
-
-			++flickerCounter; //increase counter
-			flickerTimer = flickerTimerMax * 4; //reset timer
-		}
-		//countdown for AOE
-		if (flickerCounter == 8)
-		{
-			flickerTimer -= dElapsedTime; //timer counting down
-			for (int i = -1; i < 2; ++i) //added to y
-			{
-				for (int j = -1; j < 2; ++j) //added to x
-				{
-					//change empty space to the explosion tile --> damage player heavily upon collision
-					if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 0)
-					{
-						if (cMap2D->GetCurrentLevel() == 0) //normal map of level 1
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 60); //normal explosion
-						}
-						else if (cMap2D->GetCurrentLevel() == 1) //BnW map of level 1
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 61); //BnW explosion
-						}
-					}
-				}
-			}
-
-			if (flickerTimer <= 0) //timer up
-			{
-				//change from explosions back to normal
-				for (int i = -1; i < 2; ++i) //added to y
-				{
-					for (int j = -1; j < 2; ++j) //added to x
-					{
-						//change empty space to the explosion tile --> damage player heavily upon collision
-						if (cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 60 || //normal explosion
-							cMap2D->GetMapInfo(vec2Index.y + i, vec2Index.x + j) == 61) //BnW explosion
-						{
-							cMap2D->SetMapInfo(vec2Index.y + i, vec2Index.x + j, 0); //set to empty space
-						}
-					}
-				}
-				++flickerCounter; //increase counter
-				health = 0; //kill enemy
-			}
-		}
 		break;
 	default:
 		break;
@@ -1298,10 +1207,7 @@ bool JEnemy2DVT::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Jungle Gotcha!" << endl;
-		// Since the player has been caught, then reset the FSM
-		sCurrentFSM = IDLE;
-		iFSMCounter = 0;
+		
 		return true;
 	}
 	return false;
@@ -1398,6 +1304,9 @@ void JEnemy2DVT::UpdatePosition(void)
 		}
 		shootingDirection = LEFT; //moving to the left
 
+		//Play the "moving left" animation
+		animatedSprites->PlayAnimation("movingL", -1, 0.2f);
+
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
 
@@ -1433,6 +1342,9 @@ void JEnemy2DVT::UpdatePosition(void)
 			}
 		}
 		shootingDirection = RIGHT; //moving to the right
+
+		//Play the "moving right" animation
+		animatedSprites->PlayAnimation("movingR", -1, 0.2f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
