@@ -125,7 +125,7 @@ bool SnowPlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_SnowMap_LevelTutorial.csv", TUTORIAL) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_Tutorial.csv", TUTORIAL) == false)
 	{
 		// The loading of a map has failed. Return false
 		cout << "Failed to load Snow Map Tutorial Level" << endl;
