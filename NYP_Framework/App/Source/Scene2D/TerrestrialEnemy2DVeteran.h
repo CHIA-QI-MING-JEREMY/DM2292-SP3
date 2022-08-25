@@ -34,7 +34,7 @@ class CMap2D;
 
 //include ammo
 #include "EnemyAmmo2D.h"
-#include "SnowEAmmo.h"
+#include "TerrestrialEAmmoVeteran.h"
 
 //include enemy base class
 #include "Enemy2D.h"
@@ -45,14 +45,14 @@ class CMap2D;
 // Include Camera
 #include "Primitives/Camera2D.h"
 
-class SnowEnemy2DSWBS : public CEnemy2D
+class TEnemy2DVeteran : public CEnemy2D
 {
 public:
 	// Constructor
-	SnowEnemy2DSWBS(void);
+	TEnemy2DVeteran(void);
 
 	// Destructor
-	virtual ~SnowEnemy2DSWBS(void);
+	virtual ~TEnemy2DVeteran(void);
 
 	// Init
 	bool Init(void);
@@ -92,8 +92,6 @@ public:
 
 	// boolean flag to indicate if this enemy is active
 	bool bIsActive;
-	bool getShieldActivated();
-	void setShieldActivated(bool s);
 
 protected:
 	enum DIRECTION
@@ -105,40 +103,32 @@ protected:
 		NUM_DIRECTIONS
 	};
 
+	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
+
 	////vector full of enemy's fired ammo
-	std::vector<CSEAmmo*> ammoList;
+	std::vector<CTEAmmoVeteran*> ammoList;
 	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	CSEAmmo* FetchAmmo(void);
+	CTEAmmoVeteran* FetchAmmo(void);
 
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;
 
+	// TO DO
 	enum FSM
 	{
 		IDLE = 0,
-		PATROL=1,
-		ATTACK = 2,
-		FEAR=3,
-		FEARIDLE=4,
-		SHIELD=5,
-		HEAL=6,
-		FEARHEAL=7,
-		SHOOT=8,
+		PATROL = 1,
+		TRACK = 2,
+		SHOOT = 3,
+		WARN = 4,
+		ALARM_TRIGGER = 5,
+		ALERT_IDLE = 6,
+		ALERT_PATROL = 7,
+		ALERT_TRACK = 8,
+		ALERT_SHOOT = 9,
 		NUM_FSM
 	};
-
-
-	vector<glm::vec2>pathway;
-	int currentPathwayCounter;
-	int maxPathwayCounter;
-	vector<glm::vec2> ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints);
-
-	glm::vec2 fearpathway;
-
-	//double flickerTimer; //used to progress the flicker counter
-	//double flickerTimerMax; //used to reset flicker counter
-	//int flickerCounter; //decides colour of enemy and when to explode
 
 	glm::vec2 i32vec2OldIndex;
 
@@ -163,11 +153,11 @@ protected:
 	// Physics
 	CPhysics2D cPhysics2D;
 
-	//// waypoint path
-	//vector<glm::vec2> waypoints;
-	//// waypoint counter
-	//int currentWaypointCounter;
-	//int maxWaypointCounter;
+	// waypoint path
+	vector<glm::vec2> waypoints;
+	// waypoint counter
+	int currentWaypointCounter;
+	int maxWaypointCounter;
 
 	// Current color
 	glm::vec4 runtimeColour;
@@ -177,12 +167,6 @@ protected:
 
 	// Handler to the CSoundController
 	CSoundController* cSoundController;
-
-	// Inventory Manager
-	CInventoryManagerPlanet* cInventoryManagerPlanet;
-
-	// Inventory Item
-	CInventoryItemPlanet* cInventoryItemPlanet;
 
 	// Current FSM
 	FSM sCurrentFSM;
@@ -220,19 +204,20 @@ protected:
 	// Update position
 	void UpdatePosition(void);
 
-	//// timer
-	//double attackTimer;
-	//double maxAttackTimer;
+	// attack timer
+	double attackTimer;
+	const double attackInterval = 0.4;
+	const double alertAttackInterval = 0.2;
 
-	//double warnTimer;
-	//double maxWarnTimer;
-	float shieldTimer;
-	int shieldCount;
-	int healCount;
-	int healFearCount;
-	bool attackHit;
-	float boolTimer;
-	float shootTimer =0.f;
-	float shootInterval = 0.5f;
+	// checks how many bullets have been fired
+	int numFired;
+	const int attackMagSize = 3;
+	const int alertAttackMagSize = 5;
+
+	vector<glm::vec2>alarmBoxVector;
+	bool isAlarmBoxAssigned;
+	double warnTimer;
+	const double maxWarnTimer = 2.0;
+	float alarmBoxDistance;
 };
 

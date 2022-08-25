@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "SnowEAmmo.h"
+#include "TerrestrialEAmmoVeteran.h"
 
 #include <iostream>
 using namespace std;
@@ -22,7 +22,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has public access modifier to be used in player class
  */
-CSEAmmo::CSEAmmo()
+CTEAmmoVeteran::CTEAmmoVeteran()
 	: cMap2D(NULL)
 	, cKeyboardController(NULL)
 	, animatedSprites(NULL)
@@ -49,7 +49,7 @@ CSEAmmo::CSEAmmo()
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-CSEAmmo::~CSEAmmo(void)
+CTEAmmoVeteran::~CTEAmmoVeteran(void)
 {
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
@@ -71,7 +71,7 @@ CSEAmmo::~CSEAmmo(void)
 /**
   @brief Initialise this instance
   */
-bool CSEAmmo::Init(void)
+bool CTEAmmoVeteran::Init(void)
 {
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -93,6 +93,7 @@ bool CSEAmmo::Init(void)
 	// Initialise the cInventoryManager
 	cInventoryManager = CInventoryManager::GetInstance();
 
+	// Get the handler to the CInventoryManager instance
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 
 	// Create and initialise the CPlayer2D
@@ -142,7 +143,7 @@ bool CSEAmmo::Init(void)
 /**
  @brief Update this instance
  */
-void CSEAmmo::Update(const double dElapsedTime)
+void CTEAmmoVeteran::Update(const double dElapsedTime)
 {
 	// Store the old position
 	vec2OldIndex = vec2Index;
@@ -175,7 +176,7 @@ void CSEAmmo::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void CSEAmmo::PreRender(void)
+void CTEAmmoVeteran::PreRender(void)
 {
 	// Activate blending mode
 	glEnable(GL_BLEND);
@@ -188,7 +189,7 @@ void CSEAmmo::PreRender(void)
 /**
  @brief Render this instance
  */
-void CSEAmmo::Render(void)
+void CTEAmmoVeteran::Render(void)
 {
 	glBindVertexArray(VAO);
 	// get matrix's uniform location and set matrix
@@ -229,7 +230,7 @@ void CSEAmmo::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void CSEAmmo::PostRender(void)
+void CTEAmmoVeteran::PostRender(void)
 {
 	// Disable blending
 	glDisable(GL_BLEND);
@@ -238,115 +239,18 @@ void CSEAmmo::PostRender(void)
 //setting the ammo's information needed for its travel path:
 		//player location aka ammo OG location
 		//player direction aka direction for amo to move in
-void CSEAmmo::setPath(const int spawnX, const int spawnY, const int eDirection)
+void CTEAmmoVeteran::setPath(const int spawnX, const int spawnY, const int eDirection)
 {
 	vec2Index.x = spawnX;
 	vec2Index.y = spawnY;
 	direction = eDirection;
 }
 
-void CSEAmmo::InteractWithMap(void)
+void CTEAmmoVeteran::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	//full sheild to half shield
-	case 150: //player's full shield, down, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 160);
-			//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 151: //player's full shield, up, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 161);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 152: //player's full shield, left, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 162);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 153: //player's full shield, right, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 163);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 154: //player's full shield, down, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 164);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 155: //player's full shield, up, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 165);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 156: //player's full shield, left, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 166);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 157: //player's full shield, right, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 167);
-		//change sheild to half damaged sheild
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	//half shield to nothing
-	case 160: //player's half shield, down, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 161: //player's half shield, up, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 162: //player's half shield, left, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 163: //player's half shield, right, normal
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 164: //player's half shield, down, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 165: //player's half shield, up, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 166: //player's half shield, left, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
-	case 167: //player's half shield, right, BnW
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0);
-			//change half damaged sheild to empty space
-		hit = true; //destory ammo upon collision
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
-		break;
+	
 	default:
 		break;
 	}
@@ -355,7 +259,7 @@ void CSEAmmo::InteractWithMap(void)
 /**
  @brief Let enemy ammo interact with the player.
  */
-bool CSEAmmo::InteractWithPlayer(void)
+bool CTEAmmoVeteran::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 
@@ -366,9 +270,19 @@ bool CSEAmmo::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		// Decrease the health by 1
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
-		cInventoryItemPlanet->Remove(3);
+
+		// remove 5 health
+		if (!isAlerted)
+		{
+			cInventoryItemPlanet->Remove(5);
+		}
+		// remove 6 health
+		else
+		{
+			cInventoryItemPlanet->Remove(6);
+		}
+
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
@@ -378,7 +292,7 @@ bool CSEAmmo::InteractWithPlayer(void)
 	return false;
 }
 
-bool CSEAmmo::CheckPosition(void)
+bool CTEAmmoVeteran::CheckPosition(void)
 {
 	if (direction == LEFT)
 	{
@@ -386,8 +300,7 @@ bool CSEAmmo::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-				//150 to 199 is considered accessable only because they are set to automatically get destoryed upon collision with such index elsewhere
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400)
 				//100 and above in the excel are obj that cannot be walked into
 			{
 				return false;
@@ -397,8 +310,8 @@ bool CSEAmmo::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 1400))
 			{
 				return false;
 			}
@@ -416,7 +329,7 @@ bool CSEAmmo::CheckPosition(void)
 		if (vec2NumMicroSteps.y == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 1400)
 			{
 				return false;
 			}
@@ -425,8 +338,8 @@ bool CSEAmmo::CheckPosition(void)
 		else if (vec2NumMicroSteps.y != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 610))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 1400) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 1400))
 			{
 				return false;
 			}
@@ -444,7 +357,7 @@ bool CSEAmmo::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610)
+			if (cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 1400)
 			{
 				return false;
 			}
@@ -453,8 +366,8 @@ bool CSEAmmo::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 610) ||
-				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 610))
+			if ((cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x) < 1400) ||
+				(cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y + 1, vec2Index.x + 1) < 1400))
 			{
 				return false;
 			}
@@ -466,7 +379,7 @@ bool CSEAmmo::CheckPosition(void)
 		if (vec2NumMicroSteps.x == 0)
 		{
 			// If the grid is not accessible, then return false
-			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610)
+			if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400)
 			{
 				return false;
 			}
@@ -475,8 +388,8 @@ bool CSEAmmo::CheckPosition(void)
 		else if (vec2NumMicroSteps.x != 0)
 		{
 			// If the 2 grids are not accessible, then return false
-			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 610) ||
-				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 610))
+			if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) < 1400) ||
+				(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) >= 600 && cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) < 1400))
 			{
 				return false;
 			}
@@ -484,13 +397,13 @@ bool CSEAmmo::CheckPosition(void)
 	}
 	else
 	{
-		cout << "JungleEAmmo2D::CheckPosition: Unknown direction." << endl;
+		cout << "TerrestrialEAmmo2D::CheckPosition: Unknown direction." << endl;
 	}
 	return true;
 }
 
 // Shoot ammo, keep it moving after it is already created, used in player class
-void CSEAmmo::ShootAmmo(void)
+void CTEAmmoVeteran::ShootAmmo(void)
 {
 	//can only shoot left, right and up
 	if (direction == LEFT)
@@ -533,7 +446,7 @@ void CSEAmmo::ShootAmmo(void)
 
 // return true if ammo hits window boundaries, used to delete
 	//uses ammo specific direction alrdy set in via constructor, used in player class
-bool CSEAmmo::LimitReached(void)
+bool CTEAmmoVeteran::LimitReached(void)
 {
 	//ammo can only be shot left, right and up
 	if (direction == LEFT)
@@ -573,13 +486,23 @@ bool CSEAmmo::LimitReached(void)
 }
 
 //used to set active to render and check collision of ammo
-void CSEAmmo::setActive(bool active)
+void CTEAmmoVeteran::setActive(bool active)
 {
 	this->active = active;
 }
 
 //used to check if ammo is active before checking collision and rendering, etc
-bool CSEAmmo::getActive(void)
+bool CTEAmmoVeteran::getActive(void)
 {
 	return active;
+}
+
+bool CTEAmmoVeteran::getIsAlerted(void)
+{
+	return isAlerted;
+}
+
+void CTEAmmoVeteran::setIsAlerted(bool isAlarmOn)
+{
+	isAlerted = isAlarmOn;
 }

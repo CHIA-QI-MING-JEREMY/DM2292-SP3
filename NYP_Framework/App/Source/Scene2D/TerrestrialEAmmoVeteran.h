@@ -54,7 +54,7 @@ class CMap2D;
 // Include enemy ammo
 #include "EnemyAmmo2D.h"
 
-class CSEAmmo : public CEnemyAmmo2D
+class CTEAmmoVeteran : public CEnemyAmmo2D
 {
 public:
 
@@ -74,10 +74,10 @@ public:
 	void PostRender(void);
 
 	// Constructor
-	CSEAmmo();
+	CTEAmmoVeteran();
 
 	// Destructor
-	virtual ~CSEAmmo(void);
+	virtual ~CTEAmmoVeteran(void);
 
 	//setting the ammo's information needed for its travel path:
 		//player location aka ammo OG location
@@ -113,6 +113,10 @@ public:
 	//used to check if ammo is active before checking collision and rendering, etc
 	bool getActive(void);
 
+	// checks for enemy alerted status
+	bool getIsAlerted(void);
+	void setIsAlerted(bool isAlarmOn);
+
 protected:
 	glm::vec2 vec2OldIndex;
 
@@ -128,7 +132,6 @@ protected:
 	//For inventory
 	CInventoryManager* cInventoryManager;
 	CInventoryItem* cInventoryItem;
-
 	CInventoryManagerPlanet* cInventoryManagerPlanet;
 	CInventoryItemPlanet* cInventoryItemPlanet;
 
@@ -158,5 +161,8 @@ protected:
 
 	// Determines whether or not to render it
 	bool active;
+
+	// Determines if enemy is alerted
+	bool isAlerted;
 };
 

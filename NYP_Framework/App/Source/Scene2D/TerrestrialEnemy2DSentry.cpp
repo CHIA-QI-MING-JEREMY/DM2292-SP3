@@ -280,7 +280,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			else
 			{			
 				if (!isAlarmerActive && !isAlarmOn)
-				{					
+				{	
 					sCurrentFSM = WARN;
 					iFSMCounter = 0;
 					isAlarmerActive = true;
@@ -515,6 +515,9 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			cout << "Switching to Track State" << endl;
 			break;
 		}
+
+		UpdateDirection();
+
 		break;
 	}
 	case WARN:
