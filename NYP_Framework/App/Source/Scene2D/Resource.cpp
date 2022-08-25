@@ -27,7 +27,6 @@ using namespace std;
  */
 CResource::CResource()
 	: cMap2D(NULL)
-	, cKeyboardController(NULL)
 	//, animatedSprites(NULL)
 	//, camera2D(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -51,7 +50,6 @@ CResource::CResource()
 
 CResource::CResource(int type)
 	: cMap2D(NULL)
-	, cKeyboardController(NULL)
 	//, animatedSprites(NULL)
 	//, camera2D(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -79,9 +77,6 @@ CResource::CResource(int type)
 CResource::~CResource(void)
 {
 	// We won't delete this since it was created elsewhere
-	cKeyboardController = NULL;
-
-	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
 	//// Delete the CAnimationSprites
@@ -100,148 +95,143 @@ CResource::~CResource(void)
   */
 bool CResource::Init(void)
 {
-	// Store the keyboard controller singleton instance here
-	cKeyboardController = CKeyboardController::GetInstance();
-	// Reset all keys since we are starting a new game
-	cKeyboardController->Reset();
+	// Get the handler to the CSettings instance
+	cSettings = CSettings::GetInstance();
 
-// Get the handler to the CSettings instance
-cSettings = CSettings::GetInstance();
+	camera2D = Camera2D::GetInstance();
 
-camera2D = Camera2D::GetInstance();
+	// Get the handler to the CSoundController instance
+	cSoundController = CSoundController::GetInstance();
 
-// Get the handler to the CSoundController instance
-cSoundController = CSoundController::GetInstance();
+	// Get the handler to the CMap2D instance
+	cMap2D = CMap2D::GetInstance();
 
-// Get the handler to the CMap2D instance
-cMap2D = CMap2D::GetInstance();
+	// Create and initialise the CPlayer2D
+	cPlayer2D = CPlayer2D::GetInstance();
 
-// Create and initialise the CPlayer2D
-cPlayer2D = CPlayer2D::GetInstance();
+	// Get the handler to the CInventoryManager instance
+	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 
-// Get the handler to the CInventoryManager instance
-cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
+	// By default, microsteps should be zero
+	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
-// By default, microsteps should be zero
-vec2NumMicroSteps = glm::i32vec2(0, 0);
+	//glGenVertexArrays(1, &VAO);
+	//glBindVertexArray(VAO);
 
-//glGenVertexArrays(1, &VAO);
-//glBindVertexArray(VAO);
+	// Create the quad mesh for the resource
+	glGenVertexArrays(1, &VAO);
+	glBindVertexArray(VAO);
+	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-// Create the quad mesh for the resource
-glGenVertexArrays(1, &VAO);
-glBindVertexArray(VAO);
-quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-
-//if type is at default, aka type = NUM_RESOURCES, then check map for num resources
-if (type == NUM_RESOURCES)
-{
-	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
-	unsigned int uiRow = -1;
-	unsigned int uiCol = -1;
-
-	//if found index for default resource
-	if (cMap2D->FindValue(1, uiRow, uiCol))
+	//if type is at default, aka type = NUM_RESOURCES, then check map for num resources
+	if (type == NUM_RESOURCES)
 	{
-		//random between 2 numbers to set us Scrap metal or battery
-		//according to which number type is set to, load which texture
-		int randomState = rand() % 100;
-		if (randomState < 50)
+		// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
+		unsigned int uiRow = -1;
+		unsigned int uiCol = -1;
+
+		//if found index for default resource
+		if (cMap2D->FindValue(1, uiRow, uiCol))
 		{
-			type = SCRAP_METAL;
+			//random between 2 numbers to set us Scrap metal or battery
+			//according to which number type is set to, load which texture
+			int randomState = rand() % 100;
+			if (randomState < 50)
+			{
+				type = SCRAP_METAL;
+			}
+			else
+			{
+				type = BATTERY;
+			}
+		}
+		//index for ironwood
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::IRONWOOD, uiRow, uiCol))
+		{
+			type = IRONWOOD;
+		}
+		//index for energy quartz
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ENERGY_QUARTZ, uiRow, uiCol))
+		{
+			type = ENERGY_QUARTZ;
+		}
+		//index for ice crystal
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ICE_CRYSTAL, uiRow, uiCol))
+		{
+			type = ICE_CRYSTAL;
+		}
+
+		//Jungle Planet
+		//index for bunrable blocks
+		else if (cMap2D->FindValue(197, uiRow, uiCol))
+		{
+			type = BURNABLE_BLOCKS;
+		}
+		//index for vine
+		else if (cMap2D->FindValue(198, uiRow, uiCol))
+		{
+			type = VINE;
+		}
+
+		// index for yellow orb
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::YELLOW_ORB, uiRow, uiCol))
+		{
+			type = YELLOW_ORB;
+		}
+		// index for red orb
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::RED_ORB, uiRow, uiCol))
+		{
+			type = RED_ORB;
+		}
+		// index for green orb
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::GREEN_ORB, uiRow, uiCol))
+		{
+			type = GREEN_ORB;
+		}
+		// index for blue orb
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::BLUE_ORB, uiRow, uiCol))
+		{
+			type = BLUE_ORB;
+		}
+		// index for antidote pill
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ANTIDOTE_PILL, uiRow, uiCol))
+		{
+			type = ANTIDOTE_PILL;
+		}
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::KEY_PURPLE, uiRow, uiCol))
+		{
+			type = PURPLE_KEY;
+		}
+
+		//snow planet
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR, uiRow, uiCol)) {
+			type = FUR;
+		}
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR_COAT, uiRow, uiCol)) {
+			type = FUR_COAT;
+		}
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::SHIELD_POWERUP, uiRow, uiCol)) {
+			type = SHIELD;
+		}
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::BERSERK_POWERUP, uiRow, uiCol)) {
+			type = BERSERK;
+		}
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FREEZE_POWERUP, uiRow, uiCol)) {
+			type = FREEZE;
 		}
 		else
 		{
-			type = BATTERY;
+			return false;	// Unable to find the start position of the enemy, so quit this game
 		}
-	}
-	//index for ironwood
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::IRONWOOD, uiRow, uiCol))
-	{
-		type = IRONWOOD;
-	}
-	//index for energy quartz
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ENERGY_QUARTZ, uiRow, uiCol))
-	{
-		type = ENERGY_QUARTZ;
-	}
-	//index for ice crystal
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ICE_CRYSTAL, uiRow, uiCol))
-	{
-		type = ICE_CRYSTAL;
-	}
 
-	//Jungle Planet
-	//index for bunrable blocks
-	else if (cMap2D->FindValue(197, uiRow, uiCol))
-	{
-		type = BURNABLE_BLOCKS;
-	}
-	//index for vine
-	else if (cMap2D->FindValue(198, uiRow, uiCol))
-	{
-		type = VINE;
-	}
+		// Erase the value of the player in the arrMapInfo
+		cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
-	// index for yellow orb
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::YELLOW_ORB, uiRow, uiCol))
-	{
-		type = YELLOW_ORB;
-	}
-	// index for red orb
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::RED_ORB, uiRow, uiCol))
-	{
-		type = RED_ORB;
-	}
-	// index for green orb
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::GREEN_ORB, uiRow, uiCol))
-	{
-		type = GREEN_ORB;
-	}
-	// index for blue orb
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::BLUE_ORB, uiRow, uiCol))
-	{
-		type = BLUE_ORB;
-	}
-	// index for antidote pill
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::ANTIDOTE_PILL, uiRow, uiCol))
-	{
-		type = ANTIDOTE_PILL;
-	}
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::KEY_PURPLE, uiRow, uiCol))
-	{
-		type = PURPLE_KEY;
-	}
-
-	//snow planet
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR, uiRow, uiCol)) {
-		type = FUR;
-	}
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR_COAT, uiRow, uiCol)) {
-		type = FUR_COAT;
-	}
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::SHIELD_POWERUP, uiRow, uiCol)) {
-		type = SHIELD;
-	}
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::BERSERK_POWERUP, uiRow, uiCol)) {
-		type = BERSERK;
-	}
-	else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FREEZE_POWERUP, uiRow, uiCol)) {
-		type = FREEZE;
-	}
-	else
-	{
-		return false;	// Unable to find the start position of the enemy, so quit this game
-	}
-
-	// Erase the value of the player in the arrMapInfo
-	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::vec2(uiCol, uiRow);
-	// By default, microsteps should be zero
-	vec2NumMicroSteps = glm::vec2(0, 0);
-	}
+		// Set the start position of the Player to iRow and iCol
+		vec2Index = glm::vec2(uiCol, uiRow);
+		// By default, microsteps should be zero
+		vec2NumMicroSteps = glm::vec2(0, 0);
+		}
 	//after that use switch case to load in image
 		//if it is created with a type, aka dropped by enemy, just immedately use switch case to decide
 	switch (type)

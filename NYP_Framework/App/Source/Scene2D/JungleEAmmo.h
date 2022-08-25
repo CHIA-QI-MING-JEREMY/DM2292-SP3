@@ -26,9 +26,6 @@
 // Include the Map2D as we will use it to check the player's movements and actions
 class CMap2D;
 
-// Include Keyboard controller
-#include "Inputs\KeyboardController.h"
-
 // Include AnimatedSprites
 #include "Primitives/SpriteAnimation.h"
 
@@ -129,9 +126,6 @@ protected:
 	CInventoryManagerPlanet* cInventoryManagerPlanet;
 	// Inventory Item
 	CInventoryItemPlanet* cInventoryItemPlanet;
-
-	// Keyboard Controller singleton instance
-	CKeyboardController* cKeyboardController;
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;
