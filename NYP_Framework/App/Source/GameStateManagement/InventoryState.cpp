@@ -291,6 +291,180 @@ bool CInventoryState::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 	if (cGUI_Scene2D->getPlanetNum() == 3) {
+		//planet collectibles
+		ImGuiWindowFlags BerserkTextwindow_flags = 0;
+		BerserkTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		BerserkTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		BerserkTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		BerserkTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		BerserkTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		BerserkTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("Berserktext", NULL, BerserkTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 2.0));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Berserk:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags Berserkwindow_flags = 0;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoBackground;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoMove;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoNav;
+		Berserkwindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("Berserk", NULL, Berserkwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+			//	cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+
+		ImGuiWindowFlags shieldTextwindow_flags = 0;
+		shieldTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		shieldTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		shieldTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		shieldTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		shieldTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		shieldTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("shieldtext", NULL, shieldTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.85));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Shield:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags shieldwindow_flags = 0;
+		shieldwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		shieldwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		shieldwindow_flags |= ImGuiWindowFlags_NoBackground;
+		shieldwindow_flags |= ImGuiWindowFlags_NoMove;
+		shieldwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		shieldwindow_flags |= ImGuiWindowFlags_NoNav;
+		shieldwindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("shield", NULL, shieldwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+			//	cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+
+		ImGuiWindowFlags freezeTextwindow_flags = 0;
+		freezeTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		freezeTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		freezeTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		freezeTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		freezeTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		freezeTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("freezetext", NULL, freezeTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.73));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Shard:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags freezewindow_flags = 0;
+		freezewindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		freezewindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		//window_flags |= ImGuiWindowFlags_MenuBar;
+		freezewindow_flags |= ImGuiWindowFlags_NoBackground;
+		freezewindow_flags |= ImGuiWindowFlags_NoMove;
+		freezewindow_flags |= ImGuiWindowFlags_NoCollapse;
+		freezewindow_flags |= ImGuiWindowFlags_NoNav;
+		freezewindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("freeze", NULL, freezewindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 * 2 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			//ImGui::SameLine();
+			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
+			//	cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+
+
+		// resources
 		ImGuiWindowFlags IceTextwindow_flags = 0;
 		IceTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
 		IceTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;

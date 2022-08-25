@@ -126,10 +126,10 @@ bool SnowEnemy2DSWW::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/wolfwhite.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/wolfwhite.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/wolfwhite.png" << endl;
+		cout << "Unable to load Image/SnowPlanet/wolfwhite.png" << endl;
 		return false;
 	}
 
@@ -196,12 +196,12 @@ bool SnowEnemy2DSWW::Init(void)
 	if (cMap2D->GetCurrentLevel() == 0)
 	{
 		// sets waypoints based on the enemy spawn location
-		if (vec2Index == glm::vec2(3, 1))
-		{
-			pathway.push_back(glm::vec2(3, 1));
-			//pathway = ConstructWaypointVector(pathway, 400, 1);
-			fearpathway = glm::vec2(8,1);
-		}
+		//if (vec2Index == glm::vec2(3, 1))
+		//{
+		//	pathway.push_back(glm::vec2(3, 1));
+		//	//pathway = ConstructWaypointVector(pathway, 400, 1);
+		//	fearpathway = glm::vec2(8,1);
+		//}
 		//else if (vec2Index == glm::vec2(17, 15))
 		//{
 		//	pathway.push_back(glm::vec2(17, 15));

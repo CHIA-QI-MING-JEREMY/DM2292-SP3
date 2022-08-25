@@ -34,6 +34,7 @@ class CMap2D;
 
 //include ammo
 #include "EnemyAmmo2D.h"
+#include "SnowEAmmo.h"
 
 //include enemy base class
 #include "Enemy2D.h"
@@ -105,10 +106,10 @@ protected:
 	};
 
 	////vector full of enemy's fired ammo
-	//std::vector<CJEAmmoVT*> ammoList;
-	//int shootingDirection; //shoots in the direction the enemy is facing
+	std::vector<CSEAmmo*> ammoList;
+	int shootingDirection; //shoots in the direction the enemy is facing
 	//used to get a deactivated ammo to activate
-	//CJEAmmoVT* FetchAmmo(void);
+	CSEAmmo* FetchAmmo(void);
 
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;
@@ -231,5 +232,7 @@ protected:
 	int healFearCount;
 	bool attackHit;
 	float boolTimer;
+	float shootTimer =0.f;
+	float shootInterval = 0.5f;
 };
 

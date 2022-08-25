@@ -129,6 +129,9 @@ protected:
 	CInventoryManager* cInventoryManager;
 	CInventoryItem* cInventoryItem;
 
+	CInventoryManagerPlanet* cInventoryManagerPlanet;
+	CInventoryItemPlanet* cInventoryItemPlanet;
+
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
 

@@ -36,7 +36,7 @@ SnowEnemy2DSWBS::SnowEnemy2DSWBS(void)
 	, sCurrentFSM(FSM::IDLE)
 	, iFSMCounter(0)
 	, quadMesh(NULL)
-//	, camera2D(NULL)
+	, camera2D(NULL)
 	, animatedSprites(NULL)
 {
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
@@ -126,15 +126,15 @@ bool SnowEnemy2DSWBS::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/wolfboss.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/wolfboss.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/wolfboss.png" << endl;
+		cout << "Unable to load Image/SnowPlanet/wolfboss.png" << endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(8, 4,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(10, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
 	animatedSprites->AddAnimation("idleR", 0, 3); //3 images for animation, index 0 to 2
@@ -145,6 +145,8 @@ bool SnowEnemy2DSWBS::Init(void)
 	animatedSprites->AddAnimation("walkL", 20, 23);
 	animatedSprites->AddAnimation("shieldR", 24, 27);
 	animatedSprites->AddAnimation("shieldL", 28, 31);
+	animatedSprites->AddAnimation("shootR", 32, 35);
+	animatedSprites->AddAnimation("shootL", 36, 39);
 	//CS: Play the "idle" animation as default
 	animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 	//-1 --> repeats forever
@@ -164,15 +166,15 @@ bool SnowEnemy2DSWBS::Init(void)
 	bIsActive = true;
 
 	//Construct 100 inactive ammo and add into ammoList
-	//for (int i = 0; i < 100; ++i)
-	//{
-	//	CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
-	//	cEnemyAmmo2D->SetShader("Shader2D");
-	//	ammoList.push_back(cEnemyAmmo2D);
-	//}
+	for (int i = 0; i < 100; ++i)
+	{
+		CSEAmmo* cEnemyAmmo2D = new CSEAmmo();
+		cEnemyAmmo2D->SetShader("Shader2D");
+		ammoList.push_back(cEnemyAmmo2D);
+	}
 
 	type = BOSS;
-//	shootingDirection = LEFT; //setting direction for ammo shooting
+	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 50; //takes 10 hits to kill
 	shieldTimer = 2.0f;
 	shieldCount = 1;
@@ -193,13 +195,13 @@ bool SnowEnemy2DSWBS::Init(void)
 	//TUTORIAL
 	if (cMap2D->GetCurrentLevel() == 0)
 	{
-		// sets waypoints based on the enemy spawn location
-		if (vec2Index == glm::vec2(3, 1))
-		{
-			pathway.push_back(glm::vec2(3, 1));
-			//pathway = ConstructWaypointVector(pathway, 400, 1);
-			fearpathway = glm::vec2(8,1);
-		}
+		//// sets waypoints based on the enemy spawn location
+		//if (vec2Index == glm::vec2(3, 1))
+		//{
+		//	pathway.push_back(glm::vec2(3, 1));
+		//	//pathway = ConstructWaypointVector(pathway, 400, 1);
+		//	fearpathway = glm::vec2(8,1);
+		//}
 		//else if (vec2Index == glm::vec2(17, 15))
 		//{
 		//	pathway.push_back(glm::vec2(17, 15));
@@ -239,7 +241,6 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		attackHit = false;
 		boolTimer = 1.f;
 	}
-	cout << health << endl;
 	// just for switching between states --> keep simple
 	//action done under interaction with player, update position, update direction, etc
 	switch (sCurrentFSM)
@@ -306,6 +307,13 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
 			cout << "Switching to Attack State" << endl;
+			break;
+		}
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+		{
+			sCurrentFSM = SHOOT;
+			iFSMCounter = 0;
+			cout << "Switching to Shoot State" << endl;
 			break;
 		}
 		if (iFSMCounter > iMaxFSMCounter)
@@ -419,6 +427,13 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 				break;
 			}
 			iFSMCounter++;
+		}
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 8.0f && cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) > 5.0f)
+		{
+			sCurrentFSM = SHOOT;
+			iFSMCounter = 0;
+			cout << "Switching to Shoot State" << endl;
+			break;
 		}
 		if (health <= 40 && health > 35 && shieldCount > 0) {
 			sCurrentFSM = SHIELD;
@@ -574,24 +589,88 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		}
 		iFSMCounter++;
 		break;
+	case SHOOT:
+		if (vec2Direction.x > 0)
+		{
+			runtimeColour = glm::vec4(0.f, 0.f, 0.f, 1.f);
+			animatedSprites->PlayAnimation("shootR", 0, 1.f);
 
+			shootingDirection = RIGHT;
+		}
+		else if (vec2Direction.x < 0)
+		{
+			runtimeColour = glm::vec4(0.f, 0.f, 0.f, 1.f);
+			animatedSprites->PlayAnimation("shootL", 0, 1.f);
+
+			shootingDirection = LEFT;
+		}
+		if (shootTimer <= 0)
+		{
+			// Shoot enemy ammo!
+			//shoot ammo in accordance to the direction enemy is facing
+			CSEAmmo* ammo = FetchAmmo();
+			ammo->setActive(true);
+			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+			cout << "Bam!" << shootingDirection << endl;
+
+			shootTimer = shootInterval;
+		}
+		else
+		{
+			shootTimer -= dElapsedTime;
+		}
+		UpdateDirection();
+		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
+		{
+			sCurrentFSM = ATTACK;
+			iFSMCounter = 0;
+			cout << "Switching to Attack State" << endl;
+			break;
+		}
+		if (iFSMCounter > iMaxFSMCounter)
+		{
+			sCurrentFSM = IDLE;
+			iFSMCounter = 0;
+			cout << "Switching to Idle State" << endl;
+			break;
+		}
+		if (health <= 40 && health > 35 && shieldCount > 0) {
+			sCurrentFSM = SHIELD;
+			iFSMCounter = 0;
+			cout << "Switching to Shield State" << endl;
+			break;
+		}
+		if (health <= 10 && health > 5) {
+			sCurrentFSM = FEAR;
+			iFSMCounter = 0;
+			cout << "Switching to Fear State" << endl;
+			break;
+		}
+		if (health <= 30 && health > 25 && healCount > 0) {
+			sCurrentFSM = HEAL;
+			iFSMCounter = 0;
+			cout << "Switching to Heal State" << endl;
+			break;
+		}
+		iFSMCounter++;
+		break;
 	default:
 		break;
 	}
 
 	//ammo behaviour
-	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	//{
-	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-	//	if (ammo->getActive())
-	//	{
-	//		ammo->Update(dElapsedTime);
-	//		if (ammo->LimitReached())
-	//		{
-	//			ammo->setActive(false);
-	//		}
-	//	}
-	//}
+	for (std::vector<CSEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CSEAmmo* ammo = (CSEAmmo*)*it;
+		if (ammo->getActive())
+		{
+			ammo->Update(dElapsedTime);
+			if (ammo->LimitReached())
+			{
+				ammo->setActive(false);
+			}
+		}
+	}
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -672,16 +751,16 @@ void SnowEnemy2DSWBS::Render(void)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	////render enemy ammo
-	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	//{
-	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-	//	if (ammo->getActive())
-	//	{
-	//		ammo->PreRender();
-	//		ammo->Render();
-	//		ammo->PostRender();
-	//	}
-	//}
+	for (std::vector<CSEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CSEAmmo* ammo = (CSEAmmo*)*it;
+		if (ammo->getActive())
+		{
+			ammo->PreRender();
+			ammo->Render();
+			ammo->PostRender();
+		}
+	}
 
 }
 
@@ -1213,31 +1292,31 @@ void SnowEnemy2DSWBS::UpdatePosition(void)
 }
 
 //called whenever an ammo is needed to be shot
-//CJEAmmoVT* SnowEnemy2DSWBS::FetchAmmo()
-//{
-//	//Exercise 3a: Fetch a game object from m_goList and return it
-//	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-//	{
-//		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-//		if (ammo->getActive()) {
-//			continue;
-//		}
-//		ammo->setActive(true);
-//		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
-//		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
-//		return ammo;
-//	}
-//
-//	//whenever ammoList runs out of ammo, create 10 ammo to use
-//	//Get Size before adding 10
-//	int prevSize = ammoList.size();
-//	for (int i = 0; i < 10; ++i) {
-//		ammoList.push_back(new CJEAmmoVT);
-//	}
-//	ammoList.at(prevSize)->setActive(true);
-//	return ammoList.at(prevSize);
-//
-//}
+CSEAmmo* SnowEnemy2DSWBS::FetchAmmo()
+{
+	//Exercise 3a: Fetch a game object from m_goList and return it
+	for (std::vector<CSEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	{
+		CSEAmmo* ammo = (CSEAmmo*)*it;
+		if (ammo->getActive()) {
+			continue;
+		}
+		ammo->setActive(true);
+		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
+		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
+		return ammo;
+	}
+
+	//whenever ammoList runs out of ammo, create 10 ammo to use
+	//Get Size before adding 10
+	int prevSize = ammoList.size();
+	for (int i = 0; i < 10; ++i) {
+		ammoList.push_back(new CSEAmmo);
+	}
+	ammoList.at(prevSize)->setActive(true);
+	return ammoList.at(prevSize);
+
+}
 vector<glm::vec2> SnowEnemy2DSWBS::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
 	for (int i = 0; i < numOfWaypoints; ++i)
