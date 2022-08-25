@@ -282,6 +282,10 @@ void CAmmo2D::InteractWithMap(void)
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 3, 5, 19, 20);
 			}
+			else if (vec2Index == glm::vec2(23, 5))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 7, 8, 20, 22);
+			}
 		}
 		break;
 	case CMap2D::TILE_INDEX::SWITCH_RIGHT:
@@ -302,6 +306,10 @@ void CAmmo2D::InteractWithMap(void)
 			else if (vec2Index == glm::vec2(7, 3))
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 3, 5, 19, 20);
+			}
+			else if (vec2Index == glm::vec2(23, 5))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 7, 8, 20, 22);
 			}
 		}
 		break;
