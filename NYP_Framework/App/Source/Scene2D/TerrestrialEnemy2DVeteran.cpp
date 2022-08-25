@@ -524,14 +524,14 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("idleL", -1, 1.f);
 		}
 		
-		if (warnTimer <= 0.0 && !isAlarmOn)
+		/*if (warnTimer <= 0.0 && !isAlarmOn)
 		{
 			InteractWithMap();
 		}
 		else if (warnTimer > 0.0 && !isAlarmOn)
 		{
 			warnTimer -= dElapsedTime;
-		}
+		}*/
 
 		if (isAlarmOn)
 		{
