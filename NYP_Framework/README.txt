@@ -30,11 +30,10 @@ Interactables
 55 : invisible trigger for shooting pop up
 60 : down button 1
 61 : right button 1
-62 : left button 1
-100 - 109 : waypoints for the first Vigilant Teleporter of the map
-130 - 139 : waypoints for the first Patrol Team of the map
-140 - 149 : waypoints for the second Patrol Team of the map
-150 - 159 : waypoints for the third Patrol Team of the map
+100 : first Vigilant Teleporter of the map's first waypoint
+101 : first Vigilant Teleporter of the map's second waypoint
+102 : first Vigilant Teleporter of the map's third waypoint
+103 : first Vigilant Teleporter of the map's fourth waypoint
 197 : burnable block collectable
 198 : vine collectable
 199 : ironwood
@@ -102,9 +101,8 @@ Solid Blocks
 630 : stone ground
 631 : stone ground grassy
 632 : stone ground mossy
-640 : metal barrier blocks that down button 1 will make disappear
-641 : metal barrier blocks that right button 1 will make disappear
-642 : metal barrier blocks that left button 1 will make disappear
+640 : stone blocks that down button 1 will make disappear
+641 : stone blocks that right button 1 will make disappear
 
 [Terrestrial Planet]
 800 : ground tile (solid)

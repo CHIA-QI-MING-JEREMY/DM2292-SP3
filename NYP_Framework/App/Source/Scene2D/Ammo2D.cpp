@@ -252,10 +252,6 @@ void CAmmo2D::InteractWithMap(void)
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::RIGHT_BUTTON_PRESSED); //deactivate button
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RIGHT_BUTTON_1_BLOCKS, 0); //replace blocks with air
 		break;
-	case CMap2D::TILE_INDEX::LEFT_BUTTON_1:
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::LEFT_BUTTON_PRESSED); //deactivate button
-		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::LEFT_BUTTON_1_BLOCKS, 0); //replace blocks with air
-		break;
 
 	// Terrestrial Planet
 	case CMap2D::TILE_INDEX::SWITCH_LEFT:

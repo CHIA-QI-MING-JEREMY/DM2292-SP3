@@ -165,18 +165,7 @@ bool TEnemy2DDummy::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	if (vec2Index == glm::vec2(24, 21))
-	{
-		type = KEYHOLDER_PURPLE; // drops a purple key upon being killed
-	}
-	else if (vec2Index == glm::vec2(26, 8))
-	{
-		type = KEYHOLDER_CYAN; // drops a cyan key upon being killed
-	}
-	else
-	{
-		type = LONG_RANGE; // may drop resource upon being killed
-	}
+	type = KEYHOLDER; // drops a key upon being killed
 	shootingDirection = RIGHT; // setting direction for ammo shooting
 	maxHealth = health = 25; // takes 1 hit to kill
 

@@ -430,18 +430,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_1, iTextureID));
 		}
-		//left button 1
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Left.tga", true);
-		if (iTextureID == 0)
-		{
-			cout << "Unable to load Image/JunglePlanet/Button_Left.tga" << endl;
-			return false;
-		}
-		else
-		{
-			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(LEFT_BUTTON_1, iTextureID));
-		}
 	}
 
 	/// <summary>
@@ -599,10 +587,10 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		}
 
 		//down button 1 stone ground tiles
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/MetalBarrier.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock.tga", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/JunglePlanet/MetalBarrier.tga" << endl;
+			cout << "Unable to load Image/JunglePlanet/StoneBlock.tga" << endl;
 			return false;
 		}
 		else
@@ -611,28 +599,16 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			MapOfTextureIDs.insert(pair<int, int>(DOWN_BUTTON_1_BLOCKS, iTextureID));
 		}
 		//right button 1 stone ground tiles
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/MetalBarrier.tga", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock.tga", true);
 		if (iTextureID == 0)
 		{
-			cout << "Unable to load Image/JunglePlanet/MetalBarrier.tga" << endl;
+			cout << "Unable to load Image/JunglePlanet/StoneBlock.tga" << endl;
 			return false;
 		}
 		else
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_1_BLOCKS, iTextureID));
-		}
-		//left button 1 stone ground tiles
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/MetalBarrier.tga", true);
-		if (iTextureID == 0)
-		{
-			cout << "Unable to load Image/JunglePlanet/MetalBarrier.tga" << endl;
-			return false;
-		}
-		else
-		{
-			// Store the texture ID into MapOfTextureIDs
-			MapOfTextureIDs.insert(pair<int, int>(LEFT_BUTTON_1_BLOCKS, iTextureID));
 		}
 	}
 
@@ -919,7 +895,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(SWITCH_RIGHT, iTextureID));
 	}
-	// Load purple key
+	// Load key
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Purple.tga", true);
 	if (iTextureID == 0)
 	{
@@ -930,18 +906,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(KEY_PURPLE, iTextureID));
-	}
-	// Load cyan key
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Cyan.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Key_Cyan.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(KEY_CYAN, iTextureID));
 	}
 	// Load the exit texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/Scene2D_Exit.tga", true);
@@ -1166,7 +1130,7 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(GROUND_WIRE_LENGTH_VER, iTextureID));
 	}
-	// Load the purple locked door texture
+	// Load the locked door texture
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Door_Locked_Purple.tga", true);
 	if (iTextureID == 0)
 	{
@@ -1177,18 +1141,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(DOOR_LOCKED_PURPLE, iTextureID));
-	}
-	// Load the cyan locked door texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Door_Locked_Cyan.tga", true);
-	if (iTextureID == 0)
-	{
-		cout << "Unable to load Image/TerrestrialPlanet/Door_Locked_Cyan.tga" << endl;
-		return false;
-	}
-	else
-	{
-		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(DOOR_LOCKED_CYAN, iTextureID));
 	}
 
 	/// <summary>

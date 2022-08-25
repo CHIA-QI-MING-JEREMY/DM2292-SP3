@@ -113,8 +113,7 @@ public:
 		SPECIAL,
 
 		// terrestrial specific enemies
-		KEYHOLDER_PURPLE,
-		KEYHOLDER_CYAN,
+		KEYHOLDER,
 
 		// snow specific enemies
 		BROWN,

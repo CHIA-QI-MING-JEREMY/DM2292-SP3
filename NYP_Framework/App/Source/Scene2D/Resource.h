@@ -97,7 +97,6 @@ public:
 		BLUE_ORB,
 		ANTIDOTE_PILL,
 		PURPLE_KEY,
-		CYAN_KEY,
 		//Snow Planet specific collectables
 		SHIELD,
 		BERSERK,
