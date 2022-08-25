@@ -108,20 +108,24 @@ bool CJEAmmo::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the ammo texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_flame.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/EnemyAmmoSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		std::cout << "Failed to load ammo texture" << std::endl;
+		std::cout << "Failed to load jungle enemy ammo texture" << std::endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 7,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	animatedSprites->AddAnimation("down", 0, 6); //7 images for animation, index 0 to 7, shooting down
+	animatedSprites->AddAnimation("up", 7, 13); //shooting up
+	animatedSprites->AddAnimation("right", 14, 20); //shooting right
+	animatedSprites->AddAnimation("left", 21, 27); //shooting left
+
+	//CS: Play the "left" animation as default
+	animatedSprites->PlayAnimation("left", -1, 1.0f);
 		//-1 --> repeats forever
 		//		settng it to say 1 will cause it to only repeat 1 time
 		//1.0f --> set time between frames as 1.0f
@@ -159,6 +163,28 @@ void CJEAmmo::Update(const double dElapsedTime)
 	if (!CheckPosition()) //if hit a wall type obj
 	{
 		hit = true; //destroy ammo
+	}
+
+	//update sprite animation to play depending on the direction enemy is facing
+	if (direction == LEFT)
+	{
+		//CS: Play the "left" animation
+		animatedSprites->PlayAnimation("left", -1, 1.0f);
+	}
+	else if (direction == RIGHT)
+	{
+		//CS: Play the "right" animation
+		animatedSprites->PlayAnimation("right", -1, 1.0f);
+	}
+	else if (direction == UP)
+	{
+		//CS: Play the "up" animation
+		animatedSprites->PlayAnimation("up", -1, 1.0f);
+	}
+	else if (direction == DOWN)
+	{
+		//CS: Play the "down" animation
+		animatedSprites->PlayAnimation("down", -1, 1.0f);
 	}
 	
 	//CS: Update the animated sprite
