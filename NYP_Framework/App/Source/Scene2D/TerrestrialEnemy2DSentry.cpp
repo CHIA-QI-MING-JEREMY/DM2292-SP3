@@ -202,7 +202,7 @@ bool TEnemy2DSentry::Init(void)
 	alarmBoxDistance = -1.f; // inits with impossible (negative) distance
 
 	// attack variables
-	attackTimer = 0.0;
+	attackTimer = attackInterval;
 
 	numFired = 0;
 
@@ -437,7 +437,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = SHOOT;
 				iFSMCounter = 0;
-				attackTimer = 0;
+				attackTimer = attackInterval;
 				cout << "Switching to Shoot State" << endl;
 				break;
 			}
@@ -506,7 +506,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			attackTimer -= dElapsedTime;
 		}
 
-		if (numFired > attackMagSize)
+		if (numFired >= attackMagSize)
 		{
 			sCurrentFSM = TRACK;
 			iFSMCounter = 0;
@@ -816,7 +816,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = ALERT_SHOOT;
 				iFSMCounter = 0;
-				attackTimer = 0;
+				attackTimer = alertAttackInterval;
 				cout << "Switching to Alert_Shoot State" << endl;
 				break;
 			}
@@ -885,7 +885,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			attackTimer -= dElapsedTime;
 		}
 
-		if (numFired > alertAttackMagSize)
+		if (numFired >= alertAttackMagSize)
 		{
 			sCurrentFSM = ALERT_TRACK;
 			iFSMCounter = 0;
