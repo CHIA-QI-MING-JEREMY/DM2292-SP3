@@ -202,6 +202,10 @@ bool CResource::Init(void)
 		{
 			type = PURPLE_KEY;
 		}
+		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::KEY_CYAN, uiRow, uiCol))
+		{
+			type = CYAN_KEY;
+		}
 
 		//snow planet
 		else if (cMap2D->FindValue(CMap2D::TILE_INDEX::FUR, uiRow, uiCol)) {
@@ -374,11 +378,22 @@ bool CResource::Init(void)
 	}
 	case PURPLE_KEY:
 	{
-		// Load the key texture
+		// Load the purple key texture
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Purple.tga", true);
 		if (iTextureID == 0)
 		{
 			cout << "Unable to load Image/TerrestrialPlanet/Key_Purple.tga" << endl;
+			return false;
+		}
+		break;
+	}
+	case CYAN_KEY:
+	{
+		// Load the cyan key texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Cyan.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/TerrestrialPlanet/Key_Cyan.tga" << endl;
 			return false;
 		}
 		break;
@@ -799,6 +814,16 @@ bool CResource::InteractWithPlayer(void)
 		{
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
 			std::cout << "COLLECTED PURPLE KEY" << std::endl;
+			cInventoryItemPlanet->Add(1);
+			collected = true;
+
+			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
+			break;
+		}
+		case CYAN_KEY:
+		{
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
+			std::cout << "COLLECTED CYAN KEY" << std::endl;
 			cInventoryItemPlanet->Add(1);
 			collected = true;
 
