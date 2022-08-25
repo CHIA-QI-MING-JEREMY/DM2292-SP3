@@ -4,7 +4,7 @@
  By: Toh Da Jun
  Date: Mar 2020
  */
-#include "TerrestrialEnemy2DSentry.h"
+#include "TerrestrialEnemy2DVeteran.h"
 
 #include <iostream>
 using namespace std;
@@ -28,7 +28,7 @@ using namespace std;
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
  */
-TEnemy2DSentry::TEnemy2DSentry(void)
+TEnemy2DVeteran::TEnemy2DVeteran(void)
 	: bIsActive(false)
 	, cMap2D(NULL)
 	, cSettings(NULL)
@@ -57,7 +57,7 @@ TEnemy2DSentry::TEnemy2DSentry(void)
 /**
  @brief Destructor This destructor has protected access modifier as this class will be a Singleton
  */
-TEnemy2DSentry::~TEnemy2DSentry(void)
+TEnemy2DVeteran::~TEnemy2DVeteran(void)
 {
 	// Delete the quadMesh
 	if (quadMesh)
@@ -88,7 +88,7 @@ TEnemy2DSentry::~TEnemy2DSentry(void)
 /**
   @brief Initialise this instance
   */
-bool TEnemy2DSentry::Init(void)
+bool TEnemy2DVeteran::Init(void)
 {
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
@@ -103,7 +103,7 @@ bool TEnemy2DSentry::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to CStnEnemy2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1800, uiRow, uiCol) == false)
+	if (cMap2D->FindValue(1801, uiRow, uiCol) == false)
 		return false;	// Unable to find the start position of the enemy, so quit this game
 
 	// Erase the value of the player in the arrMapInfo
@@ -124,10 +124,10 @@ bool TEnemy2DSentry::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/SentrySpriteSheet.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/VeteranSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/SentrySpriteSheet.png" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/VeteranSpriteSheet.png" << endl;
 		return false;
 	}
 
@@ -156,7 +156,7 @@ bool TEnemy2DSentry::Init(void)
 	//Construct 100 inactive ammo and add into ammoList
 	for (int i = 0; i < 100; ++i)
 	{
-		CTEAmmoSentry* cEnemyAmmo2D = new CTEAmmoSentry();
+		CTEAmmoVeteran* cEnemyAmmo2D = new CTEAmmoVeteran();
 		cEnemyAmmo2D->SetShader("Shader2D");
 		ammoList.push_back(cEnemyAmmo2D);
 	}
@@ -212,7 +212,7 @@ bool TEnemy2DSentry::Init(void)
 /**
  @brief Update this instance
  */
-void TEnemy2DSentry::Update(const double dElapsedTime)
+void TEnemy2DVeteran::Update(const double dElapsedTime)
 {
 	if (!bIsActive)
 		return;
@@ -492,7 +492,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 		{
 			// Shoot enemy ammo!
 			//shoot ammo in accordance to the direction enemy is facing
-			CTEAmmoSentry* ammo = FetchAmmo();
+			CTEAmmoVeteran* ammo = FetchAmmo();
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(false);
@@ -871,7 +871,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 		{
 			// Shoot enemy ammo!
 			//shoot ammo in accordance to the direction enemy is facing
-			CTEAmmoSentry* ammo = FetchAmmo();
+			CTEAmmoVeteran* ammo = FetchAmmo();
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(true);
@@ -901,9 +901,9 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 	}
 
 	//ammo beahviour
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CTEAmmoVeteran*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CTEAmmoVeteran* ammo = (CTEAmmoVeteran*)*it;
 		if (ammo->getActive())
 		{
 			ammo->Update(dElapsedTime);
@@ -929,7 +929,7 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 /**
  @brief Set up the OpenGL display environment before rendering
  */
-void TEnemy2DSentry::PreRender(void)
+void TEnemy2DVeteran::PreRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -948,7 +948,7 @@ void TEnemy2DSentry::PreRender(void)
 /**
  @brief Render this instance
  */
-void TEnemy2DSentry::Render(void)
+void TEnemy2DVeteran::Render(void)
 {
 	if (!bIsActive)
 		return;
@@ -988,9 +988,9 @@ void TEnemy2DSentry::Render(void)
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	//render enemy ammo
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CTEAmmoVeteran*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CTEAmmoVeteran* ammo = (CTEAmmoVeteran*)*it;
 		if (ammo->getActive())
 		{
 			ammo->PreRender();
@@ -1004,7 +1004,7 @@ void TEnemy2DSentry::Render(void)
 /**
  @brief PostRender Set up the OpenGL display environment after rendering.
  */
-void TEnemy2DSentry::PostRender(void)
+void TEnemy2DVeteran::PostRender(void)
 {
 	if (!bIsActive)
 		return;
@@ -1018,7 +1018,7 @@ void TEnemy2DSentry::PostRender(void)
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void TEnemy2DSentry::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void TEnemy2DVeteran::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->vec2Index.x = iIndex_XAxis;
 	this->vec2Index.y = iIndex_YAxis;
@@ -1029,7 +1029,7 @@ void TEnemy2DSentry::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YA
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void TEnemy2DSentry::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void TEnemy2DVeteran::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
 	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
 	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
@@ -1039,7 +1039,7 @@ void TEnemy2DSentry::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, con
  @brief Set the handle to cPlayer to this class instance
  @param cPlayer2D A CPlayer2D* variable which contains the pointer to the CPlayer2D instance
  */
-void TEnemy2DSentry::SetPlayer2D(CPlayer2D* cPlayer2D)
+void TEnemy2DVeteran::SetPlayer2D(CPlayer2D* cPlayer2D)
 {
 	this->cPlayer2D = cPlayer2D;
 
@@ -1051,7 +1051,7 @@ void TEnemy2DSentry::SetPlayer2D(CPlayer2D* cPlayer2D)
  @brief Constraint the enemy2D's position within a boundary
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-void TEnemy2DSentry::Constraint(DIRECTION eDirection)
+void TEnemy2DVeteran::Constraint(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -1095,7 +1095,7 @@ void TEnemy2DSentry::Constraint(DIRECTION eDirection)
  @brief Check if a position is possible to move into
  @param eDirection A DIRECTION enumerated data type which indicates the direction to check
  */
-bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
+bool TEnemy2DVeteran::CheckPosition(DIRECTION eDirection)
 {
 	if (eDirection == LEFT)
 	{
@@ -1212,7 +1212,7 @@ bool TEnemy2DSentry::CheckPosition(DIRECTION eDirection)
 }
 
 // Check if the enemy2D is in mid-air
-bool TEnemy2DSentry::IsMidAir(void)
+bool TEnemy2DVeteran::IsMidAir(void)
 {
 	// if the player is at the bottom row, then he is not in mid-air for sure
 	if (vec2Index.y == 0)
@@ -1229,7 +1229,7 @@ bool TEnemy2DSentry::IsMidAir(void)
 }
 
 // Update Jump or Fall
-void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
+void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
 {
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP)
 	{
@@ -1339,7 +1339,7 @@ void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
 /**
  @brief Let enemy2D interact with the player.
  */
-bool TEnemy2DSentry::InteractWithPlayer(void)
+bool TEnemy2DVeteran::InteractWithPlayer(void)
 {
 	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
 	
@@ -1359,7 +1359,7 @@ bool TEnemy2DSentry::InteractWithPlayer(void)
 }
 
 //enemy interact with map
-void TEnemy2DSentry::InteractWithMap(void)
+void TEnemy2DVeteran::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
@@ -1376,7 +1376,7 @@ void TEnemy2DSentry::InteractWithMap(void)
 /**
  @brief Update the enemy's direction.
  */
-void TEnemy2DSentry::UpdateDirection(void)
+void TEnemy2DVeteran::UpdateDirection(void)
 {
 	// Set the destination to the player
 	vec2Destination = cPlayer2D->vec2Index;
@@ -1403,7 +1403,7 @@ void TEnemy2DSentry::UpdateDirection(void)
 /**
  @brief Flip horizontal direction. For patrol use only
  */
-void TEnemy2DSentry::FlipHorizontalDirection(void)
+void TEnemy2DVeteran::FlipHorizontalDirection(void)
 {
 	vec2Direction.x *= -1;
 }
@@ -1411,7 +1411,7 @@ void TEnemy2DSentry::FlipHorizontalDirection(void)
 /**
 @brief Update position.
 */
-void TEnemy2DSentry::UpdatePosition(void)
+void TEnemy2DVeteran::UpdatePosition(void)
 {
 	// Store the old position
 	i32vec2OldIndex = vec2Index;
@@ -1498,7 +1498,7 @@ void TEnemy2DSentry::UpdatePosition(void)
 	}
 }
 
-vector<glm::vec2> TEnemy2DSentry::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
+vector<glm::vec2> TEnemy2DVeteran::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
 	for (int i = 0; i < numOfWaypoints; ++i)
 	{
@@ -1512,12 +1512,12 @@ vector<glm::vec2> TEnemy2DSentry::ConstructWaypointVector(vector<glm::vec2> wayp
 }
 
 //called whenever an ammo is needed to be shot
-CTEAmmoSentry* TEnemy2DSentry::FetchAmmo()
+CTEAmmoVeteran* TEnemy2DVeteran::FetchAmmo()
 {
 	//Exercise 3a: Fetch a game object from m_goList and return it
-	for (std::vector<CTEAmmoSentry*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	for (std::vector<CTEAmmoVeteran*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	{
-		CTEAmmoSentry* ammo = (CTEAmmoSentry*)*it;
+		CTEAmmoVeteran* ammo = (CTEAmmoVeteran*)*it;
 		if (ammo->getActive()) {
 			continue;
 		}
@@ -1531,7 +1531,7 @@ CTEAmmoSentry* TEnemy2DSentry::FetchAmmo()
 	//Get Size before adding 10
 	int prevSize = ammoList.size();
 	for (int i = 0; i < 10; ++i) {
-		ammoList.push_back(new CTEAmmoSentry);
+		ammoList.push_back(new CTEAmmoVeteran);
 	}
 	ammoList.at(prevSize)->setActive(true);
 	return ammoList.at(prevSize);

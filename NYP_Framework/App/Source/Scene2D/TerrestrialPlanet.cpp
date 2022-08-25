@@ -197,6 +197,24 @@ bool TerrestrialPlanet::Init(void)
 
 		while (true)
 		{
+			TEnemy2DVeteran* cTEnemy2DVeteran = new TEnemy2DVeteran();
+			// Pass shader to cEnemy2D
+			cTEnemy2DVeteran->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cTEnemy2DVeteran->Init() == true)
+			{
+				cTEnemy2DVeteran->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DVeteran); //push each sentry into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all sentries have been loaded
+				break;
+			}
+		}
+
+		while (true)
+		{
 			TEnemy2DTurret* cTEnemy2DTurret = new TEnemy2DTurret();
 			// Pass shader to cEnemy2D
 			cTEnemy2DTurret->SetShader("Shader2D_Colour");
@@ -751,33 +769,25 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 	// as we want to capture the updates before Map2D update
 	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
-		// updates all enemies
-		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
-
 		// informs all enemies that an enemy is going to activate the alarm
 		// if there is an enemy that is an alarmer (going to activate the alarm)
-		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmerState())
+		for (unsigned int j = 0; j < enemyVectors[cMap2D->GetCurrentLevel()].size(); j++)
 		{
-			// cycle thru all enemies to make them aware that an alarmer is active
-			for (unsigned int j = 0; j < enemyVectors[cMap2D->GetCurrentLevel()].size(); j++)
+			if (enemyVectors[cMap2D->GetCurrentLevel()][j]->getAlarmerState())
 			{
 				// sets alarmer state to true for every enemy that has alarmer state at false
-				if (!enemyVectors[cMap2D->GetCurrentLevel()][j]->getAlarmerState())
+				if (!enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmerState())
 				{
-					enemyVectors[cMap2D->GetCurrentLevel()][j]->setAlarmerState(true);
+					enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmerState(true);
 				}
 			}
 		}
 
 		// informs all enemies that the alarm has been activated
-		if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState())
-		{
-			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
-		}
-		else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState())
-		{
-			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
-		}
+		enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(isAlarmActive);
+		
+		// updates all enemies
+		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 
 		//player ammo collision check with enemy
 		std::vector<CAmmo2D*> ammoList = cPlayer2D->getAmmoList();

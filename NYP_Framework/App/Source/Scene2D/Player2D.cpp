@@ -749,7 +749,7 @@ void CPlayer2D::InteractWithMap(void)
 		CGUI_Scene2D::GetInstance()->setShowExitPanel(false);
 	}
 
-	vector<glm::vec2> doorsVector = cMap2D->FindAllTiles(820);
+	vector<glm::vec2> doorsVector = cMap2D->FindAllTiles(CMap2D::TILE_INDEX::DOOR_LOCKED_PURPLE);
 
 	for (int i = 0; i < doorsVector.size(); ++i)
 	{

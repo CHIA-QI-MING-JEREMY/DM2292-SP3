@@ -156,6 +156,13 @@
     <ClCompile Include="Source\Scene2D\JungleEAmmo.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\SnowEnemy2DSWBS.cpp" />
+    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DVeteran.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialEAmmoVeteran.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -316,6 +323,13 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\JungleEAmmo.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\SnowEnemy2DSWBS.h" />
+    <ClInclude Include="Source\Scene2D\TerrestrialEAmmoVeteran.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DVeteran.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>
