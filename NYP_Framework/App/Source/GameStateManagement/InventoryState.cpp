@@ -716,6 +716,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		Energywindow_flags |= ImGuiWindowFlags_NoMove;
 		Energywindow_flags |= ImGuiWindowFlags_NoCollapse;
 		Energywindow_flags |= ImGuiWindowFlags_NoNav;
+		Energywindow_flags |= ImGuiWindowFlags_NoResize;
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
