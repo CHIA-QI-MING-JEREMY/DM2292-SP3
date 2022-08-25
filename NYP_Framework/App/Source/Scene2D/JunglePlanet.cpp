@@ -138,6 +138,17 @@ bool JunglePlanet::Init(void)
 		return false;
 	}
 
+	// Create and initialise the CGUI_Scene2D
+		//done before player as ammo needs to know the planet number and ammo is init in player
+	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
+	// Initialise the instance
+	if (cGUI_Scene2D->Init() == false)
+	{
+		cout << "Failed to load CGUI_Scene2D" << endl;
+		return false;
+	}
+	cGUI_Scene2D->setPlanetNum(1);
+
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Pass shader to cPlayer2D
@@ -280,15 +291,6 @@ bool JunglePlanet::Init(void)
 	// Initialise the Physics
 	cPhysics2D.Init();
 
-	// Create and initialise the CGUI_Scene2D
-	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
-	// Initialise the instance
-	if (cGUI_Scene2D->Init() == false)
-	{
-		cout << "Failed to load CGUI_Scene2D" << endl;
-		return false;
-	}
-
 	// Get the handler to the CInventoryManager instance
 	cInventoryManagerPlanet = CInventoryManagerPlanet::GetInstance();
 	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");
@@ -367,8 +369,6 @@ bool JunglePlanet::Init(void)
 */
 bool JunglePlanet::Update(const double dElapsedTime)
 {
-	cGUI_Scene2D->setPlanetNum(1);
-
 	//if not showing vine or bushes pop up (since those 2 are only set once and meant to disappear only after being overriden
 	if (cGUI_Scene2D->getTutorialPopupJungle() != CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::BUSHES &&
 		cGUI_Scene2D->getTutorialPopupJungle() != CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::VINE)
@@ -1184,8 +1184,8 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
-		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
+		//cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
 	{

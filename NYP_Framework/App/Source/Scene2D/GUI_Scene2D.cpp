@@ -754,7 +754,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shield Mode");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There is no time limit for shield.\nIf you are in normal mode,\nbut if you walk, the shield will stop.\nIf you are in berserk mode, you can activate your shield\nand walk around with it with a time limit\n of it being as long as the berserk\nmode is active.");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "There is no time limit for shield\nif you are in normal mode.\nBut if you walk, the shield will stop.\nIf you are in berserk mode, you can activate your shield\nand walk around with it\nas long as the berserk\nmode is active.");
 				ImGui::NewLine();
 				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
