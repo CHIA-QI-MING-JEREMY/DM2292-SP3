@@ -126,10 +126,10 @@ bool SnowEnemy2DSWB::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/wolfbrown.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image//SnowPlanet/wolfbrown.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/wolfbrown.png" << endl;
+		cout << "Unable to load Image/SnowPlanet/wolfbrown.png" << endl;
 		return false;
 	}
 
@@ -445,9 +445,9 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	}
 	
 	//ammo beahviour
-	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
+	//for (std::vector<CSEAmmo*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
 	//{
-	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
+	//	CSEAmmo* ammo = (CSEAmmo*)*it;
 	//	if (ammo->getActive())
 	//	{
 	//		ammo->Update(dElapsedTime);
