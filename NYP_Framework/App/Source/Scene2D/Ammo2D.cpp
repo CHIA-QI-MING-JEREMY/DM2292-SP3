@@ -325,25 +325,28 @@ void CAmmo2D::InteractWithMap(void)
 	case CMap2D::TILE_INDEX::BURNABLE_BUSH: //burnable bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::BURNING_BUSH); //turn to burning bush
 		hit = true;
-		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
 		break;
 	case CMap2D::TILE_INDEX::BURNING_BUSH: //burning bush block
 	case CMap2D::TILE_INDEX::DISSOLVING_BUSH: //dissolving bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); //turn to empty space
 		hit = true;
-		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
 		break;
 	case CMap2D::TILE_INDEX::DOWN_BUTTON_1:
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DOWN_BUTTON_PRESSED); //deactivate button
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::DOWN_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play button press sound
 		break;
 	case CMap2D::TILE_INDEX::RIGHT_BUTTON_1:
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::RIGHT_BUTTON_PRESSED); //deactivate button
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RIGHT_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play button press sound
 		break;
 	case CMap2D::TILE_INDEX::LEFT_BUTTON_1:
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::LEFT_BUTTON_PRESSED); //deactivate button
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::LEFT_BUTTON_1_BLOCKS, 0); //replace blocks with air
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play button press sound
 		break;
 
 	// Terrestrial Planet

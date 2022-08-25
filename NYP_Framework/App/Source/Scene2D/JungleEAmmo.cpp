@@ -293,13 +293,13 @@ void CJEAmmo::InteractWithMap(void)
 	case CMap2D::TILE_INDEX::BURNABLE_BUSH: //burnable bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //turn to dissolving bush
 		hit = true;
-		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
 		break;
 	case CMap2D::TILE_INDEX::BURNING_BUSH: //burning bush block
 	case CMap2D::TILE_INDEX::DISSOLVING_BUSH: //dissolving bush block
 		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, 0); //turn to empty space
 		hit = true;
-		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play ? sound
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning sound
 		break;
 	default:
 		break;
@@ -330,7 +330,7 @@ bool CJEAmmo::InteractWithPlayer(void)
 		{
 			cInventoryItemPlanet->Add(1); //increase poison level by 1
 		}
-		//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
 

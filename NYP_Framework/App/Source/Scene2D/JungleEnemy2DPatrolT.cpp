@@ -404,7 +404,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
@@ -412,7 +412,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 			else if (shootingDirection == RIGHT && attackCooldownCurrent == 0)
@@ -424,7 +424,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
@@ -432,7 +432,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 		}
@@ -1050,7 +1050,7 @@ bool JEnemy2DPatrolT::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);
 			//cout << "Take that!" << endl;
-			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 			attackCooldownCurrent = attackCooldownMax; //reset attack cooldown
 		}
 		return true;
