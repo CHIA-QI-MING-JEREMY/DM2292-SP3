@@ -24,7 +24,6 @@ using namespace std;
  */
 CAmmo2D::CAmmo2D()
 	: cMap2D(NULL)
-	, cKeyboardController(NULL)
 	, animatedSprites(NULL)
 	//, camera2D(NULL)
 	, runtimeColour(glm::vec4(1.0f))
@@ -52,9 +51,6 @@ CAmmo2D::CAmmo2D()
 CAmmo2D::~CAmmo2D(void)
 {
 	// We won't delete this since it was created elsewhere
-	cKeyboardController = NULL;
-
-	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
 	// Delete the CAnimationSprites
@@ -73,11 +69,6 @@ CAmmo2D::~CAmmo2D(void)
   */
 bool CAmmo2D::Init(void)
 {
-	// Store the keyboard controller singleton instance here
-	cKeyboardController = CKeyboardController::GetInstance();
-	// Reset all keys since we are starting a new game
-	cKeyboardController->Reset();
-
 	// Get the handler to the CSettings instance
 	cSettings = CSettings::GetInstance();
 
