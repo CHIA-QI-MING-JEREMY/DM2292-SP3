@@ -990,9 +990,10 @@ bool JEnemy2DShyC::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Shy Chaser Gotcha!" << endl;
 		if (attackCooldownCurrent == 0)
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play melee attack noise
+
 			// Decrease the health by 1
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);

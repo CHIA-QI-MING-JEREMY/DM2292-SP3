@@ -347,6 +347,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 	case NOISY:
 		noisy = true; //used to let other enemies know this enemy is in noisy mode
 			//follow player and attack
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PATROL_TEAM_NOISY); //play noisy siren sound
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f) //near player
 		{
 			glm::vec2 startIndices;
@@ -1046,6 +1047,8 @@ bool JEnemy2DPatrolT::InteractWithPlayer(void)
 		//cout << "Patrol Team Gotcha!" << endl;
 		if (attackCooldownCurrent == 0)
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play melee attack noise
+
 			// Decrease the health by 1
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);

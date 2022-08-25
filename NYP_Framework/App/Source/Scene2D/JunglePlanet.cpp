@@ -330,6 +330,17 @@ bool JunglePlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Ticking.ogg"), CSoundController::SOUND_LIST::TICKING, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Exploding.ogg"), CSoundController::SOUND_LIST::EXPLOSION, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\PoisonDamage.ogg"), CSoundController::SOUND_LIST::POISON_DAMAGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WaterDroplet.ogg"), CSoundController::SOUND_LIST::WATER_FLOWER, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Magic.ogg"), CSoundController::SOUND_LIST::USING_WATER, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\PlaceBush.ogg"), CSoundController::SOUND_LIST::PLACE_BUSH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TyingVine.ogg"), CSoundController::SOUND_LIST::TIE_VINE, true);
+
+	//enemy related
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\AcidBurn.ogg"), CSoundController::SOUND_LIST::POISONBALL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SlashAttack.ogg"), CSoundController::SOUND_LIST::ENEMY_MELEE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WarningSiren.ogg"), CSoundController::SOUND_LIST::PATROL_TEAM_NOISY, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TeleportPop.ogg"), CSoundController::SOUND_LIST::VT_TELEPORT_POOF, true);
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
 	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
@@ -695,7 +706,7 @@ bool JunglePlanet::Update(const double dElapsedTime)
 			//if at least 1 river water
 			if (cInventoryItemPlanet->GetCount() > 0)
 			{
-				
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::USING_WATER); //play sound to indicate plyer using water to heal
 				//else water is used to heal the player and cure their poison
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 				cInventoryItemPlanet->Add(5); //increase health by 5 for every river water used
@@ -716,7 +727,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
 				cInventoryItemPlanet->Remove(1); //use up 1 river water
-				std::cout << "USED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
 			}
 		}
 	}
@@ -762,6 +772,8 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//set tile to burnable bush
 					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y - 1, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLACE_BUSH); //play bush placing sound
+					cInventoryItemPlanet->Remove(1);
 				}
 			}
 			//player facing up, trying to put a burnable block
@@ -772,6 +784,8 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//set tile to burnable bush
 					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y + 1, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLACE_BUSH); //play bush placing sound
+					cInventoryItemPlanet->Remove(1);
 				}
 			}
 			//player facing left, trying to put a burnable block
@@ -782,6 +796,8 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//set tile to burnable bush
 					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x - 1, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLACE_BUSH); //play bush placing sound
+					cInventoryItemPlanet->Remove(1);
 				}
 			}
 			//player facing right, trying to put a burnable block
@@ -792,11 +808,10 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//set tile to burnable bush
 					cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x + 1, CMap2D::TILE_INDEX::BURNABLE_BUSH);
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLACE_BUSH); //play bush placing sound
+					cInventoryItemPlanet->Remove(1);
 				}
 			}
-
-			cInventoryItemPlanet->Remove(1);
-			std::cout << "USE BB: " << cInventoryItemPlanet->GetCount() << std::endl;
 		}
 	}
 
@@ -807,6 +822,11 @@ bool JunglePlanet::Update(const double dElapsedTime)
 		int poisonLvl = cInventoryItemPlanet->GetCount(); //find poison lvl
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health"); //find player's health to deplete
 		cInventoryItemPlanet->Remove(poisonDamage[poisonLvl]); //player take damage according to their poison level
+
+		if (poisonLvl > 0) //if player is poisoned
+		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::POISON_DAMAGE); //play sound to indicate taking poison damage
+		}
 
 		poisonDamageHitCooldown = poisonDamageHitMaxCooldown[poisonLvl]; //reset damage hit cooldown
 	}
@@ -1113,9 +1133,9 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			//if player has river water
 			if (cInventoryItemPlanet->GetCount() > 0)
 			{
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WATER_FLOWER); //play sound of watering flower
 				cMap2D->SetMapInfo(cPlayer2D->vec2Index.y, cPlayer2D->vec2Index.x, CMap2D::TILE_INDEX::BLOOMED_BOUNCY_BLOOM); //make flower bloom
 				cInventoryItemPlanet->Remove(1); //use 1 cup of river water
-				std::cout << "USED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
 			}
 		}
 		break;
@@ -1176,8 +1196,8 @@ void JunglePlanet::PlayerInteractWithMap(void)
 					}
 				}
 
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TIE_VINE); //play sound of tying vine around rock
 				cInventoryItemPlanet->Remove(1); //use 1 vine
-				std::cout << "USED VINE: " << cInventoryItemPlanet->GetCount() << std::endl;
 			}
 		}
 		break;

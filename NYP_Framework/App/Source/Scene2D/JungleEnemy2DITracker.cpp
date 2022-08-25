@@ -835,6 +835,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		CJEAmmo* ammo = (CJEAmmo*)*it;
 		if (ammo->getActive())
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::POISONBALL); //play enemy ammo sound if there is enemy ammo
 			ammo->Update(dElapsedTime);
 			if (ammo->LimitReached())
 			{
@@ -1305,6 +1306,8 @@ bool JEnemy2DITracker::InteractWithPlayer(void)
 	{
 		if (attackCooldownCurrent == 0)
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play melee attack noise
+
 			// Decrease the health by 2
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);
