@@ -35,7 +35,6 @@ class CMap2D;
 //Include inventory related classes
 #include "InventoryManager.h"
 
-
 // Include InventoryManager
 #include "InventoryManagerPlanet.h"
 
@@ -114,6 +113,9 @@ public:
 	bool getIsAlerted(void);
 	void setIsAlerted(bool isAlarmOn);
 
+	// finds distance travelled
+	void setStartingIndex(glm::vec2 startingIndex);
+
 protected:
 	glm::vec2 vec2OldIndex;
 
@@ -158,5 +160,9 @@ protected:
 
 	// Determines if enemy is alerted
 	bool isAlerted;
+
+	// Determines the distance the bullet has travelled
+	glm::vec2 startingIndex;
+	float travelDistance;
 };
 

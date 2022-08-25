@@ -177,7 +177,7 @@ bool TEnemy2DVeteran::Init(void)
 		{
 			waypoints = ConstructWaypointVector(waypoints, 309, 2);
 		}
-		else if (vec2Index == glm::vec2(3, 10))
+		else if (vec2Index == glm::vec2(2, 10))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 305, 4);
 			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 3);
@@ -196,7 +196,7 @@ bool TEnemy2DVeteran::Init(void)
 	radioTimer = maxRadioTimer;
 
 	// attack variables
-	attackTimer = 0.0;
+	attackTimer = attackInterval;
 	numFired = 0;
 
 	// reposition variables
@@ -272,6 +272,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = ROCKET;
 				iFSMCounter = 0;
+				attackTimer = attackInterval;
 				cout << "Switching to Rocket State" << endl;
 				break;
 			}
@@ -356,7 +357,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		UpdatePosition();
 		break;
 	}
-	case ROCKET: // edit rocket effects in veteran ammo
+	case ROCKET:
 	{
 		if (vec2Direction.x > 0)
 		{
@@ -379,6 +380,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(false);
+			ammo->setStartingIndex(vec2Index);
 			cout << "Bam!" << shootingDirection << endl;
 
 			attackTimer = attackInterval;
@@ -404,14 +406,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		break;
 	}
 	case REPOSITION:
-	{
-		// check for nearest reposition waypoint
-		// check if distance between player and enemy is less than distance between waypoint and player
-		// if true, pathfind to that reposition waypoint
-		// once reach reposition waypoint switch to radio state
-		// else, find another reposition waypoint
-		// if all waypoints are nearer to the player than the enemy, switch to shoot state
-		
+	{		
 		// cycles through each alarm box to find the nearest reposition waypoint
 		for (int i = 0; i < repositionWaypoints.size(); ++i)
 		{
@@ -487,6 +482,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ROCKET;
 			cout << "Switching to Rocket State" << endl;
+			attackTimer = attackInterval;
 
 			repositionWaypointDistance = -1.f;
 			targetRepositionWaypoint = glm::vec2(NULL, NULL);
@@ -497,9 +493,6 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 	}
 	case RADIO:
 	{
-		// wait for 3 seconds before activating the alarm
-		// switch to alert idle
-		
 		if (vec2Direction.x > 0)
 		{
 			// Play the "idleR" animation
@@ -574,6 +567,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ALERT_ROCKET;
 			iFSMCounter = 0;
+			attackTimer = alertAttackInterval;
 			cout << "Switching to Alert_Rocket State" << endl;
 			break;
 		}
@@ -673,6 +667,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(true);
+			ammo->setStartingIndex(vec2Index);
 			cout << "Bam!" << shootingDirection << endl;
 
 			attackTimer = alertAttackInterval;

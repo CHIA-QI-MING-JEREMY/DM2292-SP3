@@ -150,9 +150,24 @@ void CTEAmmoVeteran::Update(const double dElapsedTime)
 	// Interact with the Player
 	InteractWithPlayer();
 
-	if (!CheckPosition()) //if hit a wall type obj
+	// if rocket hits a wall type obj or has travelled for more than 6 tiles
+	if (!CheckPosition() || cPhysics2D.CalculateDistance(vec2Index, startingIndex) > 6.f)
 	{
-		hit = true; //destroy ammo
+		hit = true; // destroy ammo
+
+		// starts from row below ammo, moves up
+		for (int row = -1; row < 2; ++row)
+		{
+			// starts from col left of ammo, moves right
+			for (int col = -1; col < 2; ++col)
+			{
+				// sets empty tiles to the explosion tile
+				if (cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) == 0)
+				{
+					cMap2D->SetMapInfo(vec2Index.y + row, vec2Index.x + col, CMap2D::TILE_INDEX::EXPLOSION); // explosion
+				}
+			}
+		}
 	}
 	
 	//CS: Update the animated sprite
@@ -263,15 +278,29 @@ bool CTEAmmoVeteran::InteractWithPlayer(void)
 	{
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 
-		// remove 5 health
+		// remove 10 health
 		if (!isAlerted)
 		{
-			cInventoryItemPlanet->Remove(5);
+			cInventoryItemPlanet->Remove(10);
 		}
-		// remove 6 health
+		// remove 15 health
 		else
 		{
-			cInventoryItemPlanet->Remove(6);
+			cInventoryItemPlanet->Remove(15);
+		}
+
+		// starts from row below ammo, moves up
+		for (int row = -1; row < 2; ++row)
+		{
+			// starts from col left of ammo, moves right
+			for (int col = -1; col < 2; ++col)
+			{
+				// sets empty tiles to the explosion tile
+				if (cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) == 0)
+				{
+					cMap2D->SetMapInfo(vec2Index.y + row, vec2Index.x + col, CMap2D::TILE_INDEX::EXPLOSION); // explosion
+				}
+			}
 		}
 
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
@@ -496,4 +525,9 @@ bool CTEAmmoVeteran::getIsAlerted(void)
 void CTEAmmoVeteran::setIsAlerted(bool isAlarmOn)
 {
 	isAlerted = isAlarmOn;
+}
+
+void CTEAmmoVeteran::setStartingIndex(glm::vec2 startingIndex)
+{
+	this->startingIndex = startingIndex;
 }

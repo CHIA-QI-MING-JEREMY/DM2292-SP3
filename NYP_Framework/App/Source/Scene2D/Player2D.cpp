@@ -882,6 +882,11 @@ void CPlayer2D::InteractWithMap(void)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(3);
 		break;
+	case CMap2D::TILE_INDEX::EXPLOSION:
+		// decrease health by 2
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		cInventoryItemPlanet->Remove(2);
+		break;
 	case CMap2D::TILE_INDEX::EXIT_DOOR:
 		// Game has been completed
 		CGUI_Scene2D::GetInstance()->setShowExitPanel(true);

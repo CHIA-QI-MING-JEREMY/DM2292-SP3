@@ -809,7 +809,6 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		MapOfTextureIDs.insert(pair<int, int>(RED_FLAG, iTextureID));
 	}
 	
-	// TO DO: FIND NEW SPIKES
 	// Load spikes up
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Spikes_Up.tga", true);
 	if (iTextureID == 0)
@@ -857,6 +856,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 	{
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(SPIKES_RIGHT, iTextureID));
+	}
+	// Load explosion
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Explosion.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Explosion.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(EXPLOSION, iTextureID));
 	}
 
 	// Load alarm box

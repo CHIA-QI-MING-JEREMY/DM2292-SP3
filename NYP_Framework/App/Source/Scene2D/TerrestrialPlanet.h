@@ -197,4 +197,8 @@ protected:
 	double toxicityLevelDuration;
 	double maxToxicDamageDuration;
 	double toxicDamageDuration;
+
+	// Explosion timer
+	double explosionTimer;
+	const double explosionDuration = 0.05;
 };

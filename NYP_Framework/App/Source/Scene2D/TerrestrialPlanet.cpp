@@ -368,6 +368,8 @@ bool TerrestrialPlanet::Init(void)
 	maxToxicDamageDuration = 1.0;
 	toxicDamageDuration = maxToxicDamageDuration;
 
+	explosionTimer = 0.0;
+
 	return true;
 }
 
@@ -917,6 +919,24 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			resourceVectors[cMap2D->GetCurrentLevel()][i] = NULL;
 			resourceVectors[cMap2D->GetCurrentLevel()].erase(resourceVectors[cMap2D->GetCurrentLevel()].begin() + i);
 		}
+	}
+
+	// checks for any explosions on the map
+	unsigned int uiRow = -1;
+	unsigned int uiCol = -1;
+	if (cMap2D->FindValue(CMap2D::TILE_INDEX::EXPLOSION, uiRow, uiCol) && explosionTimer == 0.0)
+	{
+		explosionTimer = explosionDuration;
+	}
+
+	if (explosionTimer <= 0.0)
+	{
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::EXPLOSION, 0);
+		explosionTimer = 0.0;
+	}
+	else
+	{
+		explosionTimer -= dElapsedTime;
 	}
 
 	// Call the Map2D's update method
