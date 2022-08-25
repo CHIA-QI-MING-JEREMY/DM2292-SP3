@@ -33,6 +33,7 @@
 #include "TerrestrialEnemy2DVeteran.h"
 #include "TerrestrialEnemy2DTurret.h"
 #include "TerrestrialEnemy2DDummy.h"
+#include "TerrestrialEnemy2DWorker.h"
 
 // Include CPhysics2D
 #include "Physics2D.h"

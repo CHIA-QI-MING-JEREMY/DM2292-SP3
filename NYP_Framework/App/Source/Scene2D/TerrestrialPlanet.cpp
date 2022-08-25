@@ -249,6 +249,24 @@ bool TerrestrialPlanet::Init(void)
 			}
 		}
 
+		while (true)
+		{
+			TEnemy2DWorker* cTEnemy2DWorker = new TEnemy2DWorker();
+			// Pass shader to cEnemy2D
+			cTEnemy2DWorker->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cTEnemy2DWorker->Init() == true)
+			{
+				cTEnemy2DWorker->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DWorker); //push each sentry into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all sentries have been loaded
+				break;
+			}
+		}
+
 		enemyVectors.push_back(enemies); //push the vector of enemies into enemyVectors
 
 		/// <summary>
@@ -809,9 +827,17 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		// deletes enemies if they die
 		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() <= 0)
 		{
-			if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER)
+			if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER_PURPLE)
 			{
 				CResource* res = new CResource(CResource::RESOURCE_TYPE::PURPLE_KEY); //create new key resource
+				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
+				//set resource's position where enemy's position is
+				res->SetShader("Shader2D_Colour"); //set shader
+				resourceVectors[cMap2D->GetCurrentLevel()].push_back(res); //push this new resource into the resource vector for this level
+			}
+			else if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER_CYAN)
+			{
+				CResource* res = new CResource(CResource::RESOURCE_TYPE::CYAN_KEY); //create new key resource
 				res->setPosition(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2NumMicroSteps);
 				//set resource's position where enemy's position is
 				res->SetShader("Shader2D_Colour"); //set shader
@@ -824,7 +850,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 				
 				for (unsigned int j = 0; j < numOfEnemies; j++)
 				{
-					if (enemyVectors[cMap2D->GetCurrentLevel()][j]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER)
+					if (enemyVectors[cMap2D->GetCurrentLevel()][j]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER_PURPLE || 
+						enemyVectors[cMap2D->GetCurrentLevel()][j]->getType() == CEnemy2D::ENEMYTYPE::KEYHOLDER_CYAN)
 					{
 						numOfKeyholders++;
 					}
@@ -1056,7 +1083,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

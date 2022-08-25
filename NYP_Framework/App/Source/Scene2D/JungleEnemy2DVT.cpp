@@ -179,9 +179,9 @@ bool JEnemy2DVT::Init(void)
 	if (cMap2D->GetCurrentLevel() == 1)
 	{
 		//if it's the enemy at this position
-		if (vec2Index == glm::vec2(4, 4))
+		if (vec2Index == glm::vec2(13, 22))
 		{
-			waypoints = ConstructWaypointVector(waypoints, 100, 4);
+			waypoints = ConstructWaypointVector(waypoints, 100, 3);
 		}
 	}
 	

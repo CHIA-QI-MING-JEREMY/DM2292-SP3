@@ -543,7 +543,167 @@ bool CInventoryState::Update(const double dElapsedTime)
 		}
 		
 	}
-	else if (cGUI_Scene2D->getPlanetNum() == 1) {
+	else if (cGUI_Scene2D->getPlanetNum() == 1) 
+	{
+		//PLANET SPECIFIC COLLECTABLES
+		//river water
+		ImGuiWindowFlags RiverWaterTextwindow_flags = 0;
+		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("RiverWaterText", NULL, RiverWaterTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 2.0));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "River Water:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags RiverWaterwindow_flags = 0;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoBackground;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoMove;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoNav;
+		RiverWaterwindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("RiverWater", NULL, RiverWaterwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		//vines
+		ImGuiWindowFlags VineTextwindow_flags = 0;
+		VineTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		VineTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		VineTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		VineTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		VineTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		VineTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("VineText", NULL, VineTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.85));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Vine:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags Vinewindow_flags = 0;
+		Vinewindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		Vinewindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		Vinewindow_flags |= ImGuiWindowFlags_NoBackground;
+		Vinewindow_flags |= ImGuiWindowFlags_NoMove;
+		Vinewindow_flags |= ImGuiWindowFlags_NoCollapse;
+		Vinewindow_flags |= ImGuiWindowFlags_NoNav;
+		Vinewindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("Vine", NULL, Vinewindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		//burnable blocks
+		ImGuiWindowFlags BBlocksTextwindow_flags = 0;
+		BBlocksTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		BBlocksTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		BBlocksTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		BBlocksTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		BBlocksTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		BBlocksTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			// Create a window called "Hello, world!" and append into it.
+			ImGui::Begin("BBlocksText", NULL, BBlocksTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.73));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Bushes:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags BBlockswindow_flags = 0;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoBackground;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoMove;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoCollapse;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoNav;
+		BBlockswindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("BBlocks", NULL, BBlockswindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 * 2 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		//RESOURCE
 		ImGuiWindowFlags IronTextwindow_flags = 0;
 		IronTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
 		IronTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
@@ -619,68 +779,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//	cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
-
-		//PLANET SPECIFIC COLLECTABLES
-
-		//river water
-		ImGuiWindowFlags RiverWaterTextwindow_flags = 0;
-		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
-		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
-		//window_flags |= ImGuiWindowFlags_MenuBar;
-		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoBackground;
-		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoMove;
-		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
-		RiverWaterTextwindow_flags |= ImGuiWindowFlags_NoNav;
-		{
-			static float f = 0.0f;
-			static int counter = 0;
-
-			// Create a window called "Hello, world!" and append into it.
-			ImGui::Begin("RiverWatertext", NULL, RiverWaterTextwindow_flags);
-			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
-				CSettings::GetInstance()->iWindowHeight / 2.0));
-			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
-			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "River Water:%d",
-				cInventoryItemPlanet->GetCount());
-			ImGui::End();
-		}
-		ImGuiWindowFlags RiverWaterwindow_flags = 0;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoTitleBar;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoScrollbar;
-		//window_flags |= ImGuiWindowFlags_MenuBar;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoBackground;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoMove;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoCollapse;
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoNav;	
-		RiverWaterwindow_flags |= ImGuiWindowFlags_NoResize;
-		{
-			static float f = 0.0f;
-			static int counter = 0;
-
-			ImGui::Begin("RiverWater", NULL, RiverWaterwindow_flags);
-			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
-				CSettings::GetInstance()->iWindowHeight / 1.57 - 60));
-			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
-			ImGui::SetWindowFontScale(3.f * relativeScale_y);
-
-			//Added rounding for nIronr effect
-			ImGuiStyle& style = ImGui::GetStyle();
-			style.FrameRounding = 200.0f;
-
-			// Add codes for Start button here
-			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
-			ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
-			//ImGui::SameLine();
-			//ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
-			//	cInventoryItemPlanet->GetCount());
-			ImGui::End();
-		}
-
-
 	}
 	else if (cGUI_Scene2D->getPlanetNum() == 2) {
 		ImGuiWindowFlags EnergyTextwindow_flags = 0;
@@ -716,6 +814,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		Energywindow_flags |= ImGuiWindowFlags_NoMove;
 		Energywindow_flags |= ImGuiWindowFlags_NoCollapse;
 		Energywindow_flags |= ImGuiWindowFlags_NoNav;
+		Energywindow_flags |= ImGuiWindowFlags_NoResize;
 
 		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
