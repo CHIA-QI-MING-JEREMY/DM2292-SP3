@@ -124,6 +124,7 @@ bool SnowPlanet::Init(void)
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
+
 	// Load the map into an array
 	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_Tutorial.csv", TUTORIAL) == false)
 	{
@@ -142,7 +143,7 @@ bool SnowPlanet::Init(void)
 	if (cMap2D->LoadMap("Maps/DM2292_Map_Snow_02.csv", LEVEL2) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 02" << endl;
+		cout << "Failed to load Snow Map Level 02" << endl;
 		return false;
 	}
 	//// Load the map into an array
@@ -954,7 +955,7 @@ void SnowPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

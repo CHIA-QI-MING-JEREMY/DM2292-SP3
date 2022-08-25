@@ -215,6 +215,52 @@ bool SnowEnemy2DSWW::Init(void)
 		//	fearpathway = glm::vec2(20, 1);
 		//}
 	}
+	else if (cMap2D->GetCurrentLevel() == 1) {
+		if (vec2Index == glm::vec2(30, 14))
+		{
+			pathway.push_back(glm::vec2(30, 14));
+			pathway = ConstructWaypointVector(pathway, 400, 4);
+			fearpathway = glm::vec2(29, 14);
+		}
+		else if (vec2Index == glm::vec2(8, 21))
+		{
+			pathway.push_back(glm::vec2(8, 21));
+			pathway = ConstructWaypointVector(pathway, 404, 1);
+			fearpathway = glm::vec2(8, 21);
+		}
+		else if (vec2Index == glm::vec2(3, 7))
+		{
+			pathway.push_back(glm::vec2(3, 7));
+			pathway = ConstructWaypointVector(pathway, 407, 3);
+			fearpathway = glm::vec2(3, 7);
+		}
+		else if (vec2Index == glm::vec2(30, 1))
+		{
+			pathway.push_back(glm::vec2(30, 1));
+			pathway = ConstructWaypointVector(pathway, 410, 2);
+			fearpathway = glm::vec2(29, 7);
+		}
+	}
+	else if (cMap2D->GetCurrentLevel() == 2) {
+		if (vec2Index == glm::vec2(5, 12))
+		{
+			pathway.push_back(glm::vec2(5, 12));
+			pathway = ConstructWaypointVector(pathway, 400, 1);
+			fearpathway = glm::vec2(5, 12);
+		}
+		else if (vec2Index == glm::vec2(9, 7))
+		{
+			pathway.push_back(glm::vec2(9, 7));
+			pathway = ConstructWaypointVector(pathway, 402, 1);
+			fearpathway = glm::vec2(12, 1);
+		}
+		else if (vec2Index == glm::vec2(20, 1))
+		{
+			pathway.push_back(glm::vec2(20, 1));
+			pathway = ConstructWaypointVector(pathway, 403, 1);
+			fearpathway = glm::vec2(20, 1);
+		}
+	}
 	currentPathwayCounter = 0;
 	maxPathwayCounter = pathway.size();
 

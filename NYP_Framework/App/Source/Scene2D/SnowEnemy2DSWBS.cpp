@@ -215,6 +215,22 @@ bool SnowEnemy2DSWBS::Init(void)
 		//	fearpathway = glm::vec2(20, 1);
 		//}
 	}
+	else if (cMap2D->GetCurrentLevel() == 1) {
+		if (vec2Index == glm::vec2(4, 1))
+		{
+			pathway.push_back(glm::vec2(4, 1));
+			pathway = ConstructWaypointVector(pathway, 412, 1);
+			fearpathway = glm::vec2(17, 1);
+		}
+	}
+	else if (cMap2D->GetCurrentLevel() == 2) {
+		if (vec2Index == glm::vec2(27, 12))
+		{
+			pathway.push_back(glm::vec2(27, 12));
+			pathway = ConstructWaypointVector(pathway, 405, 1);
+			fearpathway = glm::vec2(27, 12);
+		}
+	}
 	currentPathwayCounter = 0;
 	maxPathwayCounter = pathway.size();
 

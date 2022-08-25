@@ -176,12 +176,6 @@ bool SnowEnemy2DSWB::Init(void)
 	//flickerTimerMax = 0.5; //used to reset flicker counter
 	//flickerCounter = 0; //decides colour of enemy and when to explode
 
-	//if (vec2Index.x == 11 && vec2Index.y == 1) {
-	//	pathway.push_back(glm::vec2(11, 1));
-	//	pathway.push_back(glm::vec2(18, 2));
-	//	pathway.push_back(glm::vec2(14, 5));
-	//	fearpathway = (glm::vec2(20, 1));
-	//}
 
 		// sets waypoints based on the level
 	//TUTORIAL
@@ -205,6 +199,34 @@ bool SnowEnemy2DSWB::Init(void)
 			pathway.push_back(glm::vec2(17, 6));
 			pathway = ConstructWaypointVector(pathway, 402, 1);
 			fearpathway = glm::vec2(20, 1);
+		}
+	}
+	else if (cMap2D->GetCurrentLevel() == 1) {
+		if (vec2Index == glm::vec2(8, 14))
+		{
+			pathway.push_back(glm::vec2(8, 14));
+			pathway = ConstructWaypointVector(pathway, 405, 1);
+			fearpathway = glm::vec2(8, 14);
+		}
+		else if (vec2Index == glm::vec2(14, 7))
+		{
+			pathway.push_back(glm::vec2(14, 7));
+			pathway = ConstructWaypointVector(pathway, 406, 1);
+			fearpathway = glm::vec2(9, 7);
+		}
+	}
+	else if (cMap2D->GetCurrentLevel() == 2) {
+		if (vec2Index == glm::vec2(8, 14))
+		{
+			pathway.push_back(glm::vec2(8, 14));
+			pathway = ConstructWaypointVector(pathway, 401, 1);
+			fearpathway = glm::vec2(8, 14);
+		}
+		else if (vec2Index == glm::vec2(21, 17))
+		{
+			pathway.push_back(glm::vec2(21, 17));
+			pathway = ConstructWaypointVector(pathway, 404, 1);
+			fearpathway = glm::vec2(21, 17);
 		}
 	}
 	currentPathwayCounter = 0;
