@@ -127,24 +127,27 @@ bool JEnemy2DITracker::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the enemy2D texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_red_enemy.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/IntelligentTrackerSpriteSheet.png", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/scene2d_red_enemy.png" << endl;
+		cout << "Unable to load Image/JunglePlanet/IntelligentTrackerSpriteSheet.png" << endl;
 		return false;
 	}
 
 	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 3,
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(5, 4,
 		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 2); //3 images for animation, index 0 to 2
-	animatedSprites->AddAnimation("right", 3, 5);
-	animatedSprites->AddAnimation("up", 6, 8);
-	animatedSprites->AddAnimation("left", 9, 11);
+	animatedSprites->AddAnimation("movingL", 0, 1); //2 images for animation, index 0 to 1, moving left, 0.5f speed
+	animatedSprites->AddAnimation("movingR", 2, 3); //moving right, 0.5f speed
+	animatedSprites->AddAnimation("attackingL", 4, 5); //attacking left, 1.f speed
+	animatedSprites->AddAnimation("attackingR", 6, 7); //attacking right, 1.f speed
+	animatedSprites->AddAnimation("shootingL", 8, 11); //shooting left, 0.75f speed
+	animatedSprites->AddAnimation("shootingR", 12, 15); //shooting right, 0.75f speed
+	animatedSprites->AddAnimation("recovering", 16, 18); //recovering, 1.f speed
 
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//CS: Play the "movingL" animation as default
+	animatedSprites->PlayAnimation("movingL", -1, 0.5f);
 	//-1 --> repeats forever
 	//		settng it to say 1 will cause it to only repeat 1 time
 	//1.0f --> set time between frames as 1.0f
@@ -403,6 +406,8 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					if (pathClear)
 					{
 						shootingDirection = RIGHT; //setting direction for ammo shooting
+						//Play the "shooting right" animation
+						animatedSprites->PlayAnimation("shootingR", -1, 0.75f);
 					}
 					else
 					{
@@ -429,6 +434,8 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					if (pathClear)
 					{
 						shootingDirection = LEFT; //setting direction for ammo shooting
+						//Play the "shooting left" animation
+						animatedSprites->PlayAnimation("shootingL", -1, 0.75f);
 					}
 					else
 					{
@@ -463,6 +470,8 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					if (pathClear)
 					{
 						shootingDirection = UP; //setting direction for ammo shooting
+						//Play the "shooting right" animation
+						animatedSprites->PlayAnimation("shootingR", -1, 0.75f);
 					}
 					else
 					{
@@ -488,6 +497,8 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					if (pathClear)
 					{
 						shootingDirection = DOWN; //setting direction for ammo shooting
+						//Play the "shooting right" animation
+						animatedSprites->PlayAnimation("shootingR", -1, 0.75f);
 					}
 					else
 					{
@@ -514,7 +525,6 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			cout << "Switching to Track State" << endl;
 		}
 		break;
-
 	case IDLE:
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
@@ -604,6 +614,9 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 				//if player is to the left of the enemy
 				//and enemy is able to attack again
 			{
+				//Play the "attacking left" animation
+				animatedSprites->PlayAnimation("attackingL", -1, 1.0f);
+
 				//if between them and the player is a burnable bush
 				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNABLE_BUSH)
 				{
@@ -624,6 +637,9 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 				//if player is to the right of the enemy
 				//and enemy is able to attack again
 			{
+				//Play the "attacking right" animation
+				animatedSprites->PlayAnimation("attackingR", -1, 1.0f);
+
 				//if between them and the player is a burnable bush
 				if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNABLE_BUSH)
 				{
@@ -709,6 +725,9 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		}
 		break;
 	case REST:
+		//Play the "recovering" animation
+		animatedSprites->PlayAnimation("recovering", -1, 1.f);
+
 		//can leave rest state if sufficiently healed if player is around
 		if (health > maxHealth / 2 && //sufficiently healed
 			cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 3.5f) //player within range
@@ -832,27 +851,27 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 	// Interact with the Map
 	InteractWithMap();
 
-	//update sprite animation to play depending on the direction enemy is facing
-	if (shootingDirection == LEFT)
-	{
-		//CS: Play the "left" animation
-		animatedSprites->PlayAnimation("left", -1, 1.0f);
-	}
-	else if (shootingDirection == RIGHT)
-	{
-		//CS: Play the "right" animation
-		animatedSprites->PlayAnimation("right", -1, 1.0f);
-	}
-	else if (shootingDirection == UP)
-	{
-		//CS: Play the "up" animation
-		animatedSprites->PlayAnimation("up", -1, 1.0f);
-	}
-	else if (shootingDirection == DOWN)
-	{
-		//CS: Play the "idle" animation
-		animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	}
+	////update sprite animation to play depending on the direction enemy is facing
+	//if (shootingDirection == LEFT)
+	//{
+	//	//CS: Play the "left" animation
+	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
+	//}
+	//else if (shootingDirection == RIGHT)
+	//{
+	//	//CS: Play the "right" animation
+	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
+	//}
+	//else if (shootingDirection == UP)
+	//{
+	//	//CS: Play the "up" animation
+	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
+	//}
+	//else if (shootingDirection == DOWN)
+	//{
+	//	//CS: Play the "idle" animation
+	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
+	//}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -1384,7 +1403,7 @@ void JEnemy2DITracker::UpdatePosition(void)
 		shootingDirection = LEFT; //moving to the left
 
 		//Play the "moving left" animation
-		animatedSprites->PlayAnimation("movingL", -1, 0.2f);
+		animatedSprites->PlayAnimation("movingL", -1, 0.5f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
@@ -1423,7 +1442,7 @@ void JEnemy2DITracker::UpdatePosition(void)
 		shootingDirection = RIGHT; //moving to the right
 
 		//Play the "moving right" animation
-		animatedSprites->PlayAnimation("movingR", -1, 0.2f);
+		animatedSprites->PlayAnimation("movingR", -1, 0.5f);
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
