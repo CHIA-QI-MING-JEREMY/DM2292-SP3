@@ -163,6 +163,9 @@
     <ClCompile Include="Source\Scene2D\TerrestrialEAmmoVeteran.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DWorker.cpp">
+      <Filter>Scene2D</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -330,6 +333,9 @@
       <Filter>Scene2D</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DVeteran.h">
+      <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DWorker.h">
       <Filter>Scene2D</Filter>
     </ClInclude>
   </ItemGroup>
