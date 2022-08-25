@@ -195,13 +195,13 @@ bool SnowEnemy2DSWBS::Init(void)
 	//TUTORIAL
 	if (cMap2D->GetCurrentLevel() == 0)
 	{
-		// sets waypoints based on the enemy spawn location
-		if (vec2Index == glm::vec2(3, 1))
-		{
-			pathway.push_back(glm::vec2(3, 1));
-			//pathway = ConstructWaypointVector(pathway, 400, 1);
-			fearpathway = glm::vec2(8,1);
-		}
+		//// sets waypoints based on the enemy spawn location
+		//if (vec2Index == glm::vec2(3, 1))
+		//{
+		//	pathway.push_back(glm::vec2(3, 1));
+		//	//pathway = ConstructWaypointVector(pathway, 400, 1);
+		//	fearpathway = glm::vec2(8,1);
+		//}
 		//else if (vec2Index == glm::vec2(17, 15))
 		//{
 		//	pathway.push_back(glm::vec2(17, 15));
