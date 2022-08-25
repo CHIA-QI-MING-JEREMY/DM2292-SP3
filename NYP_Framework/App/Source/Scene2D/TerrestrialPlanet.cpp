@@ -143,6 +143,16 @@ bool TerrestrialPlanet::Init(void)
 		return false;
 	}
 
+	// Create and initialise the CGUI_Scene2D
+	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
+	// Initialise the instance
+	if (cGUI_Scene2D->Init() == false)
+	{
+		cout << "Failed to load CGUI_Scene2D" << endl;
+		return false;
+	}
+	cGUI_Scene2D->setPlanetNum(2);
+
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
 	// Pass shader to cPlayer2D
@@ -306,15 +316,6 @@ bool TerrestrialPlanet::Init(void)
 
 	// Initialise the Physics
 	cPhysics2D.Init();
-
-	// Create and initialise the CGUI_Scene2D
-	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
-	// Initialise the instance
-	if (cGUI_Scene2D->Init() == false)
-	{
-		cout << "Failed to load CGUI_Scene2D" << endl;
-		return false;
-	}
 
 	// Store the keyboard controller singleton instance here
 	cKeyboardController = CKeyboardController::GetInstance();
@@ -486,8 +487,6 @@ bool TerrestrialPlanet::isColourTrapped(glm::vec4 playerColour)
 */
 bool TerrestrialPlanet::Update(const double dElapsedTime)
 {
-	cGUI_Scene2D->setPlanetNum(2);
-	
 	camera2D->setTargetPos(cPlayer2D->vec2Index);
 	camera2D->Update(dElapsedTime);
 
@@ -1083,7 +1082,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{
