@@ -483,7 +483,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 			UpdatePosition();
 		}
-		else
+		/*else
 		{
 			sCurrentFSM = ROCKET;
 			cout << "Switching to Rocket State" << endl;
@@ -504,7 +504,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			setAssignedAlarmBox(glm::vec2(NULL, NULL));
 			warnTimer = maxWarnTimer;
 			break;
-		}
+		}*/
 
 		break;
 	}
