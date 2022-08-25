@@ -131,17 +131,10 @@ bool JunglePlanet::Init(void)
 		return false;
 	}
 	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02A.csv", LEVEL2A) == false)
+	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02.csv", LEVEL2) == false)
 	{
 		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 02A" << endl;
-		return false;
-	}
-	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02B.csv", LEVEL2B) == false)
-	{
-		// The loading of a map has failed. Return false
-		cout << "Failed to load Jungle Map Level 02B" << endl;
+		cout << "Failed to load Jungle Map Level 02" << endl;
 		return false;
 	}
 
@@ -1191,8 +1184,8 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2A); //tutorial level
-		//cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
 	{
@@ -1205,7 +1198,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 		}
 		else
 		{
-			cMap2D->SetCurrentLevel(LEVEL2A); //level 2
+			cMap2D->SetCurrentLevel(LEVEL2); //level 2
 		}
 	}
 
