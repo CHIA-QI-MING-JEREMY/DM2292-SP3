@@ -38,6 +38,8 @@ class CMap2D;
 // Include Camera2D
 #include "Primitives/Camera2D.h"
 
+#include "GUI_Scene2D.h"
+
 class CAmmo2D : public CEntity2D
 {
 public:
@@ -119,6 +121,9 @@ protected:
 
 	// Physics
 	CPhysics2D cPhysics2D;
+
+	// The handler containing the instance of CGUI_Scene2D
+	CGUI_Scene2D* cGUI_Scene2D;
 
 	// ammo's colour
 	glm::vec4 runtimeColour;

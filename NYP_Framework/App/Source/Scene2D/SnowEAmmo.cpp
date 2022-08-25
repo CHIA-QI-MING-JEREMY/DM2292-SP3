@@ -103,7 +103,7 @@ bool CSEAmmo::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the ammo texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_flame.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/scene2d_flame.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load ammo texture" << std::endl;

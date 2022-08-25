@@ -80,6 +80,9 @@ bool CAmmo2D::Init(void)
 	// Get the handler to the CMap2D instance
 	cMap2D = CMap2D::GetInstance();
 
+	// Create and initialise the CGUI_Scene2D
+	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
+
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
 
@@ -91,19 +94,79 @@ bool CAmmo2D::Init(void)
 	glBindVertexArray(VAO);
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	// Load the ammo texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
-	if (iTextureID == 0)
+	cout << cGUI_Scene2D->getPlanetNum() << endl;
+	switch (cGUI_Scene2D->getPlanetNum())
 	{
-		std::cout << "Failed to load ammo texture" << std::endl;
-		return false;
+	case 1:
+	{
+		// Load the ammo texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load jungle ammo texture" << std::endl;
+			return false;
+		}
+
+		//CS: Create the animated spirte and setup the animation
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
+			cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+		//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
+		animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
+		break;
+	}
+	case 2:
+	{
+		// Load the ammo texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load t ammo texture" << std::endl;
+			return false;
+		}
+
+		//CS: Create the animated spirte and setup the animation
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
+			cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+		//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
+		animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
+		break;
+	}
+	case 3:
+	{
+		// Load the ammo texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/SnowPlanet/Icedart.png", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load snow ammo texture" << std::endl;
+			return false;
+		}
+
+		//CS: Create the animated spirte and setup the animation
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 4,
+			cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+		//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
+		animatedSprites->AddAnimation("idle", 0, 3); //4 images for animation, index 0 to 3
+		break;
+	}
+	default:
+	{
+		// Load the ammo texture
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
+		if (iTextureID == 0)
+		{
+			std::cout << "Failed to load jungle ammo texture" << std::endl;
+			return false;
+		}
+
+		//CS: Create the animated spirte and setup the animation
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
+			cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+		//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
+		animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
+		break;
+	}
 	}
 
-	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
-		cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
 	//CS: Play the "idle" animation as default
 	animatedSprites->PlayAnimation("idle", -1, 1.0f);
 		//-1 --> repeats forever
