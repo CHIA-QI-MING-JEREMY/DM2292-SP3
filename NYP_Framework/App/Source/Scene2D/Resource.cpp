@@ -644,6 +644,7 @@ bool CResource::InteractWithPlayer(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
 				cInventoryItemPlanet->Add(1); //add 1 scrap metal
@@ -662,6 +663,7 @@ bool CResource::InteractWithPlayer(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 				cInventoryItemPlanet->Add(1); //add 1 battery
@@ -679,6 +681,7 @@ bool CResource::InteractWithPlayer(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
 				cInventoryItemPlanet->Add(1); //add 1 ironwood
@@ -696,6 +699,7 @@ bool CResource::InteractWithPlayer(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
 				cInventoryItemPlanet->Add(1); //add 1 energy quartz
@@ -713,6 +717,7 @@ bool CResource::InteractWithPlayer(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //add 1 to the 5 limited space for resources
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
 				cInventoryItemPlanet->Add(1); //add 1 ice crystal
@@ -729,6 +734,7 @@ bool CResource::InteractWithPlayer(void)
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
 			cInventoryItemPlanet->Add(5); //add 5 burnable blocks --> comes in a bundle
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -740,6 +746,7 @@ bool CResource::InteractWithPlayer(void)
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
 			cInventoryItemPlanet->Add(1); //add 1 vine
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -753,6 +760,7 @@ bool CResource::InteractWithPlayer(void)
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
 			cInventoryItemPlanet->Add(1); //add 1 yellow orb
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 			
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -764,6 +772,7 @@ bool CResource::InteractWithPlayer(void)
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
 			cInventoryItemPlanet->Add(1); //add 1 red orb
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -775,6 +784,7 @@ bool CResource::InteractWithPlayer(void)
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
 			cInventoryItemPlanet->Add(1); //add 1 green orb
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -786,6 +796,7 @@ bool CResource::InteractWithPlayer(void)
 
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
 			cInventoryItemPlanet->Add(1); //add 1 blue orb
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -800,6 +811,7 @@ bool CResource::InteractWithPlayer(void)
 
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("AntidotePill");
 				cInventoryItemPlanet->Add(1); //add 1 antidote pill
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 				collected = true; //delete in scene
 
 				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -815,6 +827,7 @@ bool CResource::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
 			std::cout << "COLLECTED PURPLE KEY" << std::endl;
 			cInventoryItemPlanet->Add(1);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true;
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -825,6 +838,7 @@ bool CResource::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
 			std::cout << "COLLECTED CYAN KEY" << std::endl;
 			cInventoryItemPlanet->Add(1);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true;
 
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
@@ -837,6 +851,7 @@ bool CResource::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
 			std::cout << "COLLECTED SHIELD POWER UP" << std::endl;
 			cInventoryItemPlanet->Add(1); //add 1 shield power up
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
@@ -846,6 +861,7 @@ bool CResource::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
 			std::cout << "COLLECTED BERSERK POWER UP" << std::endl;
 			cInventoryItemPlanet->Add(1); //add 1 berserk power up
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
@@ -855,6 +871,7 @@ bool CResource::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
 			std::cout << "COLLECTED FREEZE POWER UP" << std::endl;
 			cInventoryItemPlanet->Add(1); //add 1 freeze power up
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 			collected = true; //delete in scene
 			std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			break;
@@ -867,6 +884,7 @@ bool CResource::InteractWithPlayer(void)
 				std::cout << "COLLECTED FUR" << std::endl;
 				collected = true; //delete in scene
 				cInventoryItemPlanet->Add(5);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			}
@@ -885,6 +903,7 @@ bool CResource::InteractWithPlayer(void)
 				std::cout << "COLLECTED FUR COAT" << std::endl;
 				collected = true; //delete in scene
 				cInventoryItemPlanet->Add(3);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::COLLECT_ITEM);
 
 				std::cout << cInventoryItemPlanet->GetCount() << std::endl;
 			}

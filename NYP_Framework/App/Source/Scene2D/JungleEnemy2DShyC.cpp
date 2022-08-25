@@ -309,7 +309,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
@@ -317,7 +317,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 			else if (shootingDirection == RIGHT && attackCooldownCurrent == 0)
@@ -329,7 +329,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNING_BUSH || 
@@ -337,7 +337,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 		}
@@ -464,7 +464,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		//still flickering through colours
 		if (flickerCounter < 7)
 		{
-			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TICKING); //play ticking sound
 
 			//Play the "hunker left" animation
 			animatedSprites->PlayAnimation("hunkerL", 1, 1.0f);
@@ -491,8 +491,8 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		//explode time
 		if (flickerCounter == 7)
 		{
-			//cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
-			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::TICKING); //stop playing ticking sound
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::EXPLOSION); //play explosion sound
 
 			++flickerCounter; //increase counter
 			flickerTimer = flickerTimerMax * 4; //reset timer
@@ -990,14 +990,15 @@ bool JEnemy2DShyC::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
-		cout << "Shy Chaser Gotcha!" << endl;
 		if (attackCooldownCurrent == 0)
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play melee attack noise
+
 			// Decrease the health by 1
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);
 			//cout << "Take that!" << endl;
-			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_PUNCH); //play punch sound
+			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 			attackCooldownCurrent = attackCooldownMax; //reset attack cooldown
 		}
 

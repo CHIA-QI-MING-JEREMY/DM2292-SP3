@@ -257,6 +257,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 	switch (sCurrentFSM)
 	{
 	case TELEPORT:
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::VT_TELEPORT_POOF); //play sound effect for the poof of teleporting
 		++currentWaypointCounter; //increase the enemy's current waypoint count
 			//if pointing at the spot beyond the last waypoint index, set current back to first
 		if (currentWaypointCounter == maxWaypointCounter)
@@ -730,6 +731,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		CJEAmmo* ammo = (CJEAmmo*)*it;
 		if (ammo->getActive())
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::POISONBALL); //play enemy ammo sound if there is enemy ammo
 			ammo->Update(dElapsedTime);
 			if (ammo->LimitReached())
 			{
@@ -745,28 +747,6 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 
 	// Interact with the Map
 	InteractWithMap();
-
-	////update sprite animation to play depending on the direction enemy is facing
-	//if (shootingDirection == LEFT)
-	//{
-	//	//CS: Play the "left" animation
-	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
-	//}
-	//else if (shootingDirection == RIGHT)
-	//{
-	//	//CS: Play the "right" animation
-	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
-	//}
-	//else if (shootingDirection == UP)
-	//{
-	//	//CS: Play the "up" animation
-	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
-	//}
-	//else if (shootingDirection == DOWN)
-	//{
-	//	//CS: Play the "idle" animation
-	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	//}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
