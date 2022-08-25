@@ -114,19 +114,16 @@ protected:
 	//CS: Animated Sprite
 	CSpriteAnimation* animatedSprites;
 
-	// TO DO
 	enum FSM
 	{
 		IDLE = 0,
 		PATROL = 1,
-		TRACK = 2,
-		SHOOT = 3,
-		WARN = 4,
-		ALARM_TRIGGER = 5,
-		ALERT_IDLE = 6,
-		ALERT_PATROL = 7,
-		ALERT_TRACK = 8,
-		ALERT_SHOOT = 9,
+		ROCKET = 2,
+		REPOSITION = 3,
+		RADIO = 4,
+		ALERT_IDLE = 5,
+		ALERT_PATROL = 6,
+		ALERT_ROCKET = 7,
 		NUM_FSM
 	};
 
@@ -175,7 +172,8 @@ protected:
 	int iFSMCounter;
 
 	// Max count in a state
-	const int iMaxFSMCounter = 60;
+	const int iMaxFSMCounter = 75;
+	const int iMaxAlertFSMCounter = 30;
 
 	// Constraint the enemy2D's position within a boundary
 	void Constraint(DIRECTION eDirection = LEFT);
@@ -206,18 +204,21 @@ protected:
 
 	// attack timer
 	double attackTimer;
-	const double attackInterval = 0.4;
-	const double alertAttackInterval = 0.2;
+	const double attackInterval = 1.0;
+	const double alertAttackInterval = 0.75;
 
 	// checks how many bullets have been fired
 	int numFired;
-	const int attackMagSize = 3;
-	const int alertAttackMagSize = 5;
+	const int attackMagSize = 1;
+	const int alertAttackMagSize = 1;
 
-	vector<glm::vec2>alarmBoxVector;
-	bool isAlarmBoxAssigned;
-	double warnTimer;
-	const double maxWarnTimer = 2.0;
-	float alarmBoxDistance;
+	// alarm variables
+	double radioTimer;
+	const double maxRadioTimer = 3.0;
+
+	// reposition variables
+	vector<glm::vec2>repositionWaypoints;
+	int currentRepositionCounter;
+	float repositionWaypointDistance;
+	glm::vec2 targetRepositionWaypoint;
 };
-

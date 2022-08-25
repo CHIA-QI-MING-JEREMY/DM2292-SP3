@@ -154,7 +154,7 @@ bool TEnemy2DWorker::Init(void)
 	bIsActive = true;
 
 	type = CLOSE_COMBAT; //has ammo
-	maxHealth = health = 25; //takes 1 hit to kill
+	maxHealth = health = 200; // 100 damage per hit from player
 
 	// alarm variables
 	isAlarmerActive = false;

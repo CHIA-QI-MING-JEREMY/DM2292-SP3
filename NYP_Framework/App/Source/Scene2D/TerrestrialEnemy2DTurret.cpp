@@ -166,7 +166,7 @@ bool TEnemy2DTurret::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 1 hit to kill
+	maxHealth = health = 1000; // 100 damage per hit from player
 
 	isAlarmerActive = false;
 	isAlarmOn = false;

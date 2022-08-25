@@ -163,7 +163,7 @@ bool TEnemy2DSentry::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 1 hit to kill
+	maxHealth = health = 500; // 100 damage per hit from player
 
 	// sets waypoints based on the level
 	if (cMap2D->GetCurrentLevel() == 2)

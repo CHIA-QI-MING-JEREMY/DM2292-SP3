@@ -163,7 +163,7 @@ bool TEnemy2DVeteran::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 25; //takes 1 hit to kill
+	maxHealth = health = 800; // 100 damage per hit from player
 
 	// sets waypoints based on the level
 	if (cMap2D->GetCurrentLevel() == 2)
@@ -172,6 +172,7 @@ bool TEnemy2DVeteran::Init(void)
 		if (vec2Index == glm::vec2(12, 3))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 300, 5);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 3);
 		}
 		else if (vec2Index == glm::vec2(17, 3))
 		{
@@ -182,10 +183,6 @@ bool TEnemy2DVeteran::Init(void)
 			waypoints = ConstructWaypointVector(waypoints, 305, 4);
 		}
 	}
-	else if (cMap2D->GetCurrentLevel() == 3)
-	{
-		
-	}
 
 	// sets waypoint counter value
 	currentWaypointCounter = 0;
@@ -195,16 +192,17 @@ bool TEnemy2DVeteran::Init(void)
 	isAlarmerActive = false;
 	isAlarmOn = false;
 
-	alarmBoxVector.clear();
-	alarmBoxVector = cMap2D->FindAllTiles(250);
-	isAlarmBoxAssigned = false;
-	warnTimer = maxWarnTimer;
-	alarmBoxDistance = -1.f; // inits with impossible (negative) distance
+	// radio variables
+	radioTimer = maxRadioTimer;
 
 	// attack variables
 	attackTimer = 0.0;
-
 	numFired = 0;
+
+	// reposition variables
+	currentRepositionCounter = 0;
+	repositionWaypointDistance = -1.f;
+	targetRepositionWaypoint = glm::vec2(NULL, NULL);
 
 	return true;
 }
@@ -272,28 +270,17 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			cout << randomState << endl;
 			if (randomState < 50)
 			{
-				sCurrentFSM = TRACK;
+				sCurrentFSM = ROCKET;
 				iFSMCounter = 0;
-				cout << "Switching to Track State" << endl;
+				cout << "Switching to Rocket State" << endl;
 				break;
 			}
 			else
 			{			
-				if (!isAlarmerActive && !isAlarmOn)
-				{	
-					sCurrentFSM = WARN;
-					iFSMCounter = 0;
-					isAlarmerActive = true;
-					cout << "Switching to Warn State" << endl;
-					break;
-				}
-				else
-				{
-					sCurrentFSM = TRACK;
-					iFSMCounter = 0;
-					cout << "Switching to Track State" << endl;
-					break;
-				}
+				sCurrentFSM = REPOSITION;
+				iFSMCounter = 0;
+				cout << "Switching to Reposition State" << endl;
+				break;
 			}
 		}
 		else
@@ -369,26 +356,87 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		UpdatePosition();
 		break;
 	}
-	case TRACK:
+	//case ROCKET: // edit rocket effects in veteran ammo
+	//{
+	//	if (vec2Direction.x > 0)
+	//	{
+	//		animatedSprites->PlayAnimation("shootR", 0, 1.f);
+
+	//		shootingDirection = RIGHT;
+	//	}
+	//	else if (vec2Direction.x < 0)
+	//	{
+	//		animatedSprites->PlayAnimation("shootL", 0, 1.f);
+
+	//		shootingDirection = LEFT;
+	//	}
+
+	//	if (attackTimer <= 0)
+	//	{
+	//		// Shoot enemy ammo!
+	//		//shoot ammo in accordance to the direction enemy is facing
+	//		CTEAmmoVeteran* ammo = FetchAmmo();
+	//		ammo->setActive(true);
+	//		ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
+	//		ammo->setIsAlerted(false);
+	//		cout << "Bam!" << shootingDirection << endl;
+
+	//		attackTimer = attackInterval;
+	//		numFired++;
+	//	}
+	//	else
+	//	{
+	//		attackTimer -= dElapsedTime;
+	//	}
+
+	//	if (numFired > attackMagSize)
+	//	{
+	//		sCurrentFSM = PATROL;
+	//		iFSMCounter = 0;
+	//		attackTimer = 0;
+	//		numFired = 0;
+	//		cout << "Switching to Patrol State" << endl;
+	//		break;
+	//	}
+
+	//	UpdateDirection();
+
+	//	break;
+	//}
+	case REPOSITION:
 	{
-		if (isAlarmOn)
+		// check for nearest reposition waypoint
+		// check if distance between player and enemy is less than distance between waypoint and player
+		// if true, pathfind to that reposition waypoint
+		// once reach reposition waypoint switch to radio state
+		// else, find another reposition waypoint
+		// if all waypoints are nearer to the player than the enemy, switch to shoot state
+		
+		// cycles through each alarm box to find the nearest reposition waypoint
+		for (int i = 0; i < repositionWaypoints.size(); ++i)
 		{
-			sCurrentFSM = ALERT_IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Alert_Idle State" << endl;
-			break;
+			// sets target to first reposition waypoint
+			if (repositionWaypointDistance < 0.f)
+			{
+				repositionWaypointDistance = cPhysics2D.CalculateDistance(vec2Index, repositionWaypoints[i]); // finds waypoint distance
+				
+				// checks if distance between enemy and player is less than distance between waypoint and player
+				if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < cPhysics2D.CalculateDistance(repositionWaypoints[i], cPlayer2D->vec2Index))
+				{
+					targetRepositionWaypoint = repositionWaypoints[i]; // sets target if the enemy moves away from the player to get to the waypoint
+				}
+			}
+			// checks if new waypoint is closer than targeted waypoint, and if distance between enemy and player is less than distance between waypoint and player
+			else if (cPhysics2D.CalculateDistance(vec2Index, repositionWaypoints[i]) < repositionWaypointDistance && 
+				cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < cPhysics2D.CalculateDistance(repositionWaypoints[i], cPlayer2D->vec2Index))
+			{
+				targetRepositionWaypoint = repositionWaypoints[i]; // sets target if the enemy moves away from the player to get to the waypoint
+				repositionWaypointDistance = cPhysics2D.CalculateDistance(vec2Index, repositionWaypoints[i]); // updates waypoint distance
+			}
 		}
 
-		if (vec2Direction.x > 0)
-		{
-			animatedSprites->PlayAnimation("runR", -1, 1.0f);
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("runL", -1, 1.0f);
-		}
-
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 5.f)
+		// checks if waypoint distance is valid and there is a targeted waypoint
+		if (repositionWaypointDistance >= 0.f && targetRepositionWaypoint != glm::vec2(NULL, NULL))
 		{
 			glm::vec2 startIndices;
 			if (vec2NumMicroSteps.x == 0)
@@ -400,10 +448,10 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
 			}
 
-			auto path = cMap2D->PathFind(startIndices,			// start pos
-										cPlayer2D->vec2Index,	// target pos
-										heuristic::manhattan,	// heuristic
-										10);					// weight
+			auto path = cMap2D->PathFind(startIndices,				// start pos
+										targetRepositionWaypoint,	// target pos
+										heuristic::manhattan,		// heuristic
+										10);						// weight
 
 			// Calculate new destination
 			bool bFirstPosition = true;
@@ -433,156 +481,19 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 				}
 			}
 
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 3.f)
-			{
-				sCurrentFSM = SHOOT;
-				iFSMCounter = 0;
-				attackTimer = 0;
-				cout << "Switching to Shoot State" << endl;
-				break;
-			}
-
 			UpdatePosition();
 		}
 		else
 		{
-			sCurrentFSM = PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
+			sCurrentFSM = ROCKET;
+			cout << "Switching to Rocket State" << endl;
 
-			float waypointDist = -1.f;
-
-			// cycles through all waypoints
-			for (int i = 0; i < waypoints.size(); ++i)
-			{
-				// assigns enemy to pathfind to first waypoint
-				if (waypointDist < 0.f)
-				{
-					currentWaypointCounter = i;
-					waypointDist = cPhysics2D.CalculateDistance(vec2Index, waypoints[i]);
-				}
-				// assigns enemy to pathfind to nearest waypoint
-				else if (cPhysics2D.CalculateDistance(vec2Index, waypoints[i]) < waypointDist)
-				{
-					currentWaypointCounter = i;
-					waypointDist = cPhysics2D.CalculateDistance(vec2Index, waypoints[i]);
-				}
-			}
-
+			repositionWaypointDistance = -1.f;
+			targetRepositionWaypoint = glm::vec2(NULL, NULL);
+			warnTimer = maxWarnTimer;
 			break;
 		}
-		break;
-	}
-	case SHOOT:
-	{
-		if (vec2Direction.x > 0)
-		{
-			animatedSprites->PlayAnimation("shootR", 0, 1.f);
-
-			shootingDirection = RIGHT;
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("shootL", 0, 1.f);
-
-			shootingDirection = LEFT;
-		}
-
-		if (attackTimer <= 0)
-		{
-			// Shoot enemy ammo!
-			//shoot ammo in accordance to the direction enemy is facing
-			CTEAmmoVeteran* ammo = FetchAmmo();
-			ammo->setActive(true);
-			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			ammo->setIsAlerted(false);
-			cout << "Bam!" << shootingDirection << endl;
-
-			attackTimer = attackInterval;
-			numFired++;
-		}
-		else
-		{
-			attackTimer -= dElapsedTime;
-		}
-
-		if (numFired > attackMagSize)
-		{
-			sCurrentFSM = TRACK;
-			iFSMCounter = 0;
-			attackTimer = 0;
-			numFired = 0;
-			cout << "Switching to Track State" << endl;
-			break;
-		}
-
-		UpdateDirection();
-
-		break;
-	}
-	case WARN:
-	{
-		// cycles through each alarm box to find the nearest alarm box
-		for (int i = 0; i < alarmBoxVector.size(); ++i)
-		{
-			// sets target to first alarm box
-			if (alarmBoxDistance < 0.f)
-			{
-				setAssignedAlarmBox(alarmBoxVector[i]); // sets target to new alarm box
-				alarmBoxDistance = cPhysics2D.CalculateDistance(vec2Index, alarmBoxVector[i]); // updates alarm box distance
-			}
-			// checks if new alarm box is closer than targeted alarm box
-			else if (cPhysics2D.CalculateDistance(vec2Index, alarmBoxVector[i]) < alarmBoxDistance)
-			{
-				setAssignedAlarmBox(alarmBoxVector[i]); // sets target to new alarm box
-				alarmBoxDistance = cPhysics2D.CalculateDistance(vec2Index, alarmBoxVector[i]); // updates alarm box distance
-			}
-		}
-
-		glm::vec2 startIndices;
-		if (vec2NumMicroSteps.x == 0)
-		{
-			startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-		}
-		else
-		{
-			startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-		}
-
-		auto path = cMap2D->PathFind(startIndices,			// start pos
-									getAssignedAlarmBox(),	// target pos
-									heuristic::manhattan,	// heuristic
-									10);					// weight
-
-		// Calculate new destination
-		bool bFirstPosition = true;
-		for (const auto& coord : path)
-		{
-			//std::cout << coord.x << ", " << coord.y << "\n";
-			if (bFirstPosition == true)
-			{
-				// Set a destination
-				vec2Destination = coord;
-
-				// Calculate the direction between enemy2D and this destination
-				vec2Direction = vec2Destination - vec2Index;
-				bFirstPosition = false;
-			}
-			else
-			{
-				if ((coord - vec2Destination) == vec2Direction)
-				{
-					// Set a destination
-					vec2Destination = coord;
-				}
-				else
-				{
-					break;
-				}
-			}
-		}
-
-		UpdatePosition();
+		
 		
 		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ALARM_BOX)
 		{
@@ -597,8 +508,11 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 		break;
 	}
-	case ALARM_TRIGGER:
+	case RADIO:
 	{
+		// wait for 3 seconds before activating the alarm
+		// switch to alert idle
+		
 		if (vec2Direction.x > 0)
 		{
 			// Play the "idleR" animation
@@ -648,14 +562,14 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 		}
 
-		if (iFSMCounter > iMaxFSMCounter)
+		if (iFSMCounter > iMaxAlertFSMCounter)
 		{
 			sCurrentFSM = ALERT_PATROL;
 			iFSMCounter = 0;
 			cout << "Switching to Alert_Patrol State" << endl;
 			break;
 		}
-		iFSMCounter += 2;
+		iFSMCounter++;
 		break;
 	}
 	case ALERT_PATROL:
@@ -670,9 +584,9 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 7.f)
 		{
-			sCurrentFSM = ALERT_TRACK;
+			sCurrentFSM = ALERT_ROCKET;
 			iFSMCounter = 0;
-			cout << "Switching to Alert_Track State" << endl;
+			cout << "Switching to Alert_Rocket State" << endl;
 			break;
 		}
 		else
@@ -748,111 +662,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		UpdatePosition();
 		break;
 	}
-	case ALERT_TRACK:
-	{
-		if (!isAlarmOn)
-		{
-			sCurrentFSM = IDLE;
-			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;
-			break;
-		}
-
-		if (vec2Direction.x > 0)
-		{
-			animatedSprites->PlayAnimation("runR", -1, 1.0f);
-		}
-		else if (vec2Direction.x < 0)
-		{
-			animatedSprites->PlayAnimation("runL", -1, 1.0f);
-		}
-
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 7.f)
-		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
-			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-			}
-
-			auto path = cMap2D->PathFind(startIndices,			// start pos
-										cPlayer2D->vec2Index,	// target pos
-										heuristic::manhattan,	// heuristic
-										10);					// weight
-
-			// Calculate new destination
-			bool bFirstPosition = true;
-			for (const auto& coord : path)
-			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
-				if (bFirstPosition == true)
-				{
-					// Set a destination
-					vec2Destination = coord;
-
-					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - vec2Index;
-					bFirstPosition = false;
-				}
-				else
-				{
-					if ((coord - vec2Destination) == vec2Direction)
-					{
-						// Set a destination
-						vec2Destination = coord;
-					}
-					else
-					{
-						break;
-					}
-				}
-			}
-
-			if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) <= 5.f)
-			{
-				sCurrentFSM = ALERT_SHOOT;
-				iFSMCounter = 0;
-				attackTimer = 0;
-				cout << "Switching to Alert_Shoot State" << endl;
-				break;
-			}
-
-			UpdatePosition();
-		}
-		else
-		{
-			sCurrentFSM = ALERT_PATROL;
-			iFSMCounter = 0;
-			cout << "Switching to Alert_Patrol State" << endl;
-
-			float waypointDist = -1.f;
-
-			// cycles through all waypoints
-			for (int i = 0; i < waypoints.size(); ++i)
-			{
-				// assigns enemy to pathfind to first waypoint
-				if (waypointDist < 0.f)
-				{
-					currentWaypointCounter = i;
-					waypointDist = cPhysics2D.CalculateDistance(vec2Index, waypoints[i]);
-				}
-				// assigns enemy to pathfind to nearest waypoint
-				else if (cPhysics2D.CalculateDistance(vec2Index, waypoints[i]) < waypointDist)
-				{
-					currentWaypointCounter = i;
-					waypointDist = cPhysics2D.CalculateDistance(vec2Index, waypoints[i]);
-				}
-			}
-
-			break;
-		}
-		break;
-	}
-	case ALERT_SHOOT:
+	case ALERT_ROCKET:
 	{
 		if (vec2Direction.x > 0)
 		{
@@ -887,11 +697,11 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 		if (numFired > alertAttackMagSize)
 		{
-			sCurrentFSM = ALERT_TRACK;
+			sCurrentFSM = ALERT_PATROL;
 			iFSMCounter = 0;
 			attackTimer = 0;
 			numFired = 0;
-			cout << "Switching to Alert_Track State" << endl;
+			cout << "Switching to Alert_Patrol State" << endl;
 			break;
 		}
 		break;

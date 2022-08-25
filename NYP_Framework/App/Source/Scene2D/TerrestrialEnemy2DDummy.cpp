@@ -178,7 +178,7 @@ bool TEnemy2DDummy::Init(void)
 		type = LONG_RANGE; // may drop resource upon being killed
 	}
 	shootingDirection = RIGHT; // setting direction for ammo shooting
-	maxHealth = health = 25; // takes 1 hit to kill
+	maxHealth = health = 300; // 100 damage per hit from player
 
 	isAlarmerActive = false;
 	isAlarmOn = false;
