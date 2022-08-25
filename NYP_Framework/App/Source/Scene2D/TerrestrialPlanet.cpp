@@ -197,6 +197,24 @@ bool TerrestrialPlanet::Init(void)
 
 		while (true)
 		{
+			TEnemy2DVeteran* cTEnemy2DVeteran = new TEnemy2DVeteran();
+			// Pass shader to cEnemy2D
+			cTEnemy2DVeteran->SetShader("Shader2D_Colour");
+			// Initialise the instance
+			if (cTEnemy2DVeteran->Init() == true)
+			{
+				cTEnemy2DVeteran->SetPlayer2D(cPlayer2D);
+				enemies.push_back(cTEnemy2DVeteran); //push each sentry into the individual enemy vector
+			}
+			else
+			{
+				// Break out of this loop if all sentries have been loaded
+				break;
+			}
+		}
+
+		while (true)
+		{
 			TEnemy2DTurret* cTEnemy2DTurret = new TEnemy2DTurret();
 			// Pass shader to cEnemy2D
 			cTEnemy2DTurret->SetShader("Shader2D_Colour");
