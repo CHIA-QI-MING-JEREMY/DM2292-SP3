@@ -410,7 +410,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Buttons");
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Hit a button with fireballs to \nactivate it \n\nActivated buttons can destroy metal \nbarriers");
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Hit a button with fireballs to \nactivate it \n\nActivated buttons can open or build \nstone pathways");
 				break;
 			case RIVER_WATER:
 				//header

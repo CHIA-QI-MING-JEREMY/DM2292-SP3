@@ -244,9 +244,6 @@ bool CPlayer2D::Init(void)
 	// Add a purple key as one of the inventory items
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("PurpleKey", "Image/TerrestrialPlanet/Key_Purple.tga", 9, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
-	// Add a cyan key as one of the inventory items
-	cInventoryItemPlanet = cInventoryManagerPlanet->Add("CyanKey", "Image/TerrestrialPlanet/Key_Cyan.tga", 9, 0);
-	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 
 	//SnowPlanet
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("Temperature", "Image/SnowPlanet/temp.tga", 30, 30);
@@ -301,8 +298,6 @@ bool CPlayer2D::ResetRespawn()
 	vec2Index = glm::i32vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
 	vec2NumMicroSteps = glm::i32vec2(0, 0);
-
-	vec2CPIndex = vec2Index; //set first respawn point to original spawn point
 
 	//CS: Reset jump
 	iJumpCount = 0;
@@ -754,41 +749,18 @@ void CPlayer2D::InteractWithMap(void)
 		CGUI_Scene2D::GetInstance()->setShowExitPanel(false);
 	}
 
-	vector<glm::vec2> lockedDoors;
 	vector<glm::vec2> doorsVector = cMap2D->FindAllTiles(CMap2D::TILE_INDEX::DOOR_LOCKED_PURPLE);
-	for (int i = 0; i < doorsVector.size(); ++i)
-	{
-		lockedDoors.push_back(doorsVector[i]);
-	}
-	doorsVector = cMap2D->FindAllTiles(CMap2D::TILE_INDEX::DOOR_LOCKED_CYAN);
-	for (int i = 0; i < doorsVector.size(); ++i)
-	{
-		lockedDoors.push_back(doorsVector[i]);
-	}
 
-	for (int i = 0; i < lockedDoors.size(); ++i)
+	for (int i = 0; i < doorsVector.size(); ++i)
 	{
-		if (cMap2D->GetMapInfo(lockedDoors[i].y, lockedDoors[i].x) == CMap2D::TILE_INDEX::DOOR_LOCKED_PURPLE)
+		if (cMap2D->GetMapInfo(doorsVector[i].y, doorsVector[i].x) == CMap2D::TILE_INDEX::DOOR_LOCKED_PURPLE)
 		{
-			if (vec2Index.x - 1 == lockedDoors[i].x || vec2Index.x + 1 == lockedDoors[i].x)
+			if (vec2Index.x - 1 == doorsVector[i].x || vec2Index.x + 1 == doorsVector[i].x)
 			{
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
 				if (cInventoryItemPlanet->GetCount() >= 1)
 				{
-					cMap2D->SetMapInfo(lockedDoors[i].y, lockedDoors[i].x, 0);
-					cInventoryItemPlanet->Remove(1);
-					cout << cInventoryItemPlanet->GetCount() << endl;
-				}
-			}
-		}
-		else if (cMap2D->GetMapInfo(lockedDoors[i].y, lockedDoors[i].x) == CMap2D::TILE_INDEX::DOOR_LOCKED_CYAN)
-		{
-			if (vec2Index.x - 1 == lockedDoors[i].x || vec2Index.x + 1 == lockedDoors[i].x)
-			{
-				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
-				if (cInventoryItemPlanet->GetCount() >= 1)
-				{
-					cMap2D->SetMapInfo(lockedDoors[i].y, lockedDoors[i].x, 0);
+					cMap2D->SetMapInfo(doorsVector[i].y, doorsVector[i].x, 0);
 					cInventoryItemPlanet->Remove(1);
 					cout << cInventoryItemPlanet->GetCount() << endl;
 				}
@@ -1072,7 +1044,7 @@ bool CPlayer2D::CheckPosition(DIRECTION eDirection)
 		}
 	}
 	else if (eDirection == RIGHT)
-	{		
+	{
 		// If the new position is at the top row, then return true
 		if (vec2Index.x >= cSettings->NUM_TILES_XAXIS - 1)
 		{

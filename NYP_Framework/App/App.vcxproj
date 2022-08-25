@@ -58,7 +58,6 @@
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DSentry.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DTurret.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DVeteran.h" />
-    <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DWorker.h" />
     <ClInclude Include="Source\Scene2D\TerrestrialPlanet.h" />
     <ClInclude Include="Source\ShipCombat\GUI_SceneCombat.h" />
     <ClInclude Include="Source\ShipCombat\InventoryItemShip.h" />
@@ -117,7 +116,6 @@
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DSentry.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DTurret.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DVeteran.cpp" />
-    <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DWorker.cpp" />
     <ClCompile Include="Source\Scene2D\TerrestrialPlanet.cpp" />
     <ClCompile Include="Source\ShipCombat\GUI_SceneCombat.cpp" />
     <ClCompile Include="Source\ShipCombat\InventoryItemShip.cpp" />

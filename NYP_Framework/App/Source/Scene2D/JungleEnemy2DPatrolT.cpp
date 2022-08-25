@@ -146,6 +146,9 @@ bool JEnemy2DPatrolT::Init(void)
 	animatedSprites->AddAnimation("enrouteL", 17, 20); //en_route left, 0.5f speed
 	animatedSprites->AddAnimation("enrouteR", 21, 24); //en_route right, 0.5f speed
 
+	/*animatedSprites->AddAnimation("right", 3, 5);
+	animatedSprites->AddAnimation("up", 6, 8);
+	animatedSprites->AddAnimation("left", 9, 11);*/
 	//CS: Play the "idle" animation as default
 	animatedSprites->PlayAnimation("idle", -1, 0.5f);
 	//-1 --> repeats forever
@@ -171,22 +174,30 @@ bool JEnemy2DPatrolT::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	//for no patrol team enemies in tutorial lvl
+	//for tutorial lvl
+	if (cMap2D->GetCurrentLevel() == 0)
+	{
+		/*//if it's the enemy at this position
+		if (vec2Index == glm::vec2(16, 20))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 130, 4);
+		}
+		else if (vec2Index == glm::vec2(16, 11))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 140, 4);
+		}*/
+	}
 	//for lvl 1
 	if (cMap2D->GetCurrentLevel() == 1)
 	{
 		//if it's the enemy at this position
-		if (vec2Index == glm::vec2(1, 4))
+		if (vec2Index == glm::vec2(16, 20))
 		{
-			waypoints = ConstructWaypointVector(waypoints, 130, 4); //130, 131, 132, 133
+			waypoints = ConstructWaypointVector(waypoints, 130, 4);
 		}
-		else if (vec2Index == glm::vec2(14, 12))
+		else if (vec2Index == glm::vec2(16, 11))
 		{
-			waypoints = ConstructWaypointVector(waypoints, 140, 2); //140, 141
-		}
-		else if (vec2Index == glm::vec2(20, 17))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 150, 3); //150, 151, 152
+			waypoints = ConstructWaypointVector(waypoints, 140, 4);
 		}
 	}
 	
