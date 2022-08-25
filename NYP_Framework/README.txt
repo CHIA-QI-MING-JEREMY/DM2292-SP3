@@ -30,6 +30,7 @@ Interactables
 55 : invisible trigger for shooting pop up
 60 : down button 1
 61 : right button 1
+62 : left button 1
 100 : first Vigilant Teleporter of the map's first waypoint
 101 : first Vigilant Teleporter of the map's second waypoint
 102 : first Vigilant Teleporter of the map's third waypoint
@@ -103,6 +104,7 @@ Solid Blocks
 632 : stone ground mossy
 640 : stone blocks that down button 1 will make disappear
 641 : stone blocks that right button 1 will make disappear
+642 : stone blocks that left button 1 will make disappear
 
 [Terrestrial Planet]
 800 : ground tile (solid)

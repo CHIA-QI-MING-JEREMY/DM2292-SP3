@@ -430,6 +430,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_1, iTextureID));
 		}
+		//left button 1
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/Button_Left.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/Button_Left.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(LEFT_BUTTON_1, iTextureID));
+		}
 	}
 
 	/// <summary>
@@ -609,6 +621,18 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		{
 			// Store the texture ID into MapOfTextureIDs
 			MapOfTextureIDs.insert(pair<int, int>(RIGHT_BUTTON_1_BLOCKS, iTextureID));
+		}
+		//left button 1 stone ground tiles
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/JunglePlanet/StoneBlock.tga", true);
+		if (iTextureID == 0)
+		{
+			cout << "Unable to load Image/JunglePlanet/StoneBlock.tga" << endl;
+			return false;
+		}
+		else
+		{
+			// Store the texture ID into MapOfTextureIDs
+			MapOfTextureIDs.insert(pair<int, int>(LEFT_BUTTON_1_BLOCKS, iTextureID));
 		}
 	}
 
