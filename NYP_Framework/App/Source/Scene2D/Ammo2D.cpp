@@ -142,10 +142,13 @@ bool CAmmo2D::Init(void)
 		}
 
 		//CS: Create the animated spirte and setup the animation
-		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 4,
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(4, 4,
 			cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 		//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-		animatedSprites->AddAnimation("idle", 0, 3); //4 images for animation, index 0 to 3
+		animatedSprites->AddAnimation("idleUp", 0, 3); //4 images for animation
+		animatedSprites->AddAnimation("idleDown", 4, 7); //4 images for animation
+		animatedSprites->AddAnimation("idleRight", 8, 11); //4 images for animation
+		animatedSprites->AddAnimation("idleLeft", 12, 15); //4 images for animation
 		break;
 	}
 	default:
@@ -203,6 +206,29 @@ void CAmmo2D::Update(const double dElapsedTime)
 	if (!CheckPosition()) //if hit a wall type obj
 	{
 		hit = true; //destroy ammo
+	}
+	if (cGUI_Scene2D->getPlanetNum() == 3) {
+		//update sprite animation to play depending on the direction enemy is facing
+		if (direction == LEFT)
+		{
+			//CS: Play the "left" animation
+			animatedSprites->PlayAnimation("idleLeft", -1, 1.0f);
+		}
+		else if (direction == RIGHT)
+		{
+			//CS: Play the "right" animation
+			animatedSprites->PlayAnimation("idleRight", -1, 1.0f);
+		}
+		else if (direction == UP)
+		{
+			//CS: Play the "up" animation
+			animatedSprites->PlayAnimation("idleUp", -1, 1.0f);
+		}
+		else if (direction == DOWN)
+		{
+			//CS: Play the "down" animation
+			animatedSprites->PlayAnimation("idleDown", -1, 1.0f);
+		}
 	}
 	
 	//CS: Update the animated sprite
