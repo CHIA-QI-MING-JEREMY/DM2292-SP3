@@ -172,16 +172,16 @@ bool TEnemy2DVeteran::Init(void)
 		if (vec2Index == glm::vec2(12, 3))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 300, 5);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 3);
 		}
-		else if (vec2Index == glm::vec2(17, 3))
+		/*else if (vec2Index == glm::vec2(17, 3))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 309, 2);
 		}
 		else if (vec2Index == glm::vec2(2, 10))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 305, 4);
-			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 3);
-		}
+		}*/
 	}
 
 	// sets waypoint counter value
@@ -489,6 +489,17 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			radioTimer = maxRadioTimer;
 			break;
 		}
+
+		if (vec2Index == targetRepositionWaypoint)
+		{
+			sCurrentFSM = RADIO;
+			cout << "Switching to Radio State" << endl;
+
+			repositionWaypointDistance = -1.f;
+			targetRepositionWaypoint = glm::vec2(NULL, NULL);
+			radioTimer = maxRadioTimer;
+			break;
+		}
 		break;
 	}
 	case RADIO:
@@ -687,6 +698,9 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			cout << "Switching to Alert_Patrol State" << endl;
 			break;
 		}
+
+		UpdateDirection();
+
 		break;
 	}
 	default:

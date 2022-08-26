@@ -266,10 +266,12 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 			if (vec2Direction.x > 0) {
 				runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 				animatedSprites->PlayAnimation("biteR", -1, 1.0f);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFBITE);
 			}
 			else {
 				runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 				animatedSprites->PlayAnimation("biteL", -1, 1.0f);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFBITE);
 			}
 		}
 		else {
@@ -313,10 +315,12 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		else if (vec2Direction.x < 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
@@ -400,10 +404,12 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		else if (vec2Direction.x < 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
@@ -474,10 +480,12 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("shieldR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFSHIELD);
 		}
 		else if (vec2Direction.x < 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("shieldL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFSHIELD);
 		}
 		shieldActivated=true;
 		shieldTimer -= dElapsedTime;
@@ -497,10 +505,12 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		if (vec2Direction.x > 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		else if (vec2Direction.x < 0) {
 			runtimeColour = glm::vec4(0.0, 0.0, 0.0, 1.0);
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		if (health<=10 && health>5) {
 			auto path = cMap2D->PathFind(vec2Index,
@@ -568,6 +578,7 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 		}
 		if (healCount >0) {
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFHEAL);
 			health += 10;
 			healCount -= 1;
 		}
@@ -592,6 +603,7 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
 		}
 		if (healFearCount > 0) {
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFHEAL);
 			health =maxHealth;
 			healFearCount -= 1;
 			healCount += 1;
@@ -610,6 +622,7 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		{
 			runtimeColour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 			animatedSprites->PlayAnimation("shootR", 0, 1.f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING);
 
 			shootingDirection = RIGHT;
 		}
@@ -617,6 +630,7 @@ void SnowEnemy2DSWBS::Update(const double dElapsedTime)
 		{
 			runtimeColour = glm::vec4(0.f, 0.f, 0.f, 1.f);
 			animatedSprites->PlayAnimation("shootL", 0, 1.f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING);
 
 			shootingDirection = LEFT;
 		}
@@ -1115,6 +1129,7 @@ void SnowEnemy2DSWBS::UpdateJumpFall(const double dElapsedTime)
 					vec2Index.y = i + 1;
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_LAND);
 				i32vec2NumMicroSteps.y = 0;
 				break;
 			}
@@ -1144,6 +1159,7 @@ bool SnowEnemy2DSWBS::InteractWithPlayer(void)
 		if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::SHIELD) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(3);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		}
 		return true;
 	}
@@ -1302,6 +1318,7 @@ void SnowEnemy2DSWBS::UpdatePosition(void)
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_JUMP);
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 	}

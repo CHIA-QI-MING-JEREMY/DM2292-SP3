@@ -263,9 +263,11 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 		if (attackHit) {
 			if (vec2Direction.x > 0) {
 				animatedSprites->PlayAnimation("biteR", -1, 1.0f);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFBITE);
 			}
 			else {
 				animatedSprites->PlayAnimation("biteL", -1, 1.0f);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFBITE);
 			}
 		}
 		else {
@@ -294,9 +296,11 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	case PATROL:
 		if (vec2Direction.x > 0) {
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		else if (vec2Direction.x < 0) {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
@@ -360,9 +364,11 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 	case ATTACK:
 		if (vec2Direction.x > 0) {
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		else if (vec2Direction.x < 0) {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
@@ -414,9 +420,11 @@ void SnowEnemy2DSWB::Update(const double dElapsedTime)
 
 		if (vec2Direction.x > 0) {
 			animatedSprites->PlayAnimation("walkR", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		else if (vec2Direction.x < 0) {
 			animatedSprites->PlayAnimation("walkL", -1, 1.0f);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS);
 		}
 		if (health < 10) {
 			auto path = cMap2D->PathFind(vec2Index,
@@ -897,6 +905,7 @@ void SnowEnemy2DSWB::UpdateJumpFall(const double dElapsedTime)
 					vec2Index.y = i + 1;
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_LAND);
 				i32vec2NumMicroSteps.y = 0;
 				break;
 			}
@@ -926,6 +935,7 @@ bool SnowEnemy2DSWB::InteractWithPlayer(void)
 		if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::SHIELD) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(1);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		}
 		return true;
 	}
@@ -1084,6 +1094,7 @@ void SnowEnemy2DSWB::UpdatePosition(void)
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_JUMP);
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 	}
