@@ -120,7 +120,7 @@ bool CAmmo2D::Init(void)
 		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
 		if (iTextureID == 0)
 		{
-			std::cout << "Failed to load t ammo texture" << std::endl;
+			std::cout << "Failed to load the ammo texture" << std::endl;
 			return false;
 		}
 
@@ -360,9 +360,10 @@ void CAmmo2D::InteractWithMap(void)
 		break;
 
 	// Terrestrial Planet
-	case CMap2D::TILE_INDEX::SWITCH_LEFT:
+	case CMap2D::TILE_INDEX::SWITCH_UP_OFF:
+	{
 		// change to left switch
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_RIGHT);
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_UP_ON);
 
 		// destroys the bullet
 		hit = true;
@@ -384,10 +385,20 @@ void CAmmo2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 7, 8, 20, 22);
 			}
 		}
+		else if (cMap2D->GetCurrentLevel() == 1)
+		{
+			// different tiles replaced for different switches
+			if (vec2Index == glm::vec2(1, 13))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 12, 13, 5, 15);
+			}
+		}
 		break;
-	case CMap2D::TILE_INDEX::SWITCH_RIGHT:
+	}
+	case CMap2D::TILE_INDEX::SWITCH_UP_ON:
+	{
 		// change to right switch
-		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_LEFT);
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_UP_OFF);
 
 		// destroys the bullet
 		hit = true;
@@ -409,7 +420,54 @@ void CAmmo2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 7, 8, 20, 22);
 			}
 		}
+		else if (cMap2D->GetCurrentLevel() == 1)
+		{
+			// different tiles replaced for different switches
+			if (vec2Index == glm::vec2(1, 13))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 12, 13, 5, 15);
+			}
+		}
 		break;
+	}
+	case CMap2D::TILE_INDEX::SWITCH_LEFT_OFF:
+	{
+		// change to left switch
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_LEFT_ON);
+
+		// destroys the bullet
+		hit = true;
+
+		// different behaviour for different levels
+		if (cMap2D->GetCurrentLevel() == 1)
+		{
+			// different tiles replaced for different switches
+			if (vec2Index == glm::vec2(1, 9))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 7, 8, 1, 4);
+			}
+		}
+		break;
+	}
+	case CMap2D::TILE_INDEX::SWITCH_LEFT_ON:
+	{
+		// change to left switch
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::SWITCH_LEFT_OFF);
+
+		// destroys the bullet
+		hit = true;
+
+		// different behaviour for different levels
+		if (cMap2D->GetCurrentLevel() == 1)
+		{
+			// different tiles replaced for different switches
+			if (vec2Index == glm::vec2(1, 9))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 7, 8, 1, 4);
+			}
+		}
+		break;
+	}
 	default:
 		break;
 	}

@@ -777,7 +777,8 @@ void CPlayer2D::InteractWithMap(void)
 	{
 		if (cMap2D->GetMapInfo(lockedDoors[i].y, lockedDoors[i].x) == CMap2D::TILE_INDEX::DOOR_LOCKED_PURPLE)
 		{
-			if (vec2Index.x - 1 == lockedDoors[i].x || vec2Index.x + 1 == lockedDoors[i].x)
+			if (vec2Index.y == lockedDoors[i].y &&
+				(vec2Index.x - 1 == lockedDoors[i].x || vec2Index.x + 1 == lockedDoors[i].x))
 			{
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
 				if (cInventoryItemPlanet->GetCount() >= 1)
@@ -790,7 +791,8 @@ void CPlayer2D::InteractWithMap(void)
 		}
 		else if (cMap2D->GetMapInfo(lockedDoors[i].y, lockedDoors[i].x) == CMap2D::TILE_INDEX::DOOR_LOCKED_CYAN)
 		{
-			if (vec2Index.x - 1 == lockedDoors[i].x || vec2Index.x + 1 == lockedDoors[i].x)
+			if (vec2Index.y == lockedDoors[i].y &&
+				(vec2Index.x - 1 == lockedDoors[i].x || vec2Index.x + 1 == lockedDoors[i].x))
 			{
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
 				if (cInventoryItemPlanet->GetCount() >= 1)

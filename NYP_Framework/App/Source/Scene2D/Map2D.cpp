@@ -954,29 +954,53 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(ALARM_LIGHT_ON, iTextureID));
 	}
-	// Load left switch
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Left.tga", true);
+	// Load up switch (off)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Up_Off.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/Switch_Left.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Up_Off.tga" << endl;
 		return false;
 	}
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SWITCH_LEFT, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_UP_OFF, iTextureID));
 	}
-	// Load right switch
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Right.tga", true);
+	// Load up switch (on)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Up_On.tga", true);
 	if (iTextureID == 0)
 	{
-		cout << "Unable to load Image/TerrestrialPlanet/Switch_Right.tga" << endl;
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Up_On.tga" << endl;
 		return false;
 	}
 	else
 	{
 		// Store the texture ID into MapOfTextureIDs
-		MapOfTextureIDs.insert(pair<int, int>(SWITCH_RIGHT, iTextureID));
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_UP_ON, iTextureID));
+	}
+	// Load left switch (off)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Left_Off.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Left_Off.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_LEFT_OFF, iTextureID));
+	}
+	// Load left switch (on)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Left_On.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Left_On.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_LEFT_ON, iTextureID));
 	}
 	// Load purple key
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Purple.tga", true);
