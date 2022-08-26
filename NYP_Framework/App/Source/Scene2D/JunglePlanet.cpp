@@ -596,7 +596,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//40% chance to drop scrap metal, 40% chance to drop battery, 20% chance to drop ironwood
 					int resourceType = rand() % 10;
-					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
 					{
 						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
@@ -640,7 +639,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
 					int resourceType = rand() % 20;
-					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
 					{
 						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
@@ -1134,7 +1132,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //collect 1 cup of river water
-				std::cout << "COLLECTED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
+				//std::cout << "COLLECTED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
 			}
 		}
 		break;
@@ -1238,7 +1236,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
