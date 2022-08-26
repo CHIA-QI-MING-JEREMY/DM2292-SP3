@@ -55,6 +55,13 @@ public:
 	// Update
 	void Update(const double dElapsedTime);
 
+	void ResetVentilationTimer(void);
+
+	// ventilation
+	float ventilationInterval;
+	float TimeElapsed;
+	float ventilationTiming;
+
 protected:
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
@@ -72,6 +79,12 @@ protected:
 
 	// Sound Controller
 	CSoundController* cSoundController;
+
+	// Small damage
+	int smallWeaponDamage;
+
+	// large damage
+	int largeWeaponDamage;
 
 	// Constructor
 	CShip(void);

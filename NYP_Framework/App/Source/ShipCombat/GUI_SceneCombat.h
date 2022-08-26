@@ -51,13 +51,23 @@ public:
 	enum GUI_STATE
 	{
 		noShow = 0,
-		showRepair,
 		showWeapons,
+		showWeaponUpgrade,
 		showStorage,
+		showUpgrade,
 		showExit,
 		num_GUIState
 	};
 
+	enum UPGRADE_STATE
+	{
+		NOSTATE = 0,
+		STORAGE_UPGRADE,
+		SMALLWEAPON1_UPGRADE,
+		SMALLWEAPON2_UPGRADE,
+		LARGEWEAPON_UPGRADE,
+		UPGRADE_NUM
+	};
 
 	// Init
 	bool Init(void);
@@ -74,17 +84,16 @@ public:
 	// PostRender
 	void PostRender(void);
 
-	void setPlanetNum(int num);
-	int getPlanetNum(void);
-
 	bool isShowPanel;
 	glm::vec2 playerPos;
 	bool makeChanges;
 	GUI_STATE GuiState;
+	UPGRADE_STATE UpgradeState;
 	ImVec2 blockPosition;
+	bool isCombat;
+	bool showRepairPanel;
 
 protected:
-
 	// Constructor
 	CGUI_SceneCombat(void);
 
@@ -108,13 +117,31 @@ protected:
 	ButtonData AcceptButtonData;
 	ButtonData RejectButtonData;
 	unsigned PlayerBarTextureID;
+	unsigned SquareInfoTextureID;
+	unsigned FocusBarBackground;
 	unsigned BitTextureID;
 	unsigned ProgressBarTextureID;
+	unsigned boxBarBackground;
+
+	// Ship Stuff
+	unsigned ShipTextureID;
+	unsigned smallWeaponUpgrade1;
+	unsigned smallWeaponUpgrade2;
+	unsigned smallWeaponUpgrade3;
+	unsigned largeWeaponUpgrade1;
+	unsigned largeWeaponUpgrade2;
+	unsigned largeWeaponUpgrade3;
+
+	// enemy Ship stuff
+	unsigned enemyShip1;
+	unsigned enemyShip2;
+	unsigned enemyShip3;
 
 	// The handler containing the instance of CInventoryManager
 	CInventoryManager* cInventoryManager;
 	// The handler containing the instance of CInventoryItem
-	CInventoryItem* cInventoryItem;
+	CInventoryItem* cInventoryItem1;
+	CInventoryItem* cInventoryItem2;
 
 private:
 	

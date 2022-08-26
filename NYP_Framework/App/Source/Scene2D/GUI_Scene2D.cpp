@@ -96,6 +96,10 @@ bool CGUI_Scene2D::Init(void)
 	goOnShip = false;
 	showExitPanel = false;
 
+	PlayerBarTextureID = il->LoadTextureGetID("Image/GUI/PlayerBar.png", false);
+	BitTextureID = il->LoadTextureGetID("Image/GUI/ProgressBit.png", false);
+	ProgressBarTextureID = il->LoadTextureGetID("Image/GUI/ShipProgressBar.png", false);
+
 	tutorialPopupJungle = NONE;
 
 	return true;
@@ -142,27 +146,40 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
-		/*ImGui::Begin("Health", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-			cSettings->iWindowHeight * 0.05f));
-		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		ImGui::Image((void*)(intptr_t)cInventoryItem->GetTextureID(),
-			ImVec2(cInventoryItem->vec2Size.x * relativeScale_x,
-				cInventoryItem->vec2Size.y * relativeScale_y),
-			ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::SameLine();
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.0f, 0.0f, 1.0f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-		ImGui::ProgressBar(cInventoryItem->GetCount() /
-			(float)cInventoryItem->GetMaxCount(), ImVec2(100.0f *
-				relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-		ImGui::End();*/
 
-		ImGui::Begin("Health", NULL, healthWindowFlags);
+		ImGuiWindowFlags overlayWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoBackground |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoBringToFrontOnFocus |
+			ImGuiWindowFlags_NoScrollbar;
+
+		ImGui::Begin("Health", NULL, overlayWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.01f),
+			cSettings->iWindowHeight * (0.01f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+
+		ImGui::Image((void*)(intptr_t)PlayerBarTextureID, ImVec2(300 * relativeScale_y, 100 * relativeScale_y));
+		ImGui::End();
+
+		// how. do i. get rid. of the border.
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
+		int healthCount = cInventoryItemPlanet->GetCount();
+		for (int i = 0; i < int(healthCount / int(cInventoryItemPlanet->GetMaxCount() / 10)); i++) {
+			ImGui::Begin("Health Bit", NULL, healthWindowFlags);
+			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * (0.13f),
+				cSettings->iWindowHeight * (0.11f)));
+			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
+
+			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(10 * relativeScale_y, 14 * relativeScale_y));
+			ImGui::SameLine();
+			ImGui::GetOverlayDrawList();
+			ImGui::End();
+		}
+
+		/*ImGui::Begin("Health", NULL, healthWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.05f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
@@ -180,7 +197,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				relativeScale_x, 20.0f * relativeScale_y));
 		ImGui::PopStyleColor();
 		ImGui::PopStyleColor();
-		ImGui::End();
+		ImGui::End();*/
 
 		// Render the Lives
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color

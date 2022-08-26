@@ -123,8 +123,6 @@ bool CScenePlanet::Init(void)
 	int jungleCount = 0;
 	int counter = 0;
 
-	srand(time(NULL));
-
 	planetVector.clear();
 	while (true) {
 		CPlanet* cPlanet = new CPlanet();
@@ -147,18 +145,20 @@ bool CScenePlanet::Init(void)
 				cPlanet->SetType(CPlanet::TYPE::JUNGLE_TUTORIAL);
 				PlanetSelected = cPlanet;
 				cPlanet->SetVisibility(true);
-				cPlanet->planetName = "Stan Loona";
+				cPlanet->planetName = "Plantae Pollux B";
 				cGUI_ScenePlanet->setPlanetInfo(cPlanet);
 			}
 			else if (cPlanet->vec2Index.x == 11) {
 				cPlanet->SetType(CPlanet::TYPE::SNOW_TUTORIAL);
+				cPlanet->planetName = "Gamma Nix+12";
 			}
 			else if (cPlanet->vec2Index.x == 14) {
 				cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL_TUTORIAL);
+				cPlanet->planetName = "Alpha Canis B";
 			}
 			else if (cPlanet->vec2Index.x == 31) {
 				cPlanet->SetType(CPlanet::TYPE::FINAL);
-				cPlanet->planetName = "Stan Kep1er";
+				cPlanet->planetName = "Kepler-452B ('Utopia')";
 			}
 			else {
 				if (CGameInfo::GetInstance()->initPlanets == false) {
@@ -172,6 +172,19 @@ bool CScenePlanet::Init(void)
 						case 3:
 							if (jungleCount < 2) {
 								cPlanet->SetType(CPlanet::TYPE::JUNGLE);
+
+								switch (jungleCount)
+								{
+								case 0:
+									cPlanet->planetName = "Ursae Arion-15";
+									break;
+								case 1:
+									cPlanet->planetName = "XO-5 b";
+									break;
+								default:
+									break;
+								}
+
 								jungleCount++;
 								isSet = true;
 								CGameInfo::GetInstance()->planetList.push_back(0);
@@ -184,6 +197,19 @@ bool CScenePlanet::Init(void)
 						case 4:
 							if (snowCount < 2) {
 								cPlanet->SetType(CPlanet::TYPE::SNOW);
+
+								switch (snowCount)
+								{
+								case 0:
+									cPlanet->planetName = "Epsilon-13 F";
+									break;
+								case 1:
+									cPlanet->planetName = "Thestias Majoris";
+									break;
+								default:
+									break;
+								}
+
 								snowCount++;
 								isSet = true;
 								CGameInfo::GetInstance()->planetList.push_back(1);
@@ -196,6 +222,19 @@ bool CScenePlanet::Init(void)
 						case 5:
 							if (terraCount < 2) {
 								cPlanet->SetType(CPlanet::TYPE::TERRESTRIAL);
+
+								switch (terraCount)
+								{
+								case 0:
+									cPlanet->planetName = "Kepler-22B";
+									break;
+								case 1:
+									cPlanet->planetName = "TrEs Panthera";
+									break;
+								default:
+									break;
+								}
+
 								terraCount++;
 								isSet = true;
 								CGameInfo::GetInstance()->planetList.push_back(2);
