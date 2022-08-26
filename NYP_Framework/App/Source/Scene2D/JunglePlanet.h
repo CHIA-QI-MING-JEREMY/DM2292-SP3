@@ -39,6 +39,7 @@
 
 // Include GUI_Scene2D
 #include "GUI_Scene2D.h"
+#include "BackgroundEntity.h"
 
 // Include vector
 #include <vector>
@@ -95,6 +96,9 @@ public:
 	void SetResourcesBack(void);
 
 protected:
+	//handler to background
+	CBackgroundEntity* cBackground;
+
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
 

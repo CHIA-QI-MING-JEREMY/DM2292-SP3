@@ -96,6 +96,11 @@ JunglePlanet::~JunglePlanet(void)
 	{
 		cSoundController = NULL;
 	}
+
+	if (cBackground)
+	{
+		cBackground = NULL;
+	}
 }
 
 /**
@@ -105,6 +110,11 @@ bool JunglePlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
+
+	//Create Background Entity
+	cBackground = new CBackgroundEntity("Image/JunglePlanet/Background.png");
+	cBackground->SetShader("Shader2D");
+	cBackground->Init();
 	
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
@@ -981,6 +991,9 @@ void JunglePlanet::PreRender(void)
  */
 void JunglePlanet::Render(void)
 {
+	//Render Background
+	cBackground->Render();
+
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()
@@ -1219,7 +1232,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
