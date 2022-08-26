@@ -316,17 +316,31 @@ bool SnowPlanet::Init(void)
 	camera2D->setTargetPos(cPlayer2D->vec2Index);
 
 	// Load the sounds into CSoundController
-	cSoundController = CSoundController::GetInstance();
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump.ogg"), CSoundController::SOUND_LIST::LAND, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort.ogg"), CSoundController::SOUND_LIST::JUMP, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort_Female.ogg"), CSoundController::SOUND_LIST::ENEMY_JUMP, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump_Female.ogg"), CSoundController::SOUND_LIST::ENEMY_LAND, true);
-
 	//common sounds
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\StowItemInPocket.ogg"), CSoundController::SOUND_LIST::COLLECT_ITEM, true);
+	cSoundController = CSoundController::GetInstance();
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jumpland.ogg"), CSoundController::SOUND_LIST::LAND, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jump.ogg"), CSoundController::SOUND_LIST::JUMP, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjump.ogg"), CSoundController::SOUND_LIST::ENEMY_JUMP, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjumpland.ogg"), CSoundController::SOUND_LIST::ENEMY_LAND, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemywalk.ogg"), CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\collect.ogg"), CSoundController::SOUND_LIST::COLLECT_ITEM, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\damage.ogg"), CSoundController::SOUND_LIST::TAKE_DAMAGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\climb.ogg"), CSoundController::SOUND_LIST::CLIMB, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\walk.ogg"), CSoundController::SOUND_LIST::FOOTSTEPS, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
-	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
+	//Planet Sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\berserk.ogg"), CSoundController::SOUND_LIST::BERSERK, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\shieldSnow.ogg"), CSoundController::SOUND_LIST::SHIELD, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\icefreeze.ogg"), CSoundController::SOUND_LIST::FREEZE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\wolfbite.ogg"), CSoundController::SOUND_LIST::WOLFBITE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\heal.ogg"), CSoundController::SOUND_LIST::WOLFHEAL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\wolfpain.ogg"), CSoundController::SOUND_LIST::WOLFPAIN, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\shieldEnemy.ogg"), CSoundController::SOUND_LIST::WOLFSHIELD, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\snowShoot.ogg"), CSoundController::SOUND_LIST::PLAYERSNOWSHOOT, true);
+
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\backgroundSnow.ogg"), CSoundController::SOUND_LIST::BACKGROUNDSNOW, true, true);
+	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BACKGROUNDSNOW); // plays BGM on repeat
 
 	// variables
 	//isAlarmActive = false;
@@ -420,6 +434,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet->Remove(1);
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER, CMap2D::TILE_INDEX::ICE);
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::WATER_TOP, CMap2D::TILE_INDEX::ICE);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FREEZE);
 	}
 	// resets player location at last visited checkpoint
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_R))
@@ -440,12 +455,14 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet->Remove(1);
 			cout << "Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::SHIELD);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SHIELD);
 		}
 		else if (cKeyboardController->IsKeyReleased(GLFW_KEY_Q) && cPlayer2D->getModeOfPlayer() == CPlayer2D::MODE::BERSERK && cInventoryItemPlanet->GetCount() > 0) {
 			cInventoryItemPlanet->Remove(1);
 			cout << "Berserk Shield Mode Activated" << endl;
 			cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERKSHIELD);
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SHIELD);
 		}
 	}
 	if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
@@ -453,6 +470,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		if (cKeyboardController->IsKeyReleased(GLFW_KEY_G)) {
 			if (cInventoryItemPlanet->GetCount() > 0) {
 				cInventoryItemPlanet->Remove(1);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BERSERK);
 				cout << "Turning to Berserk Mode" << endl;
 				cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
 				cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
@@ -499,6 +517,7 @@ bool SnowPlanet::Update(const double dElapsedTime)
 	if (healthDropTimer < healthTimer && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(5);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		healthDropTimer = 3.f;
 	}
 	// mouse Position demo
@@ -607,14 +626,17 @@ bool SnowPlanet::Update(const double dElapsedTime)
 				{
 					if (enemyVectors[cMap2D->GetCurrentLevel()][i]->getShieldActivated() && enemyVectors[cMap2D->GetCurrentLevel()][i]->getType()!=CEnemy2D::ENEMYTYPE::BROWN) {
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 0); //every hit takes off 0 HP
+						cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFPAIN);
 						ammo->setActive(false);
 					}
 					else if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERKSHIELD) {
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 5); //every hit takes off 5 HP
+						cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFPAIN);
 						ammo->setActive(false);
 					}
 					else {
 						enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 10); //every hit takes off 10 HP
+						cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WOLFPAIN);
 						ammo->setActive(false);
 					}
 				}

@@ -354,6 +354,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		// Calculate the new position to the left
 		if (vec2Index.x >= 0)
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FOOTSTEPS);
 			vec2NumMicroSteps.x--;
 			if (vec2NumMicroSteps.x < 0)
 			{
@@ -388,6 +389,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 		// Calculate the new position to the right
 		if (vec2Index.x < ((int)cSettings->NUM_TILES_XAXIS))
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FOOTSTEPS);
 			vec2NumMicroSteps.x++;
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
@@ -428,6 +430,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE)
 
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::CLIMB);
 			// Calculate the new position to the up
 			if (vec2Index.y < ((int)cSettings->NUM_TILES_YAXIS))
 			{
@@ -465,6 +468,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE))
 		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::CLIMB);
 			if (vec2NumMicroSteps.y != 0 || vec2Index.y - 1 != cMap2D->FindGround(vec2Index.y, vec2Index.x))
 			{
 				// Calculate the new position to the down
@@ -493,6 +497,9 @@ void CPlayer2D::Update(const double dElapsedTime)
 		shootingDirection = DOWN; //setting direction for ammo shooting
 	}
 	
+	if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 3 && cKeyboardController->IsKeyPressed(GLFW_KEY_E)) { // nvr do in the if below because of attacktimer cool down, slows attack speed sound
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYERSNOWSHOOT);
+	}
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E) && attackTimer <= 0.0)
 	{
 		if (attackDirection == RIGHT)
@@ -842,6 +849,7 @@ void CPlayer2D::InteractWithMap(void)
 		}
 		break;
 	case CMap2D::TILE_INDEX::BLACK_FLAG:
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::HIT_CHECKPOINT);
 		// change red flags (if any) to black flags
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::RED_FLAG, CMap2D::TILE_INDEX::BLACK_FLAG);
 		// change current flag to red flag
@@ -866,26 +874,31 @@ void CPlayer2D::InteractWithMap(void)
 		// decrease health by 3
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(3);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_LEFT:
 		// decrease health by 3
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(3);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_DOWN:
 		// decrease health by 3
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(3);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		break;
 	case CMap2D::TILE_INDEX::SPIKES_RIGHT:
 		// decrease health by 3
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(3);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		break;
 	case CMap2D::TILE_INDEX::EXPLOSION:
 		// decrease health by 2
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(2);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		break;
 	case CMap2D::TILE_INDEX::EXIT_DOOR:
 		// Game has been completed
