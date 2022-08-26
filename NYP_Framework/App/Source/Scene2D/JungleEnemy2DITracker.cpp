@@ -325,10 +325,14 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		}
 		//normal tracking code, triggers if no break is triggered above
 		{
-			glm::vec2 startIndices = vec2Index;
-			if (vec2NumMicroSteps.x != 0)
+			glm::vec2 startIndices;
+			if (vec2NumMicroSteps.x == 0)
 			{
-				startIndices.x = startIndices.x + 1;
+				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
+			}
+			else
+			{
+				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
 			}
 
 			auto path = cMap2D->PathFind(startIndices,
@@ -345,7 +349,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					// Set a destination
 					vec2Destination = coord;
 					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - startIndices;
+					vec2Direction = vec2Destination - vec2Index;
 					bFirstPosition = false;
 				}
 				else
@@ -552,10 +556,14 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
 		{
-			glm::vec2 startIndices = vec2Index;
-			if (vec2NumMicroSteps.x != 0)
+			glm::vec2 startIndices;
+			if (vec2NumMicroSteps.x == 0)
 			{
-				startIndices.x = startIndices.x + 1;
+				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
+			}
+			else
+			{
+				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
 			}
 
 			auto path = cMap2D->PathFind(startIndices,
@@ -572,7 +580,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					// Set a destination
 					vec2Destination = coord;
 					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - startIndices;
+					vec2Direction = vec2Destination - vec2Index;
 					bFirstPosition = false;
 				}
 				else
@@ -661,10 +669,14 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		}
 		else
 		{
-			glm::vec2 startIndices = vec2Index;
-			if (vec2NumMicroSteps.x != 0)
+			glm::vec2 startIndices;
+			if (vec2NumMicroSteps.x == 0)
 			{
-				startIndices.x = startIndices.x + 1;
+				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
+			}
+			else
+			{
+				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
 			}
 
 			auto path = cMap2D->PathFind(startIndices,
@@ -681,7 +693,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					// Set a destination
 					vec2Destination = coord;
 					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - startIndices;
+					vec2Direction = vec2Destination - vec2Index;
 					bFirstPosition2 = false;
 				}
 				else
