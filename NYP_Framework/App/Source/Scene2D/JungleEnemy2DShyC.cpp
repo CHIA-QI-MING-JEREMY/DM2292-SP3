@@ -309,7 +309,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
@@ -317,7 +317,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 			else if (shootingDirection == RIGHT && attackCooldownCurrent == 0)
@@ -329,7 +329,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNING_BUSH || 
@@ -337,7 +337,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 		}
@@ -985,6 +985,7 @@ void JEnemy2DShyC::UpdateJumpFall(const double dElapsedTime)
 					vec2Index.y = i + 1;
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_LAND); //play enemy landing sound
 				i32vec2NumMicroSteps.y = 0;
 				break;
 			}
@@ -1014,7 +1015,6 @@ bool JEnemy2DShyC::InteractWithPlayer(void)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(5);
 			//cout << "Take that!" << endl;
-			//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 			attackCooldownCurrent = attackCooldownMax; //reset attack cooldown
 		}
 
@@ -1028,26 +1028,6 @@ void JEnemy2DShyC::InteractWithMap(void)
 {
 	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
 	{
-	case 50: //purple spring, same function as the black and white spring 
-	case 51: //black and white spring, launch the player repeatedly up into the sky at the rate of a double jump
-		cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
-		cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 4.f));
-		break;
-	case 53: //lava, same function as black and white lava
-	case 54: //black and white lava, depletes health
-		// Decrease the health by 2
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
-		health--;
-		break;
-	case 55: //ice water, same function as black and white ice water
-	case 56: //black and white ice water, restores health
-	case 57: //ice water + enemy waypoint
-	case 58: //ice water + enemy waypoint, BnW
-		// Increase the health by 2
-		runtimeColour = glm::vec4(0.0, 1.0, 0.0, 1.0); //green
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SPLASH); //play watching in water sound
-		health++;
-		break;
 	case 99:
 		break;
 	default:
@@ -1115,6 +1095,7 @@ void JEnemy2DShyC::UpdatePosition(void)
 		shootingDirection = LEFT; //moving to the left
 		//Play the "moving left" animation
 		animatedSprites->PlayAnimation("movingL", -1, 1.0f);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); //play enemy footstep sound
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
@@ -1153,6 +1134,7 @@ void JEnemy2DShyC::UpdatePosition(void)
 		shootingDirection = RIGHT; //moving to the right
 		//Play the "moving right" animation
 		animatedSprites->PlayAnimation("movingR", -1, 1.0f);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); //play enemy footstep sound
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
@@ -1182,6 +1164,7 @@ void JEnemy2DShyC::UpdatePosition(void)
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_JUMP); //play enemy jump sound
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 	}

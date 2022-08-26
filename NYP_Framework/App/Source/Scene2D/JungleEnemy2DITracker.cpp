@@ -622,7 +622,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x - 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
@@ -630,7 +630,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x - 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 			else if (shootingDirection == RIGHT && attackCooldownCurrent == 0)
@@ -645,7 +645,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, CMap2D::TILE_INDEX::DISSOLVING_BUSH); //dissolve the bush
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 				//if between them and the player is a burning or dissolving bush
 				else if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x + 1) == CMap2D::TILE_INDEX::BURNING_BUSH ||
@@ -653,7 +653,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 				{
 					cMap2D->SetMapInfo(vec2Index.y, vec2Index.x + 1, 0); //destroy bush and turn it to empty space
 					attackCooldownCurrent = attackCooldownMax; //reset cooldown
-					//cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_MELEE); //play punch sound
 				}
 			}
 		}
@@ -1277,6 +1277,7 @@ void JEnemy2DITracker::UpdateJumpFall(const double dElapsedTime)
 					vec2Index.y = i + 1;
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_LAND); //play enemy landing sound
 				i32vec2NumMicroSteps.y = 0;
 				break;
 			}
@@ -1401,6 +1402,7 @@ void JEnemy2DITracker::UpdatePosition(void)
 
 		//Play the "moving left" animation
 		animatedSprites->PlayAnimation("movingL", -1, 0.5f);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); //play enemy footstep sound
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(LEFT);
@@ -1440,6 +1442,7 @@ void JEnemy2DITracker::UpdatePosition(void)
 
 		//Play the "moving right" animation
 		animatedSprites->PlayAnimation("movingR", -1, 0.5f);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); //play enemy footstep sound
 
 		// Constraint the enemy2D's position within the screen boundary
 		Constraint(RIGHT);
@@ -1469,6 +1472,7 @@ void JEnemy2DITracker::UpdatePosition(void)
 		if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_JUMP); //play enemy jump sound
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
 		}
 	}

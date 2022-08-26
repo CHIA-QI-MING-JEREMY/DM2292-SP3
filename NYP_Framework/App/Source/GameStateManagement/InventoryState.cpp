@@ -871,7 +871,9 @@ void CInventoryState::Render(void)
 	glClearColor(0.0f, 0.55f, 1.00f, 1.00f);
 
 	//Render Background
+	background->PreRender();
 	background->Render();
+	background->PostRender();
 
 	// Rendering
 	ImGui::Render();
