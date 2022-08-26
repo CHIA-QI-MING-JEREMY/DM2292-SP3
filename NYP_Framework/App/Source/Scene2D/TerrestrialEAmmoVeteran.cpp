@@ -150,19 +150,42 @@ void CTEAmmoVeteran::Update(const double dElapsedTime)
 	// Interact with the Player
 	InteractWithPlayer();
 
-	// if rocket hits a wall type obj or has travelled for more than 6 tiles
-	if (!CheckPosition() || cPhysics2D.CalculateDistance(vec2Index, startingIndex) > 6.f)
+	if (!isAlerted)
+	{
+		maxTravelDist = 6.f;
+	}
+	else
+	{
+		maxTravelDist = 8.f;
+	}
+
+	// if rocket hits a wall type obj or has travelled for more than 6 tiles (if unalerted) or 8 tiles (if alerted)
+	if (!CheckPosition() || cPhysics2D.CalculateDistance(vec2Index, startingIndex) > maxTravelDist)
 	{
 		hit = true; // destroy ammo
+
+		int startCol, endCol;
+
+		if (!isAlerted)
+		{
+			startCol = -1;
+			endCol = 1;
+		}
+		else
+		{
+			startCol = -2;
+			endCol = 2;
+		}
 
 		// starts from row below ammo, moves up
 		for (int row = -1; row < 2; ++row)
 		{
 			// starts from col left of ammo, moves right
-			for (int col = -1; col < 2; ++col)
+			for (int col = startCol; col <= endCol; ++col)
 			{
 				// sets empty tiles to the explosion tile
-				if (cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) == 0)
+				if (cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) < 200 || 
+					(cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) >= 300 && cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) < 600))
 				{
 					cMap2D->SetMapInfo(vec2Index.y + row, vec2Index.x + col, CMap2D::TILE_INDEX::EXPLOSION); // explosion
 				}
@@ -276,27 +299,34 @@ bool CTEAmmoVeteran::InteractWithPlayer(void)
 		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
 			(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
 	{
+		int startCol, endCol;
+		
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 
 		// remove 10 health
 		if (!isAlerted)
 		{
 			cInventoryItemPlanet->Remove(10);
+			startCol = -1;
+			endCol = 1;
 		}
 		// remove 15 health
 		else
 		{
 			cInventoryItemPlanet->Remove(15);
+			startCol = -2;
+			endCol = 2;
 		}
 
 		// starts from row below ammo, moves up
 		for (int row = -1; row < 2; ++row)
 		{
 			// starts from col left of ammo, moves right
-			for (int col = -1; col < 2; ++col)
+			for (int col = startCol; col <= endCol; ++col)
 			{
 				// sets empty tiles to the explosion tile
-				if (cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) == 0)
+				if (cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) < 200 ||
+					(cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) >= 300 && cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) < 600))
 				{
 					cMap2D->SetMapInfo(vec2Index.y + row, vec2Index.x + col, CMap2D::TILE_INDEX::EXPLOSION); // explosion
 				}
