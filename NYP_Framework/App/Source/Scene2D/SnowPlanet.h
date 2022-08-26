@@ -55,6 +55,7 @@
 #include "..\SoundController\SoundController.h"
 
 #include "../Scene2D/InventoryManagerPlanet.h"
+#include "../App/Source/Scene2D/BackgroundEntity.h"
 
 //include ammo
 #include "Ammo2D.h"
@@ -94,6 +95,7 @@ public:
 	bool getIsOnShip(void);
 
 protected:
+	CBackgroundEntity* background;
 	// The handler containing the instance of CInventoryManager
 	CInventoryManagerPlanet* cInventoryManagerPlanet;
 	// The handler containing the instance of CInventoryItem

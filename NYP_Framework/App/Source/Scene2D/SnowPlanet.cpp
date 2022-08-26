@@ -103,6 +103,10 @@ SnowPlanet::~SnowPlanet(void)
 */
 bool SnowPlanet::Init(void)
 {
+	//Create Background Entity
+	background = new CBackgroundEntity("Image/SnowPlanet/SnowBackground.png");
+	background->SetShader("Shader2D");
+	background->Init();
 	healthDropTimer = 3.f;
 	healthTimer = 0.f;
 	tempTimer = 0.f;
@@ -892,6 +896,9 @@ void SnowPlanet::PreRender(void)
  */
 void SnowPlanet::Render(void)
 {
+	background->PreRender();
+	background->Render();
+	background->PostRender();
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()
