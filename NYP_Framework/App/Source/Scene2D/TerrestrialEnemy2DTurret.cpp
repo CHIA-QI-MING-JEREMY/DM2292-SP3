@@ -164,7 +164,22 @@ bool TEnemy2DTurret::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	type = LONG_RANGE; //has ammo
+	if (cMap2D->GetCurrentLevel() == 1)
+	{
+		if (vec2Index == glm::vec2(5, 21))
+		{
+			type = KEYHOLDER_PURPLE; // drops a purple key when killed
+		}
+		else
+		{
+			type = LONG_RANGE; //has ammo
+		}
+	}
+	else
+	{
+		type = LONG_RANGE; // has ammo
+	}
+		
 	shootingDirection = RIGHT; //setting direction for ammo shooting
 	maxHealth = health = 1000; // 100 damage per hit from player
 

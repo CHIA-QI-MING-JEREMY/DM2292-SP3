@@ -166,7 +166,15 @@ bool TEnemy2DVeteran::Init(void)
 	maxHealth = health = 800; // 100 damage per hit from player
 
 	// sets waypoints based on the level
-	if (cMap2D->GetCurrentLevel() == 2)
+	if (cMap2D->GetCurrentLevel() == 1)
+	{
+		if (vec2Index == glm::vec2(1, 3))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 306, 5);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 2);
+		}
+	}
+	else if (cMap2D->GetCurrentLevel() == 2)
 	{
 		// sets waypoints based on the enemy spawn location
 		if (vec2Index == glm::vec2(12, 3))
