@@ -164,7 +164,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::Image((void*)(intptr_t)PlayerBarTextureID, ImVec2(300 * relativeScale_y, 100 * relativeScale_y));
 		ImGui::End();
 
-		// how. do i. get rid. of the border.
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		int healthCount = cInventoryItemPlanet->GetCount();
 		for (int i = 0; i < int(healthCount / int(cInventoryItemPlanet->GetMaxCount() / 10)); i++) {
@@ -793,7 +792,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoScrollbar;
 	ImGui::Begin("temperature", NULL, tempWindowFlags);
 	ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-		cSettings->iWindowHeight * 0.125f));
+		cSettings->iWindowHeight * 0.2f));
 	ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Temperature");
