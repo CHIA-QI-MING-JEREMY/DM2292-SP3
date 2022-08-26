@@ -31,6 +31,8 @@ Interactables
 60 : down button 1
 61 : right button 1
 62 : left button 1
+64 : down button 2
+68 : down button 3
 100 - 109 : waypoints for the first Vigilant Teleporter of the map
 130 - 139 : waypoints for the first Patrol Team of the map
 140 - 149 : waypoints for the second Patrol Team of the map
@@ -105,6 +107,8 @@ Solid Blocks
 640 : metal barrier blocks that down button 1 will make disappear
 641 : metal barrier blocks that right button 1 will make disappear
 642 : metal barrier blocks that left button 1 will make disappear
+644 : metal barrier blocks that down button 2 will make disappear
+648 : metal barrier blocks that down button 3 will make disappear
 
 [Terrestrial Planet]
 800 : ground tile (solid)
