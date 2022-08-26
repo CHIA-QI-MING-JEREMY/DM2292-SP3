@@ -172,7 +172,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 	{
 	case CPlanet::TYPE::SNOW:
 	case CPlanet::TYPE::SNOW_TUTORIAL:
-		if (cSnowPlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() != 0) {
+		if (cSnowPlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() <= 0) {
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
@@ -184,7 +184,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		break;
 	case CPlanet::TYPE::JUNGLE:
 	case CPlanet::TYPE::JUNGLE_TUTORIAL:
-		if (cJunglePlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() != 0) {
+		if (cJunglePlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() <= 0) {
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 			cJunglePlanet->SetResourcesBack();
@@ -197,7 +197,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		break;
 	case CPlanet::TYPE::TERRESTRIAL:
 	case CPlanet::TYPE::TERRESTRIAL_TUTORIAL:
-		if (cTerrestrialPlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() != 0) {
+		if (cTerrestrialPlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() <= 0) {
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 
