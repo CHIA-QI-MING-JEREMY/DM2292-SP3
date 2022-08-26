@@ -323,7 +323,7 @@ bool SnowPlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjump.ogg"), CSoundController::SOUND_LIST::ENEMY_JUMP, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjumpland.ogg"), CSoundController::SOUND_LIST::ENEMY_LAND, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemywalk.ogg"), CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\collect.ogg"), CSoundController::SOUND_LIST::COLLECT_ITEM, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\StowItemInPocket.ogg"), CSoundController::SOUND_LIST::COLLECT_ITEM, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\damage.ogg"), CSoundController::SOUND_LIST::TAKE_DAMAGE, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\climb.ogg"), CSoundController::SOUND_LIST::CLIMB, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\walk.ogg"), CSoundController::SOUND_LIST::FOOTSTEPS, true);
