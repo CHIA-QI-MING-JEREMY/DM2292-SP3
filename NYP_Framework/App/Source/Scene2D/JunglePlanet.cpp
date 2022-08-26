@@ -96,6 +96,11 @@ JunglePlanet::~JunglePlanet(void)
 	{
 		cSoundController = NULL;
 	}
+
+	if (cBackground)
+	{
+		cBackground = NULL;
+	}
 }
 
 /**
@@ -105,6 +110,11 @@ bool JunglePlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
+
+	//Create Background Entity
+	cBackground = new CBackgroundEntity("Image/JunglePlanet/Background.png");
+	cBackground->SetShader("Shader2D");
+	cBackground->Init();
 	
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
@@ -315,13 +325,17 @@ bool JunglePlanet::Init(void)
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump.ogg"), CSoundController::SOUND_LIST::LAND, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort.ogg"), CSoundController::SOUND_LIST::JUMP, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort_Female.ogg"), CSoundController::SOUND_LIST::ENEMY_JUMP, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump_Female.ogg"), CSoundController::SOUND_LIST::ENEMY_LAND, true);
-
 	//common sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\walk.ogg"), CSoundController::SOUND_LIST::FOOTSTEPS, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jumpland.ogg"), CSoundController::SOUND_LIST::LAND, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jump.ogg"), CSoundController::SOUND_LIST::JUMP, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjump.ogg"), CSoundController::SOUND_LIST::ENEMY_JUMP, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjumpland.ogg"), CSoundController::SOUND_LIST::ENEMY_LAND, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemywalk.ogg"), CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\StowItemInPocket.ogg"), CSoundController::SOUND_LIST::COLLECT_ITEM, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\damage.ogg"), CSoundController::SOUND_LIST::TAKE_DAMAGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\climb.ogg"), CSoundController::SOUND_LIST::CLIMB, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
 
 	//planet specific sounds
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WalkInWater.ogg"), CSoundController::SOUND_LIST::SPLASH, true);
@@ -981,6 +995,9 @@ void JunglePlanet::PreRender(void)
  */
 void JunglePlanet::Render(void)
 {
+	//Render Background
+	cBackground->Render();
+
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()
@@ -1219,7 +1236,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
