@@ -348,6 +348,16 @@ void CAmmo2D::InteractWithMap(void)
 		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::LEFT_BUTTON_1_BLOCKS, 0); //replace blocks with air
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play button press sound
 		break;
+	case CMap2D::TILE_INDEX::DOWN_BUTTON_2:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DOWN_BUTTON_PRESSED); //deactivate button
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::DOWN_BUTTON_2_BLOCKS, 0); //replace blocks with air
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play button press sound
+		break;
+	case CMap2D::TILE_INDEX::DOWN_BUTTON_3:
+		cMap2D->SetMapInfo(vec2Index.y, vec2Index.x, CMap2D::TILE_INDEX::DOWN_BUTTON_PRESSED); //deactivate button
+		cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::DOWN_BUTTON_3_BLOCKS, 0); //replace blocks with air
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FLICK_SWITCH); //play button press sound
+		break;
 
 	// Terrestrial Planet
 	case CMap2D::TILE_INDEX::SWITCH_LEFT:
