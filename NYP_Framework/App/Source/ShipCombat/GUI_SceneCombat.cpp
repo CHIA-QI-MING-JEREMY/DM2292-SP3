@@ -212,7 +212,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 	if (GuiState != GUI_STATE::showUpgrade) {
 		ImGui::Begin("Health", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.01f),
+		ImGui::SetWindowPos(ImVec2(8 * relativeScale_y,
 			cSettings->iWindowHeight * (0.01f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -225,62 +225,93 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		int healthCount = cInventoryItem1->GetCount();
 		for (int i = 0; i < int(healthCount / int(cInventoryItem1->GetMaxCount() / 10)); i++) {
 			ImGui::Begin("Health Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * (0.13f),
-				cSettings->iWindowHeight * (0.11f)));
+			ImGui::SetWindowPos(ImVec2(104.f * relativeScale_y, cSettings->iWindowHeight * (0.11f)));
 			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(10 * relativeScale_y, 14 * relativeScale_y));
+			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(9 * relativeScale_x, 14 * relativeScale_y));
 			ImGui::SameLine();
 			ImGui::GetOverlayDrawList();
 			ImGui::End();
 		}
 
 		ImGui::Begin("Damage", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.7f),
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 240 * relativeScale_y,
 			cSettings->iWindowHeight * (0.01f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		ImGui::Text("Damage");
-		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205, 25));
-		ImGui::End();
-
-		// how. do i. get rid. of the border.
-		cInventoryItem1 = cInventoryManager->GetItem("Damage");
-		int damCount = cInventoryItem1->GetCount();
-		for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
-			ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.71f,
-				cSettings->iWindowHeight * 0.05f));
-			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5, 14));
-			ImGui::SameLine();
-			ImGui::GetOverlayDrawList();
-			ImGui::End();
-		}
-
-		ImGui::Begin("Oxygen by twice", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.7f),
-			cSettings->iWindowHeight * (0.1f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::Text("Oxygen On Ship");
 		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205 * relativeScale_y, 25 * relativeScale_y));
 		ImGui::End();
 
-		// how. do i. get rid. of the border.
-		cInventoryItem1 = cInventoryManager->GetItem("Ventilation");
-		int oxyCount = cInventoryItem1->GetCount();
-		for (int i = 0; i < int(oxyCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
-			ImGui::Begin("Oxygen Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.71f,
-				cSettings->iWindowHeight * 0.14f));
-			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		if (cSettings->iWindowWidth < 1000) {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Damage");
+			int damCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.05f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5 * relativeScale_y, 14 * relativeScale_y));
-			ImGui::SameLine();
-			ImGui::GetOverlayDrawList();
-			ImGui::End();
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5 * relativeScale_x, 13 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+		else {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Damage");
+			int damCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.05f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5.6 * relativeScale_x, 12 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+
+		ImGui::Begin("Oxygen by twice", NULL, overlayWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 240 * relativeScale_y,
+			cSettings->iWindowHeight * (0.1f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::Text("Time until Ventilation Shutoff");
+		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205 * relativeScale_y, 25 * relativeScale_y));
+		ImGui::End();
+
+		if (cSettings->iWindowWidth < 1000) {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Ventilation");
+			int oxyCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(oxyCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Oxygen Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.14f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5 * relativeScale_x, 13 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+		else {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Ventilation");
+			int damCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Oxygen Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.14f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5.6 * relativeScale_x, 12 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
 		}
 	}
 

@@ -234,7 +234,7 @@ void CShipEnemy::Attack(void)
 
 void CShipEnemy::Randomise(int position)
 {
-	if (position > 16) {
+	if (position > 20) {
 		// difficulter
 		int luckyDraw = rand() % 99 + 1;
 		if (luckyDraw < 30) {
