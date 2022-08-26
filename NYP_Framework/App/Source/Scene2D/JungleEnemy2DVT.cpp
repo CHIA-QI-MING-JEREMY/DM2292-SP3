@@ -275,13 +275,13 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RECOVER;
 			iFSMCounter = 0;
-			cout << "Switching to Recover State" << endl;
+			//cout << "Switching to Recover State" << endl;
 		}
 		else
 		{
 			sCurrentFSM = WANDER; //switch to wander
 			iFSMCounter = 0;
-			cout << "Switching to Wander State" << endl;
+			//cout << "Switching to Wander State" << endl;
 		}
 		iFSMCounter++;
 		break;
@@ -360,7 +360,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = SHOOT;
 				iFSMCounter = 0;
-				cout << "Switching to Shooting State" << endl;
+				//cout << "Switching to Shooting State" << endl;
 				break;
 			}
 
@@ -369,7 +369,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) > 1.5f)
 		{
 			sCurrentFSM = RETURN; //switch to return
-			cout << "Switching to Return State" << endl;
+			//cout << "Switching to Return State" << endl;
 			break;
 		}
 		UpdatePosition(); //move around a bit aimlessly
@@ -380,7 +380,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RECOVER;
 			iFSMCounter = 0;
-			cout << "Switching to Recover State" << endl;
+			//cout << "Switching to Recover State" << endl;
 			break;
 		}
 		//if within shooting range
@@ -416,7 +416,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
+						//cout << "Switching to Wander State" << endl;
 						break;
 					}
 
@@ -439,12 +439,12 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 					{
 						shootingDirection = LEFT; //setting direction for ammo shooting
 						//Play the "attacking left" animation
-						animatedSprites->PlayAnimation("attackingL", -1, 0.75f);
+						//animatedSprites->PlayAnimation("attackingL", -1, 0.75f);
 					}
 					else
 					{
 						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
+						//cout << "Switching to Wander State" << endl;
 						break;
 					}
 				}
@@ -480,7 +480,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
+						//cout << "Switching to Wander State" << endl;
 						break;
 					}
 				}
@@ -507,7 +507,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = WANDER;
-						cout << "Switching to Wander State" << endl;
+						//cout << "Switching to Wander State" << endl;
 						break;
 					}
 				}
@@ -518,16 +518,16 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			CJEAmmo* ammo = FetchAmmo();
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			cout << "Bam!" << shootingDirection << endl;
+			//cout << "Bam!" << shootingDirection << endl;
 
 			sCurrentFSM = RELOAD;
-			cout << "Switching to Reload State" << endl;
+			//cout << "Switching to Reload State" << endl;
 		}
 		else
 		{
 			sCurrentFSM = WANDER;
 			iFSMCounter = 0;
-			cout << "Switching to Wander State" << endl;
+			//cout << "Switching to Wander State" << endl;
 		}
 		break;
 	case RELOAD:
@@ -535,13 +535,13 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = SHOOT;
 			iFSMCounter = 0;
-			cout << "Switching to Attack State" << endl;
+			//cout << "Switching to Attack State" << endl;
 		}
 		if (health <= 15)
 		{
 			sCurrentFSM = TELEPORT;
 			iFSMCounter = 0;
-			cout << "Switching to Teleport State" << endl;
+			//cout << "Switching to Teleport State" << endl;
 		}
 		iFSMCounter++;
 		break;
@@ -550,7 +550,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = TELEPORT;
 			iFSMCounter = 0;
-			cout << "Switching to Teleport State" << endl;
+			//cout << "Switching to Teleport State" << endl;
 		}
 		//if too close to the current waypoint
 		else if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) < 0.5f)
@@ -559,13 +559,13 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = TELEPORT; //switch to teleport
 				iFSMCounter = 0;
-				cout << "Switching to Teleport State" << endl;
+				//cout << "Switching to Teleport State" << endl;
 				break;
 			}
 			else
 			{
 				sCurrentFSM = WANDER; //switch to wander
-				cout << "Switching to Wander State" << endl;
+				//cout << "Switching to Wander State" << endl;
 			}
 		}
 		else //move back to waypoint
@@ -626,7 +626,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 
 			sCurrentFSM = WANDER;
 			iFSMCounter = 0;
-			cout << "Switching to Wander State" << endl;
+			//cout << "Switching to Wander State" << endl;
 			runtimeColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); //reset to white
 			break;
 		}
@@ -706,7 +706,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 				{
 					sCurrentFSM = SHOOT;
 					iFSMCounter = 0;
-					cout << "Switching to Shooting State" << endl;
+					//cout << "Switching to Shooting State" << endl;
 					runtimeColour = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f); //reset to white
 					break;
 				}

@@ -264,21 +264,21 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = NOISY;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
+			//cout << "Switching to Noisy State" << endl;
 			break;
 		}
 		if (alerted) //if near a noisy patrol team enemy
 		{
 			sCurrentFSM = EN_ROUTE;
 			iFSMCounter = 0;
-			cout << "Switching to En Route State" << endl;
+			//cout << "Switching to En Route State" << endl;
 			break;
 		}
 		if (iFSMCounter > iMaxFSMCounter) //been in idle for too long
 		{
 			sCurrentFSM = PATROL;
 			iFSMCounter = 0;
-			cout << "Switching to Patrol State" << endl;
+			//cout << "Switching to Patrol State" << endl;
 			++currentWaypointCounter; //increase the enemy's current waypoint count
 			break;
 		}
@@ -295,21 +295,21 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = NOISY;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
+			//cout << "Switching to Noisy State" << endl;
 			break;
 		}
 		if (alerted) //if near a noisy patrol team enemy
 		{
 			sCurrentFSM = EN_ROUTE;
 			iFSMCounter = 0;
-			cout << "Switching to En Route State" << endl;
+			//cout << "Switching to En Route State" << endl;
 			break;
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, waypoints[currentWaypointCounter]) < 0.5f) //close to current waypoint
 		{
 			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;
+			//cout << "Switching to Idle State" << endl;
 		}
 		//pathfind to waypoint
 		else 
@@ -333,7 +333,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << ", " << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					// Set a destination
@@ -386,7 +385,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << "," << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					// Set a destination
@@ -458,7 +456,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RETURN;
 			iFSMCounter = 0;
-			cout << "Switching to Return State" << endl;
+			//cout << "Switching to Return State" << endl;
 			noisy = false;
 		}
 		iFSMCounter++;
@@ -468,14 +466,14 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = NOISY;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
+			//cout << "Switching to Noisy State" << endl;
 			alerted = false;
 		}
 		else if (iFSMCounter > iEnRouteMaxFSMCounter) //been in en_route for too long with no changes
 		{
 			sCurrentFSM = RETURN;
 			iFSMCounter = 0;
-			cout << "Switching to Return State" << endl;
+			//cout << "Switching to Return State" << endl;
 			alerted = false;
 		}
 		else
@@ -499,7 +497,6 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 			bool bFirstPosition = true;
 			for (const auto& coord : path)
 			{
-				//std::cout << coord.x << "," << coord.y << "\n";
 				if (bFirstPosition == true)
 				{
 					// Set a destination
@@ -532,14 +529,14 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = NOISY;
 			iFSMCounter = 0;
-			cout << "Switching to Noisy State" << endl;
+			//cout << "Switching to Noisy State" << endl;
 			break;
 		}
 		if (alerted) //if near a noisy patrol team enemy
 		{
 			sCurrentFSM = EN_ROUTE;
 			iFSMCounter = 0;
-			cout << "Switching to En Route State" << endl;
+			//cout << "Switching to En Route State" << endl;
 			break;
 		}
 		//if too close to the current waypoint
@@ -547,7 +544,7 @@ void JEnemy2DPatrolT::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = IDLE;
 			iFSMCounter = 0;
-			cout << "Switching to Idle State" << endl;
+			//cout << "Switching to Idle State" << endl;
 		}
 		else //move back to waypoint
 		{
@@ -1145,7 +1142,7 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); //play enemy footstep sound
 
 		//set animation based on state
-		if (sCurrentFSM == PATROL)
+		if (sCurrentFSM == PATROL || sCurrentFSM == RETURN)
 		{
 			//Play the "moving left" animation
 			animatedSprites->PlayAnimation("movingL", -1, 0.5f);
@@ -1199,7 +1196,7 @@ void JEnemy2DPatrolT::UpdatePosition(void)
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); //play enemy footstep sound
 
 		//set animation based on state
-		if (sCurrentFSM == PATROL)
+		if (sCurrentFSM == PATROL || sCurrentFSM == RETURN)
 		{
 			//Play the "moving right" animation
 			animatedSprites->PlayAnimation("movingR", -1, 0.5f);
