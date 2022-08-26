@@ -338,23 +338,23 @@ bool JunglePlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
 
 	//planet specific sounds
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WalkInWater.ogg"), CSoundController::SOUND_LIST::SPLASH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\WalkInWater.ogg"), CSoundController::SOUND_LIST::SPLASH, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Burning.ogg"), CSoundController::SOUND_LIST::BURNING, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Fireball.ogg"), CSoundController::SOUND_LIST::FIREBALL, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Ticking.ogg"), CSoundController::SOUND_LIST::TICKING, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Exploding.ogg"), CSoundController::SOUND_LIST::EXPLOSION, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\PoisonDamage.ogg"), CSoundController::SOUND_LIST::POISON_DAMAGE, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WaterDroplet.ogg"), CSoundController::SOUND_LIST::WATER_FLOWER, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Magic.ogg"), CSoundController::SOUND_LIST::USING_WATER, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\PlaceBush.ogg"), CSoundController::SOUND_LIST::PLACE_BUSH, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TyingVine.ogg"), CSoundController::SOUND_LIST::TIE_VINE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Fireball.ogg"), CSoundController::SOUND_LIST::FIREBALL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Ticking.ogg"), CSoundController::SOUND_LIST::TICKING, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Exploding.ogg"), CSoundController::SOUND_LIST::EXPLOSION, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\PoisonDamage.ogg"), CSoundController::SOUND_LIST::POISON_DAMAGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\WaterDroplet.ogg"), CSoundController::SOUND_LIST::WATER_FLOWER, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Magic.ogg"), CSoundController::SOUND_LIST::USING_WATER, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\PlaceBush.ogg"), CSoundController::SOUND_LIST::PLACE_BUSH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\TyingVine.ogg"), CSoundController::SOUND_LIST::TIE_VINE, true);
 
 	//enemy related
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\AcidBurn.ogg"), CSoundController::SOUND_LIST::POISONBALL, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SlashAttack.ogg"), CSoundController::SOUND_LIST::ENEMY_MELEE, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WarningSiren.ogg"), CSoundController::SOUND_LIST::PATROL_TEAM_NOISY, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TeleportPop.ogg"), CSoundController::SOUND_LIST::VT_TELEPORT_POOF, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\AcidBurn.ogg"), CSoundController::SOUND_LIST::POISONBALL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\SlashAttack.ogg"), CSoundController::SOUND_LIST::ENEMY_MELEE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\WarningSiren.ogg"), CSoundController::SOUND_LIST::PATROL_TEAM_NOISY, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\TeleportPop.ogg"), CSoundController::SOUND_LIST::VT_TELEPORT_POOF, true);
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
 	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
@@ -1238,7 +1238,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
