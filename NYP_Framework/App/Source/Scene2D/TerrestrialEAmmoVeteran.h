@@ -163,6 +163,6 @@ protected:
 
 	// Determines the distance the bullet has travelled
 	glm::vec2 startingIndex;
-	float travelDistance;
+	float maxTravelDist;
 };
 
