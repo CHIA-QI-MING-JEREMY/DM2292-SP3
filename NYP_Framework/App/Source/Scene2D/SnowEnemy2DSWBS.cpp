@@ -184,6 +184,7 @@ bool SnowEnemy2DSWBS::Init(void)
 	attackHit = false;
 
 
+
 		// sets waypoints based on the level
 	//TUTORIAL
 	if (cMap2D->GetCurrentLevel() == 0)

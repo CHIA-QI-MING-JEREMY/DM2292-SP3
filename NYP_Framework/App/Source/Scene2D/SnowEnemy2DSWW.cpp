@@ -653,17 +653,6 @@ void SnowEnemy2DSWW::Render(void)
 	animatedSprites->Render();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	////render enemy ammo
-	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	//{
-	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-	//	if (ammo->getActive())
-	//	{
-	//		ammo->PreRender();
-	//		ammo->Render();
-	//		ammo->PostRender();
-	//	}
-	//}
 
 }
 
@@ -1194,6 +1183,7 @@ void SnowEnemy2DSWW::UpdatePosition(void)
 		}
 	}
 }
+
 
 vector<glm::vec2> SnowEnemy2DSWW::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
