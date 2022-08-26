@@ -441,9 +441,9 @@ void CAmmo2D::InteractWithMap(void)
 		if (cMap2D->GetCurrentLevel() == 1)
 		{
 			// different tiles replaced for different switches
-			if (vec2Index == glm::vec2(1, 9))
+			if (vec2Index == glm::vec2(1, 8))
 			{
-				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 7, 8, 1, 4);
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 7, 9, 1, 5);
 			}
 		}
 		break;
@@ -460,9 +460,9 @@ void CAmmo2D::InteractWithMap(void)
 		if (cMap2D->GetCurrentLevel() == 1)
 		{
 			// different tiles replaced for different switches
-			if (vec2Index == glm::vec2(1, 9))
+			if (vec2Index == glm::vec2(1, 8))
 			{
-				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 7, 8, 1, 4);
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 7, 9, 1, 5);
 			}
 		}
 		break;
