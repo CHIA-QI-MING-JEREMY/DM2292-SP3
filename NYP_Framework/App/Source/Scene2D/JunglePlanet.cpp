@@ -1264,48 +1264,48 @@ bool JunglePlanet::getIsOnShip(void)
 
 void JunglePlanet::SetResourcesBack(void)
 {
-
-	if (cInventoryManagerPlanet->Check("ScrapMetal")) {
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
-		if (cInventoryManager->Check("ScrapMetal")) {
-			cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
-			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {
+		if (cInventoryManagerPlanet->Check("ScrapMetal")) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
+			if (cInventoryManager->Check("ScrapMetal")) {
+				cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
+				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager\n";
+			std::cout << "Item does not exist in inventory manager planet \n";
 		}
-	}
-	else {
-		std::cout << "Item does not exist in inventory manager planet \n";
-	}
-	
-	if (cInventoryManagerPlanet->Check("Battery")) {
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
-		if (cInventoryManager->Check("Battery")) {
-			cInventoryItem = cInventoryManager->GetItem("Battery");
-			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+
+		if (cInventoryManagerPlanet->Check("Battery")) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
+			if (cInventoryManager->Check("Battery")) {
+				cInventoryItem = cInventoryManager->GetItem("Battery");
+				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager\n";
+			std::cout << "Item does not exist in inventory manager planet \n";
 		}
-	}
-	else {
-		std::cout << "Item does not exist in inventory manager planet \n";
-	}
 
-	if (cInventoryManagerPlanet->Check("Ironwood")) {
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
-		if (cInventoryManager->Check("Ironwood")) {
-			cInventoryItem = cInventoryManager->GetItem("Ironwood");
-			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		if (cInventoryManagerPlanet->Check("Ironwood")) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
+			if (cInventoryManager->Check("Ironwood")) {
+				cInventoryItem = cInventoryManager->GetItem("Ironwood");
+				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager\n";
+			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 	}
-	else {
-		std::cout << "Item does not exist in inventory manager planet \n";
-	}
-
 	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 }

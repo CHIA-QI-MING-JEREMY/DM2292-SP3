@@ -62,6 +62,15 @@ void CInventoryItem::Set(const int iNumItems)
 	glm::clamp(iItemCount, 0, iItemMaxCount);
 }
 
+void CInventoryItem::SetMaxCount(const int iNumMaxItems)
+{
+	if (iNumMaxItems < iItemCount) {
+		iItemCount = iNumMaxItems;
+	}
+
+	iItemMaxCount = iNumMaxItems;
+}
+
 /**
 @brief Get the number of items from this class instance
 */

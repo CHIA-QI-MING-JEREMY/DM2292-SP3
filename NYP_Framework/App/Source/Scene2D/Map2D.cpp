@@ -2180,6 +2180,17 @@ bool CMap2D::findTilesForShip()
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(598, iTextureID));
 	}
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/floorTile_Danger.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/floorTile_Danger.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(590, iTextureID));
+	}
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/ShipCombat/floorTileBroke.png", true);
 	if (iTextureID == 0)
 	{

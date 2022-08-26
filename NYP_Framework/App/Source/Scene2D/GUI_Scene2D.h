@@ -150,6 +150,10 @@ protected:
 	ButtonData AcceptButtonData;
 	ButtonData RejectButtonData;
 
+	unsigned PlayerBarTextureID;
+	unsigned BitTextureID;
+	unsigned ProgressBarTextureID;
+
 	bool lState;
 	bool goOnShip;
 	bool showExitPanel;
