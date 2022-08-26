@@ -163,16 +163,8 @@ bool SnowEnemy2DSWW::Init(void)
 	// If this class is initialised properly, then set the bIsActive to true
 	bIsActive = true;
 
-	//Construct 100 inactive ammo and add into ammoList
-	//for (int i = 0; i < 100; ++i)
-	//{
-	//	CJEAmmoVT* cEnemyAmmo2D = new CJEAmmoVT();
-	//	cEnemyAmmo2D->SetShader("Shader2D");
-	//	ammoList.push_back(cEnemyAmmo2D);
-	//}
 
 	type = WHITE;
-//	shootingDirection = LEFT; //setting direction for ammo shooting
 	maxHealth = health = 30; //takes 6 hits to kill
 	shieldTimer = 2.0f;
 	shieldCount = 1;
@@ -180,40 +172,11 @@ bool SnowEnemy2DSWW::Init(void)
 	boolTimer = 1.f;
 	attackHit = false;
 
-	//flickerTimer = 0.5; //used to progress the flicker counter
-	//flickerTimerMax = 0.5; //used to reset flicker counter
-	//flickerCounter = 0; //decides colour of enemy and when to explode
-
-	//if (vec2Index.x == 11 && vec2Index.y == 1) {
-	//	pathway.push_back(glm::vec2(11, 1));
-	//	pathway.push_back(glm::vec2(18, 2));
-	//	pathway.push_back(glm::vec2(14, 5));
-	//	fearpathway = (glm::vec2(20, 1));
-	//}
 
 		// sets waypoints based on the level
 	//TUTORIAL
 	if (cMap2D->GetCurrentLevel() == 0)
 	{
-		// sets waypoints based on the enemy spawn location
-		//if (vec2Index == glm::vec2(3, 1))
-		//{
-		//	pathway.push_back(glm::vec2(3, 1));
-		//	//pathway = ConstructWaypointVector(pathway, 400, 1);
-		//	fearpathway = glm::vec2(8,1);
-		//}
-		//else if (vec2Index == glm::vec2(17, 15))
-		//{
-		//	pathway.push_back(glm::vec2(17, 15));
-		//	pathway = ConstructWaypointVector(pathway, 401, 1);
-		//	fearpathway = glm::vec2(20, 11);
-		//}
-		//else if (vec2Index == glm::vec2(17, 6))
-		//{
-		//	pathway.push_back(glm::vec2(17, 6));
-		//	pathway = ConstructWaypointVector(pathway, 402, 1);
-		//	fearpathway = glm::vec2(20, 1);
-		//}
 	}
 	else if (cMap2D->GetCurrentLevel() == 1) {
 		if (vec2Index == glm::vec2(30, 14))
@@ -611,19 +574,6 @@ void SnowEnemy2DSWW::Update(const double dElapsedTime)
 		break;
 	}
 
-	//ammo behaviour
-	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	//{
-	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-	//	if (ammo->getActive())
-	//	{
-	//		ammo->Update(dElapsedTime);
-	//		if (ammo->LimitReached())
-	//		{
-	//			ammo->setActive(false);
-	//		}
-	//	}
-	//}
 
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
@@ -703,17 +653,6 @@ void SnowEnemy2DSWW::Render(void)
 	animatedSprites->Render();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	////render enemy ammo
-	//for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-	//{
-	//	CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-	//	if (ammo->getActive())
-	//	{
-	//		ammo->PreRender();
-	//		ammo->Render();
-	//		ammo->PostRender();
-	//	}
-	//}
 
 }
 
@@ -1245,32 +1184,7 @@ void SnowEnemy2DSWW::UpdatePosition(void)
 	}
 }
 
-//called whenever an ammo is needed to be shot
-//CJEAmmoVT* SnowEnemy2DSWW::FetchAmmo()
-//{
-//	//Exercise 3a: Fetch a game object from m_goList and return it
-//	for (std::vector<CJEAmmoVT*>::iterator it = ammoList.begin(); it != ammoList.end(); ++it)
-//	{
-//		CJEAmmoVT* ammo = (CJEAmmoVT*)*it;
-//		if (ammo->getActive()) {
-//			continue;
-//		}
-//		ammo->setActive(true);
-//		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
-//		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
-//		return ammo;
-//	}
-//
-//	//whenever ammoList runs out of ammo, create 10 ammo to use
-//	//Get Size before adding 10
-//	int prevSize = ammoList.size();
-//	for (int i = 0; i < 10; ++i) {
-//		ammoList.push_back(new CJEAmmoVT);
-//	}
-//	ammoList.at(prevSize)->setActive(true);
-//	return ammoList.at(prevSize);
-//
-//}
+
 vector<glm::vec2> SnowEnemy2DSWW::ConstructWaypointVector(vector<glm::vec2> waypointVector, int startIndex, int numOfWaypoints)
 {
 	for (int i = 0; i < numOfWaypoints; ++i)

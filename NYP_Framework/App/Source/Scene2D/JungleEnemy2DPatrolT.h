@@ -120,14 +120,6 @@ protected:
 	enum FSM
 	{
 		IDLE = 0,
-		RELOAD = 1,
-		ATTACK = 2,
-		TELEPORT,
-		WANDER,
-		SHOOT,
-		RECOVER,
-		EXPLODE,
-
 		PATROL,
 		NOISY,
 		EN_ROUTE,

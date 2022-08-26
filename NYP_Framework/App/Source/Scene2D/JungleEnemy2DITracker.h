@@ -122,7 +122,6 @@ protected:
 		ATTACK, //close combat attack
 		RETREAT, //find a designated healing spot to return to
 		REST, //stay in healing spot and rest
-		IDLE,
 		NUM_FSM
 	};
 

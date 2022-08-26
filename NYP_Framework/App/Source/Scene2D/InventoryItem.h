@@ -28,6 +28,8 @@ public:
 
 	// Set a certain number of items from this class instance
 	void Set(const int iNumItems);
+	// Get the maximum number of items from this class instance
+	void SetMaxCount(const int iNumMaxItems);
 
 	// Get the number of items from this class instance
 	int GetCount(void) const;

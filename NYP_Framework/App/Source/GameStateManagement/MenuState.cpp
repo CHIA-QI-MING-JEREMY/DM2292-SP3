@@ -157,10 +157,8 @@ bool CMenuState::Update(const double dElapsedTime)
 			CKeyboardController::GetInstance()->Reset();
 
 			// Load the menu state
-			//cout << "Loading PlanetState" << endl;
-			//CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");
-			cout << "Loading PlayGameState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			cout << "Loading PlanetState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");
 		}
 
 		

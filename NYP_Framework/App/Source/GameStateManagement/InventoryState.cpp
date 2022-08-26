@@ -135,7 +135,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		ImGui::SameLine;
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Bag Space:%d/%d",
+		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Bag Space:%d/%d",
 			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
 		ImGui::End();
 	}
@@ -160,7 +160,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		ImGui::SameLine;
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Battery:%d",
+		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Battery:%d",
 			cInventoryItemPlanet->GetCount());
 		ImGui::End();
 	}
@@ -185,7 +185,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		ImGui::SameLine;
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "Scrap Metal:%d",
+		ImGui::TextColored(ImVec4(0, 1, 1, 1), "Scrap Metal:%d",
 			cInventoryItemPlanet->GetCount());
 		ImGui::End();
 	}
@@ -285,9 +285,6 @@ bool CInventoryState::Update(const double dElapsedTime)
 				}
 			}
 		}
-		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(0, 0, 0, 1), "%d",
-			cInventoryItemPlanet->GetCount());
 		ImGui::End();
 	}
 	if (cGUI_Scene2D->getPlanetNum() == 3) {
@@ -312,7 +309,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("berserk");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Berserk:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Berserk:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -369,7 +366,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("shield");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Shield:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Shield:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -426,7 +423,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Shard:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Ice Shard:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -486,7 +483,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("IceCrystal");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ice Crystal:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Ice Crystal:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -565,7 +562,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RiverWater");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "River Water:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "River Water:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -617,7 +614,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Vine");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Vine:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Vine:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -670,7 +667,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BurnableBlocks");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Bushes:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Bushes:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -725,7 +722,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Ironwood:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Ironwood:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
@@ -802,7 +799,7 @@ bool CInventoryState::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SameLine;
-			ImGui::TextColored(ImVec4(0, 0, 0, 1), "Energy Quartz:%d",
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Energy Quartz:%d",
 				cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}

@@ -338,23 +338,23 @@ bool JunglePlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
 
 	//planet specific sounds
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WalkInWater.ogg"), CSoundController::SOUND_LIST::SPLASH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\WalkInWater.ogg"), CSoundController::SOUND_LIST::SPLASH, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Burning.ogg"), CSoundController::SOUND_LIST::BURNING, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Fireball.ogg"), CSoundController::SOUND_LIST::FIREBALL, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Ticking.ogg"), CSoundController::SOUND_LIST::TICKING, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Exploding.ogg"), CSoundController::SOUND_LIST::EXPLOSION, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\PoisonDamage.ogg"), CSoundController::SOUND_LIST::POISON_DAMAGE, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WaterDroplet.ogg"), CSoundController::SOUND_LIST::WATER_FLOWER, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Magic.ogg"), CSoundController::SOUND_LIST::USING_WATER, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\PlaceBush.ogg"), CSoundController::SOUND_LIST::PLACE_BUSH, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TyingVine.ogg"), CSoundController::SOUND_LIST::TIE_VINE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Fireball.ogg"), CSoundController::SOUND_LIST::FIREBALL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Ticking.ogg"), CSoundController::SOUND_LIST::TICKING, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Exploding.ogg"), CSoundController::SOUND_LIST::EXPLOSION, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\PoisonDamage.ogg"), CSoundController::SOUND_LIST::POISON_DAMAGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\WaterDroplet.ogg"), CSoundController::SOUND_LIST::WATER_FLOWER, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\Magic.ogg"), CSoundController::SOUND_LIST::USING_WATER, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\PlaceBush.ogg"), CSoundController::SOUND_LIST::PLACE_BUSH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\TyingVine.ogg"), CSoundController::SOUND_LIST::TIE_VINE, true);
 
 	//enemy related
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\AcidBurn.ogg"), CSoundController::SOUND_LIST::POISONBALL, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SlashAttack.ogg"), CSoundController::SOUND_LIST::ENEMY_MELEE, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\WarningSiren.ogg"), CSoundController::SOUND_LIST::PATROL_TEAM_NOISY, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TeleportPop.ogg"), CSoundController::SOUND_LIST::VT_TELEPORT_POOF, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\AcidBurn.ogg"), CSoundController::SOUND_LIST::POISONBALL, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\SlashAttack.ogg"), CSoundController::SOUND_LIST::ENEMY_MELEE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\WarningSiren.ogg"), CSoundController::SOUND_LIST::PATROL_TEAM_NOISY, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\JunglePlanet\\TeleportPop.ogg"), CSoundController::SOUND_LIST::VT_TELEPORT_POOF, true);
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
 	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
@@ -596,7 +596,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//40% chance to drop scrap metal, 40% chance to drop battery, 20% chance to drop ironwood
 					int resourceType = rand() % 10;
-					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
 					{
 						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
@@ -640,7 +639,6 @@ bool JunglePlanet::Update(const double dElapsedTime)
 				{
 					//20% chance to drop scrap metal, 20% chance to drop battery, 10% chance to drop ironwood
 					int resourceType = rand() % 20;
-					std::cout << resourceType << std::endl;
 					if (resourceType < 4) //0 1 2 3
 					{
 						CResource* res = new CResource(CResource::RESOURCE_TYPE::SCRAP_METAL); //create new scrap metal resource
@@ -1134,7 +1132,7 @@ void JunglePlanet::PlayerInteractWithMap(void)
 			if (cInventoryItemPlanet->GetCount() != cInventoryItemPlanet->GetMaxCount())
 			{
 				cInventoryItemPlanet->Add(1); //collect 1 cup of river water
-				std::cout << "COLLECTED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
+				//std::cout << "COLLECTED RIVER WATER: " << cInventoryItemPlanet->GetCount() << std::endl;
 			}
 		}
 		break;
@@ -1238,7 +1236,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
@@ -1266,48 +1264,48 @@ bool JunglePlanet::getIsOnShip(void)
 
 void JunglePlanet::SetResourcesBack(void)
 {
-
-	if (cInventoryManagerPlanet->Check("ScrapMetal")) {
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
-		if (cInventoryManager->Check("ScrapMetal")) {
-			cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
-			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {
+		if (cInventoryManagerPlanet->Check("ScrapMetal")) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
+			if (cInventoryManager->Check("ScrapMetal")) {
+				cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
+				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager\n";
+			std::cout << "Item does not exist in inventory manager planet \n";
 		}
-	}
-	else {
-		std::cout << "Item does not exist in inventory manager planet \n";
-	}
-	
-	if (cInventoryManagerPlanet->Check("Battery")) {
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
-		if (cInventoryManager->Check("Battery")) {
-			cInventoryItem = cInventoryManager->GetItem("Battery");
-			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+
+		if (cInventoryManagerPlanet->Check("Battery")) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
+			if (cInventoryManager->Check("Battery")) {
+				cInventoryItem = cInventoryManager->GetItem("Battery");
+				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager\n";
+			std::cout << "Item does not exist in inventory manager planet \n";
 		}
-	}
-	else {
-		std::cout << "Item does not exist in inventory manager planet \n";
-	}
 
-	if (cInventoryManagerPlanet->Check("Ironwood")) {
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
-		if (cInventoryManager->Check("Ironwood")) {
-			cInventoryItem = cInventoryManager->GetItem("Ironwood");
-			cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+		if (cInventoryManagerPlanet->Check("Ironwood")) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
+			if (cInventoryManager->Check("Ironwood")) {
+				cInventoryItem = cInventoryManager->GetItem("Ironwood");
+				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager\n";
+			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 	}
-	else {
-		std::cout << "Item does not exist in inventory manager planet \n";
-	}
-
 	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 }

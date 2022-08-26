@@ -94,7 +94,6 @@ bool CAmmo2D::Init(void)
 	glBindVertexArray(VAO);
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
-	cout << cGUI_Scene2D->getPlanetNum() << endl;
 	switch (cGUI_Scene2D->getPlanetNum())
 	{
 	case 1:

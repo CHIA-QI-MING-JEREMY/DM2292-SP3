@@ -103,6 +103,10 @@ SnowPlanet::~SnowPlanet(void)
 */
 bool SnowPlanet::Init(void)
 {
+	//Create Background Entity
+	background = new CBackgroundEntity("Image/SnowPlanet/SnowBackground.png");
+	background->SetShader("Shader2D");
+	background->Init();
 	healthDropTimer = 3.f;
 	healthTimer = 0.f;
 	tempTimer = 0.f;
@@ -157,13 +161,6 @@ bool SnowPlanet::Init(void)
 		cout << "Failed to load Snow Map Level 02" << endl;
 		return false;
 	}
-	//// Load the map into an array
-	//if (cMap2D->LoadMap("Maps/DM2292_Map_Jungle_02B.csv", LEVEL2B) == false)
-	//{
-	//	// The loading of a map has failed. Return false
-	//	cout << "Failed to load Jungle Map Level 02B" << endl;
-	//	return false;
-	//}
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
@@ -284,21 +281,6 @@ bool SnowPlanet::Init(void)
 	cPlayer2D->ResetRespawn();
 
 
-	//// create the alarm box vector
-	//alarmBoxVector.clear();
-	//alarmBoxVector = cMap2D->FindAllTiles(50);
-
-	//// assign alarm boxes to enemies (if applicable)
-	//for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-	//{
-	//	for (unsigned int j = 0; j < alarmBoxVector.size(); j++)
-	//	{
-	//		if (enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index.y == alarmBoxVector[j].y)
-	//		{
-	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setAssignedAlarmBox(alarmBoxVector[j]);
-	//		}
-	//	}
-	//}
 
 	// Initialise the Physics
 	cPhysics2D.Init();
@@ -342,10 +324,6 @@ bool SnowPlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\SnowPlanet\\backgroundSnow.ogg"), CSoundController::SOUND_LIST::BACKGROUNDSNOW, true, true);
 	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BACKGROUNDSNOW); // plays BGM on repeat
 
-	// variables
-	//isAlarmActive = false;
-	//maxAlarmTimer = 10.0;
-	//alarmTimer = 0.0;
 
 	return true;
 }
@@ -422,13 +400,6 @@ bool SnowPlanet::Update(const double dElapsedTime)
 			cPlayer2D->SetColour(CPlayer2D::COLOUR::WHITE);
 		}
 	}
-	//if (cPlayer2D->getModeOfPlayer() != CPlayer2D::MODE::BERSERK && turnBerserkOffTimer < 5.0f) {
-	//	if (cKeyboardController->IsKeyPressed(GLFW_KEY_A) || cKeyboardController->IsKeyPressed(GLFW_KEY_W) || cKeyboardController->IsKeyPressed(GLFW_KEY_S) || cKeyboardController->IsKeyPressed(GLFW_KEY_D) || cKeyboardController->IsKeyPressed(GLFW_KEY_SPACE)) {
-	//		cout << "Switching back to BERSERK player mode" << endl;
-	//		cPlayer2D->setModeOfPlayer(CPlayer2D::MODE::BERSERK);
-	//		cPlayer2D->SetColour(CPlayer2D::COLOUR::PINK);
-	//	}
-	//}
 	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("freeze");
 	if (cInventoryItemPlanet->GetCount() > 0 && cKeyboardController->IsKeyReleased(GLFW_KEY_F)) {
 		cInventoryItemPlanet->Remove(1);
@@ -574,42 +545,10 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		CSettings::GetInstance()->MICRO_STEP_XAXIS = 0.0078125f;
 	}
 
-	//// Checks if alarm is active
-	//if (!isAlarmActive)
-	//{
-	//	unsigned int uiRow = -1;
-	//	unsigned int uiCol = -1;
-	//	if (cMap2D->FindValue(52, uiRow, uiCol))
-	//	{
-	//		isAlarmActive = true;
-	//		alarmTimer = maxAlarmTimer;
-	//	}
-	//}
-
-	//if (alarmTimer <= 0.0)
-	//{
-	//	alarmTimer = maxAlarmTimer;
-	//	isAlarmActive = false;
-	//	cMap2D->ReplaceTiles(52, 51);
-	//}
-	//else
-	//{
-	//	alarmTimer -= dElapsedTime;
-	//}
-
 	// Call all of the cEnemy2D's update methods before Map2D
 	// as we want to capture the updates before Map2D update
 	for (unsigned int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
 	{
-		//// informs all enemies that the alarm has been activated
-		//if (isAlarmActive && !enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer > 0.0)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(true);
-		//}
-		//else if (!isAlarmActive && enemyVectors[cMap2D->GetCurrentLevel()][i]->getAlarmState() && alarmTimer == maxAlarmTimer)
-		//{
-		//	enemyVectors[cMap2D->GetCurrentLevel()][i]->setAlarmState(false);
-		//}
 
 		enemyVectors[cMap2D->GetCurrentLevel()][i]->Update(dElapsedTime);
 
@@ -814,21 +753,6 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		}
 	}
 
-	//// Player Attacks (TO DO)
-	//if (cPlayer2D->getPlayerAttackStatus())
-	//{
-	//	for (int i = 0; i < enemyVectors[cMap2D->GetCurrentLevel()].size(); i++)
-	//	{
-	//		if (cPhysics2D.CalculateDistance(enemyVectors[cMap2D->GetCurrentLevel()][i]->vec2Index, cPlayer2D->vec2Index) <= 1.5f)
-	//		{
-	//			int remainingHealth = enemyVectors[cMap2D->GetCurrentLevel()][i]->getHealth() - 25;
-	//			cout << remainingHealth << endl;
-	//			enemyVectors[cMap2D->GetCurrentLevel()][i]->setHealth(remainingHealth);
-	//		}
-	//	}
-	//	cPlayer2D->setPlayerAttackStatus(false);
-	//}
-
 	// Call the cGUI_Scene2D's update method
 	cGUI_Scene2D->Update(dElapsedTime);
 
@@ -892,6 +816,9 @@ void SnowPlanet::PreRender(void)
  */
 void SnowPlanet::Render(void)
 {
+	background->PreRender();
+	background->Render();
+	background->PostRender();
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()

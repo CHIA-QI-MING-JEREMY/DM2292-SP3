@@ -54,7 +54,7 @@ bool CShipCombatState::Init(void)
 	}
 
 	if (CGameInfo::GetInstance()->PrevState == 1) {
-		cSceneCombat->SetNewState(CSceneCombat::CURRENT_STATE::SHIPCOMBAT);
+		cSceneCombat->SetNewState(CSceneCombat::CURRENT_STATE::SHIPREST);
 	}
 	else if (CGameInfo::GetInstance()->PrevState == 2) {
 		cSceneCombat->SetNewState(CSceneCombat::CURRENT_STATE::SHIPUPGRADE_NP);

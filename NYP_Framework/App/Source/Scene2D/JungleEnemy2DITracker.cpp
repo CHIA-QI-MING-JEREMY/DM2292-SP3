@@ -232,7 +232,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RETREAT;
 			iFSMCounter = 0;
-			cout << "Switching to Retreat State" << endl;
+			//cout << "Switching to Retreat State" << endl;
 			break;
 		}
 		//if within close combat attack range
@@ -240,7 +240,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			cout << "Switching to Attack State" << endl;
+			//cout << "Switching to Attack State" << endl;
 			break;
 		}
 		//if within shooting range (only checked if not within close combat attack range
@@ -318,7 +318,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = SHOOT;
 				iFSMCounter = 0;
-				cout << "Switching to Shooting State" << endl;
+				//cout << "Switching to Shooting State" << endl;
 				break;
 			}
 
@@ -376,7 +376,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RETREAT;
 			iFSMCounter = 0;
-			cout << "Switching to Retreat State" << endl;
+			//cout << "Switching to Retreat State" << endl;
 			break;
 		}
 		//if within shooting range
@@ -412,7 +412,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = TRACK;
-						cout << "Switching to Track State" << endl;
+						//cout << "Switching to Track State" << endl;
 						break;
 					}
 
@@ -440,7 +440,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = TRACK;
-						cout << "Switching to Track State" << endl;
+						//cout << "Switching to Track State" << endl;
 						break;
 					}
 				}
@@ -476,7 +476,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = TRACK;
-						cout << "Switching to Track State" << endl;
+						//cout << "Switching to Track State" << endl;
 						break;
 					}
 				}
@@ -503,7 +503,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 					else
 					{
 						sCurrentFSM = TRACK;
-						cout << "Switching to Track State" << endl;
+						//cout << "Switching to Track State" << endl;
 						break;
 					}
 				}
@@ -514,25 +514,16 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			CJEAmmo* ammo = FetchAmmo();
 			ammo->setActive(true);
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
-			cout << "Bam!" << shootingDirection << endl;
+			//cout << "Bam!" << shootingDirection << endl;
 
 			sCurrentFSM = RELOAD;
-			cout << "Switching to Reload State" << endl;
+			//cout << "Switching to Reload State" << endl;
 		}
 		else
 		{
 			sCurrentFSM = TRACK;
-			cout << "Switching to Track State" << endl;
+			//cout << "Switching to Track State" << endl;
 		}
-		break;
-	case IDLE:
-		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
-		{
-			sCurrentFSM = ATTACK;
-			iFSMCounter = 0;
-			cout << "Switching to Attack State" << endl;
-		}
-		iFSMCounter++;
 		break;
 	case RELOAD:
 		if (iFSMCounter > iMaxFSMCounter)
@@ -542,14 +533,14 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = RETREAT;
 				iFSMCounter = 0;
-				cout << "Switching to Retreat State" << endl;
+				//cout << "Switching to Retreat State" << endl;
 				break;
 			}
 			else
 			{
 				sCurrentFSM = TRACK;
 				iFSMCounter = 0;
-				cout << "Switching to Track State" << endl;
+				//cout << "Switching to Track State" << endl;
 			}
 		}
 		iFSMCounter++;
@@ -560,7 +551,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RETREAT;
 			iFSMCounter = 0;
-			cout << "Switching to Retreat State" << endl;
+			//cout << "Switching to Retreat State" << endl;
 			break;
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 5.0f)
@@ -663,8 +654,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = TRACK;
 				iFSMCounter = 0;
-				cout << "ATTACK : Reset counter: " << iFSMCounter << endl;
-				cout << "Switching to Track State" << endl;
+				//cout << "Switching to Track State" << endl;
 			}
 			iFSMCounter++;
 		}
@@ -675,7 +665,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = REST;
 			iFSMCounter = 0;
-			cout << "Switching to REST State" << endl;
+			//cout << "Switching to REST State" << endl;
 		}
 		else
 		{
@@ -734,7 +724,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = ATTACK;
 			iFSMCounter = 0;
-			cout << "Switching to ATTACK State" << endl;
+			//cout << "Switching to ATTACK State" << endl;
 		}
 		//can leave rest state if sufficiently healed if player is around
 		if (health > maxHealth / 2 && //sufficiently healed
@@ -812,7 +802,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			{
 				sCurrentFSM = SHOOT;
 				iFSMCounter = 0;
-				cout << "Switching to Shooting State" << endl;
+				//cout << "Switching to Shooting State" << endl;
 				break;
 			}
 
@@ -822,7 +812,7 @@ void JEnemy2DITracker::Update(const double dElapsedTime)
 			health = maxHealth;
 			sCurrentFSM = TRACK;
 			iFSMCounter = 0;
-			cout << "Switching to TRACK State" << endl;
+			//cout << "Switching to TRACK State" << endl;
 		}
 		break;
 	default:

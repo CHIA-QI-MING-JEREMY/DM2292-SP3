@@ -19,6 +19,7 @@ using namespace std;
 #include "../App/Source/Scene2D/Map2D.h"
 #include "Primitives/MeshBuilder.h"
 #include "../App/Source/GameStateManagement/GameInfo.h"
+#include "Primitives/Camera2D.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -50,6 +51,7 @@ CShipEnemy::~CShipEnemy(void)
 
 	// We won't delete this since it was created elsewhere
 	cKeyboardController = NULL;
+	cPlayer = NULL;
 
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
@@ -78,8 +80,16 @@ bool CShipEnemy::Init(void)
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 
+	cPlayer = CShipPlayer::GetInstance();
+
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
+
+	NoiseStartTime = 0.0f;
+	TimeElapsed = 0.0f;
+	attackTimer = 0.0f;
+	attackCounter = 0;
+	enemyHealth = 0;
 
 	return true;
 }
@@ -99,9 +109,190 @@ bool CShipEnemy::Reset()
  */
 void CShipEnemy::Update(const double dElapsedTime)
 {
+	TimeElapsed += 0.0167;
 
-	// FSM and shit
+	switch (enemType)
+	{
+	case CShipEnemy::EASY:
+		attackCounter = 1;
+		break;
+	case CShipEnemy::MEDIUM:
+		attackCounter = 1;
+		break;
+	case CShipEnemy::HARD:
+		attackCounter = 2;
+		break;
+	default:
+		break;
+	}
 
+	if (TimeElapsed - attackTimer > 10) {
+		for (int i = 0; i < attackCounter; i++) {
+			Attack();
+		}
+
+		attackTimer = TimeElapsed;
+	}
+
+	for (int i = 0; i < tileVector.size(); i++) {
+		tileVector[i].second += 0.0167;
+		std::cout << tileVector[i].second << "\n";
+
+		if (tileVector[i].second >= kWarningLength) {
+			SetDamage(tileVector[i].first);
+			tileVector.erase(tileVector.begin() + i);
+		}
+	}
+
+	if ((TimeElapsed - NoiseStartTime) > kScreenShakeLength) {
+		Camera2D::GetInstance()->noiseOn = false;
+		NoiseStartTime = 0;
+	}
 
 }
 
+void CShipEnemy::Attack(void)
+{
+	int randX = rand() % 13 + 10;
+	int randY = rand() % 7 + 9;
+
+	switch (enemType)
+	{
+	case CShipEnemy::EASY:
+		std::cout << randX << " " << randY << " " << CMap2D::GetInstance()->GetMapInfo(randY, randX) << "\n";
+
+		if (CMap2D::GetInstance()->GetMapInfo(randY, randX) == 598) {
+			SetDanger(glm::vec2(randX, randY));
+		}
+		break;
+	case CShipEnemy::MEDIUM:
+		if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y, cPlayer->vec2Index.x) == 598) {
+			SetDanger(glm::vec2(cPlayer->vec2Index));
+		}
+		else {
+			switch (cPlayer->player_Dir)
+			{
+			case CPlayer2D::DIRECTION::LEFT:
+				if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y, cPlayer->vec2Index.x - 1) == 598) {
+					SetDanger(glm::vec2(cPlayer->vec2Index.x - 1, cPlayer->vec2Index.y));
+				}
+				break;
+			case CPlayer2D::DIRECTION::RIGHT:
+				if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y, cPlayer->vec2Index.x + 1) == 598) {
+					SetDanger(glm::vec2(cPlayer->vec2Index.x + 1, cPlayer->vec2Index.y));
+				}
+				break;
+			case CPlayer2D::DIRECTION::UP:
+				if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y + 1, cPlayer->vec2Index.x) == 598) {
+					SetDanger(glm::vec2(cPlayer->vec2Index.x, cPlayer->vec2Index.y + 1));
+				}
+				break;
+			case CPlayer2D::DIRECTION::DOWN:
+				if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y - 1, cPlayer->vec2Index.x) == 598) {
+					SetDanger(glm::vec2(cPlayer->vec2Index.x, cPlayer->vec2Index.y - 1));
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		break;
+	case CShipEnemy::HARD:
+		if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y, cPlayer->vec2Index.x) == 598) {
+			SetDanger(glm::vec2(cPlayer->vec2Index));
+		}
+		switch (cPlayer->player_Dir)
+		{
+		case CPlayer2D::DIRECTION::LEFT:
+			if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y, cPlayer->vec2Index.x - 2) == 598) {
+				SetDanger(glm::vec2(cPlayer->vec2Index.x - 2, cPlayer->vec2Index.y));
+			}
+			break;
+		case CPlayer2D::DIRECTION::RIGHT:
+			if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y, cPlayer->vec2Index.x + 2) == 598) {
+				SetDanger(glm::vec2(cPlayer->vec2Index.x + 2, cPlayer->vec2Index.y));
+			}
+			break;
+		case CPlayer2D::DIRECTION::UP:
+			if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y + 2, cPlayer->vec2Index.x) == 598) {
+				SetDanger(glm::vec2(cPlayer->vec2Index.x, cPlayer->vec2Index.y + 2));
+			}
+			break;
+		case CPlayer2D::DIRECTION::DOWN:
+			if (CMap2D::GetInstance()->GetMapInfo(cPlayer->vec2Index.y - 2, cPlayer->vec2Index.x) == 598) {
+				SetDanger(glm::vec2(cPlayer->vec2Index.x, cPlayer->vec2Index.y - 2));
+			}
+			break;
+		default:
+			break;
+		}
+		break;
+	default:
+		break;
+	}
+}
+
+void CShipEnemy::Randomise(int position)
+{
+	if (position > 16) {
+		// difficulter
+		int luckyDraw = rand() % 99 + 1;
+		if (luckyDraw < 30) {
+			enemType = CShipEnemy::EASY;
+			maxHealth = enemyHealth = 50;
+			enemyName = "Rookie Enforcer";
+		}
+		else if (luckyDraw < 70) {
+			enemType = CShipEnemy::MEDIUM;
+			maxHealth = enemyHealth = 80;
+			enemyName = "Sargeant Enforcer";
+		}
+		else {
+			enemType = CShipEnemy::HARD;
+			maxHealth = enemyHealth = 100;
+			enemyName = "Commander Enforcer";
+		}
+	}
+	else {
+		// easier
+		int luckyDraw = rand() % 99 + 1;
+		if (luckyDraw < 70) {
+			enemType = CShipEnemy::EASY;
+			maxHealth = enemyHealth = 50;
+			enemyName = "Rookie Enforcer";
+		}
+		else if (luckyDraw < 100) {
+			enemType = CShipEnemy::MEDIUM;
+			maxHealth = enemyHealth = 80;
+			enemyName = "Sargeant Enforcer";
+		}
+	}
+}
+
+int CShipEnemy::getHealth(void)
+{
+	return enemyHealth;
+}
+
+void CShipEnemy::setHealth(int h)
+{
+	glm::clamp(h, 0, maxHealth);
+	enemyHealth = h;
+}
+
+
+void CShipEnemy::SetDamage(glm::vec2 position)
+{
+	CInventoryItem* item = CInventoryManager::GetInstance()->GetItem("Damage");
+	item->Remove(10);
+
+	Camera2D::GetInstance()->noiseOn = true;
+	NoiseStartTime = TimeElapsed;
+	CMap2D::GetInstance()->SetMapInfo(position.y, position.x, 597);
+}
+
+void CShipEnemy::SetDanger(glm::vec2 position)
+{
+	CMap2D::GetInstance()->SetMapInfo(position.y, position.x, 590);
+	tileVector.push_back(std::make_pair(position, 0.0f));
+}

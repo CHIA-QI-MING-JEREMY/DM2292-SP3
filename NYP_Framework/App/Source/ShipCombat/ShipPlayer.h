@@ -81,6 +81,17 @@ public:
 		DOWN = 3,
 		NUM_DIRECTIONS
 	};
+
+	DIRECTION player_Dir;
+
+	// Weapon by itzy
+	float TimeElapsed;
+	float weapon1Interval;
+	float Weapon1Time;
+	float weapon2Interval;
+	float Weapon2Time;
+	float LargeWeaponInterval;
+	float LargeWeaponTime;
 	
 protected:
 	glm::vec2 vec2OldIndex;

@@ -219,21 +219,21 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			//cout << "Switching to Explode State" << endl;
 			break;
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f)
 		{
 			sCurrentFSM = AGGRO;
 			iFSMCounter = 0;
-			cout << "Switching to Aggro State" << endl;
+			//cout << "Switching to Aggro State" << endl;
 			break;
 		}
 		if (health != previousHealth) //was just attacked
 		{
 			sCurrentFSM = HUNKER;
 			iFSMCounter = 0;
-			cout << "Switching to Hunker State" << endl;
+			//cout << "Switching to Hunker State" << endl;
 			break;
 		}
 		iFSMCounter++;
@@ -243,14 +243,14 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			//cout << "Switching to Explode State" << endl;
 			break;
 		}
 		if (health <= maxHealth / 2) //hunker once health gets too low
 		{
 			sCurrentFSM = HUNKER;
 			iFSMCounter = 0;
-			cout << "Switching to Hunker State" << endl;
+			//cout << "Switching to Hunker State" << endl;
 			break;
 		}
 		if (cPhysics2D.CalculateDistance(vec2Index, cPlayer2D->vec2Index) < 4.0f)
@@ -345,7 +345,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = RETURN;
 			iFSMCounter = 0;
-			cout << "Switching to Return State" << endl;
+			//cout << "Switching to Return State" << endl;
 		}
 		iFSMCounter++;
 		break;
@@ -365,7 +365,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			//cout << "Switching to Explode State" << endl;
 			hunkering = false;
 			break;
 		}
@@ -374,7 +374,7 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = AGGRO;
 			iFSMCounter = 0;
-			cout << "Switching to Aggro State" << endl;
+			//cout << "Switching to Aggro State" << endl;
 			hunkering = false;
 			break;
 		}
@@ -385,12 +385,12 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 			if (cPhysics2D.CalculateDistance(vec2Index, spawnPoint) < 0.5f)
 			{
 				sCurrentFSM = CAMOUFLAGE;
-				cout << "Switching to Camouflage State" << endl;
+				//cout << "Switching to Camouflage State" << endl;
 			}
 			else
 			{
 				sCurrentFSM = RETURN;
-				cout << "Switching to Return State" << endl;
+				//cout << "Switching to Return State" << endl;
 			}
 			iFSMCounter = 0;
 			hunkering = false;
@@ -403,14 +403,14 @@ void JEnemy2DShyC::Update(const double dElapsedTime)
 		{
 			sCurrentFSM = EXPLODE;
 			iFSMCounter = 0;
-			cout << "Switching to Explode State" << endl;
+			//cout << "Switching to Explode State" << endl;
 		}
 		//if too close to the spawn point
 		else if (cPhysics2D.CalculateDistance(vec2Index, spawnPoint) < 0.5f)
 		{
 			sCurrentFSM = CAMOUFLAGE;
 			iFSMCounter = 0;
-			cout << "Switching to Camouflage State" << endl;
+			//cout << "Switching to Camouflage State" << endl;
 		}
 		else //move back to spawnPoint
 		{

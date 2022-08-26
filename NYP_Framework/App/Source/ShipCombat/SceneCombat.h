@@ -18,6 +18,9 @@
 #include <includes/gtc/matrix_transform.hpp>
 #include <includes/gtc/type_ptr.hpp>
 
+// Include background bitch
+#include "../App/Source/Scene2D/BackgroundEntity.h"
+
 // Include Shader Manager
 #include "RenderControl\ShaderManager.h"
 
@@ -26,6 +29,9 @@
 
 // Include CPlayer2D
 #include "ShipPlayer.h"
+
+// Include CShip
+#include "Ship.h"
 
 // Include CPhysics2D
 #include "../App/Source/Scene2D/Physics2D.h"
@@ -48,6 +54,9 @@
 // Include SoundController
 #include "..\SoundController\SoundController.h"
 
+// Include Enemy
+#include "ShipEnemy.h"
+
 
 // Add your include files here
 
@@ -62,6 +71,7 @@ public:
 		SHIP_NOSTATE = 0,
 		SHIPUPGRADE_NP,
 		SHIPUPGRADE,
+		SHIPREST,
 		SHIPCOMBAT,
 		SHIPLANDED,
 		NUM_STATES
@@ -87,14 +97,25 @@ public:
 	void SetNewState(int newState);
 	int getCurrentState();
 
+	float prevFightTime;
+	float fightTimeElapsed;
+
 protected:
 	// constants
-	float kScreenShakeLength = 0.5f;
+	float kBreakTime = 3.0f;
+
+	CBackgroundEntity* background;
 
 	CURRENT_STATE state;
 
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
+
+	// THe handler containing the instance of a ship
+	CShip* cShip;
+
+	// The handler containing the instance of the enemy
+	CShipEnemy* cShipEnemy;
 
 	// The handler containing the instance of CPlayer2D
 	CShipPlayer* cPlayer2D;
@@ -123,11 +144,6 @@ protected:
 	// Let player interact with the map
 	// why is this here lol
 	void PlayerInteractWithMap(glm::vec2 position);
-
-	// Screen shake
-	float TimeElapsed;
-	float NoiseStartTime;
-	void SetDamage(glm::vec2 position);
 
 	// zoom (just for demo)
 	// TODO: [SP3] Remove code
