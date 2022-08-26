@@ -184,6 +184,7 @@ bool JEnemy2DVT::Init(void)
 			waypoints = ConstructWaypointVector(waypoints, 100, 3);
 		}
 	}
+	//no vigilant teleporter enemies in lvl 2
 	
 	// sets waypoint counter value
 	currentWaypointCounter = 0;
@@ -742,6 +743,14 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 
 	UpdateDirection();
 
+	// Check if enemy is in mid-air, such as walking off a platform
+	if (IsMidAir())
+	{
+		if (cPhysics2D.GetStatus() != CPhysics2D::STATUS::JUMP)
+		{
+			cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
+		}
+	}
 	// Update Jump or Fall
 	UpdateJumpFall(dElapsedTime);
 
@@ -1043,13 +1052,21 @@ bool JEnemy2DVT::CheckPosition(DIRECTION eDirection)
 // Check if the enemy2D is in mid-air
 bool JEnemy2DVT::IsMidAir(void)
 {
-	// if the player is at the bottom row, then he is not in mid-air for sure
+	// if the enemy is at the bottom row, then he is not in mid-air for sure
 	if (vec2Index.y == 0)
+	{
 		return false;
+	}
 
-	// Check if the tile below the player's current position is empty
-	if ((i32vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0))
+	// Check if the tile below the enemy's current position is empty
+	if (vec2NumMicroSteps.x == 0 &&
+		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600))
+	{
+		return true;
+	}
+
+	//if enemy is standing between 2 tiles which are both not obstruction blocks
+	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
 	{
 		return true;
 	}
