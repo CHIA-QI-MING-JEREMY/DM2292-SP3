@@ -135,9 +135,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 
 	if (CGameStateManager::GetInstance()->hasPauseGameState() == false) {
-		// Display the FPS
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "FPS: %d", cFPSCounter->GetFrameRate());
-
 		// Render the Health
 		ImGuiWindowFlags healthWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoBackground |
@@ -155,8 +152,9 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoBringToFrontOnFocus |
 			ImGuiWindowFlags_NoScrollbar;
 
+
 		ImGui::Begin("Health", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.01f),
+		ImGui::SetWindowPos(ImVec2(8 * relativeScale_y,
 			cSettings->iWindowHeight * (0.01f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -164,15 +162,15 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::Image((void*)(intptr_t)PlayerBarTextureID, ImVec2(300 * relativeScale_y, 100 * relativeScale_y));
 		ImGui::End();
 
+		// how. do i. get rid. of the border.
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		int healthCount = cInventoryItemPlanet->GetCount();
 		for (int i = 0; i < int(healthCount / int(cInventoryItemPlanet->GetMaxCount() / 10)); i++) {
 			ImGui::Begin("Health Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * (0.13f),
-				cSettings->iWindowHeight * (0.11f)));
+			ImGui::SetWindowPos(ImVec2(104.f * relativeScale_y, cSettings->iWindowHeight * (0.11f)));
 			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(10 * relativeScale_y, 14 * relativeScale_y));
+			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(9 * relativeScale_x, 14 * relativeScale_y));
 			ImGui::SameLine();
 			ImGui::GetOverlayDrawList();
 			ImGui::End();
@@ -234,6 +232,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGui::SetWindowPos(ImVec2(blockPosition.x + cSettings->iWindowWidth * 0.05f,
 				blockPosition.y - cSettings->iWindowHeight * 0.1f));
 			ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+			ImGui::SetWindowFocus();
 
 			// planet information
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -265,7 +264,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoScrollbar;
 		ImGui::Begin("PoisonLevel", NULL, poisonWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-			cSettings->iWindowHeight * 0.125f));
+			cSettings->iWindowHeight * 0.25f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PoisonLevel");

@@ -141,6 +141,7 @@ bool CScenePlanet::Init(void)
 				if (CGameInfo::GetInstance()->initPlanets == false) {
 					camera2D->setTargetPos(glm::vec2(cPlanet->vec2Index.x, cPlanet->vec2Index.y));
 					CGameInfo::GetInstance()->currentPlanetPos = cPlanet->vec2Index;
+ 					CGameInfo::GetInstance()->selectedPlanet = cPlanet;
 				}
 				cPlanet->SetType(CPlanet::TYPE::JUNGLE_TUTORIAL);
 				PlanetSelected = cPlanet;
@@ -159,6 +160,7 @@ bool CScenePlanet::Init(void)
 			else if (cPlanet->vec2Index.x == 31) {
 				cPlanet->SetType(CPlanet::TYPE::FINAL);
 				cPlanet->planetName = "Kepler-452B ('Utopia')";
+				cPlanet->SetVisibility(true);
 			}
 			else {
 				if (CGameInfo::GetInstance()->initPlanets == false) {
@@ -277,20 +279,26 @@ bool CScenePlanet::Init(void)
 
 	if (CGameInfo::GetInstance()->initPlanets == false) {
 		CGameInfo::GetInstance()->initPlanets = true;
-		realSize = nebulaSize = 5;
-		nebula->SetScale(nebulaSize);
+		realSize = 1;
+		nebulaSize = 5;
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 	}
 	else {
 		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
 
 		realSize = nebulaSize = CGameInfo::GetInstance()->nebulaSize;
-		nebulaSize += rand() % 10 + 1;
+		nebulaSize += rand() % 7 + 1;
 		std::cout << nebulaSize << "\n";
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 
 		while (otherPlanets != planetVector.end()) {
 			if (otherPlanets->second->vec2Index.x == 0) {
+				otherPlanets++;
+				continue;
+			}
+
+			if (otherPlanets->second->vec2Index.x == 31) {
+				otherPlanets->second->SetVisibility(true);
 				otherPlanets++;
 				continue;
 			}
@@ -345,7 +353,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 	}
 
 	if (nebulaSize != realSize) {
-		camera2D->lerp(realSize, nebulaSize, 0.01f);
+		realSize = camera2D->lerp(realSize, nebulaSize, 0.01f);
 		nebula->SetScale(realSize);
 	}
 

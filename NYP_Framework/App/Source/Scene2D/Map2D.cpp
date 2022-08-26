@@ -2247,6 +2247,18 @@ bool CMap2D::findTilesForShip()
 		MapOfTextureIDs.insert(pair<int, int>(1222, iTextureID));
 	}
 
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/GUI/alert.png", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/ShipCombat/alert.png" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(1300, iTextureID));
+	}
+
 
 
 	return true;
