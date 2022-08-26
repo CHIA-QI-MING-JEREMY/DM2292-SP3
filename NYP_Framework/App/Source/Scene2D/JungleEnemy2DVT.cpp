@@ -570,14 +570,10 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 		}
 		else //move back to waypoint
 		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
+			glm::vec2 startIndices = vec2Index;
+			if (vec2NumMicroSteps.x != 0)
 			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
+				startIndices.x = startIndices.x + 1;
 			}
 
 			auto path = cMap2D->PathFind(startIndices,	// start pos
@@ -596,7 +592,7 @@ void JEnemy2DVT::Update(const double dElapsedTime)
 					vec2Destination = coord;
 
 					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - vec2Index;
+					vec2Direction = vec2Destination - startIndices;
 					bFirstPosition = false;
 				}
 				else
