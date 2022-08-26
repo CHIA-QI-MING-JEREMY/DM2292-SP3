@@ -78,6 +78,12 @@ bool CShip::Init(void)
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
+	cInventoryManager = CInventoryManager::GetInstance();
+
+	TimeElapsed = 0;
+	ventilationTiming = 0.0f;
+	ventilationInterval = 10.0f;
+
 	return true;
 }
 
@@ -96,8 +102,29 @@ bool CShip::Reset()
  */
 void CShip::Update(const double dElapsedTime)
 {
-	// FSM and shit
+	TimeElapsed += 0.0167f;
+	std::cout << ventilationTiming << " " << TimeElapsed << "\n";
 
+	CInventoryItem* cItem1 = cInventoryManager->GetItem("Ventilation");
+	if ((TimeElapsed - ventilationTiming) >= ventilationInterval) {
+		// set the ship on fire bitches
 
+		cItem1->Remove(1);
+
+		if (cItem1->GetCount() < 50) {
+			CInventoryItem* cItem2 = cInventoryManager->GetItem("Health");
+			cItem2->Remove(1);
+		}
+
+	}
+	else if (cItem1->GetCount() != cItem1->GetMaxCount()) {
+		cItem1->Add(1);
+	}
+}
+
+void CShip::ResetVentilationTimer(void)
+{
+	TimeElapsed = 0;
+	ventilationTiming = 0;
 }
 

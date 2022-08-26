@@ -156,11 +156,23 @@ bool CShipPlayer::Init(void)
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 
+	if (cInventoryManager->Check("Ventilation") == false) {
+		// Add a damage icon as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Ventilation", "Image/Scene2D_Health.tga", 300, 300);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+
 	// Resources
+
+	if (cInventoryManager->Check("Storage") == false) {
+		// Add a scrap metal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Storage", "Image/Scene2D_Health.tga", 15, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
 	
 	if (cInventoryManager->Check("ScrapMetal") == false) {
 		// Add a scrap metal as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("ScrapMetal", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("ScrapMetal", "Image/GUI/ScrapMetal.tga", 99, 0);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	else {
@@ -168,7 +180,7 @@ bool CShipPlayer::Init(void)
 	}
 	if (cInventoryManager->Check("Battery") == false) {
 		// Add a battery as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("Battery", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("Battery", "Image/GUI/Battery.tga", 99, 0);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	else {
@@ -176,7 +188,7 @@ bool CShipPlayer::Init(void)
 	}
 	if (cInventoryManager->Check("Ironwood") == false) {
 		// Add a ironwood as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("Ironwood", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("Ironwood", "Image/GUI/Ironwood.tga", 99, 0);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	else {
@@ -184,17 +196,50 @@ bool CShipPlayer::Init(void)
 	}
 	if (cInventoryManager->Check("EnergyQuartz") == false) {
 		// Add a energy quartz as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("EnergyQuartz", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("EnergyQuartz", "Image/GUI/EnergyQuartz.tga", 99, 0);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	if (cInventoryManager->Check("IceCrystal") == false) {
 		// Add a ice crystal as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("IceCrystal", "Image/Scene2D_Health.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("IceCrystal", "Image/GUI/icecrystal.tga", 99, 0);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+
+	// Upgrades
+
+	if (cInventoryManager->Check("Upgrade_storage") == false) {
+		// Add a ice crystal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Upgrade_storage", "Image/Scene2D_Health.tga", 3, 1);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+
+	if (cInventoryManager->Check("Upgrade_small1") == false) {
+		// Add a ice crystal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Upgrade_small1", "Image/Scene2D_Health.tga", 3, 1);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	if (cInventoryManager->Check("Upgrade_small2") == false) {
+		// Add a ice crystal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Upgrade_small2", "Image/Scene2D_Health.tga", 3, 1);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+	if (cInventoryManager->Check("Upgrade_large") == false) {
+		// Add a ice crystal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Upgrade_large", "Image/Scene2D_Health.tga", 3, 1);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
+
+	TimeElapsed = 0;
+	Weapon1Time = 0;
+	Weapon2Time = 0;
+	LargeWeaponTime = 0;
+
+	weapon1Interval = 3.0f;
+	weapon2Interval = 3.0f;
+	LargeWeaponInterval = 10.0f;
 
 	return true;
 }
@@ -230,6 +275,9 @@ bool CShipPlayer::Reset()
  */
 void CShipPlayer::Update(const double dElapsedTime)
 {
+	// Increase time
+	TimeElapsed += 0.0167f;
+
 	// SUPERHOT movement
 	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
 	{
@@ -238,74 +286,6 @@ void CShipPlayer::Update(const double dElapsedTime)
 	
 	// Store the old position
 	vec2OldIndex = vec2Index;
-
-	//// Get keyboard updates	
-	//if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
-	//{
-	//	// Calculate the new position to the left
-	//	if (vec2Index.x >= 0)
-	//	{
-	//		vec2NumMicroSteps.x--; //speed_multiplier;
-	//		if (vec2NumMicroSteps.x < 0)
-	//		{
-	//			vec2NumMicroSteps.x = ((int)cSettings->NUM_STEPS_PER_TILE_XAXIS) - 1;
-	//			vec2Index.x--;
-	//		}
-	//	}
-
-	//	if (!CheckPosition(LEFT))
-	//	{
-	//		vec2Index.x = vec2OldIndex.x;
-	//		vec2NumMicroSteps.x = 0;
-	//	}
-
-	//	runtimeColour = glm::vec4(1.0, 1.0, 1.0, 1.0);
-	//	Constraint(LEFT);
-
-	//	// Play the "runL" animation
-	//	animatedSprites->PlayAnimation("runL", -1, 1.0f);
-
-	//	// SUPERHOT movement
-	//	isPlayerMoving = true;
-
-	//}
-	//else if (cKeyboardController->IsKeyReleased(GLFW_KEY_A))
-	//{
-	//	// Play the "idleR" animation
-	//	animatedSprites->PlayAnimation("idleL", -1, 1.0f);
-	//}
-	//else if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
-	//{
-	//	// Calculate the new position to the right
-	//	if (vec2Index.x < ((int)cSettings->NUM_TILES_XAXIS))
-	//	{
-	//		vec2NumMicroSteps.x++;
-	//		if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
-	//		{
-	//			vec2NumMicroSteps.x = 0;
-	//			vec2Index.x++;
-	//		}
-	//	}
-
-	//	// Constraint the player's position within the screen 
-	//	Constraint(RIGHT);
-
-	//	if (CheckPosition(RIGHT) == false)
-	//	{
-	//		vec2NumMicroSteps.x = 0;
-	//	}
-
-	//	// Play the "runR" animation
-	//	animatedSprites->PlayAnimation("runR", -1, 1.0f);
-
-	//	// SUPERHOT movement
-	//	isPlayerMoving = true;
-	//}
-	//else if (cKeyboardController->IsKeyReleased(GLFW_KEY_D))
-	//{
-	//	// Play the "idleL" animation
-	//	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
-	//}
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_D))
 	{
@@ -320,14 +300,17 @@ void CShipPlayer::Update(const double dElapsedTime)
 			}
 		}
 
+		player_Dir = RIGHT;
+
 		// Constraint the player's position within the screen boundary
-		Constraint(RIGHT);
+		Constraint(player_Dir);
 
 		// If the new position is not feasible, then revert to old position
-		if (CheckPosition(RIGHT) == false)
+		if (CheckPosition(player_Dir) == false)
 		{
 			vec2NumMicroSteps.x = 0;
 		}
+
 
 		// SUPERHOT movement
 		isPlayerMoving = true;
@@ -349,11 +332,13 @@ void CShipPlayer::Update(const double dElapsedTime)
 			}
 		}
 
+		player_Dir = LEFT;
+
 		// Constraint the player's position within the screen boundary
-		Constraint(LEFT);
+		Constraint(player_Dir);
 
 		// If the new position is not feasible, then revert to old position
-		if (CheckPosition(LEFT) == false)
+		if (CheckPosition(player_Dir) == false)
 		{
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
@@ -379,11 +364,13 @@ void CShipPlayer::Update(const double dElapsedTime)
 			}
 		}
 
+		player_Dir = UP;
+
 		// Constraint the player's position within the screen boundary
-		Constraint(UP);
+		Constraint(player_Dir);
 
 		// If the new position is not feasible, then revert to old position
-		if (CheckPosition(UP) == false)
+		if (CheckPosition(player_Dir) == false)
 		{
 			vec2NumMicroSteps.y = 0;
 		}
@@ -404,11 +391,13 @@ void CShipPlayer::Update(const double dElapsedTime)
 			}
 		}
 
+		player_Dir = DOWN;
+
 		// Constraint the player's position within the screen boundary
-		Constraint(DOWN);
+		Constraint(player_Dir);
 
 		// If the new position is not feasible, then revert to old position
-		if (CheckPosition(DOWN) == false)
+		if (CheckPosition(player_Dir) == false)
 		{
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.y = 0;
