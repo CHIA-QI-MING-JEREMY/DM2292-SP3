@@ -202,6 +202,14 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGuiWindowFlags_NoCollapse |
 		ImGuiWindowFlags_NoScrollbar;
 
+	ImGuiWindowFlags livesWindowFlags_noFront = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags_NoTitleBar |
+		ImGuiWindowFlags_NoMove |
+		ImGuiWindowFlags_NoBringToFrontOnFocus |
+		ImGuiWindowFlags_NoResize |
+		ImGuiWindowFlags_NoCollapse |
+		ImGuiWindowFlags_NoScrollbar;
+
 	if (GuiState != GUI_STATE::showUpgrade) {
 		ImGui::Begin("Health", NULL, overlayWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.01f),
@@ -294,128 +302,6 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::End();
 	}
 
-
-	if (isCombat) {
-		ImGui::Begin("EnemyInfo", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.65),
-			cSettings->iWindowHeight * (0.2f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-
-		ImGui::Image((void*)(intptr_t)boxBarBackground, ImVec2(250 * relativeScale_x, 400 * relativeScale_y));
-		ImGui::End();
-
-		// information
-		ImGui::Begin("EnemyInDepthInfo", NULL, healthWindowFlags);
-
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73),
-			cSettings->iWindowHeight * (0.27f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-
-		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-		ImGui::Text("Enemy Type: ");
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), CShipEnemy::GetInstance()->enemyName.c_str());
-		ImGui::NewLine();
-		ImGui::GetOverlayDrawList();
-
-		ImGui::Begin("EnemDam", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f),
-			cSettings->iWindowHeight * (0.36f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::Text("Enemy Damage");
-		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(160, 25));
-		ImGui::End();
-
-		// how. do i. get rid. of the border.
-		int damCount = CShipEnemy::GetInstance()->getHealth();
-		for (int i = 0; i < int(damCount / floor(CShipEnemy::GetInstance()->maxHealth / 10)); i++) {
-			ImGui::Begin("Enem Damage Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.74f,
-				cSettings->iWindowHeight * 0.40f));
-			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(7 * relativeScale_x, 14 * relativeScale_y));
-			ImGui::SameLine();
-			ImGui::GetOverlayDrawList();
-			ImGui::End();
-		}
-
-		ImGui::Begin("EnemyPic", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.75f),
-			cSettings->iWindowHeight * (0.45f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-
-		switch (CShipEnemy::GetInstance()->enemType)
-		{
-		case CShipEnemy::ENEMY_TYPE::EASY:
-			ImGui::Image((void*)(intptr_t)enemyShip1, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
-			break;
-		case CShipEnemy::ENEMY_TYPE::MEDIUM:
-			ImGui::Image((void*)(intptr_t)enemyShip2, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
-			break;
-		case CShipEnemy::ENEMY_TYPE::HARD:
-			ImGui::Image((void*)(intptr_t)enemyShip3, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
-			break;
-		default:
-			break;
-		}
-
-		ImGui::GetOverlayDrawList();
-		ImGui::End();
-
-		ImGui::Begin("EnemyGun", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth* (0.73f * relativeScale_x),
-			cSettings->iWindowHeight* (0.70f * relativeScale_y)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::Text("Enemy Weapon:");
-		// Time until next attack
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-		ImGui::ProgressBar((CShipEnemy::GetInstance()->TimeElapsed - CShipEnemy::GetInstance()->attackTimer) /
-			(float)CShipEnemy::GetInstance()->enemyTimer, ImVec2(160.0f *
-				relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-
-		ImGui::GetOverlayDrawList();
-		ImGui::End();
-		ImGui::End();
-
-	}
-
-	if (GuiState != GUI_STATE::showWeapons && isCombat) {
-		// show the ventilation panel
-
-		ImGui::Begin("Ventilation", NULL, livesWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.05f),
-			cSettings->iWindowHeight - cSettings->iWindowHeight * (0.25f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-
-		ImGui::Text("Oxygen On Ship");
-
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-		ImGui::ProgressBar((CShip::GetInstance()->ventilationInterval - (CShip::GetInstance()->TimeElapsed - CShip::GetInstance()->ventilationTiming)) /
-			(float)CShip::GetInstance()->ventilationInterval, ImVec2(160.0f *
-				relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
-
-		ImGui::NewLine();
-		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-		ImGui::Text("Restart Ventilation");
-		if (ImGui::IsItemClicked()) {
-			CShip::GetInstance()->ResetVentilationTimer();
-		}
-		ImGui::End();
-	}
-
 	if (isCombat &&	GuiState == GUI_STATE::showWeapons) {
 		// fire weapons and stuff lol
 
@@ -424,6 +310,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			cSettings->iWindowHeight - cSettings->iWindowHeight * (0.25f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.3f * relativeScale_y);
+		ImGui::SetWindowFocus();
 
 		ImGui::Text("Large weapon Fire");
 
@@ -449,6 +336,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			cSettings->iWindowHeight - cSettings->iWindowHeight * (0.25f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.3f * relativeScale_y);
+		ImGui::SetWindowFocus();
 
 		ImGui::Text("Small weapon 1 Fire");
 
@@ -475,6 +363,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			cSettings->iWindowHeight - cSettings->iWindowHeight * (0.25f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.3f * relativeScale_y);
+		ImGui::SetWindowFocus();
 
 		ImGui::Text("Small weapon 2 Fire");
 
@@ -497,11 +386,41 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 	}
 
+	if (GuiState != GUI_STATE::showWeapons && isCombat) {
+		// show the ventilation panel
+
+		ImGui::Begin("Ventilation", NULL, livesWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.05f),
+			cSettings->iWindowHeight - cSettings->iWindowHeight * (0.25f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::SetWindowFocus();
+
+		ImGui::Text("Oxygen On Ship");
+
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+		ImGui::ProgressBar((CShip::GetInstance()->ventilationInterval - (CShip::GetInstance()->TimeElapsed - CShip::GetInstance()->ventilationTiming)) /
+			(float)CShip::GetInstance()->ventilationInterval, ImVec2(160.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+
+		ImGui::NewLine();
+		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
+		ImGui::Text("Restart Ventilation");
+		if (ImGui::IsItemClicked()) {
+			CShip::GetInstance()->ResetVentilationTimer();
+		}
+		ImGui::End();
+	}
+
 	if (showRepairPanel) {
 		ImGui::Begin("Lives", NULL, livesWindowFlags);
 		ImGui::SetWindowPos(ImVec2(blockPosition.x + cSettings->iWindowWidth * 0.05f,
 			blockPosition.y - cSettings->iWindowHeight * 0.1f));
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
 
 		// planet information
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
@@ -517,7 +436,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		// Add codes for Start button here
 		if (cInventoryItem1->GetCount() >= 1)
 		{
-			ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+			ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth * relativeScale_y, buttonHeight * relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 			if (ImGui::IsItemClicked()) {
 				makeChanges = true;
 				cInventoryItem1->Remove(1);
@@ -525,7 +444,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		}
 		ImGui::SameLine();
 
-		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth* relativeScale_y, buttonHeight * relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
 			showRepairPanel = false;
@@ -550,6 +469,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.1f,
 			cSettings->iWindowHeight * 0.2f));
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
 
 		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonWidth), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
@@ -1011,6 +931,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::SetWindowPos(ImVec2(blockPosition.x - cSettings->iWindowWidth * 0.30f,
 					blockPosition.y - cSettings->iWindowHeight * 0.1f));
 				ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+				ImGui::SetWindowFocus();
 
 				ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Maximum Upgrades Reached.");
@@ -1036,30 +957,132 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowPos(ImVec2(blockPosition.x + cSettings->iWindowWidth * 0.05f,
 			blockPosition.y - cSettings->iWindowHeight * 0.1f));
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
 
 		// planet information
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Start Exploring?");
 		ImGui::NewLine();
 		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)AcceptButtonData.textureID,
-			ImVec2(buttonWidth * relativeScale_x, buttonHeight * relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
-		{
+		ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		if (ImGui::IsItemClicked()) {
 			makeChanges = true;
 		}
 		ImGui::SameLine();
-		// Add codes for Start button here
-		if (ImGui::ImageButton((ImTextureID)RejectButtonData.textureID,
-			ImVec2(buttonWidth * relativeScale_x, buttonHeight * relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0)))
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		if (ImGui::IsItemClicked())
 		{
 			GuiState = GUI_STATE::noShow;
 			makeChanges = false;
 		}
 
+
 		ImGui::End();
 		break;
 	default:
 		break;
+	}
+
+
+	if (isCombat) {
+		ImGui::Begin("EnemyInfo", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.65),
+			cSettings->iWindowHeight * (0.2f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::SetWindowFocus();
+
+		ImGui::Image((void*)(intptr_t)boxBarBackground, ImVec2(250 * relativeScale_x, 400 * relativeScale_y));
+		ImGui::End();
+
+		// information
+		ImGui::Begin("EnemyInDepthInfo", NULL, healthWindowFlags);
+
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73),
+			cSettings->iWindowHeight * (0.27f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
+
+		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
+		ImGui::Text("Enemy Type: ");
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), CShipEnemy::GetInstance()->enemyName.c_str());
+		ImGui::NewLine();
+		ImGui::GetOverlayDrawList();
+
+		ImGui::Begin("EnemDam", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f),
+			cSettings->iWindowHeight * (0.36f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::SetWindowFocus();
+
+		ImGui::Text("Enemy Damage");
+		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(160, 25));
+		ImGui::End();
+
+		// how. do i. get rid. of the border.
+		int damCount = CShipEnemy::GetInstance()->getHealth();
+		for (int i = 0; i < int(damCount / floor(CShipEnemy::GetInstance()->maxHealth / 10)); i++) {
+			ImGui::Begin("Enem Damage Bit", NULL, healthWindowFlags);
+			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.74f,
+				cSettings->iWindowHeight * 0.40f));
+			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+			ImGui::SetWindowFocus();
+
+			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(7 * relativeScale_x, 14 * relativeScale_y));
+			ImGui::SameLine();
+			ImGui::GetOverlayDrawList();
+			ImGui::End();
+		}
+
+		ImGui::Begin("EnemyPic", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.75f),
+			cSettings->iWindowHeight * (0.45f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::SetWindowFocus();
+
+
+		switch (CShipEnemy::GetInstance()->enemType)
+		{
+		case CShipEnemy::ENEMY_TYPE::EASY:
+			ImGui::Image((void*)(intptr_t)enemyShip1, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
+			break;
+		case CShipEnemy::ENEMY_TYPE::MEDIUM:
+			ImGui::Image((void*)(intptr_t)enemyShip2, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
+			break;
+		case CShipEnemy::ENEMY_TYPE::HARD:
+			ImGui::Image((void*)(intptr_t)enemyShip3, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
+			break;
+		default:
+			break;
+		}
+
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+
+		ImGui::Begin("EnemyGun", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f * relativeScale_x),
+			cSettings->iWindowHeight * (0.70f * relativeScale_y)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
+
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::Text("Enemy Weapon:");
+		// Time until next attack
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+		ImGui::ProgressBar((CShipEnemy::GetInstance()->TimeElapsed - CShipEnemy::GetInstance()->attackTimer) /
+			(float)CShipEnemy::GetInstance()->enemyTimer, ImVec2(160.0f *
+				relativeScale_x, 20.0f * relativeScale_y));
+		ImGui::PopStyleColor();
+		ImGui::PopStyleColor();
+
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+		ImGui::End();
+
 	}
 
 	ImGui::End();

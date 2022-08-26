@@ -256,20 +256,15 @@ void CShipEnemy::Randomise(int position)
 	else {
 		// easier
 		int luckyDraw = rand() % 99 + 1;
-		if (luckyDraw < 50) {
+		if (luckyDraw < 70) {
 			enemType = CShipEnemy::EASY;
 			maxHealth = enemyHealth = 50;
 			enemyName = "Rookie Enforcer";
 		}
-		else if (luckyDraw < 90) {
+		else if (luckyDraw < 100) {
 			enemType = CShipEnemy::MEDIUM;
 			maxHealth = enemyHealth = 80;
 			enemyName = "Sargeant Enforcer";
-		}
-		else {
-			enemType = CShipEnemy::HARD;
-			maxHealth = enemyHealth = 100;
-			enemyName = "Commander Enforcer";
 		}
 	}
 }

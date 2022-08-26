@@ -160,7 +160,8 @@ bool CSceneCombat::Init(void)
 
 	lState = false;
 	blockSelected = glm::vec2(0, 0);
-	numOfEncounters = rand() % 3 + 1;
+	// max 2 encounters x
+	numOfEncounters = rand() % 2 + 1;
 	goToNextScene = false;
 	state = CURRENT_STATE::SHIP_NOSTATE;
 	fightTimeElapsed = 0.0f;
@@ -209,7 +210,7 @@ bool CSceneCombat::Update(const double dElapsedTime)
 	camera2D->setTargetPos(camPos);
 	camera2D->Update(dElapsedTime);
 
-	if ((state == CURRENT_STATE::SHIPREST) && numOfEncounters >= 0) {
+	if ((state == CURRENT_STATE::SHIPREST) && numOfEncounters > 0) {
 		fightTimeElapsed += float(dElapsedTime);
 		std::cout << fightTimeElapsed << " " << kBreakTime << "\n";
 
@@ -252,7 +253,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		cGUI_SceneCombat->showRepairPanel = false;
 		cGUI_SceneCombat->makeChanges = false;
 	}
-	if (cGUI_SceneCombat->makeChanges && cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showExit && state == CURRENT_STATE::SHIPLANDED) {
+	if (cGUI_SceneCombat->makeChanges && cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showExit) {
+		state = CURRENT_STATE::SHIPLANDED;
 		goToNextScene = true;
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 		cGUI_SceneCombat->makeChanges = false;
@@ -323,9 +325,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 	case CURRENT_STATE::SHIPUPGRADE:
 		
 		break;
-	case CURRENT_STATE::SHIPCOMBAT:
+	case CURRENT_STATE::SHIPREST:
 		if (numOfEncounters <= 0) {
-			state = CURRENT_STATE::SHIPLANDED;
 			cMap2D->SetMapInfo(7, 16, 1222, false);
 		}
 		break;
