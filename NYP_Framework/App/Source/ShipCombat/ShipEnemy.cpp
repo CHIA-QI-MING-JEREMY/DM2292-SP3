@@ -126,7 +126,7 @@ void CShipEnemy::Update(const double dElapsedTime)
 		break;
 	}
 
-	if (TimeElapsed - attackTimer > 10) {
+	if (TimeElapsed - attackTimer > enemyTimer) {
 		for (int i = 0; i < attackCounter; i++) {
 			Attack();
 		}

@@ -90,17 +90,13 @@ bool CShipPlayer::Init(void)
 	// Find the indices for the player in arrMapInfo, and assign it to cPlayer2D
 	unsigned int uiRow = -1;
 	unsigned int uiCol = -1;
-	if (cMap2D->FindValue(1400, uiRow, uiCol) == false)
-		return false;	// Unable to find the start position of the player, so quit this game
+	if (cMap2D->FindValue(1400, uiRow, uiCol) == false) {
+		uiRow = 15;
+		uiCol = 16;
+	}
 
 	// Erase the value of the player in the arrMapInfo
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
-
-	if (cMap2D->FindValue(1400, uiRow, uiCol) == true)
-	{
-		cout << "Another position of the player has been found" << endl;
-		return false;	// Another position of the player has been found, so quit this game
-	}
 
 	// Set the start position of the Player to iRow and iCol
 	vec2Index = glm::i32vec2(uiCol, uiRow);
@@ -166,13 +162,13 @@ bool CShipPlayer::Init(void)
 
 	if (cInventoryManager->Check("Storage") == false) {
 		// Add a scrap metal as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("Storage", "Image/Scene2D_Health.tga", 15, 0);
+		cInventoryItem = cInventoryManager->Add("Storage", "Image/Scene2D_Health.tga", 15, 13);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	
 	if (cInventoryManager->Check("ScrapMetal") == false) {
 		// Add a scrap metal as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("ScrapMetal", "Image/GUI/ScrapMetal.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("ScrapMetal", "Image/GUI/ScrapMetal.tga", 99, 5);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	else {
@@ -180,7 +176,7 @@ bool CShipPlayer::Init(void)
 	}
 	if (cInventoryManager->Check("Battery") == false) {
 		// Add a battery as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("Battery", "Image/GUI/Battery.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("Battery", "Image/GUI/Battery.tga", 99, 2);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	else {
@@ -188,7 +184,7 @@ bool CShipPlayer::Init(void)
 	}
 	if (cInventoryManager->Check("Ironwood") == false) {
 		// Add a ironwood as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("Ironwood", "Image/GUI/Ironwood.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("Ironwood", "Image/GUI/Ironwood.tga", 99, 2);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	else {
@@ -196,12 +192,12 @@ bool CShipPlayer::Init(void)
 	}
 	if (cInventoryManager->Check("EnergyQuartz") == false) {
 		// Add a energy quartz as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("EnergyQuartz", "Image/GUI/EnergyQuartz.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("EnergyQuartz", "Image/GUI/EnergyQuartz.tga", 99, 2);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 	if (cInventoryManager->Check("IceCrystal") == false) {
 		// Add a ice crystal as one of the inventory items
-		cInventoryItem = cInventoryManager->Add("IceCrystal", "Image/GUI/icecrystal.tga", 99, 0);
+		cInventoryItem = cInventoryManager->Add("IceCrystal", "Image/GUI/icecrystal.tga", 99, 2);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
 
@@ -212,6 +208,12 @@ bool CShipPlayer::Init(void)
 		cInventoryItem = cInventoryManager->Add("Upgrade_storage", "Image/Scene2D_Health.tga", 3, 1);
 		cInventoryItem->vec2Size = glm::vec2(25, 25);
 	}
+	if (cInventoryManager->Check("Upgrade_ventilation") == false) {
+		// Add a ice crystal as one of the inventory items
+		cInventoryItem = cInventoryManager->Add("Upgrade_ventilation", "Image/Scene2D_Health.tga", 3, 1);
+		cInventoryItem->vec2Size = glm::vec2(25, 25);
+	}
+
 
 	if (cInventoryManager->Check("Upgrade_small1") == false) {
 		// Add a ice crystal as one of the inventory items
@@ -237,8 +239,8 @@ bool CShipPlayer::Init(void)
 	Weapon2Time = 0;
 	LargeWeaponTime = 0;
 
-	weapon1Interval = 3.0f;
-	weapon2Interval = 3.0f;
+	weapon1Interval = 5.0f;
+	weapon2Interval = 5.0f;
 	LargeWeaponInterval = 10.0f;
 
 	return true;

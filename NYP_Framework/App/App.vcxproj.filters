@@ -168,6 +168,12 @@
     <ClCompile Include="Source\Scene2D\TerrestrialEnemy2DWorker.cpp">
       <Filter>Scene2D</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\LoseState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameStateManagement\WinState.cpp">
+      <Filter>GameStateManagement</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
@@ -341,6 +347,12 @@
     </ClInclude>
     <ClInclude Include="Source\Scene2D\TerrestrialEnemy2DWorker.h">
       <Filter>Scene2D</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\LoseState.h">
+      <Filter>GameStateManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameStateManagement\WinState.h">
+      <Filter>GameStateManagement</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
