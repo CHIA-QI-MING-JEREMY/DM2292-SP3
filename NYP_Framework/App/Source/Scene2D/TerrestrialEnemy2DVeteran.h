@@ -70,19 +70,19 @@ public:
 	void PostRender(void);
 
 	// Set the indices of the enemy2D
-	void Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis);
+	void Setvec2Index(const int iIndex_XAxis, const int iIndex_YAxis);
 
 	// Set the number of microsteps of the enemy2D
-	void Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis);
+	void Setvec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis);
 
 	// Set the UV coordinates of the enemy2D
 	void Setvec2UVCoordinates(const float fUVCoordinate_XAxis, const float fUVCoordinate_YAxis);
 
 	// Get the indices of the enemy2D
-	glm::vec2 Geti32vec2Index(void) const;
+	glm::vec2 Getvec2Index(void) const;
 
 	// Get the number of microsteps of the enemy2D
-	glm::vec2 Geti32vec2NumMicroSteps(void) const;
+	glm::vec2 Getvec2NumMicroSteps(void) const;
 
 	// Set the UV coordinates of the enemy2D
 	glm::vec2 Getvec2UVCoordinates(void) const;
@@ -127,7 +127,7 @@ protected:
 		NUM_FSM
 	};
 
-	glm::vec2 i32vec2OldIndex;
+	glm::vec2 vec2OldIndex;
 
 	//CS: The quadMesh for drawing the tiles
 	CMesh* quadMesh;

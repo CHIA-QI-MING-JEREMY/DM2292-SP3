@@ -1221,7 +1221,13 @@ bool TEnemy2DSentry::IsMidAir(void)
 
 	// Check if the tile below the player's current position is empty
 	if ((vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0))
+		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600))
+	{
+		return true;
+	}
+
+	//if enemy is standing between 2 tiles which are both not obstruction blocks
+	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
 	{
 		return true;
 	}

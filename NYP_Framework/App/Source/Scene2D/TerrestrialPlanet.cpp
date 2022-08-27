@@ -86,6 +86,11 @@ TerrestrialPlanet::~TerrestrialPlanet(void)
 		cGUI_Scene2D = NULL;
 	}
 
+	if (cBackground)
+	{
+		cBackground = NULL;
+	}
+
 	if (cGameManager)
 	{
 		cGameManager->Destroy();
@@ -105,6 +110,11 @@ bool TerrestrialPlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
+
+	// Create Background Entity
+	cBackground = new CBackgroundEntity("Image/TerrestrialPlanet/Background.png");
+	cBackground->SetShader("Shader2D");
+	cBackground->Init();
 
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
@@ -1039,6 +1049,14 @@ void TerrestrialPlanet::PreRender(void)
  */
 void TerrestrialPlanet::Render(void)
 {
+	// Render Background
+	// Calls the Background's PreRender()
+	cBackground->PreRender();
+	// Calls the Background's Render()
+	cBackground->Render();
+	// Calls the Background's PostRender()
+	cBackground->PostRender();
+	
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()
@@ -1109,7 +1127,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

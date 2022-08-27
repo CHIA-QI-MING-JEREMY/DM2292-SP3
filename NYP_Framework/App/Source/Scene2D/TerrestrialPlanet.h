@@ -40,6 +40,7 @@
 
 // Include GUI_Scene2D
 #include "GUI_Scene2D.h"
+#include "BackgroundEntity.h"
 
 // Include vector
 #include <vector>
@@ -131,6 +132,9 @@ protected:
 
 	// The handler containing the instance of CGUI_Scene2D
 	CGUI_Scene2D* cGUI_Scene2D;
+
+	// The handler containing the instance of CBackgroundEntity
+	CBackgroundEntity* cBackground;
 
 	// Keyboard Controller singleton instance
 	CKeyboardController* cKeyboardController;
