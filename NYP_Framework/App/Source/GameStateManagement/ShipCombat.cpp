@@ -58,6 +58,7 @@ bool CShipCombatState::Init(void)
 	}
 	else if (CGameInfo::GetInstance()->PrevState == 2) {
 		cSceneCombat->SetNewState(CSceneCombat::CURRENT_STATE::SHIPUPGRADE_NP);
+		CGUI_SceneCombat::GetInstance()->GuiState = CGUI_SceneCombat::GUI_STATE::showUpgrade;
 	}
 
 	return true;
@@ -90,16 +91,36 @@ bool CShipCombatState::Update(const double dElapsedTime)
 		CGameStateManager::GetInstance()->SetActiveGameState("MenuState");
 	}
 
+	if (cSceneCombat->goToNextScene && cSceneCombat->isDead) {
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
+
+		// Load the menu state
+		cout << "Loading MenuState" << endl;
+		CGameStateManager::GetInstance()->SetActiveGameState("LoseState");
+	}
+
 	if (cSceneCombat->goToNextScene) {
 		switch (cSceneCombat->getCurrentState())
 		{
 		case CSceneCombat::CURRENT_STATE::SHIPLANDED:
-			// Reset the CKeyboardController
-			CKeyboardController::GetInstance()->Reset();
 
-			// Load the menu state
-			cout << "Loading PlayGameState" << endl;
-			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			if (CGameInfo::GetInstance()->selectedPlanet->getType() == CPlanet::TYPE::FINAL) {
+				// Reset the CKeyboardController
+				CKeyboardController::GetInstance()->Reset();
+
+				// Load the menu state
+				cout << "Loading WinState" << endl;
+				CGameStateManager::GetInstance()->SetActiveGameState("WinState");
+			}
+			else {
+				// Reset the CKeyboardController
+				CKeyboardController::GetInstance()->Reset();
+
+				// Load the menu state
+				cout << "Loading PlayGameState" << endl;
+				CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");
+			}
 			break;
 		case CSceneCombat::CURRENT_STATE::SHIPUPGRADE_NP:
 			// Reset the CKeyboardController

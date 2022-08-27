@@ -73,6 +73,8 @@
 #include "InventoryManager.h"
 #include "InventoryManagerPlanet.h"
 
+#include "../GameStateManagement/GameInfo.h"
+
 // Add your include files here
 
 class TerrestrialPlanet : public CSingletonTemplate<TerrestrialPlanet>
@@ -102,6 +104,8 @@ public:
 	void DecideLevel(bool tutorial);
 
 	bool getIsOnShip(void);
+	void SetResourcesBack(void);
+
 
 protected:
 	// The handler containing the instance of the 2D Map

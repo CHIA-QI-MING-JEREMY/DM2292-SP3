@@ -78,6 +78,7 @@ public:
 
 	bool StartCombat;
 	CPlanet* gotoPlanet;
+	bool isDead;
 
 protected:
 	CBackgroundEntity* background;

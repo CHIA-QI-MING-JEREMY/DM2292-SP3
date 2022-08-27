@@ -141,7 +141,6 @@ bool CScenePlanet::Init(void)
 				if (CGameInfo::GetInstance()->initPlanets == false) {
 					camera2D->setTargetPos(glm::vec2(cPlanet->vec2Index.x, cPlanet->vec2Index.y));
 					CGameInfo::GetInstance()->currentPlanetPos = cPlanet->vec2Index;
- 					CGameInfo::GetInstance()->selectedPlanet = cPlanet;
 				}
 				cPlanet->SetType(CPlanet::TYPE::JUNGLE_TUTORIAL);
 				PlanetSelected = cPlanet;
@@ -279,7 +278,7 @@ bool CScenePlanet::Init(void)
 
 	if (CGameInfo::GetInstance()->initPlanets == false) {
 		CGameInfo::GetInstance()->initPlanets = true;
-		realSize = 1;
+		realSize = 3;
 		nebulaSize = 5;
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 	}
@@ -309,18 +308,18 @@ bool CScenePlanet::Init(void)
 				PlanetSelected = otherPlanets->second;
 			}
 
+			if (s.x <= int(nebulaSize / 2)) {
+				isDead = true;
+			}
+			else {
+				isDead = false;
+			}
+
 			if (glm::abs(otherPlanets->second->vec2Index.x - PlanetSelected->vec2Index.x) < 6) {
 				otherPlanets->second->SetVisibility(true);
 			}
 			else {
 				otherPlanets->second->SetVisibility(false);
-			}
-
-			if (otherPlanets->second->vec2Index.x <= int((nebulaSize - 3) / 2)) {
-				// Add lose condition
-
-				otherPlanets->second->SetVisibility(false);
-				cMap2D->SetMapInfo(otherPlanets->second->vec2Index.y, otherPlanets->second->vec2Index.x, 598, true);
 			}
 			otherPlanets++;
 		}
@@ -355,6 +354,23 @@ bool CScenePlanet::Update(const double dElapsedTime)
 	if (nebulaSize != realSize) {
 		realSize = camera2D->lerp(realSize, nebulaSize, 0.01f);
 		nebula->SetScale(realSize);
+
+		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
+
+		while (otherPlanets != planetVector.end()) {
+			if (otherPlanets->second->vec2Index.x == 0) {
+				otherPlanets++;
+				continue;
+			}
+
+			if (otherPlanets->second->vec2Index.x <= int(realSize / 2)) {
+				otherPlanets->second->SetVisibility(false);
+				cMap2D->SetMapInfo(otherPlanets->second->vec2Index.y, otherPlanets->second->vec2Index.x, 598, true);
+
+			}
+			
+			otherPlanets++;
+		}
 	}
 
 	// mouse Position demo
