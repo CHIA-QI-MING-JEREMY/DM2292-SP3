@@ -357,6 +357,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
 		ImGui::Text("FIRE WEAPON");
 		if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) >= (float)CShipPlayer::GetInstance()->LargeWeaponInterval) {
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 10);
 			CShipPlayer::GetInstance()->LargeWeaponTime = CShipPlayer::GetInstance()->TimeElapsed;
 		}
@@ -383,6 +385,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
 		ImGui::Text("FIRE WEAPON");
 		if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) >= CShipPlayer::GetInstance()->weapon1Interval) {
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 5);
 			CShipPlayer::GetInstance()->Weapon1Time = CShipPlayer::GetInstance()->TimeElapsed;
 
@@ -409,6 +413,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
 		ImGui::Text("FIRE WEAPON");
 		if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) >= CShipPlayer::GetInstance()->weapon2Interval) {
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 5);
 			CShipPlayer::GetInstance()->Weapon2Time = CShipPlayer::GetInstance()->TimeElapsed;
 
@@ -441,6 +447,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 		ImGui::Text("Restart Ventilation");
 		if (ImGui::IsItemClicked()) {
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			CShip::GetInstance()->ResetVentilationTimer();
 		}
 		ImGui::End();
@@ -471,6 +479,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			if (ImGui::IsItemClicked()) {
 				makeChanges = true;
 				cInventoryItem1->Remove(1);
+				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 			}
 		}
 		ImGui::SameLine();
@@ -479,6 +488,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		if (ImGui::IsItemClicked())
 		{
 			showRepairPanel = false;
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			makeChanges = false;
 		}
 
@@ -505,6 +516,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth * relativeScale_x, buttonWidth * relativeScale_x), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			GuiState = CGUI_SceneCombat::noShow;
 			Camera2D::GetInstance()->setTargetZoom(2.0f);
 		}
@@ -617,6 +630,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth * relativeScale_x, buttonWidth * relativeScale_x), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			GuiState = CGUI_SceneCombat::GUI_STATE::showUpgrade;
 
 			Camera2D::GetInstance()->setTargetZoom(2.0f);
@@ -659,6 +674,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		
 		if (ImGui::IsItemClicked() && !isCombat) {
 			UpgradeState = UPGRADE_STATE::LARGEWEAPON_UPGRADE;
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 		}
 
 		ImGui::GetOverlayDrawList();
@@ -691,6 +708,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		if (ImGui::IsItemClicked() && !isCombat) {
 			UpgradeState = UPGRADE_STATE::SMALLWEAPON1_UPGRADE;
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 		}
 
 		ImGui::GetOverlayDrawList();
@@ -722,6 +741,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		if (ImGui::IsItemClicked() && !isCombat) {
 			UpgradeState = UPGRADE_STATE::SMALLWEAPON2_UPGRADE;
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 		}
 
 		ImGui::GetOverlayDrawList();
@@ -791,6 +812,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -825,6 +848,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
+						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 						makeChanges = true;
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
@@ -838,6 +863,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -858,6 +885,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -893,6 +922,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
+						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 						makeChanges = true;
 						cInventoryItem1->Remove(3);
 						cInventoryItem2->Remove(2);
@@ -906,6 +937,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -926,6 +959,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -948,6 +983,11 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Storage");
+
+		cInventoryItem1 = cInventoryManager->GetItem("Storage");
+
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Capacity: %d / %d", cInventoryItem1->GetCount(), cInventoryItem1->GetMaxCount());
 
 		if (cInventoryManager->GetItem("Storage")->GetCount() == 0) {
 			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -1033,6 +1073,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 			makeChanges = false;
 		}
@@ -1066,10 +1108,12 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap: %d", cInventoryItem2->GetCount());
 				ImGui::NewLine();
 				// Add codes for Start button here
-				if (cInventoryItem1->GetCount() >= 0 && cInventoryItem2->GetCount() >= 0)
+				if (cInventoryItem1->GetCount() >= 2 && cInventoryItem2->GetCount() >= 2)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
+						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 						makeChanges = true;
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(2);
@@ -1082,6 +1126,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -1102,6 +1148,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -1131,13 +1179,15 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ice: %d", cInventoryItem2->GetCount());
 				ImGui::NewLine();
 				// Add codes for Start button here
-				if (cInventoryItem1->GetCount() >= 0 && cInventoryItem2->GetCount() >= 0)
+				if (cInventoryItem1->GetCount() >= 2 && cInventoryItem2->GetCount() >= 1)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
+						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 						makeChanges = true;
-						//cInventoryItem1->Remove(2);
-						//cInventoryItem2->Remove(1);
+						cInventoryItem1->Remove(2);
+						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Upgrade_ventilation")->Add(1);
 						CShip::GetInstance()->ventilationInterval = 12 - cInventoryManager->GetItem("Upgrade_ventilation")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
@@ -1148,6 +1198,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -1168,6 +1220,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 				if (ImGui::IsItemClicked())
 				{
+					CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 					UpgradeState = UPGRADE_STATE::NOSTATE;
 					makeChanges = false;
 				}
@@ -1194,12 +1248,16 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		// Add codes for Start button here
 		ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked()) {
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			makeChanges = true;
 		}
 		ImGui::SameLine();
 		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+
 			GuiState = GUI_STATE::noShow;
 			makeChanges = false;
 		}

@@ -286,7 +286,7 @@ bool CScenePlanet::Init(void)
 		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
 
 		realSize = nebulaSize = CGameInfo::GetInstance()->nebulaSize;
-		nebulaSize += rand() % 7 + 1;
+		nebulaSize += rand() % 4 + 3;
 		std::cout << nebulaSize << "\n";
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 
@@ -332,6 +332,12 @@ bool CScenePlanet::Init(void)
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
 
+	cSoundController = CSoundController::GetInstance();
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\planetSelection.ogg"), CSoundController::SOUND_LIST::BGM_PLANET, true, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Window.ogg"), CSoundController::SOUND_LIST::WINODWOPEN, true, false);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Click.ogg"), CSoundController::SOUND_LIST::BUTTONCLICK, true, false);
+	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_PLANET); // plays BGM on repeat
+
 	StartCombat = false;
 	lState = false;
 
@@ -347,6 +353,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 		if (PlanetSelected->getVisibility() == true) {
 			gotoPlanet = PlanetSelected;
 			CGameInfo::GetInstance()->selectedPlanet = PlanetSelected;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK); // plays BGM on repeat
 			StartCombat = true;
 		}
 	}
@@ -397,6 +404,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 
 				PlanetSelected = x->second;
 				cGUI_ScenePlanet->setPlanetInfo(x->second);
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN); // plays BGM on repeat
 
 				// TODO: remove the panel uh-
 				if (glm::abs(x->second->vec2Index.x - camera2D->getPos().x) < 1) {

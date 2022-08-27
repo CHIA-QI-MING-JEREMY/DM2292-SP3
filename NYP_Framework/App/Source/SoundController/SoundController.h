@@ -34,6 +34,8 @@ public:
 	{
 		//Background Music
 		BGM_NORMAL = 0,
+		BGM_PLANET,
+		BGM_FIGHT,
 
 		//Common for Planets
 		FOOTSTEPS,
@@ -75,7 +77,9 @@ public:
 		WOLFSHIELD,
 		WOLFHEAL,
 
-
+		// UI Sounds
+		BUTTONCLICK,
+		WINODWOPEN,
 
 		NUM_SOUNDS
 	};

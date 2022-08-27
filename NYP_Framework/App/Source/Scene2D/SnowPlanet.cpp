@@ -938,11 +938,11 @@ void SnowPlanet::SetResourcesBack(void)
 				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}
 			else {
-				std::cout << "Item does not exist in inventory manager\n";
+				std::cout << "ScrapMetal does not exist in inventory manager\n";
 			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager planet \n";
+			std::cout << "ScrapMetal does not exist in inventory manager planet \n";
 		}
 
 		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
@@ -953,11 +953,11 @@ void SnowPlanet::SetResourcesBack(void)
 				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}
 			else {
-				std::cout << "Item does not exist in inventory manager\n";
+				std::cout << "Battery does not exist in inventory manager\n";
 			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager planet \n";
+			std::cout << "Battery does not exist in inventory manager planet \n";
 		}
 
 		if (cInventoryManagerPlanet->Check("IceCrystal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
@@ -968,11 +968,11 @@ void SnowPlanet::SetResourcesBack(void)
 				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}
 			else {
-				std::cout << "Item does not exist in inventory manager\n";
+				std::cout << "IceCrystal does not exist in inventory manager\n";
 			}
 		}
 		else {
-			std::cout << "Item does not exist in inventory manager planet \n";
+			std::cout << "IceCrystal does not exist in inventory manager planet \n";
 		}
 	}
 	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
