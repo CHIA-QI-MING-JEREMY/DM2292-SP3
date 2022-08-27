@@ -33,6 +33,8 @@ JunglePlanet::JunglePlanet(void)
  */
 JunglePlanet::~JunglePlanet(void)
 {
+	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+	
 	if (cKeyboardController)
 	{
 		// We won't delete this since it was created elsewhere

@@ -163,7 +163,7 @@ bool TEnemy2DSentry::Init(void)
 
 	type = LONG_RANGE; //has ammo
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 500; // 100 damage per hit from player
+	maxHealth = health = 700; // 100 damage per hit from player
 
 	// sets waypoints based on the level
 	if (cMap2D->GetCurrentLevel() == 1)
@@ -171,6 +171,10 @@ bool TEnemy2DSentry::Init(void)
 		if (vec2Index == glm::vec2(4, 17))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 300, 6);
+		}
+		else if (vec2Index == glm::vec2(29, 4))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 313, 2);
 		}
 	}
 	else if (cMap2D->GetCurrentLevel() == 2)
@@ -1217,7 +1221,13 @@ bool TEnemy2DSentry::IsMidAir(void)
 
 	// Check if the tile below the player's current position is empty
 	if ((vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0))
+		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600))
+	{
+		return true;
+	}
+
+	//if enemy is standing between 2 tiles which are both not obstruction blocks
+	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
 	{
 		return true;
 	}

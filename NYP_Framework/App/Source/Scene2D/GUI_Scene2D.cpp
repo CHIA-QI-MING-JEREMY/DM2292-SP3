@@ -521,9 +521,11 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			ImGuiWindowFlags_NoScrollbar;
 		ImGui::Begin("ToxicityLevel", NULL, toxicityWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
-			cSettings->iWindowHeight * 0.125f));
+			cSettings->iWindowHeight * 0.2f));
 		ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 25.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGuiStyle& style = ImGui::GetStyle();
+		style.FrameRounding = 200.0f;
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
 		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
 			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x,

@@ -32,6 +32,8 @@ TerrestrialPlanet::TerrestrialPlanet(void)
  */
 TerrestrialPlanet::~TerrestrialPlanet(void)
 {
+	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+	
 	if (cKeyboardController)
 	{
 		// We won't delete this since it was created elsewhere
@@ -84,6 +86,11 @@ TerrestrialPlanet::~TerrestrialPlanet(void)
 		cGUI_Scene2D = NULL;
 	}
 
+	if (cBackground)
+	{
+		cBackground = NULL;
+	}
+
 	if (cGameManager)
 	{
 		cGameManager->Destroy();
@@ -103,6 +110,11 @@ bool TerrestrialPlanet::Init(void)
 {
 	// Include Shader Manager
 	CShaderManager::GetInstance()->Use("Shader2D");
+
+	// Create Background Entity
+	cBackground = new CBackgroundEntity("Image/TerrestrialPlanet/Background.png");
+	cBackground->SetShader("Shader2D");
+	cBackground->Init();
 
 	// Create and initialise the cMap2D
 	cMap2D = CMap2D::GetInstance();
@@ -334,17 +346,21 @@ bool TerrestrialPlanet::Init(void)
 
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump.ogg"), 1, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort.ogg"), 2, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_JumpEffort_Female.ogg"), 3, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_Thump_Female.ogg"), 4, true);
 
-	//temp: index to be changed
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Burning.ogg"), CSoundController::SOUND_LIST::BURNING, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Fireball.ogg"), CSoundController::SOUND_LIST::FIREBALL, true);
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\FlickSwitch.ogg"), CSoundController::SOUND_LIST::FLICK_SWITCH, true);
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), 5, true, true);
+	// common sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\walk.ogg"), CSoundController::SOUND_LIST::FOOTSTEPS, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jumpland.ogg"), CSoundController::SOUND_LIST::LAND, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jump.ogg"), CSoundController::SOUND_LIST::JUMP, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjump.ogg"), CSoundController::SOUND_LIST::ENEMY_JUMP, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemyjumpland.ogg"), CSoundController::SOUND_LIST::ENEMY_LAND, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\enemywalk.ogg"), CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\StowItemInPocket.ogg"), CSoundController::SOUND_LIST::COLLECT_ITEM, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\damage.ogg"), CSoundController::SOUND_LIST::TAKE_DAMAGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\climb.ogg"), CSoundController::SOUND_LIST::CLIMB, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
+
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
 	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
 
 	// Get the handler to the CInventoryManager instance
@@ -362,7 +378,6 @@ bool TerrestrialPlanet::Init(void)
 	isGreenObtained = false;
 	isBlueObtained = false;
 
-	maxColourSwitchTimer = 1.0;
 	colourSwitchTimer = 0.0;
 
 	isWhite = true;
@@ -532,7 +547,7 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		isBlueObtained = true;
 	}
 
-	// allows player to change the colour of the character (only after 1s cooldown between switches)
+	// allows player to change the colour of the character (only after a cooldown between switches)
 	// coloured tiles will be replaced accordingly
 	// coloured orb count decreases
 	
@@ -1035,6 +1050,14 @@ void TerrestrialPlanet::PreRender(void)
  */
 void TerrestrialPlanet::Render(void)
 {
+	// Render Background
+	// Calls the Background's PreRender()
+	cBackground->PreRender();
+	// Calls the Background's Render()
+	cBackground->Render();
+	// Calls the Background's PostRender()
+	cBackground->PostRender();
+	
 	// Calls the Map2D's PreRender()
 	cMap2D->PreRender();
 	// Calls the Map2D's Render()
@@ -1105,7 +1128,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

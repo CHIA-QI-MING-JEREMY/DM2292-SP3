@@ -42,16 +42,16 @@ TEnemy2DVeteran::TEnemy2DVeteran(void)
 	transform = glm::mat4(1.0f);	// make sure to initialize matrix to identity matrix first
 
 	// Initialise vecIndex
-	vec2Index = glm::i32vec2(0);
+	vec2Index = glm::vec2(0);
 
 	// Initialise vecNumMicroSteps
-	i32vec2NumMicroSteps = glm::i32vec2(0);
+	vec2NumMicroSteps = glm::vec2(0);
 
 	// Initialise vec2UVCoordinate
 	vec2UVCoordinate = glm::vec2(0.0f);
 
-	vec2Destination = glm::i32vec2(0, 0);	// Initialise the iDestination
-	vec2Direction = glm::i32vec2(0, 0);		// Initialise the iDirection
+	vec2Destination = glm::vec2(0, 0);	// Initialise the iDestination
+	vec2Direction = glm::vec2(0, 0);	// Initialise the iDirection
 }
 
 /**
@@ -110,9 +110,9 @@ bool TEnemy2DVeteran::Init(void)
 	cMap2D->SetMapInfo(uiRow, uiCol, 0);
 
 	// Set the start position of the Player to iRow and iCol
-	vec2Index = glm::i32vec2(uiCol, uiRow);
+	vec2Index = glm::vec2(uiCol, uiRow);
 	// By default, microsteps should be zero
-	i32vec2NumMicroSteps = glm::i32vec2(0, 0);
+	vec2NumMicroSteps = glm::vec2(0, 0);
 
 	// Create and initialise the CPlayer2D
 	cPlayer2D = CPlayer2D::GetInstance();
@@ -161,17 +161,32 @@ bool TEnemy2DVeteran::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	type = LONG_RANGE; //has ammo
-	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 800; // 100 damage per hit from player
-
 	// sets waypoints based on the level
 	if (cMap2D->GetCurrentLevel() == 1)
 	{
-		if (vec2Index == glm::vec2(1, 3))
+		if (vec2Index == glm::vec2(2, 4))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 306, 5);
 			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 2);
+			type = KEYHOLDER_PURPLE; // drops a purple key when killed
+		}
+		else if (vec2Index == glm::vec2(21, 4))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 315, 1);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 316, 2);
+			type = LONG_RANGE; // has ammo
+		}
+		else if (vec2Index == glm::vec2(26, 15))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 318, 2);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 320, 1);
+			type = KEYHOLDER_CYAN; // drops a cyan key when killed
+		}
+		else if (vec2Index == glm::vec2(24, 10))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 321, 2);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 323, 2);
+			type = LONG_RANGE; // has ammo
 		}
 	}
 	else if (cMap2D->GetCurrentLevel() == 2)
@@ -181,6 +196,7 @@ bool TEnemy2DVeteran::Init(void)
 		{
 			waypoints = ConstructWaypointVector(waypoints, 300, 5);
 			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 3);
+			type = LONG_RANGE;
 		}
 		/*else if (vec2Index == glm::vec2(17, 3))
 		{
@@ -191,6 +207,9 @@ bool TEnemy2DVeteran::Init(void)
 			waypoints = ConstructWaypointVector(waypoints, 305, 4);
 		}*/
 	}
+
+	shootingDirection = RIGHT; //setting direction for ammo shooting
+	maxHealth = health = 1000; // 100 damage per hit from player
 
 	// sets waypoint counter value
 	currentWaypointCounter = 0;
@@ -737,8 +756,8 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 	animatedSprites->Update(dElapsedTime);
 
 	// Update the UV Coordinates
-	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, i32vec2NumMicroSteps.x*cSettings->ENEMY_MICRO_STEP_XAXIS);
-	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, i32vec2NumMicroSteps.y*cSettings->ENEMY_MICRO_STEP_YAXIS);
+	vec2UVCoordinate.x = cSettings->ConvertIndexToUVSpace(cSettings->x, vec2Index.x, false, vec2NumMicroSteps.x*cSettings->ENEMY_MICRO_STEP_XAXIS);
+	vec2UVCoordinate.y = cSettings->ConvertIndexToUVSpace(cSettings->y, vec2Index.y, false, vec2NumMicroSteps.y*cSettings->ENEMY_MICRO_STEP_YAXIS);
 }
 
 /**
@@ -775,15 +794,15 @@ void TEnemy2DVeteran::Render(void)
 	glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
 	transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
-	glm::vec2 offset = glm::i32vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
+	glm::vec2 offset = glm::vec2(float(cSettings->NUM_TILES_XAXIS / 2.0f), float(cSettings->NUM_TILES_YAXIS / 2.0f));
 	glm::vec2 cameraPos = camera2D->getPos();
 
 	glm::vec2 IndexPos = vec2Index;
 
 	glm::vec2 actualPos = IndexPos - cameraPos + offset;
 	actualPos = cSettings->ConvertIndexToUVSpace(actualPos) * camera2D->getZoom();
-	actualPos.x += i32vec2NumMicroSteps.x * cSettings->ENEMY_MICRO_STEP_XAXIS;
-	actualPos.y += i32vec2NumMicroSteps.y * cSettings->ENEMY_MICRO_STEP_YAXIS;
+	actualPos.x += vec2NumMicroSteps.x * cSettings->ENEMY_MICRO_STEP_XAXIS;
+	actualPos.y += vec2NumMicroSteps.y * cSettings->ENEMY_MICRO_STEP_YAXIS;
 
 	transform = glm::translate(transform, glm::vec3(actualPos.x, actualPos.y, 0.f));
 	transform = glm::scale(transform, glm::vec3(camera2D->getZoom()));
@@ -833,7 +852,7 @@ void TEnemy2DVeteran::PostRender(void)
 @param iIndex_XAxis A const int variable which stores the index in the x-axis
 @param iIndex_YAxis A const int variable which stores the index in the y-axis
 */
-void TEnemy2DVeteran::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
+void TEnemy2DVeteran::Setvec2Index(const int iIndex_XAxis, const int iIndex_YAxis)
 {
 	this->vec2Index.x = iIndex_XAxis;
 	this->vec2Index.y = iIndex_YAxis;
@@ -844,10 +863,10 @@ void TEnemy2DVeteran::Seti32vec2Index(const int iIndex_XAxis, const int iIndex_Y
 @param iNumMicroSteps_XAxis A const int variable storing the current microsteps in the X-axis
 @param iNumMicroSteps_YAxis A const int variable storing the current microsteps in the Y-axis
 */
-void TEnemy2DVeteran::Seti32vec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
+void TEnemy2DVeteran::Setvec2NumMicroSteps(const int iNumMicroSteps_XAxis, const int iNumMicroSteps_YAxis)
 {
-	this->i32vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
-	this->i32vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
+	this->vec2NumMicroSteps.x = iNumMicroSteps_XAxis;
+	this->vec2NumMicroSteps.y = iNumMicroSteps_YAxis;
 }
 
 /**
@@ -873,7 +892,7 @@ void TEnemy2DVeteran::Constraint(DIRECTION eDirection)
 		if (vec2Index.x < 0)
 		{
 			vec2Index.x = 0;
-			i32vec2NumMicroSteps.x = 0;
+			vec2NumMicroSteps.x = 0;
 		}
 	}
 	else if (eDirection == RIGHT)
@@ -881,7 +900,7 @@ void TEnemy2DVeteran::Constraint(DIRECTION eDirection)
 		if (vec2Index.x >= (int)cSettings->NUM_TILES_XAXIS - 1)
 		{
 			vec2Index.x = ((int)cSettings->NUM_TILES_XAXIS) - 1;
-			i32vec2NumMicroSteps.x = 0;
+			vec2NumMicroSteps.x = 0;
 		}
 	}
 	else if (eDirection == UP)
@@ -889,7 +908,7 @@ void TEnemy2DVeteran::Constraint(DIRECTION eDirection)
 		if (vec2Index.y >= (int)cSettings->NUM_TILES_YAXIS - 1)
 		{
 			vec2Index.y = ((int)cSettings->NUM_TILES_YAXIS) - 1;
-			i32vec2NumMicroSteps.y = 0;
+			vec2NumMicroSteps.y = 0;
 		}
 	}
 	else if (eDirection == DOWN)
@@ -897,7 +916,7 @@ void TEnemy2DVeteran::Constraint(DIRECTION eDirection)
 		if (vec2Index.y < 0)
 		{
 			vec2Index.y = 0;
-			i32vec2NumMicroSteps.y = 0;
+			vec2NumMicroSteps.y = 0;
 		}
 	}
 	else
@@ -1034,8 +1053,14 @@ bool TEnemy2DVeteran::IsMidAir(void)
 		return false;
 
 	// Check if the tile below the player's current position is empty
-	if ((i32vec2NumMicroSteps.x == 0) &&
-		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) == 0))
+	if ((vec2NumMicroSteps.x == 0) &&
+		(cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600))
+	{
+		return true;
+	}
+
+	//if enemy is standing between 2 tiles which are both not obstruction blocks
+	if ((cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x) < 600) && (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) < 600))
 	{
 		return true;
 	}
@@ -1061,12 +1086,12 @@ void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
 		int iDisplacement_MicroSteps = (int)(v2Displacement.y / cSettings->ENEMY_MICRO_STEP_YAXIS); //DIsplacement divide by distance for 1 microstep
 		if (vec2Index.y < (int)cSettings->NUM_TILES_YAXIS)
 		{
-			i32vec2NumMicroSteps.y += iDisplacement_MicroSteps;
-			if (i32vec2NumMicroSteps.y > cSettings->ENEMY_NUM_STEPS_PER_TILE_YAXIS)
+			vec2NumMicroSteps.y += iDisplacement_MicroSteps;
+			if (vec2NumMicroSteps.y > cSettings->ENEMY_NUM_STEPS_PER_TILE_YAXIS)
 			{
-				i32vec2NumMicroSteps.y -= cSettings->ENEMY_NUM_STEPS_PER_TILE_YAXIS;
-				if (i32vec2NumMicroSteps.y < 0)
-					i32vec2NumMicroSteps.y = 0;
+				vec2NumMicroSteps.y -= cSettings->ENEMY_NUM_STEPS_PER_TILE_YAXIS;
+				if (vec2NumMicroSteps.y < 0)
+					vec2NumMicroSteps.y = 0;
 				vec2Index.y++;
 			}
 		}
@@ -1085,7 +1110,7 @@ void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
 			if (CheckPosition(UP) == false)
 			{
 				// Align with the row
-				i32vec2NumMicroSteps.y = 0;
+				vec2NumMicroSteps.y = 0;
 				// Set the Physics to fall status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::FALL);
 				break;
@@ -1117,10 +1142,10 @@ void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
 
 		if (vec2Index.y >= 0)
 		{
-			i32vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
-			if (i32vec2NumMicroSteps.y < 0)
+			vec2NumMicroSteps.y -= fabs(iDisplacement_MicroSteps);
+			if (vec2NumMicroSteps.y < 0)
 			{
-				i32vec2NumMicroSteps.y = ((int)cSettings->ENEMY_NUM_STEPS_PER_TILE_YAXIS) - 1;
+				vec2NumMicroSteps.y = ((int)cSettings->ENEMY_NUM_STEPS_PER_TILE_YAXIS) - 1;
 				vec2Index.y--;
 			}
 		}
@@ -1143,7 +1168,7 @@ void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
 					vec2Index.y = i + 1;
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
-				i32vec2NumMicroSteps.y = 0;
+				vec2NumMicroSteps.y = 0;
 				break;
 			}
 		}
@@ -1155,14 +1180,14 @@ void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
  */
 bool TEnemy2DVeteran::InteractWithPlayer(void)
 {
-	glm::i32vec2 i32vec2PlayerPos = cPlayer2D->vec2Index;
+	glm::vec2 vec2PlayerPos = cPlayer2D->vec2Index;
 	
 	// Check if the enemy2D is within 1.5 indices of the player2D
-	if (((vec2Index.x >= i32vec2PlayerPos.x - 0.5) && 
-		(vec2Index.x <= i32vec2PlayerPos.x + 0.5))
+	if (((vec2Index.x >= vec2PlayerPos.x - 0.5) && 
+		(vec2Index.x <= vec2PlayerPos.x + 0.5))
 		&& 
-		((vec2Index.y >= i32vec2PlayerPos.y - 0.5) &&
-		(vec2Index.y <= i32vec2PlayerPos.y + 0.5)))
+		((vec2Index.y >= vec2PlayerPos.y - 0.5) &&
+		(vec2Index.y <= vec2PlayerPos.y + 0.5)))
 	{
 		return true;
 	}
@@ -1202,7 +1227,7 @@ void TEnemy2DVeteran::UpdateDirection(void)
 	else
 	{
 		// Since we are not going anywhere, set this to 0.
-		vec2Direction = glm::i32vec2(0);
+		vec2Direction = glm::vec2(0);
 	}
 }
 
@@ -1220,7 +1245,7 @@ void TEnemy2DVeteran::FlipHorizontalDirection(void)
 void TEnemy2DVeteran::UpdatePosition(void)
 {
 	// Store the old position
-	i32vec2OldIndex = vec2Index;
+	vec2OldIndex = vec2Index;
 
 	// if the player is to the left or right of the enemy2D, then jump to attack
 	if (vec2Direction.x < 0)
@@ -1229,10 +1254,10 @@ void TEnemy2DVeteran::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x >= 0)
 		{
-			i32vec2NumMicroSteps.x--;
-			if (i32vec2NumMicroSteps.x < 0)
+			vec2NumMicroSteps.x--;
+			if (vec2NumMicroSteps.x < 0)
 			{
-				i32vec2NumMicroSteps.x = ((int)cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS) - 1;
+				vec2NumMicroSteps.x = ((int)cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS) - 1;
 				vec2Index.x--;
 			}
 		}
@@ -1244,8 +1269,8 @@ void TEnemy2DVeteran::UpdatePosition(void)
 		if (CheckPosition(LEFT) == false)
 		{
 			FlipHorizontalDirection();
-			vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.x = 0;
+			vec2Index = vec2OldIndex;
+			vec2NumMicroSteps.x = 0;
 		}
 
 		// Check if enemy2D is in mid-air, such as walking off a platform
@@ -1263,11 +1288,11 @@ void TEnemy2DVeteran::UpdatePosition(void)
 		const int iOldIndex = vec2Index.x;
 		if (vec2Index.x < (int)cSettings->NUM_TILES_XAXIS)
 		{
-			i32vec2NumMicroSteps.x++;
+			vec2NumMicroSteps.x++;
 
-			if (i32vec2NumMicroSteps.x >= cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS)
+			if (vec2NumMicroSteps.x >= cSettings->ENEMY_NUM_STEPS_PER_TILE_XAXIS)
 			{
-				i32vec2NumMicroSteps.x = 0;
+				vec2NumMicroSteps.x = 0;
 				vec2Index.x++;
 			}
 		}
@@ -1279,8 +1304,8 @@ void TEnemy2DVeteran::UpdatePosition(void)
 		if (CheckPosition(RIGHT) == false)
 		{
 			FlipHorizontalDirection();
-			//vec2Index = i32vec2OldIndex;
-			i32vec2NumMicroSteps.x = 0;
+			//vec2Index = vec2OldIndex;
+			vec2NumMicroSteps.x = 0;
 		}
 
 		// Check if enemy2D is in mid-air, such as walking off a platform
@@ -1329,7 +1354,7 @@ CTEAmmoVeteran* TEnemy2DVeteran::FetchAmmo()
 		}
 		ammo->setActive(true);
 		// By default, microsteps should be zero --> reset in case a previously active ammo that was used then ste inactive was used again
-		ammo->vec2NumMicroSteps = glm::i32vec2(0, 0);
+		ammo->vec2NumMicroSteps = glm::vec2(0, 0);
 		return ammo;
 	}
 

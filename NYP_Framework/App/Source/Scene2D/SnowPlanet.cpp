@@ -33,6 +33,8 @@ SnowPlanet::SnowPlanet(void)
  */
 SnowPlanet::~SnowPlanet(void)
 {
+	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BACKGROUNDSNOW);
+	
 	if (cKeyboardController)
 	{
 		// We won't delete this since it was created elsewhere
@@ -513,12 +515,8 @@ bool SnowPlanet::Update(const double dElapsedTime)
 		mouseDist = 0.3f;
 	}
 
-	// mouse Position demo
-	glm::vec2 camPos = glm::vec2(camera2D->getMousePosition().x - cPlayer2D->vec2Index.x, camera2D->getMousePosition().y - cPlayer2D->vec2Index.y);
-	camPos = glm::normalize(camPos);
-	camPos = glm::vec2(cPlayer2D->vec2Index.x + camPos.x * mouseDist, cPlayer2D->vec2Index.y + camPos.y * mouseDist);
 
-	camera2D->setTargetPos(camPos);
+	camera2D->setTargetPos(cPlayer2D->vec2Index);
 	camera2D->Update(dElapsedTime);
 
 	// click test
