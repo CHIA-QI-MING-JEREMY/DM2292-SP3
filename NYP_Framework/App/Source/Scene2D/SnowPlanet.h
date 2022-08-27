@@ -57,6 +57,11 @@
 #include "../Scene2D/InventoryManagerPlanet.h"
 #include "../App/Source/Scene2D/BackgroundEntity.h"
 
+#include "../Scene2D/InventoryManager.h"
+#include "../Scene2D/InventoryItem.h"
+
+#include "../GameStateManagement/GameInfo.h"
+
 //include ammo
 #include "Ammo2D.h"
 #include "EnemyAmmo2D.h"
@@ -93,13 +98,19 @@ public:
 	void DecideLevel(bool tutorial);
 
 	bool getIsOnShip(void);
+	void SetResourcesBack(void);
 
 protected:
 	CBackgroundEntity* background;
-	// The handler containing the instance of CInventoryManager
+
+	// Inventory Manager
 	CInventoryManagerPlanet* cInventoryManagerPlanet;
-	// The handler containing the instance of CInventoryItem
+	CInventoryManager* cInventoryManager;
+
+	// Inventory Item
 	CInventoryItemPlanet* cInventoryItemPlanet;
+	CInventoryItem* cInventoryItem;
+
 	// The handler containing the instance of the 2D Map
 	CMap2D* cMap2D;
 

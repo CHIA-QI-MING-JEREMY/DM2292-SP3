@@ -175,6 +175,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		if (cSnowPlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() <= 0) {
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
+			cSnowPlanet->SetResourcesBack();
 
 			// Load the menu state
 			cout << "Loading ShipCombatState" << endl;
@@ -200,6 +201,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		if (cTerrestrialPlanet->getIsOnShip() || CInventoryManagerPlanet::GetInstance()->GetItem("Lives")->GetCount() <= 0) {
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
+			cTerrestrialPlanet->SetResourcesBack();
 
 			// Load the menu state
 			cout << "Loading ShipCombatState" << endl;

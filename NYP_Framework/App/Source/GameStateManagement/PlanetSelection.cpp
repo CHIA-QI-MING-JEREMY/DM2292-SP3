@@ -63,6 +63,15 @@ bool CPlanetSelectionState::Update(const double dElapsedTime)
 {
 	CGameInfo::GetInstance()->selectedPlanet = cScenePlanet->gotoPlanet;
 
+	if (cScenePlanet->isDead == true) {
+		// Reset the CKeyboardController
+		CKeyboardController::GetInstance()->Reset();
+
+		// Load the menu state
+		cout << "Loading MenuState" << endl;
+		CGameStateManager::GetInstance()->SetActiveGameState("LoseState");
+	}
+
 	if (cScenePlanet->StartCombat) {
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();

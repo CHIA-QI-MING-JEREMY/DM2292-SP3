@@ -17,11 +17,13 @@
     <ClInclude Include="Source\GameStateManagement\GameStateManager.h" />
     <ClInclude Include="Source\GameStateManagement\IntroState.h" />
     <ClInclude Include="Source\GameStateManagement\InventoryState.h" />
+    <ClInclude Include="Source\GameStateManagement\LoseState.h" />
     <ClInclude Include="Source\GameStateManagement\MenuState.h" />
     <ClInclude Include="Source\GameStateManagement\PauseState.h" />
     <ClInclude Include="Source\GameStateManagement\PlanetSelection.h" />
     <ClInclude Include="Source\GameStateManagement\PlayGameState.h" />
     <ClInclude Include="Source\GameStateManagement\ShipCombat.h" />
+    <ClInclude Include="Source\GameStateManagement\WinState.h" />
     <ClInclude Include="Source\PlanetSelection\GUI_ScenePlanet.h" />
     <ClInclude Include="Source\PlanetSelection\Planet.h" />
     <ClInclude Include="Source\PlanetSelection\ScenePlanet.h" />
@@ -75,11 +77,13 @@
     <ClCompile Include="Source\GameStateManagement\GameStateManager.cpp" />
     <ClCompile Include="Source\GameStateManagement\IntroState.cpp" />
     <ClCompile Include="Source\GameStateManagement\InventoryState.cpp" />
+    <ClCompile Include="Source\GameStateManagement\LoseState.cpp" />
     <ClCompile Include="Source\GameStateManagement\MenuState.cpp" />
     <ClCompile Include="Source\GameStateManagement\PauseState.cpp" />
     <ClCompile Include="Source\GameStateManagement\PlanetSelection.cpp" />
     <ClCompile Include="Source\GameStateManagement\PlayGameState.cpp" />
     <ClCompile Include="Source\GameStateManagement\ShipCombat.cpp" />
+    <ClCompile Include="Source\GameStateManagement\WinState.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\PlanetSelection\GUI_ScenePlanet.cpp" />
     <ClCompile Include="Source\PlanetSelection\Planet.cpp" />

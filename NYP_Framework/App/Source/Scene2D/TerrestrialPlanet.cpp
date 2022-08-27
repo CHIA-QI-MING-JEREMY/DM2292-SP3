@@ -324,6 +324,9 @@ bool TerrestrialPlanet::Init(void)
 	cGameManager = CGameManager::GetInstance();
 	cGameManager->Init();
 
+	// Get the handler for the cInventoryManager
+	cInventoryManager = CGameInfo::GetInstance()->ImportIM();
+
 	// Init the camera
 	camera2D = Camera2D::GetInstance();
 	camera2D->Reset();
@@ -1125,4 +1128,55 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 bool TerrestrialPlanet::getIsOnShip(void)
 {
 	return cGUI_Scene2D->getGoOnShip();
+}
+
+void TerrestrialPlanet::SetResourcesBack(void)
+{
+	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {
+		if (cInventoryManagerPlanet->Check("ScrapMetal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
+			if (cInventoryManager->Check("ScrapMetal")) {
+				cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager planet \n";
+		}
+
+		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
+			if (cInventoryManager->Check("Battery")) {
+				cInventoryItem = cInventoryManager->GetItem("Battery");
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager planet \n";
+		}
+
+		if (cInventoryManagerPlanet->Check("EnergyQuartz") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
+			if (cInventoryManager->Check("EnergyQuartz")) {
+				cInventoryItem = cInventoryManager->GetItem("EnergyQuartz");
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager planet \n";
+		}
+	}
+	CGameInfo::GetInstance()->ExportIM(cInventoryManager);
 }
