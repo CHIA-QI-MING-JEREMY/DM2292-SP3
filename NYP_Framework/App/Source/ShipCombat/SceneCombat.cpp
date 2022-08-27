@@ -12,6 +12,7 @@ using namespace std;
 #include "RenderControl\ShaderManager.h"
 
 #include "System\filesystem.h"
+#include "../App/Source/GameStateManagement/GameInfo.h"
 
 /**
  @brief Constructor This constructor has protected access modifier as this class will be a Singleton
@@ -99,12 +100,26 @@ bool CSceneCombat::Init(void)
 		cout << "Failed to load CMap2D" << endl;
 		return false;
 	}
-	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2213_Map_Ship.csv", 0) == false)
-	{
-		// The loading of a map has failed. Return false
-		cout << "Failed to load Ship Layout" << endl;
-		return false;
+
+	if (CGameInfo::GetInstance()->loadedMap == false) {
+		CGameInfo::GetInstance()->loadedMap = true;
+		// Load the map into an array
+		if (cMap2D->LoadMap("Maps/DM2213_Map_Ship.csv", 0) == false)
+		{
+			// The loading of a map has failed. Return false
+			cout << "Failed to load Ship Layout" << endl;
+			return false;
+		}
+	}
+	else {
+		CGameInfo::GetInstance()->loadedMap = true;
+		// Load the map into an array
+		if (cMap2D->LoadMap("Maps/DM2213_Map_Ship_SAVEGAME.csv", 0) == false)
+		{
+			// The loading of a map has failed. Return false
+			cout << "Failed to load Ship Layout" << endl;
+			return false;
+		}
 	}
 
 	//Create Background Entity
@@ -166,6 +181,7 @@ bool CSceneCombat::Init(void)
 	state = CURRENT_STATE::SHIP_NOSTATE;
 	fightTimeElapsed = 0.0f;
 	prevFightTime = 0.0f;
+	isDead = false;
 
 	// Audio Stuff
 
@@ -222,9 +238,7 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		}
 	}
 
-	if (state == CURRENT_STATE::SHIPUPGRADE_NP) {
-		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showUpgrade;
-	}
+	
 
 	if (cGUI_SceneCombat->isCombat) {
 		cShipEnemy->Update(dElapsedTime);
@@ -232,6 +246,9 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		// enemy Death
 		if (cShipEnemy->getHealth() <= 0) {
 			// fights over its christmas lets go home
+			if (camera2D->noiseOn) {
+				camera2D->noiseOn = false;
+			}
 			cGUI_SceneCombat->isCombat = false;
 			state = CURRENT_STATE::SHIPREST;
 			numOfEncounters--;
@@ -253,7 +270,28 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		cGUI_SceneCombat->showRepairPanel = false;
 		cGUI_SceneCombat->makeChanges = false;
 	}
+
+	if (CInventoryManager::GetInstance()->GetItem("Damage")->GetCount() == 0) {
+		isDead = true;
+		goToNextScene = true;
+	}
+
 	if (cGUI_SceneCombat->makeChanges && cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showExit) {
+		// make the door closed x
+		cMap2D->SetMapInfo(7, 16, 1216, false);
+
+		try {
+			if (cMap2D->SaveMap("Maps/DM2213_Map_Ship_SAVEGAME.csv", cMap2D->GetCurrentLevel()) == false)
+			{
+				throw runtime_error("Unable to save the current game to a file");
+			}
+		}
+		catch (runtime_error e)
+		{
+			cout << "Runtime error: " << e.what();
+			return false;
+		}
+
 		state = CURRENT_STATE::SHIPLANDED;
 		goToNextScene = true;
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
@@ -412,6 +450,10 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 	{
 	case 597:
 		// TODO: add resource consumption
+		if (cGUI_SceneCombat->UpgradeState != CGUI_SceneCombat::UPGRADE_STATE::NOSTATE) {
+			cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
+		}
+
 		cGUI_SceneCombat->showRepairPanel = true;
 		blockSelected = position;
 		cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
@@ -429,6 +471,28 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 			//cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
 			blockSelected = position;
 			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+		}
+		else if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showUpgrade) {
+			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showWeaponUpgrade;
+			camera2D->setTargetZoom(0.2f);
+			//cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
+			blockSelected = position;
+			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+		}
+		break;
+	case 1215:
+	case 1218:
+		if (cGUI_SceneCombat->showRepairPanel) {
+			cGUI_SceneCombat->showRepairPanel = false;
+		}
+		if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showUpgrade) {
+			cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::VENTILATION_UPGRADE;
+			blockSelected = position;
+			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+		}
+		else if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showStorage) {
+			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
+
 		}
 		break;
 	case 1219:
@@ -450,6 +514,21 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 		break;
 	case 1221:
 		if (state == CURRENT_STATE::SHIPUPGRADE_NP) {
+
+
+			// save the planet
+			try {
+				if (cMap2D->SaveMap("Maps/DM2213_Map_Ship_SAVEGAME.csv", cMap2D->GetCurrentLevel()) == false)
+				{
+					throw runtime_error("Unable to save the current game to a file");
+				}
+			}
+			catch (runtime_error e)
+			{
+				cout << "Runtime error: " << e.what();
+			}
+
+
 			goToNextScene = true;
 		} 
 		break;

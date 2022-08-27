@@ -161,18 +161,42 @@ bool TEnemy2DVeteran::Init(void)
 		ammoList.push_back(cEnemyAmmo2D);
 	}
 
-	type = LONG_RANGE; //has ammo
-	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 800; // 100 damage per hit from player
-
 	// sets waypoints based on the level
-	if (cMap2D->GetCurrentLevel() == 2)
+	if (cMap2D->GetCurrentLevel() == 1)
+	{
+		if (vec2Index == glm::vec2(2, 4))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 306, 5);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 2);
+			type = KEYHOLDER_PURPLE; // drops a purple key when killed
+		}
+		else if (vec2Index == glm::vec2(21, 4))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 315, 1);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 316, 2);
+			type = LONG_RANGE; // has ammo
+		}
+		else if (vec2Index == glm::vec2(26, 15))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 318, 2);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 320, 1);
+			type = KEYHOLDER_CYAN; // drops a cyan key when killed
+		}
+		else if (vec2Index == glm::vec2(24, 10))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 321, 2);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 323, 2);
+			type = LONG_RANGE; // has ammo
+		}
+	}
+	else if (cMap2D->GetCurrentLevel() == 2)
 	{
 		// sets waypoints based on the enemy spawn location
 		if (vec2Index == glm::vec2(12, 3))
 		{
 			waypoints = ConstructWaypointVector(waypoints, 300, 5);
 			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 311, 3);
+			type = LONG_RANGE;
 		}
 		/*else if (vec2Index == glm::vec2(17, 3))
 		{
@@ -183,6 +207,9 @@ bool TEnemy2DVeteran::Init(void)
 			waypoints = ConstructWaypointVector(waypoints, 305, 4);
 		}*/
 	}
+
+	shootingDirection = RIGHT; //setting direction for ammo shooting
+	maxHealth = health = 1000; // 100 damage per hit from player
 
 	// sets waypoint counter value
 	currentWaypointCounter = 0;

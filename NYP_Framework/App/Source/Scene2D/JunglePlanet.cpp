@@ -33,6 +33,8 @@ JunglePlanet::JunglePlanet(void)
  */
 JunglePlanet::~JunglePlanet(void)
 {
+	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+	
 	if (cKeyboardController)
 	{
 		// We won't delete this since it was created elsewhere
@@ -1236,7 +1238,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2
@@ -1265,11 +1267,12 @@ bool JunglePlanet::getIsOnShip(void)
 void JunglePlanet::SetResourcesBack(void)
 {
 	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {
-		if (cInventoryManagerPlanet->Check("ScrapMetal")) {
+		if (cInventoryManagerPlanet->Check("ScrapMetal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
 			if (cInventoryManager->Check("ScrapMetal")) {
 				cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
-				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}
 			else {
 				std::cout << "Item does not exist in inventory manager\n";
@@ -1279,11 +1282,12 @@ void JunglePlanet::SetResourcesBack(void)
 			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 
-		if (cInventoryManagerPlanet->Check("Battery")) {
+		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 			if (cInventoryManager->Check("Battery")) {
 				cInventoryItem = cInventoryManager->GetItem("Battery");
-				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}
 			else {
 				std::cout << "Item does not exist in inventory manager\n";
@@ -1293,11 +1297,12 @@ void JunglePlanet::SetResourcesBack(void)
 			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 
-		if (cInventoryManagerPlanet->Check("Ironwood")) {
+		if (cInventoryManagerPlanet->Check("Ironwood") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
 			if (cInventoryManager->Check("Ironwood")) {
 				cInventoryItem = cInventoryManager->GetItem("Ironwood");
-				cInventoryItem->Set(cInventoryItemPlanet->GetCount());
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}
 			else {
 				std::cout << "Item does not exist in inventory manager\n";

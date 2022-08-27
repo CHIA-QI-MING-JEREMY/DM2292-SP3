@@ -19,6 +19,7 @@ public:
 	int PrevState = 0;
 	bool initInventory = false;
 	bool initPlanets = false;
+	bool loadedMap = false;
 	int nebulaSize = 3;
 	glm::vec2 currentPlanetPos = glm::vec2(-1, -1);
 	std::vector<int> planetList;

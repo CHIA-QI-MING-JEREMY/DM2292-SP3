@@ -212,7 +212,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 	if (GuiState != GUI_STATE::showUpgrade) {
 		ImGui::Begin("Health", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.01f),
+		ImGui::SetWindowPos(ImVec2(8 * relativeScale_y,
 			cSettings->iWindowHeight * (0.01f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
@@ -225,62 +225,93 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		int healthCount = cInventoryItem1->GetCount();
 		for (int i = 0; i < int(healthCount / int(cInventoryItem1->GetMaxCount() / 10)); i++) {
 			ImGui::Begin("Health Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * (0.13f),
-				cSettings->iWindowHeight * (0.11f)));
+			ImGui::SetWindowPos(ImVec2(104.f * relativeScale_y, cSettings->iWindowHeight * (0.11f)));
 			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(10 * relativeScale_y, 14 * relativeScale_y));
+			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(9 * relativeScale_x, 14 * relativeScale_y));
 			ImGui::SameLine();
 			ImGui::GetOverlayDrawList();
 			ImGui::End();
 		}
 
 		ImGui::Begin("Damage", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.7f),
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 240 * relativeScale_y,
 			cSettings->iWindowHeight * (0.01f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		ImGui::Text("Damage");
-		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205, 25));
-		ImGui::End();
-
-		// how. do i. get rid. of the border.
-		cInventoryItem1 = cInventoryManager->GetItem("Damage");
-		int damCount = cInventoryItem1->GetCount();
-		for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
-			ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.71f,
-				cSettings->iWindowHeight * 0.05f));
-			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5, 14));
-			ImGui::SameLine();
-			ImGui::GetOverlayDrawList();
-			ImGui::End();
-		}
-
-		ImGui::Begin("Oxygen by twice", NULL, overlayWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.7f),
-			cSettings->iWindowHeight * (0.1f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::Text("Oxygen On Ship");
 		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205 * relativeScale_y, 25 * relativeScale_y));
 		ImGui::End();
 
-		// how. do i. get rid. of the border.
-		cInventoryItem1 = cInventoryManager->GetItem("Ventilation");
-		int oxyCount = cInventoryItem1->GetCount();
-		for (int i = 0; i < int(oxyCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
-			ImGui::Begin("Oxygen Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.71f,
-				cSettings->iWindowHeight * 0.14f));
-			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		if (cSettings->iWindowWidth < 1000) {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Damage");
+			int damCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.05f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5 * relativeScale_y, 14 * relativeScale_y));
-			ImGui::SameLine();
-			ImGui::GetOverlayDrawList();
-			ImGui::End();
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5 * relativeScale_x, 13 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+		else {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Damage");
+			int damCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Damage Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.05f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5.6 * relativeScale_x, 12 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+
+		ImGui::Begin("Oxygen by twice", NULL, overlayWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 240 * relativeScale_y,
+			cSettings->iWindowHeight * (0.1f)));
+		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::Text("Oxygen Level");
+		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(205 * relativeScale_y, 25 * relativeScale_y));
+		ImGui::End();
+
+		if (cSettings->iWindowWidth < 1000) {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Ventilation");
+			int oxyCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(oxyCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Oxygen Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.14f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5 * relativeScale_x, 13 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+		else {
+			// how. do i. get rid. of the border.
+			cInventoryItem1 = cInventoryManager->GetItem("Ventilation");
+			int damCount = cInventoryItem1->GetCount();
+			for (int i = 0; i < int(damCount / floor(cInventoryItem1->GetMaxCount() / 15)); i++) {
+				ImGui::Begin("Oxygen Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 232 * relativeScale_y, cSettings->iWindowHeight * 0.14f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(5.6 * relativeScale_x, 12 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
 		}
 	}
 
@@ -314,7 +345,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::Text("Large weapon Fire");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 		ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) /
 			(float)CShipPlayer::GetInstance()->LargeWeaponInterval, ImVec2(100.0f *
@@ -340,7 +371,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::Text("Small weapon 1 Fire");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 		ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) /
 			(float)CShipPlayer::GetInstance()->weapon1Interval, ImVec2(100.0f *
@@ -367,7 +398,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::Text("Small weapon 2 Fire");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 		ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) /
 			(float)CShipPlayer::GetInstance()->weapon2Interval, ImVec2(100.0f * relativeScale_x, 20.0f * relativeScale_y));
@@ -396,9 +427,9 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 		ImGui::SetWindowFocus();
 
-		ImGui::Text("Oxygen On Ship");
+		ImGui::Text("Time until Ventilation Shutoff");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.8f, 0.0f, 0.9f, 1.0f));
+		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
 		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
 		ImGui::ProgressBar((CShip::GetInstance()->ventilationInterval - (CShip::GetInstance()->TimeElapsed - CShip::GetInstance()->ventilationTiming)) /
 			(float)CShip::GetInstance()->ventilationInterval, ImVec2(160.0f *
@@ -462,19 +493,132 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 	switch (GuiState)
 	{	
 	case CGUI_SceneCombat::showWeapons:
-		glm::vec2 pos = Camera2D::GetInstance()->getBlockPositionWindow(glm::vec2(4, 18));
-		blockPosition = ImVec2(pos.x, pos.y);
+		glm::vec2 pos1 = Camera2D::GetInstance()->getBlockPositionWindow(glm::vec2(4, 18));
+		blockPosition = ImVec2(pos1.x, pos1.y);
 
 		ImGui::Begin("Storage", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.1f,
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
 			cSettings->iWindowHeight * 0.2f));
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
 		ImGui::SetWindowFocus();
 
-		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonWidth), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth * relativeScale_x, buttonWidth * relativeScale_x), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
 			GuiState = CGUI_SceneCombat::noShow;
+			Camera2D::GetInstance()->setTargetZoom(2.0f);
+		}
+
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+
+		ImGui::Begin("Weapon by Itzy", NULL, overlayWindowFlags);
+		ImGui::SetWindowPos(ImVec2(pos1.x + cSettings->iWindowWidth * 0.05f,
+			pos1.y - cSettings->iWindowHeight * 0.1f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+		ImGui::Image((void*)(intptr_t)ShipTextureID, ImVec2(700 * relativeScale_x, 375 * relativeScale_y));
+
+		ImGui::GetOverlayDrawList();
+
+		// draw indiv weapons
+		pos1 = Camera2D::GetInstance()->getBlockPositionWindow(glm::vec2(14, 13));
+		cInventoryItem1 = CInventoryManager::GetInstance()->GetItem("Upgrade_large");
+		ImGui::Begin("Weapon Large by Itzy", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(pos1.x + cSettings->iWindowWidth * 0.05f,
+			pos1.y - cSettings->iWindowHeight * 0.1f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+		switch (cInventoryItem1->GetCount())
+		{
+		case 1:
+			ImGui::Image((void*)(intptr_t)largeWeaponUpgrade1, ImVec2(125 * relativeScale_x, 125 * relativeScale_y));
+			break;
+		case 2:
+			ImGui::Image((void*)(intptr_t)largeWeaponUpgrade2, ImVec2(125 * relativeScale_x, 125 * relativeScale_y));
+			break;
+		case 3:
+			ImGui::Image((void*)(intptr_t)largeWeaponUpgrade3, ImVec2(125 * relativeScale_x, 125 * relativeScale_y));
+			break;
+		default:
+			break;
+		}
+
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+
+		pos1 = Camera2D::GetInstance()->getBlockPositionWindow(glm::vec2(20, 12));
+		blockPosition = ImVec2(pos1.x, pos1.y);
+
+
+		cInventoryItem1 = CInventoryManager::GetInstance()->GetItem("Upgrade_small1");
+		ImGui::Begin("Weapon Small1 by Itzy", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(pos1.x + cSettings->iWindowWidth * 0.05f,
+			pos1.y - cSettings->iWindowHeight * 0.1f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+		switch (cInventoryItem1->GetCount())
+		{
+		case 1:
+			ImGui::Image((void*)(intptr_t)smallWeaponUpgrade1, ImVec2(100 * relativeScale_x, 100 * relativeScale_y));
+			break;
+		case 2:
+			ImGui::Image((void*)(intptr_t)smallWeaponUpgrade2, ImVec2(100 * relativeScale_x, 100 * relativeScale_y));
+			break;
+		case 3:
+			ImGui::Image((void*)(intptr_t)smallWeaponUpgrade3, ImVec2(100 * relativeScale_x, 100 * relativeScale_y));
+			break;
+		default:
+			break;
+		}
+
+
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+
+		pos1 = Camera2D::GetInstance()->getBlockPositionWindow(glm::vec2(23.5, 12));
+		blockPosition = ImVec2(pos1.x, pos1.y);
+
+		cInventoryItem1 = CInventoryManager::GetInstance()->GetItem("Upgrade_small2");
+		ImGui::Begin("Weapon Small2 by Itzy", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(pos1.x + cSettings->iWindowWidth * 0.05f,
+			pos1.y - cSettings->iWindowHeight * 0.1f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+		switch (cInventoryItem1->GetCount())
+		{
+		case 1:
+			ImGui::Image((void*)(intptr_t)smallWeaponUpgrade1, ImVec2(100 * relativeScale_x, 100 * relativeScale_y));
+			break;
+		case 2:
+			ImGui::Image((void*)(intptr_t)smallWeaponUpgrade2, ImVec2(100 * relativeScale_x, 100 * relativeScale_y));
+			break;
+		case 3:
+			ImGui::Image((void*)(intptr_t)smallWeaponUpgrade3, ImVec2(100 * relativeScale_x, 100 * relativeScale_y));
+			break;
+		default:
+			break;
+		}
+
+		ImGui::GetOverlayDrawList();
+		ImGui::End();
+		ImGui::End();
+		break;
+	case CGUI_SceneCombat::showWeaponUpgrade:
+		glm::vec2 pos = Camera2D::GetInstance()->getBlockPositionWindow(glm::vec2(4, 18));
+		blockPosition = ImVec2(pos.x, pos.y);
+
+		ImGui::Begin("Storage", NULL, healthWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+			cSettings->iWindowHeight * 0.2f));
+		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
+
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth * relativeScale_x, buttonWidth * relativeScale_x), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		if (ImGui::IsItemClicked())
+		{
+			GuiState = CGUI_SceneCombat::GUI_STATE::showUpgrade;
+
 			Camera2D::GetInstance()->setTargetZoom(2.0f);
 		}
 
@@ -599,25 +743,26 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Upgrade Weapon?");
 				ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood x 2");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap x 2");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Batteries x 2");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap x 1");
 
 				ImGui::NewLine();
 				ImGui::Text("You have:");
-				cInventoryItem1 = cInventoryManager->GetItem("Ironwood");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood: %d", cInventoryItem1->GetCount());
+				cInventoryItem1 = cInventoryManager->GetItem("Battery");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Battery: %d", cInventoryItem1->GetCount());
 				cInventoryItem2 = cInventoryManager->GetItem("ScrapMetal");
 				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap: %d", cInventoryItem2->GetCount());
 				ImGui::NewLine();
 				// Add codes for Start button here
-				if (cInventoryItem1->GetCount() >= 0 && cInventoryItem2->GetCount() >= 0)
+				if (cInventoryItem1->GetCount() >= 2 && cInventoryItem2->GetCount() >= 1)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
 						makeChanges = true;
-						/*cInventoryItem1->Remove(2);
-						cInventoryItem2->Remove(2);*/
-						cInventoryManager->GetItem("Upgrade_small1")->Add(1);
+						cInventoryItem1->Remove(2);
+						cInventoryItem2->Remove(1);
+						cInventoryManager->GetItem("Upgrade_small2")->Add(1);
+						CShipPlayer::GetInstance()->weapon2Interval = 7.0f - cInventoryManager->GetItem("Upgrade_small2")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
 					}
 				}
@@ -665,25 +810,26 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Upgrade Weapon?");
 				ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood x 2");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap x 2");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Batteries x 2");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap x 1");
 
 				ImGui::NewLine();
 				ImGui::Text("You have:");
-				cInventoryItem1 = cInventoryManager->GetItem("Ironwood");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood: %d", cInventoryItem1->GetCount());
+				cInventoryItem1 = cInventoryManager->GetItem("Battery");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Battery: %d", cInventoryItem1->GetCount());
 				cInventoryItem2 = cInventoryManager->GetItem("ScrapMetal");
 				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap: %d", cInventoryItem2->GetCount());
 				ImGui::NewLine();
 				// Add codes for Start button here
-				if (cInventoryItem1->GetCount() >= 0 && cInventoryItem2->GetCount() >= 0)
+				if (cInventoryItem1->GetCount() >= 2 && cInventoryItem2->GetCount() >= 1)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
 						makeChanges = true;
-						/*cInventoryItem1->Remove(2);
-						cInventoryItem2->Remove(2);*/
+						cInventoryItem1->Remove(2);
+						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Upgrade_small2")->Add(1);
+						CShipPlayer::GetInstance()->weapon2Interval = 7.0f - cInventoryManager->GetItem("Upgrade_small2")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
 					}
 				}
@@ -731,25 +877,27 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Upgrade Weapon?");
 				ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood x 2");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap x 2");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Quartz x 3");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Batteries x 2");
 
 				ImGui::NewLine();
 				ImGui::Text("You have:");
-				cInventoryItem1 = cInventoryManager->GetItem("Ironwood");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ironwood: %d", cInventoryItem1->GetCount());
-				cInventoryItem2 = cInventoryManager->GetItem("ScrapMetal");
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Scrap: %d", cInventoryItem2->GetCount());
+				cInventoryItem1 = cInventoryManager->GetItem("EnergyQuartz");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Quartz: %d", cInventoryItem1->GetCount());
+				cInventoryItem2 = cInventoryManager->GetItem("Battery");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Battery: %d", cInventoryItem2->GetCount());
+
 				ImGui::NewLine();
 				// Add codes for Start button here
-				if (cInventoryItem1->GetCount() >= 0 && cInventoryItem2->GetCount() >= 0)
+				if (cInventoryItem1->GetCount() >= 3 && cInventoryItem2->GetCount() >= 2)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
 						makeChanges = true;
-						/*cInventoryItem1->Remove(2);
-						cInventoryItem2->Remove(2);*/
+						cInventoryItem1->Remove(3);
+						cInventoryItem2->Remove(2);
 						cInventoryManager->GetItem("Upgrade_large")->Add(1);
+						CShipPlayer::GetInstance()->LargeWeaponInterval = 12.0f - cInventoryManager->GetItem("Upgrade_large")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
 					}
 				}
@@ -796,10 +944,16 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::SetWindowPos(ImVec2(blockPosition.x - cSettings->iWindowWidth * 0.10f,
 			blockPosition.y - cSettings->iWindowHeight * (cInventoryManager->GetItem("Storage")->GetMaxCount() / 5) * 0.05f - 0.2f));
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+		ImGui::SetWindowFocus();
 
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
 		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Storage");
-		
+
+		if (cInventoryManager->GetItem("Storage")->GetCount() == 0) {
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::Text("Inventory is Empty.");
+		}
+
 		counter = 0;
 		ShowItemCat = 1;
 
@@ -875,6 +1029,14 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		// TODO: add option to trash and bin it !!
 		// TODO: add multipage scroll
 
+		ImGui::NewLine();
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		if (ImGui::IsItemClicked())
+		{
+			GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
+			makeChanges = false;
+		}
+
 		ImGui::End();
 
 		break;
@@ -909,8 +1071,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
 						makeChanges = true;
-						/*cInventoryItem1->Remove(2);
-						cInventoryItem2->Remove(2);*/
+						cInventoryItem1->Remove(2);
+						cInventoryItem2->Remove(2);
 						cInventoryManager->GetItem("Upgrade_storage")->Add(1);
 						cInventoryManager->GetItem("Storage")->SetMaxCount(cInventoryManager->GetItem("Upgrade_storage")->GetCount() * 15);
 					}
@@ -946,6 +1108,72 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 				ImGui::End();
 			}			
+			break;
+		case CGUI_SceneCombat::VENTILATION_UPGRADE:
+			cInventoryItem1 = cInventoryManager->GetItem("Upgrade_ventilation");
+			if (cInventoryItem1->GetCount() < cInventoryItem1->GetMaxCount()) {
+				ImGui::Begin("Storage", NULL, livesWindowFlags);
+				ImGui::SetWindowPos(ImVec2(blockPosition.x - cSettings->iWindowWidth * 0.20f,
+					blockPosition.y - cSettings->iWindowHeight * 0.2f));
+				ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+
+				ImGui::SetWindowFontScale(1.8f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Upgrade Ventilation?");
+				ImGui::SetWindowFontScale(1.6f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Quartz x 2");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ice x 1");
+
+				ImGui::NewLine();
+				ImGui::Text("You have:");
+				cInventoryItem1 = cInventoryManager->GetItem("EnergyQuartz");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Quartz: %d", cInventoryItem1->GetCount());
+				cInventoryItem2 = cInventoryManager->GetItem("IceCrystal");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Ice: %d", cInventoryItem2->GetCount());
+				ImGui::NewLine();
+				// Add codes for Start button here
+				if (cInventoryItem1->GetCount() >= 0 && cInventoryItem2->GetCount() >= 0)
+				{
+					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+					if (ImGui::IsItemClicked()) {
+						makeChanges = true;
+						//cInventoryItem1->Remove(2);
+						//cInventoryItem2->Remove(1);
+						cInventoryManager->GetItem("Upgrade_ventilation")->Add(1);
+						CShip::GetInstance()->ventilationInterval = 12 - cInventoryManager->GetItem("Upgrade_ventilation")->GetCount() * 2;
+						UpgradeState = UPGRADE_STATE::NOSTATE;
+					}
+				}
+				ImGui::SameLine();
+
+				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+				if (ImGui::IsItemClicked())
+				{
+					UpgradeState = UPGRADE_STATE::NOSTATE;
+					makeChanges = false;
+				}
+
+				ImGui::End();
+			}
+			else {
+				ImGui::Begin("Storage", NULL, livesWindowFlags);
+				ImGui::SetWindowPos(ImVec2(blockPosition.x - cSettings->iWindowWidth * 0.30f,
+					blockPosition.y - cSettings->iWindowHeight * 0.1f));
+				ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
+				ImGui::SetWindowFocus();
+
+				ImGui::SetWindowFontScale(1.8f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Maximum Upgrades Reached.");
+
+				ImGui::SameLine();
+				ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidthSmall, buttonHeightSmall), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+				if (ImGui::IsItemClicked())
+				{
+					UpgradeState = UPGRADE_STATE::NOSTATE;
+					makeChanges = false;
+				}
+
+				ImGui::End();
+			}
 			break;
 		default:
 			break;
@@ -1010,30 +1238,84 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::NewLine();
 		ImGui::GetOverlayDrawList();
 
-		ImGui::Begin("EnemDam", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f),
-			cSettings->iWindowHeight * (0.36f)));
-		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
-		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::SetWindowFocus();
+		//ImGui::Begin("EnemDam", NULL, healthWindowFlags);
+		//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f),
+		//	cSettings->iWindowHeight * (0.36f)));
+		//ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		//ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		//ImGui::SetWindowFocus();
 
-		ImGui::Text("Enemy Damage");
-		ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(160, 25));
-		ImGui::End();
+		//ImGui::Text("Enemy Damage");
+		//ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(160, 25));
+		//ImGui::End();
 
-		// how. do i. get rid. of the border.
-		int damCount = CShipEnemy::GetInstance()->getHealth();
-		for (int i = 0; i < int(damCount / floor(CShipEnemy::GetInstance()->maxHealth / 10)); i++) {
-			ImGui::Begin("Enem Damage Bit", NULL, healthWindowFlags);
-			ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.74f,
-				cSettings->iWindowHeight * 0.40f));
-			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		//// how. do i. get rid. of the border.
+		//int damCount = CShipEnemy::GetInstance()->getHealth();
+		//for (int i = 0; i < int(damCount / floor(CShipEnemy::GetInstance()->maxHealth / 10)); i++) {
+		//	ImGui::Begin("Enem Damage Bit", NULL, healthWindowFlags);
+		//	ImGui::SetWindowPos(ImVec2((cSettings->iWindowWidth) * 0.74f,
+		//		cSettings->iWindowHeight * 0.40f));
+		//	ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+		//	ImGui::SetWindowFocus();
+
+		//	ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(7 * relativeScale_x, 14 * relativeScale_y));
+		//	ImGui::SameLine();
+		//	ImGui::GetOverlayDrawList();
+		//	ImGui::End();
+		//}
+
+		
+		if (cSettings->iWindowWidth < 1000) {
+			ImGui::Begin("EnemDam", NULL, healthWindowFlags);
+			ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 216 * relativeScale_x,
+				cSettings->iWindowHeight* (0.36f)));
+			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 			ImGui::SetWindowFocus();
 
-			ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(7 * relativeScale_x, 14 * relativeScale_y));
-			ImGui::SameLine();
-			ImGui::GetOverlayDrawList();
+			ImGui::Text("Enemy Damage");
+			ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(160 * relativeScale_y, 25 * relativeScale_y));
 			ImGui::End();
+
+			// how. do i. get rid. of the border.
+			int damCount = CShipEnemy::GetInstance()->getHealth();
+			for (int i = 0; i < int(damCount / floor(CShipEnemy::GetInstance()->maxHealth / 10)); i++) {
+				ImGui::Begin("Enem Damage Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 208 * relativeScale_y, cSettings->iWindowHeight * 0.40f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+				ImGui::SetWindowFocus();
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(7 * relativeScale_x, 13 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
+		}
+		else {
+			ImGui::Begin("EnemDam", NULL, healthWindowFlags);
+			ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 216 * relativeScale_x,
+				cSettings->iWindowHeight* (0.36f)));
+			ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_y, 10.0f * relativeScale_y));
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SetWindowFocus();
+
+			ImGui::Text("Enemy Damage");
+			ImGui::Image((void*)(intptr_t)ProgressBarTextureID, ImVec2(160 * relativeScale_x, 25 * relativeScale_y));
+			ImGui::End();
+
+			// how. do i. get rid. of the border.
+			int damCount = CShipEnemy::GetInstance()->getHealth();
+			for (int i = 0; i < int(damCount / floor(CShipEnemy::GetInstance()->maxHealth / 10)); i++) {
+				ImGui::Begin("Enem Damage Bit", NULL, healthWindowFlags);
+				ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth - 208 * relativeScale_x, cSettings->iWindowHeight * 0.398f));
+				ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
+				ImGui::SetWindowFocus();
+
+				ImGui::Image((void*)(intptr_t)BitTextureID, ImVec2(11.5 * relativeScale_x, 12 * relativeScale_y));
+				ImGui::SameLine();
+				ImGui::GetOverlayDrawList();
+				ImGui::End();
+			}
 		}
 
 		ImGui::Begin("EnemyPic", NULL, healthWindowFlags);
@@ -1047,13 +1329,13 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		switch (CShipEnemy::GetInstance()->enemType)
 		{
 		case CShipEnemy::ENEMY_TYPE::EASY:
-			ImGui::Image((void*)(intptr_t)enemyShip1, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
+			ImGui::Image((void*)(intptr_t)enemyShip1, ImVec2(120 * relativeScale_y, 120 * relativeScale_y));
 			break;
 		case CShipEnemy::ENEMY_TYPE::MEDIUM:
-			ImGui::Image((void*)(intptr_t)enemyShip2, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
+			ImGui::Image((void*)(intptr_t)enemyShip2, ImVec2(120 * relativeScale_y, 120 * relativeScale_y));
 			break;
 		case CShipEnemy::ENEMY_TYPE::HARD:
-			ImGui::Image((void*)(intptr_t)enemyShip3, ImVec2(120 * relativeScale_x, 120 * relativeScale_y));
+			ImGui::Image((void*)(intptr_t)enemyShip3, ImVec2(120 * relativeScale_y, 120 * relativeScale_y));
 			break;
 		default:
 			break;
@@ -1063,8 +1345,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		ImGui::End();
 
 		ImGui::Begin("EnemyGun", NULL, healthWindowFlags);
-		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f * relativeScale_x),
-			cSettings->iWindowHeight * (0.70f * relativeScale_y)));
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * (0.73f),
+			cSettings->iWindowHeight * (0.70f)));
 		ImGui::SetWindowSize(ImVec2(10.0f * relativeScale_x, 10.0f * relativeScale_y));
 		ImGui::SetWindowFocus();
 

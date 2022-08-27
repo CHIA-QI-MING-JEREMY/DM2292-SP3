@@ -159,6 +159,7 @@ bool CScenePlanet::Init(void)
 			else if (cPlanet->vec2Index.x == 31) {
 				cPlanet->SetType(CPlanet::TYPE::FINAL);
 				cPlanet->planetName = "Kepler-452B ('Utopia')";
+				cPlanet->SetVisibility(true);
 			}
 			else {
 				if (CGameInfo::GetInstance()->initPlanets == false) {
@@ -277,20 +278,26 @@ bool CScenePlanet::Init(void)
 
 	if (CGameInfo::GetInstance()->initPlanets == false) {
 		CGameInfo::GetInstance()->initPlanets = true;
-		realSize = nebulaSize = 5;
-		nebula->SetScale(nebulaSize);
+		realSize = 3;
+		nebulaSize = 5;
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 	}
 	else {
 		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
 
 		realSize = nebulaSize = CGameInfo::GetInstance()->nebulaSize;
-		nebulaSize += rand() % 10 + 1;
+		nebulaSize += rand() % 7 + 1;
 		std::cout << nebulaSize << "\n";
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 
 		while (otherPlanets != planetVector.end()) {
 			if (otherPlanets->second->vec2Index.x == 0) {
+				otherPlanets++;
+				continue;
+			}
+
+			if (otherPlanets->second->vec2Index.x == 31) {
+				otherPlanets->second->SetVisibility(true);
 				otherPlanets++;
 				continue;
 			}
@@ -301,18 +308,18 @@ bool CScenePlanet::Init(void)
 				PlanetSelected = otherPlanets->second;
 			}
 
+			if (s.x <= int(nebulaSize / 2)) {
+				isDead = true;
+			}
+			else {
+				isDead = false;
+			}
+
 			if (glm::abs(otherPlanets->second->vec2Index.x - PlanetSelected->vec2Index.x) < 6) {
 				otherPlanets->second->SetVisibility(true);
 			}
 			else {
 				otherPlanets->second->SetVisibility(false);
-			}
-
-			if (otherPlanets->second->vec2Index.x <= int((nebulaSize - 3) / 2)) {
-				// Add lose condition
-
-				otherPlanets->second->SetVisibility(false);
-				cMap2D->SetMapInfo(otherPlanets->second->vec2Index.y, otherPlanets->second->vec2Index.x, 598, true);
 			}
 			otherPlanets++;
 		}
@@ -345,8 +352,25 @@ bool CScenePlanet::Update(const double dElapsedTime)
 	}
 
 	if (nebulaSize != realSize) {
-		camera2D->lerp(realSize, nebulaSize, 0.01f);
+		realSize = camera2D->lerp(realSize, nebulaSize, 0.01f);
 		nebula->SetScale(realSize);
+
+		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
+
+		while (otherPlanets != planetVector.end()) {
+			if (otherPlanets->second->vec2Index.x == 0) {
+				otherPlanets++;
+				continue;
+			}
+
+			if (otherPlanets->second->vec2Index.x <= int(realSize / 2)) {
+				otherPlanets->second->SetVisibility(false);
+				cMap2D->SetMapInfo(otherPlanets->second->vec2Index.y, otherPlanets->second->vec2Index.x, 598, true);
+
+			}
+			
+			otherPlanets++;
+		}
 	}
 
 	// mouse Position demo

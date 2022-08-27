@@ -99,6 +99,7 @@ public:
 
 	float prevFightTime;
 	float fightTimeElapsed;
+	bool isDead;
 
 protected:
 	// constants
