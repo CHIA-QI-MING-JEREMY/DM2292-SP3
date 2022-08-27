@@ -176,6 +176,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 			cSnowPlanet->SetResourcesBack();
+			CSoundController::GetInstance()->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 
 			// Load the menu state
 			cout << "Loading ShipCombatState" << endl;
@@ -189,6 +191,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 			cJunglePlanet->SetResourcesBack();
+			CSoundController::GetInstance()->StopSoundByID(CSoundController::SOUND_LIST::BACKGROUNDSNOW);
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 
 			// Load the menu state
 			cout << "Loading ShipCombatState" << endl;
@@ -202,6 +206,8 @@ bool CPlayGameState::Update(const double dElapsedTime)
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
 			cTerrestrialPlanet->SetResourcesBack();
+			CSoundController::GetInstance()->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 
 			// Load the menu state
 			cout << "Loading ShipCombatState" << endl;

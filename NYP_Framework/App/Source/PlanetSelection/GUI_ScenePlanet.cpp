@@ -126,7 +126,7 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 	// Display the FPS
 	ImGui::TextColored(ImVec4(1, 1, 1, 1), "INTER-GALACTICAL MAP SYSTEM");
 	ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press 'I' to view your inventory.");
+	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Select on a planet to get more information.");
 
 	// Render the panel
 	if (cPlanet != NULL && isShowPanel) {
