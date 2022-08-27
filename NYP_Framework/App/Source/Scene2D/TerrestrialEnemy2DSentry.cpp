@@ -1336,13 +1336,13 @@ void TEnemy2DSentry::UpdateJumpFall(const double dElapsedTime)
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 				vec2NumMicroSteps.y = 0;
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_LAND); // play enemy landing sound
 				break;
 			}
 		}
 	}
 }
 
-// TO DO
 /**
  @brief Let enemy2D interact with the player.
  */
@@ -1491,6 +1491,11 @@ void TEnemy2DSentry::UpdatePosition(void)
 		//InteractWithPlayer();
 	}
 
+	if (vec2Direction.x != 0 && cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
+	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); // play enemy footstep sound
+	}
+
 	// if the player is above the enemy2D, then jump to attack
 	if (vec2Direction.y > 0)
 	{
@@ -1498,6 +1503,7 @@ void TEnemy2DSentry::UpdatePosition(void)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_JUMP); // play enemy jump sound
 		}
 	}
 }

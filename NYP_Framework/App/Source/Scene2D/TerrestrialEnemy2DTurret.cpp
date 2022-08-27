@@ -298,6 +298,8 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			ammo->setIsAlerted(false);
 			cout << "Bam!" << shootingDirection << endl;
 
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_SHOOTING); // play sound effect for the turret shooting
+
 			attackTimer = attackInterval;
 			numFired++;
 		}
@@ -427,6 +429,8 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(true);
 			cout << "Bam!" << shootingDirection << endl;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_SHOOTING); // play sound effect for the turret shooting
 
 			attackTimer = alertAttackInterval;
 			numFired++;
@@ -967,7 +971,6 @@ void TEnemy2DTurret::UpdateJumpFall(const double dElapsedTime)
 	}
 }
 
-// TO DO
 /**
  @brief Let enemy2D interact with the player.
  */

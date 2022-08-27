@@ -104,6 +104,7 @@ public:
 		//if false, level is randomly set between 1 and 2
 	void DecideLevel(bool tutorial);
 
+	// DONE BY TIMOTHY
 	bool getIsOnShip(void);
 	void SetResourcesBack(void);
 

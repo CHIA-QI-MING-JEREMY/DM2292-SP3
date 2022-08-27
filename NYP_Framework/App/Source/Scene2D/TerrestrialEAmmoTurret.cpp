@@ -102,23 +102,20 @@ bool CTEAmmoTurret::Init(void)
 	quadMesh = CMeshBuilder::GenerateQuad(glm::vec4(1, 1, 1, 1), cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
 
 	// Load the ammo texture
-	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_flame.png", true);
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/TurretBullet.png", true);
 	if (iTextureID == 0)
 	{
 		std::cout << "Failed to load ammo texture" << std::endl;
 		return false;
 	}
 
-	//CS: Create the animated spirte and setup the animation
-	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-	//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-	animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
-	//CS: Play the "idle" animation as default
-	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-		//-1 --> repeats forever
-		//		settng it to say 1 will cause it to only repeat 1 time
-		//1.0f --> set time between frames as 1.0f
-		//		increasing this number will cause the animation to slowdown
+	// Create the animated sprite and setup the animation
+	animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 2, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+	animatedSprites->AddAnimation("idleR", 0, 0);
+	animatedSprites->AddAnimation("idleL", 1, 1);
+
+	// Play idle animation as default
+	animatedSprites->PlayAnimation("idleR", -1, 1.0f);
 
 	//Set Physics to fall status by default
 	cPhysics2D.Init();

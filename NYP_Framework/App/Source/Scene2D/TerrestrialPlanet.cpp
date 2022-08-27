@@ -359,6 +359,9 @@ bool TerrestrialPlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\climb.ogg"), CSoundController::SOUND_LIST::CLIMB, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
 
+	// planet specific sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\TurretShooting.ogg"), CSoundController::SOUND_LIST::TURRET_SHOOTING, true);
+
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
 	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
 
@@ -1127,7 +1130,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{
@@ -1147,11 +1150,13 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	cPlayer2D->ResetRespawn(); // spawn player at the right starting location
 }
 
+// DONE BY TIMOTHY
 bool TerrestrialPlanet::getIsOnShip(void)
 {
 	return cGUI_Scene2D->getGoOnShip();
 }
 
+// DONE BY TIMOTHY
 void TerrestrialPlanet::SetResourcesBack(void)
 {
 	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {

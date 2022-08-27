@@ -922,11 +922,13 @@ void SnowPlanet::DecideLevel(bool tutorial)
 	cPlayer2D->ResetRespawn();
 }
 
+// DONE BY TIMOTHY
 bool SnowPlanet::getIsOnShip(void)
 {
 	return cGUI_Scene2D->getGoOnShip();
 }
 
+// DONE BY TIMOTHY
 void SnowPlanet::SetResourcesBack(void)
 {
 	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {

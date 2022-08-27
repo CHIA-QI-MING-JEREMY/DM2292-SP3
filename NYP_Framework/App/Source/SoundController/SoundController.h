@@ -64,6 +64,9 @@ public:
 		PATROL_TEAM_NOISY,
 		VT_TELEPORT_POOF,
 
+		// Terrestrial Planet
+		TURRET_SHOOTING,
+
 		//Snow Planet
 		BACKGROUNDSNOW,
 		BERSERK,

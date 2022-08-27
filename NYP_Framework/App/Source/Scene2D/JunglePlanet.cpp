@@ -1259,11 +1259,13 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	cPlayer2D->ResetRespawn(); //spawn player at the right starting location
 }
 
+// DONE BY TIMOTHY
 bool JunglePlanet::getIsOnShip(void)
 {
 	return cGUI_Scene2D->getGoOnShip();
 }
 
+// DONE BY TIMOTHY
 void JunglePlanet::SetResourcesBack(void)
 {
 	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {

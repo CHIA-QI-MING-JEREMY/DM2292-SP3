@@ -332,19 +332,15 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 			if (currentWaypointCounter < maxWaypointCounter)
 			{
-				glm::vec2 startIndices;
-				if (vec2NumMicroSteps.x == 0)
+				glm::vec2 startPosition = vec2Index;
+				/*if (vec2NumMicroSteps.x != 0)
 				{
-					startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-				}
-				else
-				{
-					startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-				}
+					startPosition.x += 1;
+				}*/
 
-				auto path = cMap2D->PathFind(startIndices,						// start pos
+				auto path = cMap2D->PathFind(startPosition,						// start pos
 											waypoints[currentWaypointCounter],	// target pos
-											heuristic::manhattan,				// heuristic
+											heuristic::euclidean,				// heuristic
 											10);								// weight
 
 				// Calculate new destination
@@ -358,7 +354,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 						vec2Destination = coord;
 
 						// Calculate the direction between enemy2D and this destination
-						vec2Direction = vec2Destination - vec2Index;
+						vec2Direction = vec2Destination - startPosition;
 						bFirstPosition = false;
 					}
 					else
@@ -460,19 +456,15 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 		// checks if waypoint distance is valid and there is a targeted waypoint
 		if (repositionWaypointDistance >= 0.f && targetRepositionWaypoint != glm::vec2(NULL, NULL))
 		{
-			glm::vec2 startIndices;
-			if (vec2NumMicroSteps.x == 0)
+			glm::vec2 startPosition = vec2Index;
+			/*if (vec2NumMicroSteps.x != 0)
 			{
-				startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-			}
-			else
-			{
-				startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-			}
+				startPosition.x += 1;
+			}*/
 
-			auto path = cMap2D->PathFind(startIndices,				// start pos
+			auto path = cMap2D->PathFind(startPosition,				// start pos
 										targetRepositionWaypoint,	// target pos
-										heuristic::manhattan,		// heuristic
+										heuristic::euclidean,		// heuristic
 										10);						// weight
 
 			// Calculate new destination
@@ -486,7 +478,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 					vec2Destination = coord;
 
 					// Calculate the direction between enemy2D and this destination
-					vec2Direction = vec2Destination - vec2Index;
+					vec2Direction = vec2Destination - startPosition;
 					bFirstPosition = false;
 				}
 				else
@@ -630,19 +622,15 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 			if (currentWaypointCounter < maxWaypointCounter)
 			{
-				glm::vec2 startIndices;
-				if (vec2NumMicroSteps.x == 0)
+				glm::vec2 startPosition = vec2Index;
+				/*if (vec2NumMicroSteps.x != 0)
 				{
-					startIndices = glm::vec2(vec2Index.x, vec2Index.y);
-				}
-				else
-				{
-					startIndices = glm::vec2(vec2Index.x + 1, vec2Index.y);
-				}
+					startPosition.x += 1;
+				}*/
 
-				auto path = cMap2D->PathFind(startIndices,						// start pos
+				auto path = cMap2D->PathFind(startPosition,						// start pos
 											waypoints[currentWaypointCounter],	// target pos
-											heuristic::manhattan,				// heuristic
+											heuristic::euclidean,				// heuristic
 											10);								// weight
 
 				// Calculate new destination
@@ -656,7 +644,7 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 						vec2Destination = coord;
 
 						// Calculate the direction between enemy2D and this destination
-						vec2Direction = vec2Destination - vec2Index;
+						vec2Direction = vec2Destination - startPosition;
 						bFirstPosition = false;
 					}
 					else
@@ -1169,6 +1157,7 @@ void TEnemy2DVeteran::UpdateJumpFall(const double dElapsedTime)
 				// Set the Physics to idle status
 				cPhysics2D.SetStatus(CPhysics2D::STATUS::IDLE);
 				vec2NumMicroSteps.y = 0;
+				cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_LAND); // play enemy landing sound
 				break;
 			}
 		}
@@ -1318,6 +1307,11 @@ void TEnemy2DVeteran::UpdatePosition(void)
 		//InteractWithPlayer();
 	}
 
+	if (vec2Direction.x != 0 && cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
+	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_FOOTSTEPS); // play enemy footstep sound
+	}
+
 	// if the player is above the enemy2D, then jump to attack
 	if (vec2Direction.y > 0)
 	{
@@ -1325,6 +1319,7 @@ void TEnemy2DVeteran::UpdatePosition(void)
 		{
 			cPhysics2D.SetStatus(CPhysics2D::STATUS::JUMP);
 			cPhysics2D.SetInitialVelocity(glm::vec2(0.0f, 3.5f));
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_JUMP); // play enemy jump sound
 		}
 	}
 }

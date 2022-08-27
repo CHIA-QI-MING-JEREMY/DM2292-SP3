@@ -116,7 +116,7 @@ bool CAmmo2D::Init(void)
 	case 2:
 	{
 		// Load the ammo texture
-		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/scene2d_blue_flame.png", true);
+		iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/PlayerBullet.png", true);
 		if (iTextureID == 0)
 		{
 			std::cout << "Failed to load the ammo texture" << std::endl;
@@ -124,10 +124,11 @@ bool CAmmo2D::Init(void)
 		}
 
 		//CS: Create the animated spirte and setup the animation
-		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 7,
-			cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
-		//^ loads a spirte sheet with 3 by 3 diff images, all of equal size and positioning
-		animatedSprites->AddAnimation("idle", 0, 6); //7 images for animation, index 0 to 7
+		animatedSprites = CMeshBuilder::GenerateSpriteAnimation(1, 4, cSettings->TILE_WIDTH, cSettings->TILE_HEIGHT);
+		animatedSprites->AddAnimation("idleR", 0, 0);
+		animatedSprites->AddAnimation("idleL", 1, 1);
+		animatedSprites->AddAnimation("idleU", 2, 2);
+		animatedSprites->AddAnimation("idleD", 3, 3);
 		break;
 	}
 	case 3:
@@ -206,7 +207,33 @@ void CAmmo2D::Update(const double dElapsedTime)
 	{
 		hit = true; //destroy ammo
 	}
-	if (cGUI_Scene2D->getPlanetNum() == 3) {
+
+	if (cGUI_Scene2D->getPlanetNum() == 2)
+	{
+		//update sprite animation to play depending on the direction enemy is facing
+		if (direction == LEFT)
+		{
+			//CS: Play the "left" animation
+			animatedSprites->PlayAnimation("idleL", -1, 1.0f);
+		}
+		else if (direction == RIGHT)
+		{
+			//CS: Play the "right" animation
+			animatedSprites->PlayAnimation("idleR", -1, 1.0f);
+		}
+		else if (direction == UP)
+		{
+			//CS: Play the "up" animation
+			animatedSprites->PlayAnimation("idleU", -1, 1.0f);
+		}
+		else if (direction == DOWN)
+		{
+			//CS: Play the "down" animation
+			animatedSprites->PlayAnimation("idleD", -1, 1.0f);
+		}
+	}
+	else if (cGUI_Scene2D->getPlanetNum() == 3) 
+	{
 		//update sprite animation to play depending on the direction enemy is facing
 		if (direction == LEFT)
 		{
