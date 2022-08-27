@@ -1071,8 +1071,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
 						makeChanges = true;
-						/*cInventoryItem1->Remove(2);
-						cInventoryItem2->Remove(2);*/
+						cInventoryItem1->Remove(2);
+						cInventoryItem2->Remove(2);
 						cInventoryManager->GetItem("Upgrade_storage")->Add(1);
 						cInventoryManager->GetItem("Storage")->SetMaxCount(cInventoryManager->GetItem("Upgrade_storage")->GetCount() * 15);
 					}
