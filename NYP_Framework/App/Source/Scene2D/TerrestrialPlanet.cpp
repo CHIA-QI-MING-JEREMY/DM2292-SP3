@@ -347,6 +347,7 @@ bool TerrestrialPlanet::Init(void)
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
+
 	// common sounds
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\walk.ogg"), CSoundController::SOUND_LIST::FOOTSTEPS, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\jumpland.ogg"), CSoundController::SOUND_LIST::LAND, true);

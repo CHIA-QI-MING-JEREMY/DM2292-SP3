@@ -578,18 +578,7 @@ void CShipPlayer::UpdateHealthLives(void)
 void CShipPlayer::InteractWithMap(void)
 {
 
-	switch (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x))
-	{
-	case 597:
-		// Update health and lives
-		cInventoryItem = cInventoryManager->GetItem("Health");
-		// Check if a life is lost
-		cInventoryItem->Remove(1);
-		UpdateHealthLives();
-		break;
-	default:
-		break;
-	}
+
 }
 
 bool CShipPlayer::CheckPosition(DIRECTION eDirection)

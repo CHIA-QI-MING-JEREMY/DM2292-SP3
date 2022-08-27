@@ -184,6 +184,11 @@ bool CSceneCombat::Init(void)
 	isDead = false;
 
 	// Audio Stuff
+	cSoundController = CSoundController::GetInstance();
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\planetSelection.ogg"), CSoundController::SOUND_LIST::BGM_PLANET, true, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\ShipCombat.ogg"), CSoundController::SOUND_LIST::BGM_FIGHT, true, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Window.ogg"), CSoundController::SOUND_LIST::WINODWOPEN, true, false);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Click.ogg"), CSoundController::SOUND_LIST::BUTTONCLICK, true, false);
 
 	return true;
 }
@@ -233,6 +238,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		if (fightTimeElapsed > kBreakTime) {
 			fightTimeElapsed = 0.0f;
 			cGUI_SceneCombat->isCombat = true;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
 			state = CURRENT_STATE::SHIPCOMBAT;
 			cShipEnemy->Randomise(cPlayer2D->vec2Index.x);
 		}
@@ -251,6 +258,10 @@ bool CSceneCombat::Update(const double dElapsedTime)
 			}
 			cGUI_SceneCombat->isCombat = false;
 			state = CURRENT_STATE::SHIPREST;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
+
 			numOfEncounters--;
 		}
 	}
@@ -274,6 +285,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 	if (CInventoryManager::GetInstance()->GetItem("Damage")->GetCount() == 0) {
 		isDead = true;
 		goToNextScene = true;
+		cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
+		cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
 	}
 
 	if (cGUI_SceneCombat->makeChanges && cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showExit) {
@@ -294,6 +307,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 
 		state = CURRENT_STATE::SHIPLANDED;
 		goToNextScene = true;
+		cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
+		cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 		cGUI_SceneCombat->makeChanges = false;
 	}
@@ -457,12 +472,15 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 		cGUI_SceneCombat->showRepairPanel = true;
 		blockSelected = position;
 		cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 		break;
 
 	case 1222:
 		cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showExit;
 		blockSelected = position;
 		cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 		break;
 	case 1220:
 		if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::noShow) {
@@ -471,6 +489,8 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 			//cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
 			blockSelected = position;
 			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 		}
 		else if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showUpgrade) {
 			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showWeaponUpgrade;
@@ -478,30 +498,40 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 			//cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
 			blockSelected = position;
 			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 		}
 		break;
 	case 1215:
 	case 1218:
 		if (cGUI_SceneCombat->showRepairPanel) {
 			cGUI_SceneCombat->showRepairPanel = false;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 		}
 		if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showUpgrade) {
 			cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::VENTILATION_UPGRADE;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 			blockSelected = position;
 			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
 		}
 		else if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showStorage) {
 			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 
 		}
 		break;
 	case 1219:
 		if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showUpgrade) {
 			cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::STORAGE_UPGRADE;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 			blockSelected = position;
 			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
 		}
-		else if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showStorage) {			
+		else if (cGUI_SceneCombat->GuiState == CGUI_SceneCombat::GUI_STATE::showStorage) {
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
 
 		}
@@ -509,6 +539,8 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 
 			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::showStorage;
 			blockSelected = position;
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
+
 			cGUI_SceneCombat->blockPosition = ImVec2(camera2D->getBlockPositionWindow(position).x, camera2D->getBlockPositionWindow(position).y);
 		}
 		break;
@@ -528,8 +560,11 @@ void CSceneCombat::PlayerInteractWithMap(glm::vec2 position)
 				cout << "Runtime error: " << e.what();
 			}
 
-
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::WINODWOPEN);
 			goToNextScene = true;
+
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
 		} 
 		break;
 	default:
