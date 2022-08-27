@@ -64,7 +64,7 @@ public:
 		PATROL_TEAM_NOISY,
 		VT_TELEPORT_POOF,
 
-		//Sound Planet
+		//Snow Planet
 		BACKGROUNDSNOW,
 		BERSERK,
 		FREEZE,
