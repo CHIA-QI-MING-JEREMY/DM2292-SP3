@@ -142,11 +142,14 @@ void CGUI_ScenePlanet::Update(const double dElapsedTime)
 		ImGui::SetWindowSize(ImVec2(500.0f * relativeScale_x, 250.0f * relativeScale_y));
 
 		// planet information
-		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 1, 1), "Planet Name: ");
-		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), cPlanet->planetName);
-		ImGui::NewLine();
+
+		if (cPlanet->planetName != "???") {
+			ImGui::SetWindowFontScale(1.8f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 1, 1), "Planet Name: ");
+			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), cPlanet->planetName);
+			ImGui::NewLine();
+		}
 		switch (cPlanet->getType())
 		{
 		case CPlanet::TYPE::JUNGLE:
