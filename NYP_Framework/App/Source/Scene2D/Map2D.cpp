@@ -1002,6 +1002,30 @@ bool CMap2D::Init(	const unsigned int uiNumLevels,
 		// Store the texture ID into MapOfTextureIDs
 		MapOfTextureIDs.insert(pair<int, int>(SWITCH_LEFT_ON, iTextureID));
 	}
+	// Load right switch (off)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Right_Off.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Right_Off.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_RIGHT_OFF, iTextureID));
+	}
+	// Load right switch (on)
+	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Switch_Right_On.tga", true);
+	if (iTextureID == 0)
+	{
+		cout << "Unable to load Image/TerrestrialPlanet/Switch_Right_On.tga" << endl;
+		return false;
+	}
+	else
+	{
+		// Store the texture ID into MapOfTextureIDs
+		MapOfTextureIDs.insert(pair<int, int>(SWITCH_RIGHT_ON, iTextureID));
+	}
 	// Load purple key
 	iTextureID = CImageLoader::GetInstance()->LoadTextureGetID("Image/TerrestrialPlanet/Key_Purple.tga", true);
 	if (iTextureID == 0)

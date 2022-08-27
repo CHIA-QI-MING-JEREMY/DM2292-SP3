@@ -186,7 +186,7 @@ protected:
 	bool isColourTrapped(glm::vec4 playerColour);
 
 	// Checks how long ago player last switched colour
-	double maxColourSwitchTimer;
+	const double maxColourSwitchTimer = 0.3;
 	double colourSwitchTimer;
 
 	// Checks if player is white

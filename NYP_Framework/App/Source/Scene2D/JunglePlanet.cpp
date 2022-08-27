@@ -33,6 +33,8 @@ JunglePlanet::JunglePlanet(void)
  */
 JunglePlanet::~JunglePlanet(void)
 {
+	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+	
 	if (cKeyboardController)
 	{
 		// We won't delete this since it was created elsewhere
@@ -1236,7 +1238,7 @@ void JunglePlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 		cGUI_Scene2D->setTutorialPopupJungle(CGUI_Scene2D::JUNGLE_TUTORIAL_POPUP::CHECKPOINT); //start with checkpoint pop up
 	}
 	else //randomise between level 1 and 2

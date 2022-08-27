@@ -261,6 +261,7 @@ bool CPlayer2D::Init(void)
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
 	cInventoryItemPlanet = cInventoryManagerPlanet->Add("furcoat", "Image/SnowPlanet/furcoat.tga", 100, 0);
 	cInventoryItemPlanet->vec2Size = glm::vec2(25, 25);
+	
 	// Load the sounds into CSoundController
 	cSoundController = CSoundController::GetInstance();
 
@@ -274,6 +275,8 @@ bool CPlayer2D::Init(void)
 
 	// sounds
 	hasLanded = false;
+
+	isMoving = false;
 
 	return true;
 }
@@ -348,13 +351,15 @@ void CPlayer2D::Update(const double dElapsedTime)
 	// Store the old position
 	vec2OldIndex = vec2Index;
 
+	// sets moving status to false
+	isMoving = false;
+
 	// Get keyboard updates	
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_A))
 	{
 		// Calculate the new position to the left
 		if (vec2Index.x >= 0)
 		{
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FOOTSTEPS);
 			vec2NumMicroSteps.x--;
 			if (vec2NumMicroSteps.x < 0)
 			{
@@ -371,6 +376,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 			vec2Index = vec2OldIndex;
 			vec2NumMicroSteps.x = 0;
 		}
+
+		isMoving = true;
 		
 		// Play the "runL" animation
 		animatedSprites->PlayAnimation("runL", -1, 1.0f);
@@ -389,7 +396,6 @@ void CPlayer2D::Update(const double dElapsedTime)
 		// Calculate the new position to the right
 		if (vec2Index.x < ((int)cSettings->NUM_TILES_XAXIS))
 		{
-			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FOOTSTEPS);
 			vec2NumMicroSteps.x++;
 			if (vec2NumMicroSteps.x >= cSettings->NUM_STEPS_PER_TILE_XAXIS)
 			{
@@ -405,6 +411,8 @@ void CPlayer2D::Update(const double dElapsedTime)
 		{
 			vec2NumMicroSteps.x = 0;
 		}
+
+		isMoving = true;
 
 		// Play the "runR" animation
 		animatedSprites->PlayAnimation("runR", -1, 1.0f);
@@ -500,6 +508,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 	if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 3 && cKeyboardController->IsKeyPressed(GLFW_KEY_E)) { // nvr do in the if below because of attacktimer cool down, slows attack speed sound
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYERSNOWSHOOT);
 	}
+
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E) && attackTimer <= 0.0)
 	{
 		if (attackDirection == RIGHT)
@@ -552,14 +561,12 @@ void CPlayer2D::Update(const double dElapsedTime)
 			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::JUMP);
 		}
 	}
-	//if (cKeyboardController->IsKeyPressed(GLFW_KEY_8)) {
-	//	cout << "KNOCKBACK" << endl;
-	//	if (cPhysics2D.GetStatus() == CPhysics2D::STATUS::JUMP) {
-	//		cPhysics2D.SetStatus(CPhysics2D::STATUS::KNOCKBACK);
-	//		cPhysics2D.SetInitialVelocity(glm::vec2(-3.f, 0.f));
-	//	}
-	//	UpdateKnockback(dElapsedTime);
-	//}
+
+	// plays footstep sounds
+	if (isMoving && cPhysics2D.GetStatus() == CPhysics2D::STATUS::IDLE)
+	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::FOOTSTEPS);
+	}
 
 	// create ammo
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_E))

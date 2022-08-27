@@ -170,6 +170,10 @@ bool TEnemy2DTurret::Init(void)
 		{
 			type = KEYHOLDER_PURPLE; // drops a purple key when killed
 		}
+		else if (vec2Index == glm::vec2(18, 15))
+		{
+			type = KEYHOLDER_PURPLE; // drops a purple key when killed
+		}
 		else
 		{
 			type = LONG_RANGE; //has ammo
@@ -181,7 +185,7 @@ bool TEnemy2DTurret::Init(void)
 	}
 		
 	shootingDirection = RIGHT; //setting direction for ammo shooting
-	maxHealth = health = 1000; // 100 damage per hit from player
+	maxHealth = health = 1200; // 100 damage per hit from player
 
 	isAlarmerActive = false;
 	isAlarmOn = false;
