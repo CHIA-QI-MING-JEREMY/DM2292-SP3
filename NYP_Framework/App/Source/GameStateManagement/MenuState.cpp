@@ -134,7 +134,7 @@ bool CMenuState::Update(const double dElapsedTime)
 			CSettings::GetInstance()->iWindowHeight * 0.2f));				// Set the top-left of the window at (10,10)
 		ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
 
-		ImGui::Text("SP3 Game");
+		ImGui::Text("Voyager");
 
 		ImGui::End();
 
@@ -159,6 +159,8 @@ bool CMenuState::Update(const double dElapsedTime)
 			// Load the menu state
 			cout << "Loading PlanetState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");
+			/*cout << "Loading PlayGameState" << endl;
+			CGameStateManager::GetInstance()->SetActiveGameState("PlayGameState");*/
 		}
 
 		

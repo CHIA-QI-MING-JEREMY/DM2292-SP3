@@ -79,6 +79,12 @@ TEnemy2DVeteran::~TEnemy2DVeteran(void)
 		animatedSprites = NULL;
 	}
 
+	if (cSoundController)
+	{
+		cSoundController->StopSoundByID(CSoundController::SOUND_LIST::VETERAN_RADIO); // stpp sound effect for the veteran radio
+		cSoundController = NULL;
+	}
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);

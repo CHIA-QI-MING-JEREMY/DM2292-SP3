@@ -72,6 +72,11 @@ JEnemy2DITracker::~JEnemy2DITracker(void)
 	// We won't delete this since it was created elsewhere
 	cMap2D = NULL;
 
+	if (cSoundController)
+	{
+		cSoundController = NULL;
+	}
+
 	// Delete the CAnimationSprites
 	if (animatedSprites)
 	{

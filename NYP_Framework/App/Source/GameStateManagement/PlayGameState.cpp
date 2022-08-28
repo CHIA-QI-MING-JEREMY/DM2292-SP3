@@ -47,7 +47,7 @@ bool CPlayGameState::Init(void)
 	cout << "CPlayGameState::Init()\n" << endl;
 
 	type = CGameInfo::GetInstance()->selectedPlanet->getType();
-	//type = CPlanet::TYPE::SNOW_TUTORIAL;
+	//type = CPlanet::TYPE::TERRESTRIAL_TUTORIAL;
 
 	std::cout << (CPlanet::TYPE(type)) << "\n";
 
@@ -129,6 +129,7 @@ bool CPlayGameState::Update(const double dElapsedTime)
 		// Reset the CKeyboardController
 		CKeyboardController::GetInstance()->Reset();
 		CInventoryManager::GetInstance()->Exit();
+		CInventoryManagerPlanet::GetInstance()->Exit();
 
 		// Load the menu state
 		cout << "Loading MenuState" << endl;
