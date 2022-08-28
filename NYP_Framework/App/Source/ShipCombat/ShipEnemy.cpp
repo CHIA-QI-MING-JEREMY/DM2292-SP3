@@ -145,6 +145,13 @@ void CShipEnemy::Update(const double dElapsedTime)
 		}
 	}
 
+	if (cKeyboardController->IsKeyDown(GLFW_KEY_L)) {
+		enemyTimer = 0.5f;
+	}
+	else {
+		enemyTimer = 10.0f;
+	}
+
 	if ((TimeElapsed - NoiseStartTime) > kScreenShakeLength) {
 		Camera2D::GetInstance()->noiseOn = false;
 		NoiseStartTime = 0;
