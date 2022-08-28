@@ -355,9 +355,9 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::NewLine();
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::Text("FIRE WEAPON");
+			ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f), "FIRE WEAPON");
+
 			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) >= (float)CShipPlayer::GetInstance()->LargeWeaponInterval) {
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
@@ -386,9 +386,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::NewLine();
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::Text("FIRE WEAPON");
+			ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f),"FIRE WEAPON");
 			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) >= CShipPlayer::GetInstance()->weapon1Interval) {
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
@@ -417,9 +416,9 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::NewLine();
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::Text("FIRE WEAPON");
+			ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f), "FIRE WEAPON");
+
 			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) >= CShipPlayer::GetInstance()->weapon2Interval) {
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
@@ -454,7 +453,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::NewLine();
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-		ImGui::Text("Restart Ventilation");
+		ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f), "Reboot Ventilation");
 		if (ImGui::IsItemClicked()) {
 			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 
@@ -1015,7 +1014,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				if (ShowItemCat == 1) {
 					cInventoryItem1 = cInventoryManager->GetItem("ScrapMetal");
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth * relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1027,7 +1026,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("Battery");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1039,7 +1038,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("Ironwood");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1051,7 +1050,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("EnergyQuartz");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1063,7 +1062,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("IceCrystal");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1083,7 +1082,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		// TODO: add multipage scroll
 
 		ImGui::NewLine();
-		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
 			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);

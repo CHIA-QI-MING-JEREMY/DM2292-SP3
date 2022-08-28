@@ -1,5 +1,45 @@
 DM2292 Studio Project 3 Group 9
 
+Controls:
+[Ship Upgrade]
+WASD : move around the ship
+Left click : select action
+
+[Planet Selection]
+Left click : select planet to visit
+Enter : visit selected planet
+
+[Platforming Planets/Levels, Common]
+AD : move and face left and right
+WS : move up and down on vines, face up and down
+E : shoot projectile
+R : give 1 life to respawn at checkpoint
+I : bring up planet inventory
+
+[Planet Inventory, Common]
+Left click : (on resource) destroy 1 of said resource
+
+[Jungle Planet] 
+Q : (while in river water) collect river water; (while standing on an unbloomed bouncy bloom) bloom the bouncy bloom; (else) heal 
+    player's health by 10 and reduce poison level by 1
+F : tie vine around rock (when standing by a rock with vine in inventory)
+G : place burnable block (when with burnable blocks in inventory)
+
+[Terrestrial Planet]
+1 : change colour to yellow (when yellow orb in possession and charged)
+2 : change colour to red (when red orb in possession and charged)
+3 : change colour to green (when green orb in possession and charged)
+4 : change colour to blue (when blue orb in possession and charged)
+
+[Snow Planet]
+Q : activate shield mode (when shield power up in possession and unused)
+F : freeze all water in the level (when ice shard power up in possession and unused)
+G : activate beserk mode (when beserk power up in possession and unused)
+
+[Ship Combat]
+WASD : move around the ship
+Left click : select action
+----------------------------------------------------------------------------------------------------------------------------------------
 Tile Index:
 0 : empty space
 1 : generic resource (pick scrap metal or battery to spawn)

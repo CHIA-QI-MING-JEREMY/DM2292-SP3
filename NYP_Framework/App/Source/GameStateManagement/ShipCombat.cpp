@@ -125,7 +125,7 @@ bool CShipCombatState::Update(const double dElapsedTime)
 		case CSceneCombat::CURRENT_STATE::SHIPUPGRADE_NP:
 			// Reset the CKeyboardController
 			CKeyboardController::GetInstance()->Reset();
-
+			
 			// Load the menu state
 			cout << "Loading PlayGameState" << endl;
 			CGameStateManager::GetInstance()->SetActiveGameState("PlanetState");

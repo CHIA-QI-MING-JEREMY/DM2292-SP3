@@ -191,7 +191,8 @@ bool CSceneCombat::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Click.ogg"), CSoundController::SOUND_LIST::BUTTONCLICK, true, false);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\ShipHit.ogg"), CSoundController::SOUND_LIST::SHIPHIT, true, false);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\ShipGun.ogg"), CSoundController::SOUND_LIST::SHIPGUN, true, false);
-
+	//cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
+	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
 	return true;
 }
 
@@ -338,7 +339,6 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
 		cGUI_SceneCombat->makeChanges = false;
 	}
-
 
 	if (CMouseController::GetInstance()->IsButtonDown(0) && !lState) {
 		lState = true;
