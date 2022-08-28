@@ -1014,7 +1014,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				if (ShowItemCat == 1) {
 					cInventoryItem1 = cInventoryManager->GetItem("ScrapMetal");
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth * relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1026,7 +1026,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("Battery");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1038,7 +1038,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("Ironwood");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1050,7 +1050,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("EnergyQuartz");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1062,7 +1062,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					cInventoryItem1 = cInventoryManager->GetItem("IceCrystal");
 
 					if (cInventoryItem1->GetCount() > counter) {
-						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth, buttonHeight), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
+						ImGui::Image((ImTextureID)cInventoryItem1->GetTextureID(), ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(1.0, 1.0), ImVec2(0.0, 0.0));
 						counter++;
 					}
 					else {
@@ -1082,7 +1082,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 		// TODO: add multipage scroll
 
 		ImGui::NewLine();
-		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
+		ImGui::Image((ImTextureID)RejectButtonData.textureID, ImVec2(buttonWidth* relativeScale_y, buttonHeight* relativeScale_y), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 		if (ImGui::IsItemClicked())
 		{
 			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);

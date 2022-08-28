@@ -340,7 +340,6 @@ bool CSceneCombat::Update(const double dElapsedTime)
 		cGUI_SceneCombat->makeChanges = false;
 	}
 
-
 	if (CMouseController::GetInstance()->IsButtonDown(0) && !lState) {
 		lState = true;
 		PlayerInteractWithMap(camera2D->getBlockSelected());

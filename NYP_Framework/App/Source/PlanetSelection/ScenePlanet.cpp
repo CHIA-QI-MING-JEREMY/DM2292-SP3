@@ -280,13 +280,14 @@ bool CScenePlanet::Init(void)
 		CGameInfo::GetInstance()->initPlanets = true;
 		realSize = 3;
 		nebulaSize = 5;
+		isInRange = false;
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 	}
 	else {
 		std::map<std::pair<int, int>, CPlanet*>::iterator otherPlanets = planetVector.begin();
 
 		realSize = nebulaSize = CGameInfo::GetInstance()->nebulaSize;
-		nebulaSize += rand() % 4 + 3;
+		nebulaSize += rand() % 5 + 3;
 		std::cout << nebulaSize << "\n";
 		CGameInfo::GetInstance()->nebulaSize = nebulaSize;
 
@@ -309,10 +310,10 @@ bool CScenePlanet::Init(void)
 			}
 
 			if (s.x <= int(nebulaSize / 2)) {
-				isDead = true;
+				isInRange = true;
 			}
 			else {
-				isDead = false;
+				isInRange = false;
 			}
 
 			if (glm::abs(otherPlanets->second->vec2Index.x - PlanetSelected->vec2Index.x) < 6) {
@@ -340,6 +341,7 @@ bool CScenePlanet::Init(void)
 
 	StartCombat = false;
 	lState = false;
+	isDead = false;
 
 	return true;
 }
@@ -358,7 +360,7 @@ bool CScenePlanet::Update(const double dElapsedTime)
 		}
 	}
 
-	if (nebulaSize != realSize) {
+	if (nebulaSize - realSize > 0.1) {
 		realSize = camera2D->lerp(realSize, nebulaSize, 0.01f);
 		nebula->SetScale(realSize);
 
@@ -377,6 +379,11 @@ bool CScenePlanet::Update(const double dElapsedTime)
 			}
 			
 			otherPlanets++;
+		}
+	}
+	else {
+		if (isInRange) {
+			isDead = true;
 		}
 	}
 
