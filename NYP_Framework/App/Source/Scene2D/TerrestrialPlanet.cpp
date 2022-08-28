@@ -407,6 +407,12 @@ bool TerrestrialPlanet::Init(void)
 
 	explosionTimer = 0.0;
 
+	// Tutorial GUI
+	hasYellowOrbPopupTriggered = false;
+	hasRedOrbPopupTriggered = false;
+	isAntidoteObtained = false;
+	hasAntidotePopupTriggered = false;
+
 	return true;
 }
 
@@ -526,6 +532,14 @@ bool TerrestrialPlanet::isColourTrapped(glm::vec4 playerColour)
 */
 bool TerrestrialPlanet::Update(const double dElapsedTime)
 {
+	//if not showing yellow orb or red orb pop up (since those 2 are only set once and meant to disappear only after being overriden
+	if (cGUI_Scene2D->getTutorialPopupTerrestrial() != CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ORB_YELLOW &&
+		cGUI_Scene2D->getTutorialPopupTerrestrial() != CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ORB_RED && 
+		cGUI_Scene2D->getTutorialPopupTerrestrial() != CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ANTIDOTE)
+	{
+		cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_NONE); //remove pop ups by default
+	}
+	
 	camera2D->setTargetPos(cPlayer2D->vec2Index);
 	camera2D->Update(dElapsedTime);
 
@@ -764,6 +778,7 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 	cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("AntidotePill");
 	if (cInventoryItemPlanet->GetCount() == cInventoryItemPlanet->GetMaxCount())
 	{
+		isAntidoteObtained = true;
 		cInventoryItemPlanet->Remove(1);
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
 		cInventoryItemPlanet->Remove(20);
@@ -796,6 +811,106 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 	if (cKeyboardController->IsKeyReleased(GLFW_KEY_F8))
 	{
 		cMap2D->SetCurrentLevel(1);
+	}
+
+	if (cMap2D->GetCurrentLevel() == TUTORIAL)
+	{
+		// place all the one time trigger popups first
+		// yellow orb popup
+		if (isYellowObtained && !hasYellowOrbPopupTriggered)
+		{
+			hasYellowOrbPopupTriggered = true;
+
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ORB_YELLOW); // trigger yellow orb pop up
+		}
+		// red orb popup
+		if (isRedObtained && !hasRedOrbPopupTriggered)
+		{
+			hasRedOrbPopupTriggered = true;
+
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ORB_RED); // trigger red orb pop up
+		}
+		// antidote popup
+		if (isAntidoteObtained && !hasAntidotePopupTriggered)
+		{
+			hasAntidotePopupTriggered = true;
+
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ANTIDOTE); // trigger antidote pop up
+		}
+		
+		// all other popups
+		// checkpoint popup
+		if (cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_START), cPlayer2D->vec2Index) < 3.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_CHECKPOINT); // trigger checkpoint pop up
+		}
+		// yellow wall popup
+		if (cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_YELLOW_WALL), cPlayer2D->vec2Index) < 3.f && 
+			cPlayer2D->vec2Index.y >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_YELLOW_WALL).y)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_WALL_YELLOW); // trigger yellow wall pop up
+		}
+		// rope popup
+		if (cPlayer2D->vec2Index.x >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_ROPE).x &&
+			cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_ROPE), cPlayer2D->vec2Index) < 3.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ROPE); // trigger rope pop up
+		}
+		// toxicity popup
+		if (cPlayer2D->vec2Index.x >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_TOXICITY_TOP_L).x &&
+			cPlayer2D->vec2Index.x <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_TOXICITY_BOT_R).x &&
+			cPlayer2D->vec2Index.y >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_TOXICITY_BOT_R).y &&
+			cPlayer2D->vec2Index.y <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_TOXICITY_TOP_L).y)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_TOXICITY); // trigger toxicity pop up
+		}
+		// colour change danger popup
+		if (cPlayer2D->vec2Index.y <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_DANGER).y &&
+			cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_DANGER), cPlayer2D->vec2Index) < 3.f && 
+			isRedObtained)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_COLOUR_CHANGE_DANGER); // trigger colour change danger pop up
+		}
+		// resource popup
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Resources");
+		if (cInventoryItemPlanet->GetCount() > 0 &&
+			cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_RESOURCE), cPlayer2D->vec2Index) < 2.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_RESOURCE); // trigger resource pop up
+		}
+		// shooting popup
+		if (cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_SHOOTING), cPlayer2D->vec2Index) < 4.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_SHOOTING); // trigger shooting pop up
+		}
+		// lock popup
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
+		if (cInventoryItemPlanet->GetCount() > 0 &&
+			cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_LOCK), cPlayer2D->vec2Index) < 2.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_LOCK); // trigger lock pop up
+		}
+		// switch popup
+		if (cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_SWITCH), cPlayer2D->vec2Index) < 2.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_SWITCH); // trigger switch pop up
+		}
+		// colour change cooldown popup
+		if (cPlayer2D->vec2Index.x >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_COOLDOWN_TOP_L).x &&
+			cPlayer2D->vec2Index.x <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_COOLDOWN_BOT_R).x &&
+			cPlayer2D->vec2Index.y >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_COOLDOWN_BOT_R).y &&
+			cPlayer2D->vec2Index.y <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_COOLDOWN_TOP_L).y)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_COLOUR_CHANGE_COOLDOWN); // trigger colour change cooldown pop up
+		}
+		// alarm popup
+		if (cPlayer2D->vec2Index.x >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_ALARM_TOP_L).x &&
+			cPlayer2D->vec2Index.x <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_ALARM_BOT_R).x &&
+			cPlayer2D->vec2Index.y >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_ALARM_BOT_R).y &&
+			cPlayer2D->vec2Index.y <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_ALARM_TOP_L).y)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_ALARM); // trigger alarm pop up
+		}
 	}
 
 	// Checks if alarm is active (alarm is changed in each enemy)

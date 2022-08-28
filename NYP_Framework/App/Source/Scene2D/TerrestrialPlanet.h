@@ -210,4 +210,10 @@ protected:
 	// Explosion timer
 	double explosionTimer;
 	const double explosionDuration = 0.05;
+
+	// Tutorial GUI
+	bool hasYellowOrbPopupTriggered;
+	bool hasRedOrbPopupTriggered;
+	bool isAntidoteObtained;
+	bool hasAntidotePopupTriggered;
 };

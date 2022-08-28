@@ -669,7 +669,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 			//different popup text for different popups
 			switch (tutorialPopupTerrestrial)
 			{
-			case T_INTRO:
+			case T_CHECKPOINT:
 				//header
 				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
@@ -680,6 +680,140 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			case T_WALL_YELLOW:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Rare Earth Walls");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "This planet is rich with rare earths\n\nCollecting samples of these rare\nearths (coloured orbs) will allow\nyou to coat your suit with them,\nenabling you to pass through walls\nof the same rare earth colour.");
+				ImGui::NewLine();
+				break;
+			case T_ORB_YELLOW:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Orbs");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Once a rare earth sample has been\ncollected, you can coat your suit\nwith that rare earth\n\nYour suit colour will change\naccordingly with the rare earth\ncolour");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press 1 to coat your suit yellow");
+				break;
+			case T_ROPE:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Rope");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Walking over a rope post will\nuncoil the rope and throw it down.\n\nAllows you to climb up and down more\neasily");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press W to climb up the rope\nPress S to climb down the rope");
+				break;
+			case T_TOXICITY:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Toxicity Level");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Coating your suit with rare earths\nfor too long will cause your\ntoxicity meter to go up\n\nIf it completely fills up, you will\nbegin to take damage");
+				ImGui::NewLine();
+				break;
+			case T_ANTIDOTE:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Antidote Pills");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Collect Antidote Pills to reduce\nyour toxicity level and continue to\nstay alive");
+				ImGui::NewLine();
+				break;
+			case T_ORB_RED:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Orbs");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Once a rare earth sample has been\ncollected, you can coat your suit\nwith that rare earth\n\nYour suit colour will change\naccordingly with the rare earth\ncolour");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press 1 to coat your suit yellow\nPress 2 to coat your suit red\nPress 3 to coat your suit green");
+				break;
+			case T_COLOUR_CHANGE_DANGER:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Changing Coatings Pt I");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Changing the rare earth coating of\nthe suit while you are in a rare\nearth wall will kill you");
+				ImGui::NewLine();
+				break;
+			case T_RESOURCE:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Resources");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "You can only collect 5 resources to\nbring back to the ship\n\nYou can destroy resources you don't\nwant from your inventory");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "I to toggle Inventory open and close");
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Left click a resource to destroy it");
+				break;
+			case T_SHOOTING:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shooting");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Shoot projectiles up, down, left or\nright\n\nFace the direction you want to shoot\nin");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "WASD to change which direction to \nface \nPress E to shoot");
+				break;
+			case T_LOCK:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Locks and Keys");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Certain enemies will drop keys when\nthey are killed\n\nWalk over a key to pick it up\n\nWalk near a coloured door to unlock\nit if you possess a key of the same\ncolour");
+				ImGui::NewLine();
+				break;
+			case T_SWITCH:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Switches");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Toggle the tiles on and off by\nshooting linked switches\n\nThe switch(es) linked to the tiles\nwill have blue wires joining them");
+				ImGui::NewLine();
+				break;
+			case T_COLOUR_CHANGE_COOLDOWN:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Changing Coatings Pt II");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "After changing your rare earth\ncoating, you cannot change to\nanother rare earth coating for a\nshort period of time");
+				ImGui::NewLine();
+				break;
+			case T_ALARM:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Alarm");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Some enemies are able to trigger the\nalarm\n\nIf the alarm is activated, all\nenemies will become more dangerous\n\nKill the enemy activating the alarm\nto prevent other enemies from being\nalerted");
+				ImGui::NewLine();
 				break;
 			default:
 				break;
@@ -1013,11 +1147,12 @@ void CGUI_Scene2D::setTutorialPopupJungle(int index)
 
 int CGUI_Scene2D::getTutorialPopupTerrestrial(void)
 {
-	return 0;
+	return tutorialPopupTerrestrial;
 }
 
 void CGUI_Scene2D::setTutorialPopupTerrestrial(int index)
 {
+	tutorialPopupTerrestrial = index;
 }
 
 int CGUI_Scene2D::getTutorialPopupSnow(void)
