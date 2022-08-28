@@ -147,13 +147,6 @@ bool TerrestrialPlanet::Init(void)
 		cout << "Failed to load Terrestrial Map Level 02" << endl;
 		return false;
 	}
-	// Load the map into an array
-	if (cMap2D->LoadMap("Maps/DM2292_Map_Test.csv", TEST) == false)
-	{
-		// The loading of a map has failed. Return false
-		cout << "Failed to load Map Test" << endl;
-		return false;
-	}
 
 	// Create and initialise the CGUI_Scene2D
 	cGUI_Scene2D = CGUI_Scene2D::GetInstance();
@@ -1280,7 +1273,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
+		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

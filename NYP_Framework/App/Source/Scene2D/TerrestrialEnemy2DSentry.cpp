@@ -185,26 +185,7 @@ bool TEnemy2DSentry::Init(void)
 	else if (cMap2D->GetCurrentLevel() == 2)
 	{
 		// sets waypoints based on the enemy spawn location
-		if (vec2Index == glm::vec2(12, 3))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 300, 5);
-		}
-		else if (vec2Index == glm::vec2(17, 3))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 309, 2);
-		}
-		else if (vec2Index == glm::vec2(2, 10))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 305, 4);
-		}
-	}
-	else if (cMap2D->GetCurrentLevel() == 3)
-	{
-		// sets waypoints based on the enemy spawn location
-		if (vec2Index == glm::vec2(12, 3))
-		{
-			waypoints = ConstructWaypointVector(waypoints, 300, 3);
-		}
+		
 	}
 
 	// sets waypoint counter value

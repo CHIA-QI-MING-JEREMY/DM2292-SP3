@@ -184,9 +184,12 @@ bool TEnemy2DTurret::Init(void)
 			type = LONG_RANGE; //has ammo
 		}
 	}
-	else
+	else if (cMap2D->GetCurrentLevel() == 2)
 	{
-		type = LONG_RANGE; // has ammo
+		if (vec2Index == glm::vec2(8, 7))
+		{
+			type = KEYHOLDER_PURPLE; // drops a purple key when killed
+		}
 	}
 		
 	shootingDirection = RIGHT; //setting direction for ammo shooting

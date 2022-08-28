@@ -567,6 +567,14 @@ void CAmmo2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 6, 9, 25, 26);
 			}
 		}
+		else if (cMap2D->GetCurrentLevel() == 2)
+		{
+			// different tiles replaced for different switches
+			if (vec2Index == glm::vec2(7, 14))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 16, 17, 1, 6);
+			}
+		}
 
 		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
 
@@ -587,6 +595,14 @@ void CAmmo2D::InteractWithMap(void)
 			if (vec2Index == glm::vec2(30, 5))
 			{
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 6, 9, 25, 26);
+			}
+		}
+		else if (cMap2D->GetCurrentLevel() == 2)
+		{
+			// different tiles replaced for different switches
+			if (vec2Index == glm::vec2(7, 14))
+			{
+				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 16, 17, 1, 6);
 			}
 		}
 

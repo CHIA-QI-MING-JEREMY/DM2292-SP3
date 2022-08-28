@@ -172,7 +172,6 @@ protected:
 		TUTORIAL = 0,
 		LEVEL1,
 		LEVEL2,
-		TEST,
 		NUM_LEVELS //to set the number of maps to load in for 1 scene and the number of maps to check for enemies to push in
 	};
 
