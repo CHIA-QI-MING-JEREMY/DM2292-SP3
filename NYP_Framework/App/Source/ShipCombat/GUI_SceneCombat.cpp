@@ -355,9 +355,9 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::NewLine();
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::Text("FIRE WEAPON");
+			ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f), "FIRE WEAPON");
+
 			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) >= (float)CShipPlayer::GetInstance()->LargeWeaponInterval) {
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
@@ -386,9 +386,8 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::NewLine();
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::Text("FIRE WEAPON");
+			ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f),"FIRE WEAPON");
 			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) >= CShipPlayer::GetInstance()->weapon1Interval) {
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
@@ -417,9 +416,9 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			ImGui::PopStyleColor();
 		}
 		else {
-			ImGui::NewLine();
 			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-			ImGui::Text("FIRE WEAPON");
+			ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f), "FIRE WEAPON");
+
 			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) >= CShipPlayer::GetInstance()->weapon2Interval) {
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
@@ -454,7 +453,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::NewLine();
 		ImGui::SetWindowFontScale(1.8f * relativeScale_y);
-		ImGui::Text("Restart Ventilation");
+		ImGui::TextColored(ImVec4(0.01f, 0.93f, 1.f, 1.0f), "Reboot Ventilation");
 		if (ImGui::IsItemClicked()) {
 			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 
