@@ -702,7 +702,14 @@ bool CAmmo2D::InteractWithEnemy(glm::i32vec2 i32vec2EnemyPos)
 			(vec2Index.y <= i32vec2EnemyPos.y + 0.5)))
 	{
 		// Decrease enemy health by 1 done in scene
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 2)
+		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ENEMY_TERRESTRIAL_HIT);
+		}
+		else
+		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		}
 		hit = true; //destroy ammo --> only hits enemy once
 
 		return true;

@@ -406,6 +406,8 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			ammo->setStartingIndex(vec2Index);
 			cout << "Bam!" << shootingDirection << endl;
 
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::VETERAN_ROCKET_LAUNCH); // play sound effect for the veteran shooting
+
 			attackTimer = attackInterval;
 			numFired++;
 		}
@@ -523,6 +525,8 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 	}
 	case RADIO:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::VETERAN_RADIO); // play sound effect for the veteran radio
+		
 		if (vec2Direction.x > 0)
 		{
 			// Play the "idleR" animation
@@ -550,6 +554,9 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 
 			sCurrentFSM = ALERT_IDLE;
 			cout << "Switching to Alert_Idle state" << endl;
+
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::VETERAN_RADIO); // stpp sound effect for the veteran radio
+
 			break;
 		}
 		break;
@@ -695,6 +702,8 @@ void TEnemy2DVeteran::Update(const double dElapsedTime)
 			ammo->setIsAlerted(true);
 			ammo->setStartingIndex(vec2Index);
 			cout << "Bam!" << shootingDirection << endl;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::VETERAN_ROCKET_LAUNCH); // play sound effect for the veteran shooting
 
 			attackTimer = alertAttackInterval;
 			numFired++;

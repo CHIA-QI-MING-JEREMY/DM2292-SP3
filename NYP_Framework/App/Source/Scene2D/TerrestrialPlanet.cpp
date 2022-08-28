@@ -361,6 +361,18 @@ bool TerrestrialPlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\checkpoint.ogg"), CSoundController::SOUND_LIST::HIT_CHECKPOINT, true);
 
 	// planet specific sounds
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerShooting.ogg"), CSoundController::SOUND_LIST::PLAYER_TERRESTRIAL_SHOOTING, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerRope.ogg"), CSoundController::SOUND_LIST::PLAYER_TIEROPE, true);
+
+	// planet specific sounds (enemy)
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\Alarm.ogg"), CSoundController::SOUND_LIST::ALARM, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\EnemyHit.ogg"), CSoundController::SOUND_LIST::ENEMY_TERRESTRIAL_HIT, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\SentryShooting.ogg"), CSoundController::SOUND_LIST::SENTRY_SHOOTING, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\VeteranRadio.ogg"), CSoundController::SOUND_LIST::VETERAN_RADIO, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\VeteranRocketLaunch.ogg"), CSoundController::SOUND_LIST::VETERAN_ROCKET_LAUNCH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\VeteranRocketExplosion.ogg"), CSoundController::SOUND_LIST::VETERAN_ROCKET_EXPLOSION, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\TurretDecloak.ogg"), CSoundController::SOUND_LIST::TURRET_DECLOAK, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\TurretCloak.ogg"), CSoundController::SOUND_LIST::TURRET_CLOAK, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\TurretShooting.ogg"), CSoundController::SOUND_LIST::TURRET_SHOOTING, true);
 
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
@@ -796,12 +808,16 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		if (alarmTimer > 0.0)
 		{
 			alarmTimer -= dElapsedTime;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::ALARM);
 		}
 		else
 		{
 			alarmTimer = maxAlarmTimer;
 			isAlarmActive = false;
 			cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::ALARM_LIGHT_ON, CMap2D::TILE_INDEX::ALARM_LIGHT_OFF);
+
+			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::ALARM);
 		}
 	}
 
@@ -1161,7 +1177,7 @@ bool TerrestrialPlanet::getIsOnShip(void)
 void TerrestrialPlanet::SetResourcesBack(void)
 {
 	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {
-		if (cInventoryManagerPlanet->Check("ScrapMetal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+		if (cInventoryManagerPlanet->Check("ScrapMetal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() <= CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
 			if (cInventoryManager->Check("ScrapMetal")) {
 				cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
@@ -1176,7 +1192,7 @@ void TerrestrialPlanet::SetResourcesBack(void)
 			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 
-		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() <= CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 			if (cInventoryManager->Check("Battery")) {
 				cInventoryItem = cInventoryManager->GetItem("Battery");
@@ -1191,7 +1207,7 @@ void TerrestrialPlanet::SetResourcesBack(void)
 			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 
-		if (cInventoryManagerPlanet->Check("EnergyQuartz") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+		if (cInventoryManagerPlanet->Check("EnergyQuartz") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() <= CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("EnergyQuartz");
 			if (cInventoryManager->Check("EnergyQuartz")) {
 				cInventoryItem = cInventoryManager->GetItem("EnergyQuartz");

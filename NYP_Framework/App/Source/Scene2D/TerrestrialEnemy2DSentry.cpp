@@ -505,6 +505,8 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			ammo->setIsAlerted(false);
 			cout << "Bam!" << shootingDirection << endl;
 
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SENTRY_SHOOTING); // play sound effect for the sentry shooting
+
 			attackTimer = attackInterval;
 			numFired++;
 		}
@@ -877,6 +879,8 @@ void TEnemy2DSentry::Update(const double dElapsedTime)
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(true);
 			cout << "Bam!" << shootingDirection << endl;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SENTRY_SHOOTING); // play sound effect for the sentry shooting
 
 			attackTimer = alertAttackInterval;
 			numFired++;
