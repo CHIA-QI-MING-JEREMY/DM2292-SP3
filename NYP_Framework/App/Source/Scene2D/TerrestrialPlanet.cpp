@@ -363,6 +363,7 @@ bool TerrestrialPlanet::Init(void)
 	// planet specific sounds
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerShooting.ogg"), CSoundController::SOUND_LIST::PLAYER_TERRESTRIAL_SHOOTING, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerRope.ogg"), CSoundController::SOUND_LIST::PLAYER_TIEROPE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerOrbChange.ogg"), CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE, true);
 
 	// planet specific sounds (enemy)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\Alarm.ogg"), CSoundController::SOUND_LIST::ALARM, true);
@@ -595,6 +596,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			colourSwitchTimer = maxColourSwitchTimer;
 
 			isWhite = false;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE); // play sound effect for colour change
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_2) && colourSwitchTimer == 0.0)
@@ -615,6 +618,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			colourSwitchTimer = maxColourSwitchTimer;
 
 			isWhite = false;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE); // play sound effect for colour change
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_3) && colourSwitchTimer == 0.0)
@@ -635,6 +640,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			colourSwitchTimer = maxColourSwitchTimer;
 
 			isWhite = false;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE); // play sound effect for colour change
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_4) && colourSwitchTimer == 0.0)
@@ -655,6 +662,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			colourSwitchTimer = maxColourSwitchTimer;
 
 			isWhite = false;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE); // play sound effect for colour change
 		}
 	}
 	else if (cKeyboardController->IsKeyPressed(GLFW_KEY_5) && colourSwitchTimer == 0.0)
@@ -669,6 +678,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		colourSwitchTimer = maxColourSwitchTimer;
 
 		isWhite = true;
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE); // play sound effect for colour change
 	}
 
 	if (isColourTrapped(cPlayer2D->GetColour()))
@@ -1147,7 +1158,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL1); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{

@@ -79,6 +79,11 @@ TEnemy2DWorker::~TEnemy2DWorker(void)
 		animatedSprites = NULL;
 	}
 
+	if (cSoundController)
+	{
+		cSoundController = NULL;
+	}
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);

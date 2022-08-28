@@ -79,6 +79,11 @@ TEnemy2DDummy::~TEnemy2DDummy(void)
 		animatedSprites = NULL;
 	}
 
+	if (cSoundController)
+	{
+		cSoundController = NULL;
+	}
+
 	// optional: de-allocate all resources once they've outlived their purpose:
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
@@ -242,6 +247,8 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 	}
 	case DECLOAK:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_DECLOAK); // play sound effect for the turret decloaking
+
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("decloakR", 0, 1.f);
@@ -290,6 +297,8 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(false);
 			cout << "Bam!" << shootingDirection << endl;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_SHOOTING); // play sound effect for the turret shooting
 
 			attackTimer = attackInterval;
 			numFired++;
@@ -353,6 +362,8 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 	}
 	case CLOAK:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_CLOAK); // play sound effect for the turret cloaking
+
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("cloakR", 0, 1.f);
@@ -375,6 +386,8 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 	}
 	case ALERT_DECLOAK:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_DECLOAK); // play sound effect for the turret decloaking
+
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("decloakR", 0, 0.5f);
@@ -421,6 +434,8 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 			ammo->setPath(vec2Index.x, vec2Index.y, shootingDirection);
 			ammo->setIsAlerted(true);
 			cout << "Bam!" << shootingDirection << endl;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_SHOOTING); // play sound effect for the turret shooting
 
 			attackTimer = alertAttackInterval;
 			numFired++;
@@ -535,28 +550,6 @@ void TEnemy2DDummy::Update(const double dElapsedTime)
 
 	// Interact with the Map
 	InteractWithMap();
-
-	//update sprite animation to play depending on the direction enemy is facing
-	//if (shootingDirection == LEFT)
-	//{
-	//	//CS: Play the "left" animation
-	//	animatedSprites->PlayAnimation("left", -1, 1.0f);
-	//}
-	//else if (shootingDirection == RIGHT)
-	//{
-	//	//CS: Play the "right" animation
-	//	animatedSprites->PlayAnimation("right", -1, 1.0f);
-	//}
-	//else if (shootingDirection == UP)
-	//{
-	//	//CS: Play the "up" animation
-	//	animatedSprites->PlayAnimation("up", -1, 1.0f);
-	//}
-	//else if (shootingDirection == DOWN)
-	//{
-	//	//CS: Play the "idle" animation
-	//	animatedSprites->PlayAnimation("idle", -1, 1.0f);
-	//}
 
 	//CS: Update the animated sprite
 	//CS: Play the "left" animation
@@ -982,7 +975,6 @@ void TEnemy2DDummy::UpdateJumpFall(const double dElapsedTime)
 	}
 }
 
-// TO DO
 /**
  @brief Let enemy2D interact with the player.
  */
@@ -997,15 +989,11 @@ bool TEnemy2DDummy::InteractWithPlayer(void)
 		((vec2Index.y >= vec2PlayerPos.y - 0.5) &&
 		(vec2Index.y <= vec2PlayerPos.y + 0.5)))
 	{
-		/*
-		sCurrentFSM = IDLE;
-		iFSMCounter = 0;*/
 		return true;
 	}
 	return false;
 }
 
-// TO DO
 //enemy interact with map
 void TEnemy2DDummy::InteractWithMap(void)
 {
