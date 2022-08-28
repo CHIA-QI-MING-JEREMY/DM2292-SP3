@@ -1,13 +1,13 @@
 DM2292 Studio Project 3 Group 9
 
 Controls:
-[Ship Upgrade]
-WASD : move around the ship
-Left click : select action
-
 [Planet Selection]
 Left click : select planet to visit
 Enter : visit selected planet
+
+[Ship Combat]
+WASD : move around the ship
+Left click : select action
 
 [Platforming Planets/Levels, Common]
 AD : move and face left and right
@@ -36,9 +36,27 @@ Q : activate shield mode (when shield power up in possession and unused)
 F : freeze all water in the level (when ice shard power up in possession and unused)
 G : activate beserk mode (when beserk power up in possession and unused)
 
-[Ship Combat]
+[Ship Upgrade]
 WASD : move around the ship
 Left click : select action
+
+----------------------------------------------------------------------------------------------------------------------------------------
+How to Play:
+[Planet Selection]
+Any coloured planet can be visited for you to collect resources from.
+
+[Ship Combat]
+Use the top right console (green) to attack enemy spacecrafts and restart ventilation to keep your oxygen level high. Repair your ship
+to prevent a game over from ship damage. Once all enemies are defeated, the top middle door will light up blue which means you can leave
+to visit the planet you have landed at.
+
+[Platforming Planets/Levels]
+Platform through using the controls to collect resources and make it back to the ship by making it to the blue door.
+
+[Ship Upgrade]
+Upgrade storage to hold more items. Upgrade ventilation and weapons along the side to aid in ship combat. Once all upgrades are done,
+use the top left console to select which planet to visit next.
+
 ----------------------------------------------------------------------------------------------------------------------------------------
 Tile Index:
 0 : empty space
