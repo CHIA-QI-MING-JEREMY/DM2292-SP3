@@ -788,7 +788,6 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 				{
 					ImGui::Image((ImTextureID)AcceptButtonData.textureID, ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 0.0), ImVec2(1.0, 1.0));
 					if (ImGui::IsItemClicked()) {
-						makeChanges = true;
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Storage")->Remove(3);
@@ -860,7 +859,6 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					if (ImGui::IsItemClicked()) {
 						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 
-						makeChanges = true;
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Upgrade_small2")->Add(1);
@@ -935,7 +933,6 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					if (ImGui::IsItemClicked()) {
 						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 
-						makeChanges = true;
 						cInventoryItem1->Remove(3);
 						cInventoryItem2->Remove(2);
 						cInventoryManager->GetItem("Storage")->Remove(5);
@@ -1198,7 +1195,6 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 					if (ImGui::IsItemClicked()) {
 						CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 
-						makeChanges = true;
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Upgrade_ventilation")->Add(1);
