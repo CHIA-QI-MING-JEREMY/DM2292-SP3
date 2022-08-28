@@ -32,7 +32,7 @@ TerrestrialPlanet::TerrestrialPlanet(void)
  */
 TerrestrialPlanet::~TerrestrialPlanet(void)
 {
-	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_NORMAL);
+	cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_TERRESTRIAL);
 	
 	if (cKeyboardController)
 	{
@@ -364,6 +364,9 @@ bool TerrestrialPlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerShooting.ogg"), CSoundController::SOUND_LIST::PLAYER_TERRESTRIAL_SHOOTING, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerRope.ogg"), CSoundController::SOUND_LIST::PLAYER_TIEROPE, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerOrbChange.ogg"), CSoundController::SOUND_LIST::PLAYER_ORB_CHANGE, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerUnlock.ogg"), CSoundController::SOUND_LIST::PLAYER_UNLOCK, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerSwitch.ogg"), CSoundController::SOUND_LIST::PLAYER_SWITCH, true);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\PlayerAntidote.ogg"), CSoundController::SOUND_LIST::PLAYER_ANTIDOTE, true);
 
 	// planet specific sounds (enemy)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\Alarm.ogg"), CSoundController::SOUND_LIST::ALARM, true);
@@ -376,8 +379,8 @@ bool TerrestrialPlanet::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\TurretCloak.ogg"), CSoundController::SOUND_LIST::TURRET_CLOAK, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestriaLPlanet\\TurretShooting.ogg"), CSoundController::SOUND_LIST::TURRET_SHOOTING, true);
 
-	cSoundController->LoadSound(FileSystem::getPath("Sounds\\Sound_BGM.ogg"), CSoundController::SOUND_LIST::BGM_NORMAL, true, true);
-	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_NORMAL); // plays BGM on repeat
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\TerrestrialPlanet\\T_BGM.ogg"), CSoundController::SOUND_LIST::BGM_TERRESTRIAL, true, true);
+	cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_TERRESTRIAL); // plays BGM on repeat
 
 	// Get the handler to the CInventoryManager instance
 	cInventoryManager = CInventoryManager::GetInstance();
@@ -753,6 +756,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 			cInventoryItemPlanet->Remove(10);
 			cout << "Health: " << cInventoryItemPlanet->GetCount() << endl;
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
 		}
 	}
 
@@ -762,6 +767,8 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		cInventoryItemPlanet->Remove(1);
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ToxicityLevel");
 		cInventoryItemPlanet->Remove(20);
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_ANTIDOTE);
 	}
 
 	// resets player location at last visited checkpoint

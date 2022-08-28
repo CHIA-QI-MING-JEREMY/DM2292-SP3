@@ -328,6 +328,8 @@ bool CTEAmmoVeteran::InteractWithPlayer(void)
 			endCol = 2;
 		}
 
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
+
 		// starts from row below ammo, moves up
 		for (int row = -1; row < 2; ++row)
 		{
@@ -345,7 +347,8 @@ bool CTEAmmoVeteran::InteractWithPlayer(void)
 			}
 		}
 
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
+
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
 

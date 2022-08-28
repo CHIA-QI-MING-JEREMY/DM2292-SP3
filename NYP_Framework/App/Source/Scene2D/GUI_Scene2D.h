@@ -77,6 +77,8 @@ public:
 	int getTutorialPopupJungle(void);
 	void setTutorialPopupJungle(int index);
 
+	int getTutorialPopupTerrestrial(void);
+	void setTutorialPopupTerrestrial(int index);
 
 	int getTutorialPopupSnow(void);
 	void setTutorialPopupSnow(int index);
@@ -96,6 +98,26 @@ public:
 		BOUNCY_BLOOM, //triggered everytime player collides with unbloomed bouncy bloom
 		ROCK, //triggered when player collides with a rock with on vine on it
 		NUM_JT_POPUP
+	};
+	enum TERRESTRIAL_TUTORIAL_POPUP
+	{
+		T_NONE = 0,
+		T_INTRO,
+		T_CONTROLS,
+		T_YELLOW_WALL,
+		T_YELLOW_ORB,
+		T_ORB_YELLOW,
+		T_ROPE,
+		T_COLOUR_CHANGE_DANGER,
+		T_ANTIDOTE,
+		T_ORB_RED,
+		T_RESOURCE,
+		T_ENEMY,
+		T_LOCK,
+		T_SWITCH,
+		T_COLOUR_CHANGE_COOLDOWN,
+		T_ALARM,
+		NUM_TT_POPUP
 	};
 	enum SNOW_TUTORIAL_POPUP
 	{
@@ -160,6 +182,7 @@ protected:
 	glm::vec2 blockPosition;
 
 	int tutorialPopupJungle; //index for which pop up to show in jungle tutorial
+	int tutorialPopupTerrestrial; // index for which pop up to show in terrestrial tutorial
 	int tutorialPopupSnow; //index fo which pop up to show in snow tutorial
 private:
 	int planetNum;

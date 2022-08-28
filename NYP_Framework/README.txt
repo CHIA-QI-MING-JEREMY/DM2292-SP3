@@ -37,6 +37,7 @@ F : freeze all water in the level (when ice shard power up in possession and unu
 G : activate beserk mode (when beserk power up in possession and unused)
 
 [Ship Combat]
+WASD : move around the ship
 Left click : select action
 ----------------------------------------------------------------------------------------------------------------------------------------
 Tile Index:
