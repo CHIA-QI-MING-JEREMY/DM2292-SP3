@@ -429,7 +429,7 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 	if (cKeyboardController->IsKeyDown(GLFW_KEY_W))
 	{
-		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || 
+		if (cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT ||
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT ||
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT ||
@@ -464,14 +464,14 @@ void CPlayer2D::Update(const double dElapsedTime)
 	}
 	else if (cKeyboardController->IsKeyDown(GLFW_KEY_S))
 	{
-		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_LEFT || 
+		if ((cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_LEFT ||
 			cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT) ||
-			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT || 
+			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT) ||
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_LEFT ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_CORNER_RIGHT) ||
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_LEFT ||
-				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT)||
+				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::VINE_RIGHT) ||
 			(cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_BOTTOM_ICE ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_MIDDLE_ICE ||
 				cMap2D->GetMapInfo(vec2Index.y, vec2Index.x) == CMap2D::TILE_INDEX::ROPE_TOP_ICE))
@@ -504,9 +504,19 @@ void CPlayer2D::Update(const double dElapsedTime)
 
 		shootingDirection = DOWN; //setting direction for ammo shooting
 	}
-	
-	if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 3 && cKeyboardController->IsKeyPressed(GLFW_KEY_E)) { // nvr do in the if below because of attacktimer cool down, slows attack speed sound
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYERSNOWSHOOT);
+
+	// shooting sounds
+	// nvr do in the if below because of attacktimer cool down, slows attack speed sound
+	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E))
+	{
+		if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 2)
+		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_TERRESTRIAL_SHOOTING);
+		}
+		else if (CGUI_Scene2D::GetInstance()->getPlanetNum() == 3)
+		{
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYERSNOWSHOOT);
+		}
 	}
 
 	if (cKeyboardController->IsKeyPressed(GLFW_KEY_E) && attackTimer <= 0.0)
@@ -837,6 +847,8 @@ void CPlayer2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_LEFT, vec2Index.y, vec2Index.y + 1, vec2Index.x - 1, vec2Index.x);
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_LEFT, groundHeight, vec2Index.y, vec2Index.x - 1, vec2Index.x);
 			}
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_TIEROPE);
 		}
 		// runs if there is empty space on the right of the post
 		else if (cMap2D->GetMapInfo(vec2Index.y - 1, vec2Index.x + 1) == 0)
@@ -855,6 +867,8 @@ void CPlayer2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_CORNER_RIGHT, vec2Index.y, vec2Index.y + 1, vec2Index.x + 1, vec2Index.x + 2);
 				cMap2D->ReplaceTiles(0, CMap2D::TILE_INDEX::ROPE_LENGTH_RIGHT, groundHeight, vec2Index.y, vec2Index.x + 1, vec2Index.x + 2);
 			}
+
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_TIEROPE);
 		}
 		break;
 	case CMap2D::TILE_INDEX::BLACK_FLAG:

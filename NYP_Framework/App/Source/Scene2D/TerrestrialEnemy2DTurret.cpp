@@ -249,6 +249,8 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 	}
 	case DECLOAK:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_DECLOAK); // play sound effect for the turret decloaking
+		
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("decloakR", 0, 1.f);
@@ -361,6 +363,8 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 	}
 	case CLOAK:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_CLOAK); // play sound effect for the turret cloaking
+		
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("cloakR", 0, 1.f);
@@ -383,6 +387,8 @@ void TEnemy2DTurret::Update(const double dElapsedTime)
 	}
 	case ALERT_DECLOAK:
 	{
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TURRET_DECLOAK); // play sound effect for the turret decloaking
+		
 		if (vec2Direction.x > 0)
 		{
 			animatedSprites->PlayAnimation("decloakR", 0, 0.5f);

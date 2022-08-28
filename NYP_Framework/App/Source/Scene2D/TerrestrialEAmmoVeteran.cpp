@@ -184,6 +184,8 @@ void CTEAmmoVeteran::Update(const double dElapsedTime)
 					(cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) >= 300 && cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) < 600))
 				{
 					cMap2D->SetMapInfo(vec2Index.y + row, vec2Index.x + col, CMap2D::TILE_INDEX::EXPLOSION); // explosion
+
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::VETERAN_ROCKET_EXPLOSION); // play sound effect for the rocket explosion
 				}
 			}
 		}
@@ -337,6 +339,8 @@ bool CTEAmmoVeteran::InteractWithPlayer(void)
 					(cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) >= 300 && cMap2D->GetMapInfo(vec2Index.y + row, vec2Index.x + col) < 600))
 				{
 					cMap2D->SetMapInfo(vec2Index.y + row, vec2Index.x + col, CMap2D::TILE_INDEX::EXPLOSION); // explosion
+
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::VETERAN_ROCKET_EXPLOSION); // play sound effect for the rocket explosion
 				}
 			}
 		}
