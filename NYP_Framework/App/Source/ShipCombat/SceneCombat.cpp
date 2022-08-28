@@ -189,6 +189,8 @@ bool CSceneCombat::Init(void)
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\ShipCombat.ogg"), CSoundController::SOUND_LIST::BGM_FIGHT, true, true);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Window.ogg"), CSoundController::SOUND_LIST::WINODWOPEN, true, false);
 	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\Click.ogg"), CSoundController::SOUND_LIST::BUTTONCLICK, true, false);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\ShipHit.ogg"), CSoundController::SOUND_LIST::SHIPHIT, true, false);
+	cSoundController->LoadSound(FileSystem::getPath("Sounds\\GUI\\ShipGun.ogg"), CSoundController::SOUND_LIST::SHIPGUN, true, false);
 
 	return true;
 }
@@ -240,6 +242,8 @@ bool CSceneCombat::Update(const double dElapsedTime)
 			cGUI_SceneCombat->isCombat = true;
 			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
 			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
+			cGUI_SceneCombat->GuiState = CGUI_SceneCombat::GUI_STATE::noShow;
+			cGUI_SceneCombat->UpgradeState = CGUI_SceneCombat::UPGRADE_STATE::NOSTATE;
 			state = CURRENT_STATE::SHIPCOMBAT;
 			cShipEnemy->Randomise(cPlayer2D->vec2Index.x);
 		}
@@ -259,6 +263,7 @@ bool CSceneCombat::Update(const double dElapsedTime)
 			cGUI_SceneCombat->isCombat = false;
 			state = CURRENT_STATE::SHIPREST;
 
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SHIPHIT);
 			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BGM_PLANET);
 			cSoundController->StopSoundByID(CSoundController::SOUND_LIST::BGM_FIGHT);
 
@@ -267,6 +272,10 @@ bool CSceneCombat::Update(const double dElapsedTime)
 	}
 	else if (CInventoryManager::GetInstance()->GetItem("Health")->GetCount() != CInventoryManager::GetInstance()->GetItem("Health")->GetMaxCount()) {
 		CInventoryManager::GetInstance()->GetItem("Health")->Add(1);
+	}
+	else if (CInventoryManager::GetInstance()->GetItem("Ventilation")->GetCount() != CInventoryManager::GetInstance()->GetItem("Ventilation")->GetMaxCount()) {
+		CInventoryManager::GetInstance()->GetItem("Ventilation")->Add(1);
+
 	}
 
 	if (CMouseController::GetInstance()->IsButtonUp(CMouseController::BUTTON_TYPE::LMB) && lState) {

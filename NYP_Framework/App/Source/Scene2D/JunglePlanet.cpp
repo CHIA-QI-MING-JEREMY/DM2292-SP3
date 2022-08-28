@@ -1267,7 +1267,22 @@ bool JunglePlanet::getIsOnShip(void)
 void JunglePlanet::SetResourcesBack(void)
 {
 	if (cInventoryManagerPlanet->GetItem("Lives")->GetCount() != 0) {
-		if (cInventoryManagerPlanet->Check("ScrapMetal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+		if (cInventoryManagerPlanet->Check("Ironwood") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() <= CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
+			if (cInventoryManager->Check("Ironwood")) {
+				cInventoryItem = cInventoryManager->GetItem("Ironwood");
+				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
+				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
+			}
+			else {
+				std::cout << "Item does not exist in inventory manager\n";
+			}
+		}
+		else {
+			std::cout << "Item does not exist in inventory manager planet \n";
+		}
+
+		if (cInventoryManagerPlanet->Check("ScrapMetal") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() <= CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("ScrapMetal");
 			if (cInventoryManager->Check("ScrapMetal")) {
 				cInventoryItem = cInventoryManager->GetItem("ScrapMetal");
@@ -1282,25 +1297,10 @@ void JunglePlanet::SetResourcesBack(void)
 			std::cout << "Item does not exist in inventory manager planet \n";
 		}
 
-		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
+		if (cInventoryManagerPlanet->Check("Battery") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() <= CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
 			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Battery");
 			if (cInventoryManager->Check("Battery")) {
 				cInventoryItem = cInventoryManager->GetItem("Battery");
-				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
-				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
-			}
-			else {
-				std::cout << "Item does not exist in inventory manager\n";
-			}
-		}
-		else {
-			std::cout << "Item does not exist in inventory manager planet \n";
-		}
-
-		if (cInventoryManagerPlanet->Check("Ironwood") && CInventoryManager::GetInstance()->GetItem("Storage")->GetCount() < CInventoryManager::GetInstance()->GetItem("Storage")->GetMaxCount()) {
-			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Ironwood");
-			if (cInventoryManager->Check("Ironwood")) {
-				cInventoryItem = cInventoryManager->GetItem("Ironwood");
 				cInventoryItem->Add(cInventoryItemPlanet->GetCount());
 				CInventoryManager::GetInstance()->GetItem("Storage")->Add(cInventoryItem->GetCount());
 			}

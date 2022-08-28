@@ -80,6 +80,8 @@ public:
 		// UI Sounds
 		BUTTONCLICK,
 		WINODWOPEN,
+		SHIPGUN,
+		SHIPHIT,
 
 		NUM_SOUNDS
 	};
