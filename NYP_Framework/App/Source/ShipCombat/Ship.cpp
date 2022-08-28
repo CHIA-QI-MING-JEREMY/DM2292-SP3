@@ -110,25 +110,24 @@ void CShip::Update(const double dElapsedTime)
 		// set the ship on fire bitches
 
 		cItem1->Remove(1);
-
-		if (cItem1->GetCount() < 50) {
-			cSettings->NUM_STEPS_PER_TILE_XAXIS = 16.0f;
-			cSettings->NUM_STEPS_PER_TILE_YAXIS = 16.0f;
-
-			cSettings->MICRO_STEP_XAXIS = cSettings->TILE_WIDTH / cSettings->NUM_STEPS_PER_TILE_XAXIS;
-			cSettings->MICRO_STEP_YAXIS = cSettings->TILE_HEIGHT / cSettings->NUM_STEPS_PER_TILE_YAXIS;
-		}
-		else {
-			cSettings->NUM_STEPS_PER_TILE_XAXIS = 8.0f;
-			cSettings->NUM_STEPS_PER_TILE_YAXIS = 8.0f;
-
-			cSettings->MICRO_STEP_XAXIS = cSettings->TILE_WIDTH / cSettings->NUM_STEPS_PER_TILE_XAXIS;
-			cSettings->MICRO_STEP_YAXIS = cSettings->TILE_HEIGHT / cSettings->NUM_STEPS_PER_TILE_YAXIS;
-		}
-
 	}
 	else if (cItem1->GetCount() != cItem1->GetMaxCount()) {
 		cItem1->Add(1);
+	}
+
+	if (cItem1->GetCount() < 50) {
+		cSettings->NUM_STEPS_PER_TILE_XAXIS = 16.0f;
+		cSettings->NUM_STEPS_PER_TILE_YAXIS = 16.0f;
+
+		cSettings->MICRO_STEP_XAXIS = cSettings->TILE_WIDTH / cSettings->NUM_STEPS_PER_TILE_XAXIS;
+		cSettings->MICRO_STEP_YAXIS = cSettings->TILE_HEIGHT / cSettings->NUM_STEPS_PER_TILE_YAXIS;
+	}
+	else {
+		cSettings->NUM_STEPS_PER_TILE_XAXIS = 8.0f;
+		cSettings->NUM_STEPS_PER_TILE_YAXIS = 8.0f;
+
+		cSettings->MICRO_STEP_XAXIS = cSettings->TILE_WIDTH / cSettings->NUM_STEPS_PER_TILE_XAXIS;
+		cSettings->MICRO_STEP_YAXIS = cSettings->TILE_HEIGHT / cSettings->NUM_STEPS_PER_TILE_YAXIS;
 	}
 }
 

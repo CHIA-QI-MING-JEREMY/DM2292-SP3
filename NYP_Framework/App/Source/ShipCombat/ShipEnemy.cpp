@@ -141,6 +141,7 @@ void CShipEnemy::Update(const double dElapsedTime)
 		if (tileVector[i].second >= kWarningLength) {
 			SetDamage(tileVector[i].first);
 			tileVector.erase(tileVector.begin() + i);
+			cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::SHIPHIT);
 		}
 	}
 

@@ -345,22 +345,25 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::Text("Large weapon Fire");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-		ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) /
-			(float)CShipPlayer::GetInstance()->LargeWeaponInterval, ImVec2(100.0f *
-				relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+		if (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime < CShipPlayer::GetInstance()->LargeWeaponInterval) {
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+			ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) /
+				(float)CShipPlayer::GetInstance()->LargeWeaponInterval, ImVec2(100.0f *
+					relativeScale_x, 20.0f * relativeScale_y));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+		}
+		else {
+			ImGui::NewLine();
+			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
+			ImGui::Text("FIRE WEAPON");
+			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) >= (float)CShipPlayer::GetInstance()->LargeWeaponInterval) {
+				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
-		ImGui::NewLine();
-		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-		ImGui::Text("FIRE WEAPON");
-		if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->LargeWeaponTime) >= (float)CShipPlayer::GetInstance()->LargeWeaponInterval) {
-			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
-
-			CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 10);
-			CShipPlayer::GetInstance()->LargeWeaponTime = CShipPlayer::GetInstance()->TimeElapsed;
+				CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 10);
+				CShipPlayer::GetInstance()->LargeWeaponTime = CShipPlayer::GetInstance()->TimeElapsed;
+			}
 		}
 		ImGui::End();
 
@@ -373,23 +376,26 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::Text("Small weapon 1 Fire");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-		ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) /
-			(float)CShipPlayer::GetInstance()->weapon1Interval, ImVec2(100.0f *
-				relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+		if (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time < CShipPlayer::GetInstance()->weapon1Interval) {
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+			ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) /
+				(float)CShipPlayer::GetInstance()->weapon1Interval, ImVec2(100.0f *
+					relativeScale_x, 20.0f * relativeScale_y));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+		}
+		else {
+			ImGui::NewLine();
+			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
+			ImGui::Text("FIRE WEAPON");
+			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) >= CShipPlayer::GetInstance()->weapon1Interval) {
+				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
-		ImGui::NewLine();
-		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-		ImGui::Text("FIRE WEAPON");
-		if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon1Time) >= CShipPlayer::GetInstance()->weapon1Interval) {
-			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+				CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 5);
+				CShipPlayer::GetInstance()->Weapon1Time = CShipPlayer::GetInstance()->TimeElapsed;
 
-			CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 5);
-			CShipPlayer::GetInstance()->Weapon1Time = CShipPlayer::GetInstance()->TimeElapsed;
-
+			}
 		}
 		ImGui::End();
 
@@ -402,22 +408,25 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 
 		ImGui::Text("Small weapon 2 Fire");
 
-		ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
-		ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
-		ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) /
-			(float)CShipPlayer::GetInstance()->weapon2Interval, ImVec2(100.0f * relativeScale_x, 20.0f * relativeScale_y));
-		ImGui::PopStyleColor();
-		ImGui::PopStyleColor();
+		if (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time < CShipPlayer::GetInstance()->weapon2Interval) {
+			ImGui::PushStyleColor(ImGuiCol_PlotHistogram, ImVec4(0.01f, 0.93f, 1.f, 1.0f));
+			ImGui::PushStyleColor(ImGuiCol_FrameBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));
+			ImGui::ProgressBar((CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) /
+				(float)CShipPlayer::GetInstance()->weapon2Interval, ImVec2(100.0f * relativeScale_x, 20.0f * relativeScale_y));
+			ImGui::PopStyleColor();
+			ImGui::PopStyleColor();
+		}
+		else {
+			ImGui::NewLine();
+			ImGui::SetWindowFontScale(1.6f * relativeScale_y);
+			ImGui::Text("FIRE WEAPON");
+			if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) >= CShipPlayer::GetInstance()->weapon2Interval) {
+				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::SHIPGUN);
 
-		ImGui::NewLine();
-		ImGui::SetWindowFontScale(1.6f * relativeScale_y);
-		ImGui::Text("FIRE WEAPON");
-		if (ImGui::IsItemClicked() && (CShipPlayer::GetInstance()->TimeElapsed - CShipPlayer::GetInstance()->Weapon2Time) >= CShipPlayer::GetInstance()->weapon2Interval) {
-			CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
+				CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 5);
+				CShipPlayer::GetInstance()->Weapon2Time = CShipPlayer::GetInstance()->TimeElapsed;
 
-			CShipEnemy::GetInstance()->setHealth(CShipEnemy::GetInstance()->getHealth() - 5);
-			CShipPlayer::GetInstance()->Weapon2Time = CShipPlayer::GetInstance()->TimeElapsed;
-
+			}
 		}
 		ImGui::End();
 
@@ -479,6 +488,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 			if (ImGui::IsItemClicked()) {
 				makeChanges = true;
 				cInventoryItem1->Remove(1);
+				cInventoryManager->GetItem("Storage")->Remove(1);
 				CSoundController::GetInstance()->PlaySoundByID(CSoundController::SOUND_LIST::BUTTONCLICK);
 			}
 		}
@@ -782,6 +792,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 						makeChanges = true;
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
+						cInventoryManager->GetItem("Storage")->Remove(3);
 						cInventoryManager->GetItem("Upgrade_small2")->Add(1);
 						CShipPlayer::GetInstance()->weapon2Interval = 7.0f - cInventoryManager->GetItem("Upgrade_small2")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
@@ -854,6 +865,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Upgrade_small2")->Add(1);
+						cInventoryManager->GetItem("Storage")->Remove(3);
 						CShipPlayer::GetInstance()->weapon2Interval = 7.0f - cInventoryManager->GetItem("Upgrade_small2")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
 					}
@@ -927,6 +939,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 						makeChanges = true;
 						cInventoryItem1->Remove(3);
 						cInventoryItem2->Remove(2);
+						cInventoryManager->GetItem("Storage")->Remove(5);
 						cInventoryManager->GetItem("Upgrade_large")->Add(1);
 						CShipPlayer::GetInstance()->LargeWeaponInterval = 12.0f - cInventoryManager->GetItem("Upgrade_large")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
@@ -1118,6 +1131,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(2);
 						cInventoryManager->GetItem("Upgrade_storage")->Add(1);
+						cInventoryManager->GetItem("Storage")->Remove(4);
 						cInventoryManager->GetItem("Storage")->SetMaxCount(cInventoryManager->GetItem("Upgrade_storage")->GetCount() * 15);
 					}
 				}
@@ -1189,6 +1203,7 @@ void CGUI_SceneCombat::Update(const double dElapsedTime)
 						cInventoryItem1->Remove(2);
 						cInventoryItem2->Remove(1);
 						cInventoryManager->GetItem("Upgrade_ventilation")->Add(1);
+						cInventoryManager->GetItem("Storage")->Remove(3);
 						CShip::GetInstance()->ventilationInterval = 12 - cInventoryManager->GetItem("Upgrade_ventilation")->GetCount() * 2;
 						UpgradeState = UPGRADE_STATE::NOSTATE;
 					}
