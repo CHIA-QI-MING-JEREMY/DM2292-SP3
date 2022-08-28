@@ -430,6 +430,9 @@ void CAmmo2D::InteractWithMap(void)
 				}
 			}
 		}
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
+
 		break;
 	}
 	case CMap2D::TILE_INDEX::SWITCH_UP_ON:
@@ -476,6 +479,9 @@ void CAmmo2D::InteractWithMap(void)
 				}
 			}
 		}
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
+
 		break;
 	}
 	case CMap2D::TILE_INDEX::SWITCH_LEFT_OFF:
@@ -506,6 +512,9 @@ void CAmmo2D::InteractWithMap(void)
 				}
 			}
 		}
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
+
 		break;
 	}
 	case CMap2D::TILE_INDEX::SWITCH_LEFT_ON:
@@ -536,6 +545,9 @@ void CAmmo2D::InteractWithMap(void)
 				}
 			}
 		}
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
+
 		break;
 	}
 	case CMap2D::TILE_INDEX::SWITCH_RIGHT_OFF:
@@ -555,6 +567,9 @@ void CAmmo2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, CMap2D::TILE_INDEX::BROWN_TILE_SOLID, 6, 9, 25, 26);
 			}
 		}
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
+
 		break;
 	}
 	case CMap2D::TILE_INDEX::SWITCH_RIGHT_ON:
@@ -574,6 +589,9 @@ void CAmmo2D::InteractWithMap(void)
 				cMap2D->ReplaceTiles(CMap2D::TILE_INDEX::BROWN_TILE_SOLID, CMap2D::TILE_INDEX::BROWN_TILE_HOLLOW, 6, 9, 25, 26);
 			}
 		}
+
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_SWITCH);
+
 		break;
 	}
 	default:

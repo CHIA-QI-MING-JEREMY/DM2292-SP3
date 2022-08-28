@@ -495,22 +495,6 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 	}
 	else if (planetNum == 2 && CGameStateManager::GetInstance()->hasPauseGameState() == false)
 	{
-		//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
-		//ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
-		//	ImGuiWindowFlags_NoTitleBar |
-		//	ImGuiWindowFlags_NoMove |
-		//	ImGuiWindowFlags_NoResize |
-		//	ImGuiWindowFlags_NoCollapse |
-		//	ImGuiWindowFlags_NoScrollbar;
-		//ImGui::Begin("textPopup", NULL, textPopupFlags);
-		//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.5f,
-		//	cSettings->iWindowHeight * 0.5f));
-		//ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
-		//ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "Hello");
-		//ImGui::End();
-		//ImGui::PopStyleColor();
-
 		// Render the Toxicity Level
 		ImGuiWindowFlags toxicityWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoBackground |
@@ -605,26 +589,105 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 		ImGui::End();
 		ImGui::PopStyleColor();
 
+		//ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		//ImGuiWindowFlags blueOrbWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		//	ImGuiWindowFlags_NoTitleBar |
+		//	ImGuiWindowFlags_NoMove |
+		//	ImGuiWindowFlags_NoResize |
+		//	ImGuiWindowFlags_NoCollapse |
+		//	ImGuiWindowFlags_NoScrollbar;
+		//ImGui::Begin("BlueOrb", NULL, blueOrbWindowFlags);
+		//ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.405f, cSettings->iWindowHeight * 0.9f));
+		//ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+		//cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
+		//ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+		//	ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x, cInventoryItemPlanet->vec2Size.y * relativeScale_y),
+		//	ImVec2(0, 1), ImVec2(1, 0));
+		//ImGui::SameLine();
+		//ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		//ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
+		//	cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		//ImGui::End();
+		//ImGui::PopStyleColor();
+
 		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
-		ImGuiWindowFlags blueOrbWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+		ImGuiWindowFlags purpleKeyWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
 			ImGuiWindowFlags_NoTitleBar |
 			ImGuiWindowFlags_NoMove |
 			ImGuiWindowFlags_NoResize |
 			ImGuiWindowFlags_NoCollapse |
 			ImGuiWindowFlags_NoScrollbar;
-		ImGui::Begin("BlueOrb", NULL, blueOrbWindowFlags);
+		ImGui::Begin("PurpleKey", NULL, purpleKeyWindowFlags);
 		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.405f, cSettings->iWindowHeight * 0.9f));
 		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
-		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("BlueOrb");
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
 		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
 			ImVec2(cInventoryItemPlanet->vec2Size.x * relativeScale_x, cInventoryItemPlanet->vec2Size.y * relativeScale_y),
 			ImVec2(0, 1), ImVec2(1, 0));
 		ImGui::SameLine();
 		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
-		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d / %d",
-			cInventoryItemPlanet->GetCount(), cInventoryItemPlanet->GetMaxCount());
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", cInventoryItemPlanet->GetCount());
 		ImGui::End();
 		ImGui::PopStyleColor();
+
+		ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+		ImGuiWindowFlags cyanKeyWindowFlags = ImGuiWindowFlags_AlwaysAutoResize |
+			ImGuiWindowFlags_NoTitleBar |
+			ImGuiWindowFlags_NoMove |
+			ImGuiWindowFlags_NoResize |
+			ImGuiWindowFlags_NoCollapse |
+			ImGuiWindowFlags_NoScrollbar;
+		ImGui::Begin("CyanKey", NULL, cyanKeyWindowFlags);
+		ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.478f, cSettings->iWindowHeight * 0.9f));
+		ImGui::SetWindowSize(ImVec2(200.0f * relativeScale_x, 25.0f * relativeScale_y));
+		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
+		ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+			ImVec2(cInventoryItemPlanet->vec2Size.x* relativeScale_x, cInventoryItemPlanet->vec2Size.y* relativeScale_y),
+			ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::SameLine();
+		ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+		ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", cInventoryItemPlanet->GetCount());
+		ImGui::End();
+		ImGui::PopStyleColor();
+
+		//tutorial popups
+		if (tutorialPopupTerrestrial > 0) //there is a pop up
+		{
+			//popup window
+			ImGui::PushStyleColor(ImGuiCol_WindowBg, ImVec4(0.25f, 0.25f, 0.25f, 1.0f));  // Set a background color
+			ImGuiWindowFlags textPopupFlags = ImGuiWindowFlags_AlwaysAutoResize |
+				ImGuiWindowFlags_NoTitleBar |
+				ImGuiWindowFlags_NoMove |
+				ImGuiWindowFlags_NoResize |
+				ImGuiWindowFlags_NoCollapse |
+				ImGuiWindowFlags_NoScrollbar;
+			ImGui::Begin("textPopup", NULL, textPopupFlags);
+			ImGui::SetWindowPos(ImVec2(cSettings->iWindowWidth * 0.01f,
+				cSettings->iWindowHeight * 0.5f));
+			ImGui::SetWindowSize(ImVec2(100.0f * relativeScale_x, 100.0f * relativeScale_y));
+
+			//different popup text for different popups
+			switch (tutorialPopupTerrestrial)
+			{
+			case T_INTRO:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Checkpoints");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Activate checkpoint to set respawn\npoint \nTouching checkpoints restores health\nto full \n\nOnly 1 checkpoint can be active at 1\ntime \nActivating a new checkpoint \ndeactivates all others");
+				ImGui::NewLine();
+				//controls instructions
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press R to lose 1 heart to respawn");
+				break;
+			default:
+				break;
+			}
+
+			ImGui::End();
+			ImGui::PopStyleColor();
+		}
 	}
 	else if (planetNum == 3 && CGameStateManager::GetInstance()->hasPauseGameState() == false) {
 
@@ -946,6 +1009,15 @@ int CGUI_Scene2D::getTutorialPopupJungle(void)
 void CGUI_Scene2D::setTutorialPopupJungle(int index)
 {
 	tutorialPopupJungle = index;
+}
+
+int CGUI_Scene2D::getTutorialPopupTerrestrial(void)
+{
+	return 0;
+}
+
+void CGUI_Scene2D::setTutorialPopupTerrestrial(int index)
+{
 }
 
 int CGUI_Scene2D::getTutorialPopupSnow(void)

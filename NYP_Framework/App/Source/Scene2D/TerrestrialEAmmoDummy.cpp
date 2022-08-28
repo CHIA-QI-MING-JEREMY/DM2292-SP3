@@ -262,7 +262,8 @@ bool CTEAmmoDummy::InteractWithPlayer(void)
 		cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("Health");
 		cInventoryItemPlanet->Remove(1);
 		
-		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::BURNING); //play burning noise
+		cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::TAKE_DAMAGE);
+
 		//cout << "Take that!" << endl;
 		hit = true; //destory ammo --> only hits player once
 

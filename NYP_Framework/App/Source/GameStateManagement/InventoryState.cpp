@@ -854,6 +854,269 @@ bool CInventoryState::Update(const double dElapsedTime)
 			//	cInventoryItemPlanet->GetCount());
 			ImGui::End();
 		}
+
+		// PLANET SPECIFIC COLLECTABLES
+		// yellow orb
+		ImGuiWindowFlags YellowOrbTextwindow_flags = 0;
+		YellowOrbTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		YellowOrbTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		YellowOrbTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		YellowOrbTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		YellowOrbTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		YellowOrbTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("YellowOrbText", NULL, YellowOrbTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 2.0));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Yellow Orb:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags YellowOrbwindow_flags = 0;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoBackground;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoMove;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoNav;
+		YellowOrbwindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("YellowOrb", NULL, YellowOrbwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 45));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("YellowOrb");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		// red orb
+		ImGuiWindowFlags RedOrbTextwindow_flags = 0;
+		RedOrbTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		RedOrbTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		RedOrbTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		RedOrbTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		RedOrbTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		RedOrbTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("RedOrbText", NULL, RedOrbTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.85));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Red Orb:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags RedOrbwindow_flags = 0;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoBackground;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoMove;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoNav;
+		RedOrbwindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("RedOrb", NULL, RedOrbwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 45));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("RedOrb");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		// green orb
+		ImGuiWindowFlags GreenOrbTextwindow_flags = 0;
+		GreenOrbTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		GreenOrbTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		GreenOrbTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		GreenOrbTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		GreenOrbTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		GreenOrbTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("GreenOrbText", NULL, GreenOrbTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.73));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Green Orb:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags GreenOrbwindow_flags = 0;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoBackground;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoMove;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoNav;
+		GreenOrbwindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("GreenOrb", NULL, GreenOrbwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 * 2 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.57 - 45));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("GreenOrb");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+		
+		// purple key
+		ImGuiWindowFlags PurpleKeyTextwindow_flags = 0;
+		PurpleKeyTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		PurpleKeyTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		PurpleKeyTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		PurpleKeyTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		PurpleKeyTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		PurpleKeyTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("PurpleKeyText", NULL, PurpleKeyTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.6));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Purple Key:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags PurpleKeywindow_flags = 0;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoBackground;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoMove;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoCollapse;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoNav;
+		PurpleKeywindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("PurpleKey", NULL, PurpleKeywindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 3.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.4));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("PurpleKey");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		// cyan key
+		ImGuiWindowFlags CyanKeyTextwindow_flags = 0;
+		CyanKeyTextwindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		CyanKeyTextwindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		CyanKeyTextwindow_flags |= ImGuiWindowFlags_NoBackground;
+		CyanKeyTextwindow_flags |= ImGuiWindowFlags_NoMove;
+		CyanKeyTextwindow_flags |= ImGuiWindowFlags_NoCollapse;
+		CyanKeyTextwindow_flags |= ImGuiWindowFlags_NoNav;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("CyanKeyText", NULL, CyanKeyTextwindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 1.45,
+				CSettings::GetInstance()->iWindowHeight / 1.49));
+			ImGui::SetWindowSize(ImVec2(CSettings::GetInstance()->iWindowWidth, CSettings::GetInstance()->iWindowHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
+			ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+			ImGui::SameLine;
+			ImGui::TextColored(ImVec4(0, 1, 1, 1), "Cyan Key:%d",
+				cInventoryItemPlanet->GetCount());
+			ImGui::End();
+		}
+		ImGuiWindowFlags CyanKeywindow_flags = 0;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoTitleBar;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoScrollbar;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoBackground;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoMove;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoCollapse;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoNav;
+		CyanKeywindow_flags |= ImGuiWindowFlags_NoResize;
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("CyanKey", NULL, CyanKeywindow_flags);
+			ImGui::SetWindowPos(ImVec2(CSettings::GetInstance()->iWindowWidth / 2.0 - buttonWidth / 2.0 - 100,
+				CSettings::GetInstance()->iWindowHeight / 1.4));
+			ImGui::SetWindowSize(ImVec2(buttonWidth, buttonHeight));
+			cInventoryItemPlanet = cInventoryManagerPlanet->GetItem("CyanKey");
+			ImGui::SetWindowFontScale(3.f * relativeScale_y);
+
+			//Added rounding for nIronr effect
+			ImGuiStyle& style = ImGui::GetStyle();
+			style.FrameRounding = 200.0f;
+
+			// Add codes for Start button here
+			ImGui::Image((void*)(intptr_t)cInventoryItemPlanet->GetTextureID(),
+				ImVec2(buttonWidth, buttonHeight), ImVec2(0.0, 1.0), ImVec2(1.0, 0.0));
+			ImGui::End();
+		}
+
+		
 	}
 //	ImGui::EndFrame();
 	return true;

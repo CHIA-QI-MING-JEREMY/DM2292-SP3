@@ -803,6 +803,8 @@ void CPlayer2D::InteractWithMap(void)
 					cMap2D->SetMapInfo(lockedDoors[i].y, lockedDoors[i].x, 0);
 					cInventoryItemPlanet->Remove(1);
 					cout << cInventoryItemPlanet->GetCount() << endl;
+
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_UNLOCK);
 				}
 			}
 		}
@@ -817,6 +819,8 @@ void CPlayer2D::InteractWithMap(void)
 					cMap2D->SetMapInfo(lockedDoors[i].y, lockedDoors[i].x, 0);
 					cInventoryItemPlanet->Remove(1);
 					cout << cInventoryItemPlanet->GetCount() << endl;
+
+					cSoundController->PlaySoundByID(CSoundController::SOUND_LIST::PLAYER_UNLOCK);
 				}
 			}
 		}
