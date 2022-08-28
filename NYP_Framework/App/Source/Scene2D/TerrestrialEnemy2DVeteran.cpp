@@ -197,7 +197,18 @@ bool TEnemy2DVeteran::Init(void)
 	}
 	else if (cMap2D->GetCurrentLevel() == 2)
 	{
-		
+		if (vec2Index == glm::vec2(22, 17))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 300, 4);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 304, 2);
+			type = LONG_RANGE; // has ammo
+		}
+		else if (vec2Index == glm::vec2(20, 8))
+		{
+			waypoints = ConstructWaypointVector(waypoints, 308, 2);
+			repositionWaypoints = ConstructWaypointVector(repositionWaypoints, 310, 2);
+			type = KEYHOLDER_PURPLE; // drops a purple key when killed
+		}
 	}
 
 	shootingDirection = RIGHT; //setting direction for ammo shooting
