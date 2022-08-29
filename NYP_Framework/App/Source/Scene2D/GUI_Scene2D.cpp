@@ -742,7 +742,7 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				ImGui::NewLine();
 				//controls instructions
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
-				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press 1 to coat your suit yellow\nPress 2 to coat your suit red\nPress 3 to coat your suit green");
+				ImGui::TextColored(ImVec4(1, 1, 0, 1), "Press 1 to coat your suit yellow\nPress 2 to coat your suit red\nPress 3 to coat your suit green\nPress 5 to remove coating");
 				break;
 			case T_COLOUR_CHANGE_DANGER:
 				//header
@@ -795,6 +795,15 @@ void CGUI_Scene2D::Update(const double dElapsedTime)
 				//information
 				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
 				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Toggle the tiles on and off by\nshooting linked switches\n\nThe switch(es) linked to the tiles\nwill have blue wires joining them");
+				ImGui::NewLine();
+				break;
+			case T_SPIKES:
+				//header
+				ImGui::SetWindowFontScale(1.5f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Spikes");
+				//information
+				ImGui::SetWindowFontScale(1.2f * relativeScale_y);
+				ImGui::TextColored(ImVec4(1, 1, 1, 1), "Standing in spikes will damage you");
 				ImGui::NewLine();
 				break;
 			case T_COLOUR_CHANGE_COOLDOWN:

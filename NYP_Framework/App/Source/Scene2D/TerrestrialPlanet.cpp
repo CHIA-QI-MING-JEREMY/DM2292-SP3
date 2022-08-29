@@ -888,6 +888,11 @@ bool TerrestrialPlanet::Update(const double dElapsedTime)
 		{
 			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_SWITCH); // trigger switch pop up
 		}
+		// spiikes popup
+		if (cPhysics2D.CalculateDistance(cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_SPIKES), cPlayer2D->vec2Index) < 2.f)
+		{
+			cGUI_Scene2D->setTutorialPopupTerrestrial(CGUI_Scene2D::TERRESTRIAL_TUTORIAL_POPUP::T_SPIKES); // trigger spikes pop up
+		}
 		// colour change cooldown popup
 		if (cPlayer2D->vec2Index.x >= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_COOLDOWN_TOP_L).x &&
 			cPlayer2D->vec2Index.x <= cMap2D->GetTilePosition(CMap2D::TILE_INDEX::TUT_COLOUR_CHANGE_COOLDOWN_BOT_R).x &&
@@ -1273,7 +1278,7 @@ void TerrestrialPlanet::DecideLevel(bool tutorial)
 	//if it is to load tutorial level
 	if (tutorial)
 	{
-		cMap2D->SetCurrentLevel(LEVEL2); //tutorial level
+		cMap2D->SetCurrentLevel(TUTORIAL); //tutorial level
 	}
 	else //randomise between level 1 and 2
 	{
