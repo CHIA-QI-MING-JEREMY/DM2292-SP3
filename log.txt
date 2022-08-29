@@ -1,0 +1,527 @@
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : ALR674 Commit : Added "how to play" to readme
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : fixed final bugs lol
+Author : Timothy Luk Commit : Fixed Upgrade Bug
+Author : ALR674 Commit : changed menustate and playgamestate back to normal playable form for game
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added movement controls to ship combat readme
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : slay changes
+Author : ALR674 Commit : added controls to readme
+Author : ALR674 Commit : changed jungle planet decide lvl back to tutorial for tutorial = true
+Author : Timothy Luk Commit : Certain Things have been changed
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Updated Button Colors
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added soundcontroller = null to deconstructors
+Author : Timothy Luk Commit : Merge pull request #16 from CHIA-QI-MING-JEREMY/FixBugBranch
+Author : Timothy Luk Commit : Final Changes Hopefully
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : Timothy Luk Commit : Merge pull request #15 from CHIA-QI-MING-JEREMY/AudioBranch
+Author : Timothy Luk Commit : Merge branch 'main' into AudioBranch
+Author : Timothy Luk Commit : Audio and Sound !!
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : Casious Commit : Update DM2292_Map_Snow_02.csv
+Author : Casious Commit : Update SnowPlanet.cpp
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update map
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : Timothy Luk Commit : Great
+Author : Timothy Luk Commit : Update the Storage
+Author : Timothy Luk Commit : Merge pull request #14 from CHIA-QI-MING-JEREMY/FinalBranch
+Author : Timothy Luk Commit : Changes
+Author : Timothy Luk Commit : Merge pull request #13 from CHIA-QI-MING-JEREMY/UIBranch
+Author : Timothy Luk Commit : Merge branch 'main' into UIBranch
+Author : Timothy Luk Commit : UI Changes
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update 26/08/22
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update 26/08/22
+Author : Casious Commit : change UI
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : fix enemy
+Author : ALR674 Commit : un-did jungle enemy a star pathfinding changes
+Author : ALR674 Commit : changed jungle enemy a star pathfinding
+Author : Timothy Luk Commit : Edit Menu Screen
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Slay !! Some changes made UI
+Author : Casious Commit : temp pos
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Updated the lives thing hh
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : imgui button
+Author : Timothy Luk Commit : Merge pull request #12 from CHIA-QI-MING-JEREMY/ShipCombat-New
+Author : Timothy Luk Commit : SHip Combat bruvhs
+Author : Casious Commit : Update menuBG.jpg
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : change backpack background
+Author : ALR674 Commit : tidied up planet common and jungle specific cout
+Author : ALR674 Commit : touched up jungle planet lvl 2
+Author : ALR674 Commit : shifted jungle planet sounds into its own folder
+Author : Casious Commit : rope
+Author : Casious Commit : deleted unused codes
+Author : Casious Commit : Add background
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : fixed background being affected by player's colour issue, added common sounds to jungle enemies
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update sound
+Author : ALR674 Commit : added common sounds to jungle planet
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added background to jungle planet
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : add sound to snow level and common sounds
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : changed exit door texture
+Author : CHIA-QI-MING-JEREMY Commit : updated veteran fsm
+Author : ALR674 Commit : added enemies to jungle planet lvl 2, updated enemies' isMidAir and added isMidAir check to update
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : build jungle planet lvl 2
+Author : Casious Commit : add file for planet specific sound
+Author : Casious Commit : added sounds
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : implemented rocket explosion
+Author : ALR674 Commit : added sound effects to jungle planet levels
+Author : ALR674 Commit : adjusted sounds to use enum, adjusted current sounds to follow enum, added a few jungle planet sounds
+Author : Casious Commit : update ammo sprite for player snow planet
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : shifted declaring of planet number in jungle planet to init for ammo sake
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : veteran update
+Author : CHIA-QI-MING-JEREMY Commit : edited GUI
+Author : CHIA-QI-MING-JEREMY Commit : tutorial final update
+Author : CHIA-QI-MING-JEREMY Commit : updated attack intervals
+Author : Casious Commit : Update SnowPlanet.cpp
+Author : Casious Commit : diff sprite ammo for diff scene
+Author : CHIA-QI-MING-JEREMY Commit : commented stuff out
+Author : CHIA-QI-MING-JEREMY Commit : commented stuff out
+Author : CHIA-QI-MING-JEREMY Commit : commented stuff out
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial update
+Author : Casious Commit : Revert "Revert "Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3""
+Author : Casious Commit : Revert "Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3"
+Author : Casious Commit : Revert "Revert "Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3""
+Author : Casious Commit : Revert "Update DM2292_Map_Snow_01.csv"
+Author : Casious Commit : Revert "Update DM2292_Map_Snow_01.csv"
+Author : Casious Commit : Update DM2292_Map_Snow_01.csv
+Author : Casious Commit : Update DM2292_Map_Snow_01.csv
+Author : Casious Commit : Revert "Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3"
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : added lvl 1 and 2
+Author : ALR674 Commit : updated readme with jungle planet information
+Author : ALR674 Commit : changed stone barriers to metal barriers in jungle planet
+Author : ALR674 Commit : added enemies into jungle planet lvl 1, added checkpoint init in resestrespawn for player
+Author : ALR674 Commit : built jungle planet lvl 1, added left button to jungle planet
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : resolved inventory triangle bug
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial tutorial final
+Author : CHIA-QI-MING-JEREMY Commit : added cyan key and door
+Author : CHIA-QI-MING-JEREMY Commit : added worker tutorial enemy, cyan key drop
+Author : ALR674 Commit : changed lvl 2A and 2B to lvl 2 in jungle planet
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added jungle planet inventory gui
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : removed keyboard controllers from enemy
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : removed keyboard controller from ammo, resource and enemy ammo
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : remove keybord
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial tutorial v4
+Author : CHIA-QI-MING-JEREMY Commit : added new switch for tutorial
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : Update SnowEnemy2DSWW.cpp
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added animation to jungle enemy intelligent tracker
+Author : Casious Commit : map edit
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : added shooting, extra boss drops and added boss
+Author : CHIA-QI-MING-JEREMY Commit : added veteran enemy
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : resolved multiple alarmers bug
+Author : ALR674 Commit : added animated sprite to jungle enemy ammo
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : implemented alarm system, sentry update, turret damage adjustment
+Author : Casious Commit : added 3rd enemy + fix attack state
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : Update DM2292_Map_Snow_Tutorial.csv
+Author : CHIA-QI-MING-JEREMY Commit : cleaned up terrestrial code
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : updated turret enemy
+Author : CHIA-QI-MING-JEREMY Commit : updated sentry enemy
+Author : CHIA-QI-MING-JEREMY Commit : updated dummy enemy
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial tutorial v3
+Author : ALR674 Commit : changed jungleEAmmoVT files to jungleEAmmo files
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : .h
+Author : ALR674 Commit : added intelligent tracker jungle planet enemy functionality 100%
+Author : Casious Commit : added 2nd enemy
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : removed srand from jungle planet
+Author : CHIA-QI-MING-JEREMY Commit : changed 0 to TUTORIAL
+Author : CHIA-QI-MING-JEREMY Commit : moved srand to application, removed other srand
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : added door unlock, prevent game loss on 0 lives, removed multiple srand
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added sprite sheet for patrol team jungle enemy
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : add enemy + remove triangle thing from inventory
+Author : ALR674 Commit : added sprites to jungle enemy vigilant teleporter
+Author : Casious Commit : add enemy class
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : added small damage for dummy enemy
+Author : CHIA-QI-MING-JEREMY Commit : disabled text UI
+Author : CHIA-QI-MING-JEREMY Commit : added locked door and key functionality
+Author : CHIA-QI-MING-JEREMY Commit : added keyholder enemy type
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added vigilant teleporter sprite mid way
+Author : Casious Commit : map
+Author : Casious Commit : update map and added new map
+Author : Casious Commit : added dialogue for tutorial lvl
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Added shy chaser sprite sheet to jungle planet
+Author : CHIA-QI-MING-JEREMY Commit : edited sprite sheets
+Author : CHIA-QI-MING-JEREMY Commit : implemented wires into tutorial map
+Author : CHIA-QI-MING-JEREMY Commit : edited wire textures
+Author : CHIA-QI-MING-JEREMY Commit : added wire textures
+Author : Casious Commit : update enemy
+Author : Casious Commit : update snow
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : terrestrial tutorial v2
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : map new
+Author : ALR674 Commit : added riverwater to jungle inventory gui
+Author : CHIA-QI-MING-JEREMY Commit : replaced spikes sprites
+Author : CHIA-QI-MING-JEREMY Commit : scuffed wall vs enemy ammo collision solution
+Author : ALR674 Commit : finished jungle planet tutorial popups
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : implemented jungle planet tutorial pop up triggers for the first few pop ups
+Author : Timothy Luk Commit : Merge pull request #11 from CHIA-QI-MING-JEREMY/InventoryBranch
+Author : Timothy Luk Commit : Changed the inventory
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : added terrestrial enemies
+Author : CHIA-QI-MING-JEREMY Commit : changed switch location
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Added jungle planet tutorial popup texts
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update map n player
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : render dummy enemy
+Author : CHIA-QI-MING-JEREMY Commit : changed turret and dummy sprite sheets
+Author : ALR674 Commit : changed vine collectable's GUI image
+Author : ALR674 Commit : disabled camera following mouse in jungle planet, added jungle tutorial pop up gui
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : reworked turret sprite sheet
+Author : CHIA-QI-MING-JEREMY Commit : added dummy enemy
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update map index
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : Revert "added dummy enemy"
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added GUI to jungle planet
+Author : Casious Commit : update map
+Author : CHIA-QI-MING-JEREMY Commit : added dummy enemy
+Author : CHIA-QI-MING-JEREMY Commit : cleaned up code
+Author : CHIA-QI-MING-JEREMY Commit : removed old flag sprites
+Author : Casious Commit : added rope to player movement snow
+Author : Casious Commit : update values for index and added checkpoint code
+Author : Casious Commit : update ice speed on player
+Author : Casious Commit : update map
+Author : Timothy Luk Commit : Merge pull request #10 from CHIA-QI-MING-JEREMY/IntegrationBranch
+Author : Timothy Luk Commit : Merge branch 'main' into IntegrationBranch
+Author : Timothy Luk Commit : woop
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added checkpoints to jungle planet
+Author : CHIA-QI-MING-JEREMY Commit : replaced CP flag sprites
+Author : CHIA-QI-MING-JEREMY Commit : added spikes and switches functionality
+Author : CHIA-QI-MING-JEREMY Commit : tutorial level v1
+Author : CHIA-QI-MING-JEREMY Commit : sentry enemy waypoint update
+Author : CHIA-QI-MING-JEREMY Commit : turret enemy final
+Author : CHIA-QI-MING-JEREMY Commit : added colour switch cooldown & CP respawn
+Author : CHIA-QI-MING-JEREMY Commit : tutorial text pop up v1
+Author : CHIA-QI-MING-JEREMY Commit : replaced placeholder tiles
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : adjusted jungle tutorial level and updated readme
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update snow scene
+Author : ALR674 Commit : added ironwood trees to jungle planet
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added buttons, stone textures and button functionality to jungle planet
+Author : Casious Commit : update resource
+Author : Casious Commit : update player and resource
+Author : Casious Commit : update snowplanet.h
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : added snow tiles into map and resources into resource, added colour to player  and edited readme file and added  images
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added updateDirection to enemies
+Author : CHIA-QI-MING-JEREMY Commit : disabled powerup UI from showing in inventory
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : edited rope functionality
+Author : Timothy Luk Commit : Merge pull request #9 from CHIA-QI-MING-JEREMY/ChangesBranch-temp
+Author : Timothy Luk Commit : Update planet map ?
+Author : Timothy Luk Commit : slay changes
+Author : Casious Commit : Update InventoryState.cpp
+Author : Casious Commit : change scene to not show scene items in inventory screen
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : fix inventory issue + added powerup to scene + temp bar
+Author : ALR674 Commit : implemented jungle enemy patrol team functionality 100%
+Author : ALR674 Commit : Added functions and variables needed for patrol team to enemy
+Author : ALR674 Commit : added attacking to shy chaser jungle enemy
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : added jungle enemy patrol team files
+Author : Timothy Luk Commit : Merge pull request #8 from CHIA-QI-MING-JEREMY/FullGameLoopBranch
+Author : Timothy Luk Commit : Merge branch 'main' into FullGameLoopBranch
+Author : Timothy Luk Commit : ??? slay
+Author : CHIA-QI-MING-JEREMY Commit : added turret shooting WIP
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : jungle enemy shy chaser functionality 100% implemented
+Author : CHIA-QI-MING-JEREMY Commit : updated terrestrial enemies
+Author : CHIA-QI-MING-JEREMY Commit : updated base enemy and entity
+Author : ALR674 Commit : added jungle enemy shy chaser fsm
+Author : ALR674 Commit : added shy chaser enemy to jungle
+Author : ALR674 Commit : Finished Vigilant Teleporter functionality for jungle planet
+Author : CHIA-QI-MING-JEREMY Commit : added turret enemy
+Author : CHIA-QI-MING-JEREMY Commit : added turret enemy
+Author : CHIA-QI-MING-JEREMY Commit : reworked image file structure
+Author : CHIA-QI-MING-JEREMY Commit : edited ground tile tga
+Author : CHIA-QI-MING-JEREMY Commit : added turret enemy sprite sheet
+Author : CHIA-QI-MING-JEREMY Commit : changed sprite rendered
+Author : CHIA-QI-MING-JEREMY Commit : adjusted antidote pickup
+Author : CHIA-QI-MING-JEREMY Commit : set terrestrial tutorial to run
+Author : CHIA-QI-MING-JEREMY Commit : updated map
+Author : CHIA-QI-MING-JEREMY Commit : added terrestrial enemy sprite sheets
+Author : CHIA-QI-MING-JEREMY Commit : resolved map loading error
+Author : CHIA-QI-MING-JEREMY Commit : implemented antidote pill
+Author : ALR674 Commit : jungle enemy vt 95% done
+Author : Casious Commit : Update InventoryBag.png
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : fixed constraint for knockback
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : Update Player2D.cpp
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : Update Player2D.cpp
+Author : CHIA-QI-MING-JEREMY Commit : implemented colour trapped mechanic
+Author : Casious Commit : fix constraint
+Author : Casious Commit : update constraint
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update knockback physics
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : jungle enemy vt fsm 70% finished
+Author : Timothy Luk Commit : Revert "Revert "Changes ?? Slay""
+Author : Timothy Luk Commit : Revert "Changes ?? Slay"
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Changes ?? Slay
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : created a SetCount to limit hp when max  and added shield+ berserk mode
+Author : Timothy Luk Commit : Merge pull request #7 from CHIA-QI-MING-JEREMY/StanNewJeansAlsoPlanetBranch
+Author : Timothy Luk Commit : Changes
+Author : Casious Commit : added shield and berserk mode to snowplanet
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : updated health & lives system
+Author : CHIA-QI-MING-JEREMY Commit : implemented toxicity system
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : implemented swaying leaves (moving platforms) in jungle
+Author : Casious Commit : update berserk colour tga and player add colour
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : changes to player and enemy
+Author : ALR674 Commit : added vine resource
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Added images for moving platforms (leaves)
+Author : CHIA-QI-MING-JEREMY Commit : updated 2A
+Author : CHIA-QI-MING-JEREMY Commit : enabled camera
+Author : CHIA-QI-MING-JEREMY Commit : enabled camera
+Author : CHIA-QI-MING-JEREMY Commit : edited camera functionality for T planet
+Author : ALR674 Commit : updated some jungle images and readme
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Let vines have same functionality for the player as rope
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : added powerup sprites
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Added deployable vines to jungle planet
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update readme file, enemy png & enemyclass
+Author : ALR674 Commit : Added vine textures to jungle planet
+Author : ALR674 Commit : Re-added filters, changed render for ammo, jungle enemy, jungle enemy ammo and resource to take camera into account
+Author : ALR674 Commit : Re-added getTilePosition to map after it disappeared
+Author : Timothy Luk Commit : Merge pull request #6 from CHIA-QI-MING-JEREMY/ShipCombatChangesBranch
+Author : Timothy Luk Commit : Merge branch 'main' into ShipCombatChangesBranch
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Ship Combat Changes
+Author : Timothy Luk Commit : Ship Combat overwrite
+Author : CHIA-QI-MING-JEREMY Commit : Terrestrial update v3
+Author : CHIA-QI-MING-JEREMY Commit : added rope climbing
+Author : CHIA-QI-MING-JEREMY Commit : pathfinding v2 (with map index)
+Author : Casious Commit : added fsm for basic enemy
+Author : ALR674 Commit : Added filters that went missing
+Author : ALR674 Commit : added getTilePosition to map, used to build waypoint vector for enemies
+Author : ALR674 Commit : added getShootingDirection into player
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Added burnable blocks and vines as collectables
+Author : Timothy Luk Commit : Merge pull request #5 from CHIA-QI-MING-JEREMY/ShipCombatBranch
+Author : ALR674 Commit : bouncy blooms fully functional
+Author : Casious Commit : inven state
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : fixed camera + inventory state
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : River water fully functional
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : included name for resource
+Author : CHIA-QI-MING-JEREMY Commit : updated planet num
+Author : CHIA-QI-MING-JEREMY Commit : disabled platforming camera
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : changed inventory
+Author : ALR674 Commit : jungle enemy n ammo now use static camera positioning
+Author : ALR674 Commit : jungle enemy tidy up
+Author : CHIA-QI-MING-JEREMY Commit : disabled platforming camera
+Author : CHIA-QI-MING-JEREMY Commit : added ResetRespawn()
+Author : CHIA-QI-MING-JEREMY Commit : Pathfinding v1
+Author : Timothy Luk Commit : Ship Interior Assets !!
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Implemented river water in jungle planet
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : inventory state + planet scene
+Author : CHIA-QI-MING-JEREMY Commit : cleaned up enemy base class
+Author : ALR674 Commit : allowed player to spawn in different start location base on current map instead of first map
+Author : ALR674 Commit : Added jungle river water to map
+Author : ALR674 Commit : Added poison fog to jungle planet
+Author : ALR674 Commit : Added poison visual effect (colour), added poison capability to jungle enemy vt bullet
+Author : ALR674 Commit : Added IsMidAir to resources
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : Added battery
+Author : ALR674 Commit : Implemented poison in jungle
+Author : CHIA-QI-MING-JEREMY Commit : Added scrap metal and energy quartz
+Author : Timothy Luk Commit : Update App.vcxproj ??????
+Author : Timothy Luk Commit : slay
+Author : Timothy Luk Commit : Update Planet Selection !!
+Author : CHIA-QI-MING-JEREMY Commit : Terrestrial Update v2.1
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : readme file
+Author : CHIA-QI-MING-JEREMY Commit : Revert "Terrestrial Update v2"
+Author : CHIA-QI-MING-JEREMY Commit : Terrestrial Update v2
+Author : ALR674 Commit : Added jungle specific inventory
+Author : Casious Commit : CHANGE IMAGE
+Author : Casious Commit : UPDATE IMAGE AND ENEMY
+Author : CHIA-QI-MING-JEREMY Commit : Terrestrial Update v1
+Author : ALR674 Commit : Added poison base info to jungle
+Author : ALR674 Commit : Added jungle tile interaction to ammos
+Author : Casious Commit : add a folder for snowplanet
+Author : ALR674 Commit : Added images for jungle solid tiles
+Author : ALR674 Commit : Added Jungle Solid Tiles
+Author : Casious Commit : playgamestate
+Author : Timothy Luk Commit : Merge pull request #4 from CHIA-QI-MING-JEREMY/PlanetSelectionBranch
+Author : Casious Commit : remove files
+Author : Casious Commit : update crystal
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : block for snow lvl
+Author : Timothy Luk Commit : Edits to scene planet
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Merge pull request #3 from CHIA-QI-MING-JEREMY/PlanetSelectionBranch
+Author : Timothy Luk Commit : Merge branch 'main' into PlanetSelectionBranch
+Author : Casious Commit : added snow blocks
+Author : Timothy Luk Commit : Revert "Sound Stuff (pls ignore the fact it doesnt work)"
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Sound Stuff (pls ignore the fact it doesnt work)
+Author : Timothy Luk Commit : Planet Selection Items
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : add enemyclass and enemy ammo
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Create README.txt
+Author : Casious Commit : update map + scene
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : update
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Able to decide level to be loaded in planet outside of scene
+Author : Casious Commit : update map
+Author : ALR674 Commit : Adjusted index limit numbering
+Author : CHIA-QI-MING-JEREMY Commit : Updated Terrestrial Enemy, Map
+Author : Casious Commit : Update InventoryState.cpp
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Resources now fully functional: can be dropped by enemy and collected with limit
+Author : Casious Commit : change inventorystate
+Author : Casious Commit : fixed esc problem
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Resource can be collected and change planet inventory
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : Removed unneeded csv
+Author : CHIA-QI-MING-JEREMY Commit : Replaced Scene2D with Terrestrial Planet
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Added UI Buttons and Intro State Update
+Author : Casious Commit : change inventorybagpng
+Author : ALR674 Commit : Added planet number to Jungle planet, changed player's index
+Author : ALR674 Commit : Made resources spawn from map index
+Author : ALR674 Commit : Changed Jungle maps
+Author : Casious Commit : inventorymanager
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : Updated sprite sheet
+Author : ALR674 Commit : Added resource class
+Author : Casious Commit : fixed planetinvent
+Author : Casious Commit : invenplanet
+Author : Casious Commit : invenmanger
+Author : Casious Commit : include invenitemplanet
+Author : Casious Commit : include invenmanagerplanet
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : SnowPlanet+Sound
+Author : ALR674 Commit : Renamed Jungle Maps
+Author : Casious Commit : SnowPlanet
+Author : Casious Commit : InventoryforPlanetScene
+Author : Casious Commit : SnowPlanet
+Author : ALR674 Commit : Added JunglePlanet
+Author : ALR674 Commit : cleaned up enemy files
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : Added enemy ammo, base and child class
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : PlayerSprite
+Author : Timothy Luk Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Timothy Luk Commit : Added Screen Shake for Damage
+Author : CHIA-QI-MING-JEREMY Commit : Update files included in project
+Author : ALR674 Commit : Changed rendering for ammo and enemies to be camera related
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : CHIA-QI-MING-JEREMY Commit : Update Settings.cpp
+Author : CHIA-QI-MING-JEREMY Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : edited git ignore
+Author : CHIA-QI-MING-JEREMY Commit : Update Settings
+Author : ALR674 Commit : Create .gitignore
+Author : Casious Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : Casious Commit : SP3 Camera
+Author : ALR674 Commit : Merge branch 'main' of https://github.com/CHIA-QI-MING-JEREMY/DM2292-SP3
+Author : ALR674 Commit : changed enemy to a base class and all related vectors
+Author : CHIA-QI-MING-JEREMY Commit : Revert "Update csettings add function x"
+Author : CHIA-QI-MING-JEREMY Commit : Revert "Update settings yuh"
+Author : CHIA-QI-MING-JEREMY Commit : revert glm change
+Author : CHIA-QI-MING-JEREMY Commit : Update README.md
+Author : Timothy Luk Commit : Added glm cos im doodoo
+Author : Timothy Luk Commit : Update settings yuh
+Author : Timothy Luk Commit : Update csettings add function x
+Author : CHIA-QI-MING-JEREMY Commit : Merge pull request #1 from CHIA-QI-MING-JEREMY/Camera-patch-1
+Author : Timothy Luk Commit : Update Enemy2D.cpp
+Author : Timothy Luk Commit : Update enemy2d.h slay
+Author : Timothy Luk Commit : Updated player2D.cpp with camera
+Author : Timothy Luk Commit : edit player2D.h with cam
+Author : Timothy Luk Commit : Update Map2D.cpp with cam
+Author : Timothy Luk Commit : Update Map2D with cam
+Author : Timothy Luk Commit : update with camera
+Author : Timothy Luk Commit : Change Scene.h
+Author : Timothy Luk Commit : Added Camera Class into primitives
+Author : Timothy Luk Commit : Deleted the Readme
+Author : Timothy Luk Commit : Create Readme file
+Author : ALR674 Commit : Added player ammo
+Author : ALR674 Commit : Changed enemy vector to a 2D vector containing vectors of enemies per map
+Author : CHIA-QI-MING-JEREMY Commit : Create SP3
+Author : CHIA-QI-MING-JEREMY Commit : Create SP3
